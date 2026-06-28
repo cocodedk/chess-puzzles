@@ -1,0 +1,33 @@
+plugins {
+    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.android.library) apply false
+    alias(libs.plugins.kotlin.android) apply false
+    alias(libs.plugins.kotlin.jvm) apply false
+    alias(libs.plugins.compose.compiler) apply false
+    alias(libs.plugins.kover)
+}
+
+dependencies {
+    kover(project(":core"))
+    kover(project(":app"))
+}
+
+kover {
+    reports {
+        filters {
+            excludes {
+                // @Composable functions carry Compose-compiler-generated recomposition branches
+                // (startRestartGroup/skipToGroupEnd/updateScope) that are not reachable by tests.
+                // They are still exercised by the Robolectric render tests and the emulator screenshot.
+                annotatedBy("androidx.compose.runtime.Composable")
+            }
+        }
+        total {
+            verify {
+                rule {
+                    minBound(100)
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# Pre-push gate (CLAUDE.md rules 1, 4, 5): 200-line file cap, full test suite, 100% coverage.
+set -euo pipefail
+cd "$(git rev-parse --show-toplevel)"
+[ -f "$HOME/.chess-env.sh" ] && source "$HOME/.chess-env.sh"
+
+echo "pre-push: checking file lengths (<= 200)"
+over=$(git ls-files '*.kt' '*.kts' | while read -r f; do
+  n=$(wc -l < "$f")
+  [ "$n" -gt 200 ] && echo "  $f ($n lines)"
+done)
+if [ -n "$over" ]; then
+  echo "FAIL: code files exceed 200 lines:"
+  echo "$over"
+  exit 1
+fi
+
+echo "pre-push: running tests + 100% coverage gate"
+./gradlew --quiet test koverVerify
+
+echo "pre-push: OK"

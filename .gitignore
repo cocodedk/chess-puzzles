@@ -1,0 +1,12 @@
+/build
+**/build/
+.gradle/
+.kotlin/
+local.properties
+*.iml
+.idea/
+/screen.png
+*.png.actual
+# Puzzle DB working files (only the sampled assets/puzzles.csv is committed)
+/lichess_db_puzzle.csv
+*.csv.zst
