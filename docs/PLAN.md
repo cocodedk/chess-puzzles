@@ -322,7 +322,8 @@ auto-detect KVM → `-accel on` else `-no-accel`); `adb wait-for-device` + poll 
 - [x] Phase 4 — Puzzle data asset (2,400 Lichess puzzles, ~330 KB)
 - [x] Phase 5 — `:app` UI + ViewModel + tests (100% coverage of non-`@Composable` code)
 - [x] Phase 6 — APK build + lint
-- [ ] Phase 7 — Emulator boot + screenshot (in progress)
+- [x] Phase 7 — Emulator boot + screenshot (boots, renders, solves on a headless AVD)
+- [x] Post-build — max-effort code review; correctness/robustness/gate findings fixed, efficiency/YAGNI items deferred with rationale
 
 _Note: interactive play beyond the screenshot uses the same emulator + `adb shell input`; full
 gameplay on a physical device is a later, out-of-scope step._
