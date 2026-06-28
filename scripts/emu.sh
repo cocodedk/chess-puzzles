@@ -40,6 +40,7 @@ done
 adb -s "$SERIAL" shell input keyevent 82 >/dev/null 2>&1 || true
 echo "[emu] booted; installing APK"
 
+adb -s "$SERIAL" uninstall "$PKG" >/dev/null 2>&1 || true # avoid debug-signature mismatch with an old install
 adb -s "$SERIAL" install -r "$APK"
 adb -s "$SERIAL" shell am start -n "${PKG}/.MainActivity"
 sleep 15 # let the cold-start splash dismiss and the first Compose frame render (software GPU)

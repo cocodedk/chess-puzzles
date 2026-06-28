@@ -32,10 +32,17 @@ class DataTest {
         assertNull(PuzzleCsvParser.parseLine("PuzzleId,FEN,Moves,Rating,Themes"))
         assertNull(PuzzleCsvParser.parseLine("   "))
         assertNull(PuzzleCsvParser.parseLine("a,b"))
-        assertNull(PuzzleCsvParser.parseLine("id,fen,e2e4,NaN,mate"))
-        assertNull(PuzzleCsvParser.parseLine("id,fen,,1500,mate"))
-        assertNull(PuzzleCsvParser.parseLine(",fen,e2e4,1500,mate"))
-        assertNull(PuzzleCsvParser.parseLine("id,,e2e4,1500,mate"))
+        assertNull(PuzzleCsvParser.parseLine("id,fen,e2e4 e7e5,NaN,mate")) // bad rating
+        assertNull(PuzzleCsvParser.parseLine("id,fen,,1500,mate")) // no moves
+        assertNull(PuzzleCsvParser.parseLine(",fen,e2e4 e7e5,1500,mate")) // blank id
+        assertNull(PuzzleCsvParser.parseLine("id,,e2e4 e7e5,1500,mate")) // blank fen
+        assertNull(PuzzleCsvParser.parseLine("id,fen,e2e4,1500,mate")) // only the setup move
+        assertNull(PuzzleCsvParser.parseLine("id,fen,e2e4 z9z9,1500,mate")) // invalid UCI token
+    }
+
+    @Test fun parseAcceptsPromotionMove() {
+        val puzzle = PuzzleCsvParser.parseLine("id,fen,e2e4 e7e8q,1500,mate")!!
+        assertEquals(listOf("e2e4", "e7e8q"), puzzle.uciMoves)
     }
 
     @Test fun parseSequenceDropsMalformed() {
@@ -44,7 +51,7 @@ class DataTest {
             "a,fenA,e2e4 e7e5,1500,mate",
             "garbage",
             "   ",
-            "b,fenB,d2d4,1600,fork",
+            "b,fenB,d2d4 d7d5,1600,fork",
         )
         val puzzles = PuzzleCsvParser.parse(lines).toList()
         assertEquals(2, puzzles.size)
@@ -91,7 +98,7 @@ class DataTest {
     }
 
     @Test fun parseTrimsExtraThemeSpaces() {
-        val puzzle = PuzzleCsvParser.parseLine("id,fen,e2e4,1500,mate  fork ")!!
+        val puzzle = PuzzleCsvParser.parseLine("id,fen,e2e4 e7e5,1500,mate  fork ")!!
         assertEquals(listOf("mate", "fork"), puzzle.themes)
     }
 

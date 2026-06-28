@@ -3,6 +3,7 @@ package dk.cocode.chess.data
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -20,10 +21,13 @@ class DataStoreProgressRepositoryTest {
     }
 
     @Test
-    fun defaultsToZerosThenPersists() = runTest {
+    fun defaultsThenAtomicUpdates() = runTest {
         val repository = DataStoreProgressRepository(newStore())
-        assertEquals(Progress(0, 0, 0), repository.load())
-        repository.save(Progress(4, 2, 5))
-        assertEquals(Progress(4, 2, 5), repository.load())
+        assertEquals(Progress(0, 0, 0, 0), repository.progress.first())
+        repository.recordSolved()
+        repository.recordSolved()
+        repository.recordFailed()
+        repository.setIndex(5)
+        assertEquals(Progress(2, 0, 2, 5), repository.progress.first())
     }
 }

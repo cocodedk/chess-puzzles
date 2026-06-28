@@ -25,7 +25,7 @@ class PuzzleViewModelGestureTest {
 
     @After fun tearDown() = Dispatchers.resetMain()
 
-    private fun vm() = PuzzleViewModel(testPuzzleRepository(), FakeProgressRepository(), 0)
+    private fun vm() = PuzzleViewModel(testPuzzleRepository(), FakeProgressRepository())
 
     private fun sq(name: String) = Square.of(name)
 

@@ -91,7 +91,7 @@ fun PuzzleScreenContent(
         }
     }
     state.pendingPromotion?.let {
-        PromotionDialog(flipped = state.flipped, onSelect = onPromotion, onDismiss = onPromotionCancel)
+        PromotionDialog(onSelect = onPromotion, onDismiss = onPromotionCancel)
     }
 }
 

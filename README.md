@@ -4,6 +4,10 @@ An Android chess **puzzle** game — Kotlin + Jetpack Compose, built and run ent
 line (no Android Studio). Solve tactical puzzles from the Lichess database: find the best move, the
 opponent replies automatically, and your solved count / streak are saved on-device.
 
+<img src="docs/screenshot.png" alt="Chess Puzzles running on an emulator" width="280" /> <img src="docs/screenshot-solved.png" alt="A solved puzzle" width="280" />
+
+_Running on a headless Android 15 emulator (left: a puzzle; right: solved, with progress saved)._
+
 ## Quickstart
 
 ```bash

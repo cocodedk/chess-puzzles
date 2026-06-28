@@ -45,7 +45,8 @@ Two Gradle modules so the chess/puzzle logic is pure-JVM and fully unit-testable
   Compose UI. Compose draw code is covered by drawing the hosted view to a software `Canvas` under
   Robolectric `@GraphicsMode(NATIVE)` (see `TestSupport.renderToBitmap`) — Compose's `captureToImage`
   does not work under Robolectric.
-- Kover enforces **100%** on all non-`@Composable` code. `@Composable` functions are excluded from
-  the metric because the Compose compiler injects recomposition branches
-  (`startRestartGroup`/`skipToGroupEnd`/`updateScope`) that no test can reach; they are still
-  exercised by the Robolectric render tests and the emulator screenshot.
+- Kover enforces **100% line** coverage on all non-`@Composable` code (`koverVerify`). Branch
+  coverage is high but not gate-enforced (idiomatic inline/synthetic Kotlin emits unreachable branch
+  stubs). `@Composable` functions are excluded from the metric because the Compose compiler injects
+  recomposition branches (`startRestartGroup`/`skipToGroupEnd`/`updateScope`) that no test can reach;
+  they are still exercised by the Robolectric render tests and the emulator screenshot.

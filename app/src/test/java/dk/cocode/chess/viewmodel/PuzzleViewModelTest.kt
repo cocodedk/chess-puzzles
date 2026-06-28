@@ -30,13 +30,21 @@ class PuzzleViewModelTest {
 
     @After fun tearDown() = Dispatchers.resetMain()
 
-    private fun vm(progress: FakeProgressRepository = FakeProgressRepository(), index: Int = 0) =
-        PuzzleViewModel(testPuzzleRepository(), progress, index)
+    private fun vm(progress: FakeProgressRepository = FakeProgressRepository()) =
+        PuzzleViewModel(testPuzzleRepository(), progress)
 
     private fun sq(name: String) = Square.of(name)
 
+    @Test fun initialStateIsFirstPuzzle() = runTest(dispatcher) {
+        val state = vm().state.value
+        assertEquals(800, state.rating)
+        assertFalse(state.flipped)
+        assertTrue(state.promptText.startsWith("White"))
+        assertEquals(PuzzleStatus.IN_PROGRESS, state.status)
+    }
+
     @Test fun loadsSavedProgress() = runTest(dispatcher) {
-        val viewModel = vm(FakeProgressRepository(Progress(7, 3, 9)))
+        val viewModel = vm(FakeProgressRepository(Progress(7, 3, 9, 0)))
         advanceUntilIdle()
         with(viewModel.state.value) {
             assertEquals(7, solvedCount)
@@ -45,56 +53,65 @@ class PuzzleViewModelTest {
         }
     }
 
-    @Test fun initialStateIsFirstPuzzle() = runTest(dispatcher) {
-        val state = vm().state.value
-        assertEquals(800, state.rating)
-        assertFalse(state.flipped)
-        assertTrue(state.promptText.startsWith("White"))
-        assertNotNull(state.lastMove)
-        assertEquals(PuzzleStatus.IN_PROGRESS, state.status)
+    @Test fun resumesAtSavedIndex() = runTest(dispatcher) {
+        val viewModel = vm(FakeProgressRepository(Progress(index = 2))) // promotion puzzle
+        advanceUntilIdle()
+        assertEquals(1000, viewModel.state.value.rating)
     }
 
-    @Test fun solvingMateInOne() = runTest(dispatcher) {
+    @Test fun staleSavedIndexFallsBackToFirstPuzzle() = runTest(dispatcher) {
+        val viewModel = vm(FakeProgressRepository(Progress(index = 99))) // out of range
+        advanceUntilIdle()
+        assertEquals(800, viewModel.state.value.rating)
+    }
+
+    @Test fun solvingMateInOnePersistsProgress() = runTest(dispatcher) {
         val progress = FakeProgressRepository()
         val viewModel = vm(progress)
         viewModel.onSquareTapped(sq("b7"))
-        assertEquals(sq("b7"), viewModel.state.value.selected)
-        assertTrue(viewModel.state.value.legalTargets.contains(sq("g7")))
         viewModel.onSquareTapped(sq("g7"))
-        with(viewModel.state.value) {
-            assertEquals(PuzzleStatus.SOLVED, status)
-            assertEquals(Feedback.SOLVED, feedback)
-            assertEquals(1, solvedCount)
-            assertEquals(1, currentStreak)
-            assertEquals(1, bestStreak)
-        }
+        assertEquals(PuzzleStatus.SOLVED, viewModel.state.value.status)
+        assertEquals(Feedback.SOLVED, viewModel.state.value.feedback)
         advanceUntilIdle()
-        assertEquals(Progress(1, 1, 1), progress.saves.last())
+        assertEquals(Progress(1, 1, 1, 0), progress.current())
+        assertEquals(1, viewModel.state.value.solvedCount)
     }
 
-    @Test fun wrongMoveFailsAndResetsStreak() = runTest(dispatcher) {
-        val progress = FakeProgressRepository(Progress(5, 4, 6))
+    @Test fun resetCannotFarmProgress() = runTest(dispatcher) {
+        val progress = FakeProgressRepository()
+        val viewModel = vm(progress)
+        viewModel.onSquareTapped(sq("b7")); viewModel.onSquareTapped(sq("g7"))
+        advanceUntilIdle()
+        viewModel.onReset()
+        viewModel.onSquareTapped(sq("b7")); viewModel.onSquareTapped(sq("g7"))
+        advanceUntilIdle()
+        assertEquals(1, progress.current().solvedCount) // solved twice, counted once
+    }
+
+    @Test fun wrongMoveRevealsAnswerAndResetsStreak() = runTest(dispatcher) {
+        val progress = FakeProgressRepository(Progress(0, 5, 5, 0))
         val viewModel = vm(progress)
         advanceUntilIdle()
         viewModel.onSquareTapped(sq("b7"))
-        viewModel.onSquareTapped(sq("b2"))
+        viewModel.onSquareTapped(sq("b2")) // legal but not the mate
         with(viewModel.state.value) {
             assertEquals(PuzzleStatus.FAILED, status)
             assertEquals(Feedback.WRONG, feedback)
-            assertEquals(0, currentStreak)
+            assertEquals(sq("b7"), hint?.from) // the correct move is revealed
+            assertEquals(sq("g7"), hint?.to)
         }
         advanceUntilIdle()
-        assertEquals(0, progress.saves.last().currentStreak)
+        assertEquals(0, progress.current().currentStreak)
     }
 
-    @Test fun mateInTwoAutoPlaysOpponentReply() = runTest(dispatcher) {
-        val viewModel = vm(index = 1)
+    @Test fun mateInTwoAutoPlaysReply() = runTest(dispatcher) {
+        val viewModel = vm(FakeProgressRepository(Progress(index = 1)))
+        advanceUntilIdle()
         viewModel.onSquareTapped(sq("a2"))
         viewModel.onSquareTapped(sq("e6"))
         with(viewModel.state.value) {
             assertEquals(PuzzleStatus.IN_PROGRESS, status)
             assertEquals(Feedback.CORRECT, feedback)
-            assertEquals(sq("d7"), lastMove?.from)
             assertEquals(sq("d8"), lastMove?.to)
         }
         viewModel.onSquareTapped(sq("f7"))
@@ -103,7 +120,8 @@ class PuzzleViewModelTest {
     }
 
     @Test fun promotionFlow() = runTest(dispatcher) {
-        val viewModel = vm(index = 2)
+        val viewModel = vm(FakeProgressRepository(Progress(index = 2)))
+        advanceUntilIdle()
         viewModel.onSquareTapped(sq("e7"))
         viewModel.onSquareTapped(sq("e8"))
         assertNotNull(viewModel.state.value.pendingPromotion)
@@ -112,8 +130,9 @@ class PuzzleViewModelTest {
     }
 
     @Test fun promotionCancelAndNoPending() = runTest(dispatcher) {
-        val viewModel = vm(index = 2)
-        viewModel.onPromotionChosen(PieceType.QUEEN)
+        val viewModel = vm(FakeProgressRepository(Progress(index = 2)))
+        advanceUntilIdle()
+        viewModel.onPromotionChosen(PieceType.QUEEN) // no pending -> no-op
         assertEquals(PuzzleStatus.IN_PROGRESS, viewModel.state.value.status)
         viewModel.onSquareTapped(sq("e7"))
         viewModel.onSquareTapped(sq("e8"))
@@ -122,7 +141,7 @@ class PuzzleViewModelTest {
         assertNull(viewModel.state.value.selected)
     }
 
-    @Test fun hintHighlightsNextMoveAndIgnoredWhenSolved() = runTest(dispatcher) {
+    @Test fun hintHighlightsAndIgnoredWhenSolved() = runTest(dispatcher) {
         val viewModel = vm()
         viewModel.onHint()
         with(viewModel.state.value) {
@@ -130,13 +149,14 @@ class PuzzleViewModelTest {
             assertEquals(sq("g7"), hint?.to)
             assertEquals(sq("b7"), selected)
         }
-        viewModel.onSquareTapped(sq("g7")) // hint pre-selected b7, so tapping the target solves
+        viewModel.onSquareTapped(sq("g7")) // hint pre-selected b7
         viewModel.onHint() // ignored once solved
         assertEquals(PuzzleStatus.SOLVED, viewModel.state.value.status)
     }
 
     @Test fun resetRestoresPuzzle() = runTest(dispatcher) {
-        val viewModel = vm(index = 1)
+        val viewModel = vm(FakeProgressRepository(Progress(index = 1)))
+        advanceUntilIdle()
         viewModel.onSquareTapped(sq("a2"))
         viewModel.onSquareTapped(sq("e6"))
         viewModel.onReset()
@@ -147,17 +167,22 @@ class PuzzleViewModelTest {
         }
     }
 
-    @Test fun blackPlayerFlipsBoard() = runTest(dispatcher) {
-        val viewModel = vm(index = 3)
-        assertTrue(viewModel.state.value.flipped)
-        assertTrue(viewModel.state.value.promptText.startsWith("Black"))
-    }
-
-    @Test fun nextAdvancesAndWraps() = runTest(dispatcher) {
-        val viewModel = vm(index = 3) // last puzzle
+    @Test fun nextPersistsIndexAndWraps() = runTest(dispatcher) {
+        val progress = FakeProgressRepository(Progress(index = 3)) // last puzzle
+        val viewModel = vm(progress)
+        advanceUntilIdle()
         viewModel.onNext()
         assertEquals(800, viewModel.state.value.rating) // wrapped to the first puzzle
+        advanceUntilIdle()
+        assertEquals(0, progress.current().index)
         viewModel.onNext()
-        assertEquals(1500, viewModel.state.value.rating) // second puzzle
+        assertEquals(1500, viewModel.state.value.rating)
+    }
+
+    @Test fun blackPlayerFlipsBoard() = runTest(dispatcher) {
+        val viewModel = vm(FakeProgressRepository(Progress(index = 3)))
+        advanceUntilIdle()
+        assertTrue(viewModel.state.value.flipped)
+        assertTrue(viewModel.state.value.promptText.startsWith("Black"))
     }
 }

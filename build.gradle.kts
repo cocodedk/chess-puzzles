@@ -25,6 +25,9 @@ kover {
         total {
             verify {
                 rule {
+                    // 100% LINE coverage. Branch is not gate-enforced: idiomatic Kotlin inline/synthetic
+                    // constructs (MutableStateFlow.update's CAS retry, Iterable.all, ...) emit branch
+                    // stubs that single-threaded tests cannot reach.
                     minBound(100)
                 }
             }

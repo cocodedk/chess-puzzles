@@ -9,6 +9,9 @@ import dk.cocode.chess.core.data.CsvPuzzleRepository
 import dk.cocode.chess.core.data.PuzzleRepository
 import dk.cocode.chess.data.Progress
 import dk.cocode.chess.data.ProgressRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
 
 /** Draws the hosted content to a software canvas so Compose Canvas draw code runs under Robolectric. */
 fun <A : ComponentActivity> AndroidComposeTestRule<*, A>.renderToBitmap() {
@@ -18,18 +21,24 @@ fun <A : ComponentActivity> AndroidComposeTestRule<*, A>.renderToBitmap() {
     view.draw(Canvas(bitmap))
 }
 
-class FakeProgressRepository(private var stored: Progress = Progress(0, 0, 0)) : ProgressRepository {
-    val saves = mutableListOf<Progress>()
+/** In-memory [ProgressRepository] with the same atomic semantics as the DataStore implementation. */
+class FakeProgressRepository(initial: Progress = Progress()) : ProgressRepository {
+    private val state = MutableStateFlow(initial)
+    override val progress: Flow<Progress> = state
 
-    override suspend fun load(): Progress = stored
+    fun current(): Progress = state.value
 
-    override suspend fun save(progress: Progress) {
-        stored = progress
-        saves += progress
+    override suspend fun recordSolved() = state.update {
+        val streak = it.currentStreak + 1
+        it.copy(solvedCount = it.solvedCount + 1, currentStreak = streak, bestStreak = maxOf(it.bestStreak, streak))
     }
+
+    override suspend fun recordFailed() = state.update { it.copy(currentStreak = 0) }
+
+    override suspend fun setIndex(index: Int) = state.update { it.copy(index = index) }
 }
 
-/** Three hand-verified puzzles (mate-in-1, mate-in-2, promotion), all with the player as White. */
+/** Four hand-verified puzzles (mate-in-1 white, mate-in-2, promotion, mate-in-1 black). */
 fun testPuzzleRepository(): PuzzleRepository {
     val csv = buildString {
         appendLine("PuzzleId,FEN,Moves,Rating,Themes")

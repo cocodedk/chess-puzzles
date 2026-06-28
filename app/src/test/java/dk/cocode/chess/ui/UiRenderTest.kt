@@ -78,10 +78,4 @@ class UiRenderTest {
         composeRule.onNodeWithText("♜").performClick() // rook glyph
         assertEquals(PieceType.ROOK, chosen)
     }
-
-    @Test fun promotionDialogFlipped() {
-        show(PuzzleUiState(board = board, flipped = true, pendingPromotion = PendingPromotion(Square.of("e2"), Square.of("e1"))))
-        composeRule.renderToBitmap()
-        composeRule.onNodeWithText("Promote to").assertExists()
-    }
 }

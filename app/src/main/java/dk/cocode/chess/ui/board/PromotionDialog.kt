@@ -10,26 +10,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
 import dk.cocode.chess.core.model.PieceType
+import dk.cocode.chess.core.util.Uci
 
-private val PROMOTION_CHOICES = listOf(
-    PieceType.QUEEN to 'q',
-    PieceType.ROOK to 'r',
-    PieceType.BISHOP to 'b',
-    PieceType.KNIGHT to 'n',
-)
+private val PROMOTION_CHOICES = listOf(PieceType.QUEEN, PieceType.ROOK, PieceType.BISHOP, PieceType.KNIGHT)
 
-/** Lets the player pick a promotion piece. [flipped] true means the player's pieces are Black. */
+/** Lets the player pick a promotion piece. */
 @Composable
-fun PromotionDialog(flipped: Boolean, onSelect: (PieceType) -> Unit, onDismiss: () -> Unit) {
+fun PromotionDialog(onSelect: (PieceType) -> Unit, onDismiss: () -> Unit) {
     AlertDialog(
         onDismissRequest = onDismiss,
         confirmButton = {},
         title = { Text("Promote to") },
         text = {
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
-                PROMOTION_CHOICES.forEach { (type, code) ->
+                PROMOTION_CHOICES.forEach { type ->
                     TextButton(onClick = { onSelect(type) }) {
-                        Text(PieceGlyph.glyph(if (flipped) code else code.uppercaseChar()), fontSize = 32.sp)
+                        Text(PieceGlyph.glyph(Uci.typeToChar(type)), fontSize = 32.sp)
                     }
                 }
             }

@@ -19,29 +19,41 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-/** Drives the puzzle screen: maps board gestures to [PuzzleSession] calls and exposes [PuzzleUiState]. */
+/**
+ * Drives the puzzle screen. Progress is the persisted source of truth (collected from [progress]);
+ * solves/fails record atomically and are counted at most once per puzzle. Requires a non-empty
+ * [puzzles] (the caller guarantees this).
+ */
 class PuzzleViewModel(
     private val puzzles: PuzzleRepository,
     private val progress: ProgressRepository,
-    startIndex: Int = 0,
 ) : ViewModel() {
 
-    private var index = startIndex.coerceIn(0, puzzles.count() - 1)
-    private var session = PuzzleSession.start(puzzles.all()[index])
-    private var solved = 0
-    private var streak = 0
-    private var best = 0
+    private var index = 0
+    private var session = PuzzleSession.start(puzzles.all()[0])
+    private var counted = false
+    private var resumed = false
+    private var base = Progress()
 
-    private val _state = MutableStateFlow(freshState())
+    private val _state = MutableStateFlow(sessionState())
     val state: StateFlow<PuzzleUiState> = _state.asStateFlow()
 
     init {
         viewModelScope.launch {
-            val saved = progress.load()
-            solved = saved.solvedCount
-            streak = saved.currentStreak
-            best = saved.bestStreak
-            _state.update { it.copy(solvedCount = solved, currentStreak = streak, bestStreak = best) }
+            progress.progress.collect { saved ->
+                base = saved
+                if (!resumed) {
+                    resumed = true
+                    if (saved.index in 1 until puzzles.count()) loadPuzzleAt(saved.index)
+                }
+                _state.update {
+                    it.copy(
+                        solvedCount = saved.solvedCount,
+                        currentStreak = saved.currentStreak,
+                        bestStreak = saved.bestStreak,
+                    )
+                }
+            }
         }
     }
 
@@ -89,14 +101,20 @@ class PuzzleViewModel(
     }
 
     fun onReset() {
-        session.reset()
-        _state.value = freshState().copy(solvedCount = solved, currentStreak = streak, bestStreak = best)
+        session.reset() // a reset puzzle keeps its `counted` flag, so re-solving never re-earns progress
+        _state.value = sessionState()
     }
 
     fun onNext() {
-        index = if (index + 1 < puzzles.count()) index + 1 else 0
-        session = PuzzleSession.start(puzzles.all()[index])
-        _state.value = freshState().copy(solvedCount = solved, currentStreak = streak, bestStreak = best)
+        loadPuzzleAt(if (index + 1 < puzzles.count()) index + 1 else 0)
+        viewModelScope.launch { progress.setIndex(index) }
+    }
+
+    private fun loadPuzzleAt(target: Int) {
+        index = target
+        session = PuzzleSession.start(puzzles.all()[target])
+        counted = false
+        _state.value = sessionState()
     }
 
     private fun select(square: Square) {
@@ -105,7 +123,8 @@ class PuzzleViewModel(
         else _state.update { it.copy(selected = square, legalTargets = targets, hint = null) }
     }
 
-    private fun clearSelection() = _state.update { it.copy(selected = null, legalTargets = emptySet()) }
+    private fun clearSelection() =
+        _state.update { it.copy(selected = null, legalTargets = emptySet(), hint = null) }
 
     private fun attempt(from: Square, to: Square, promotion: PieceType?) {
         when (val result = session.submitMove(MoveIntent(from, to, promotion))) {
@@ -114,20 +133,20 @@ class PuzzleViewModel(
             is SubmitResult.Illegal -> _state.update {
                 it.copy(pendingPromotion = PendingPromotion(from, to), selected = null, legalTargets = emptySet())
             }
-            is SubmitResult.Wrong -> onWrong()
+            is SubmitResult.Wrong -> onWrong(result.expected)
             is SubmitResult.Continues -> onContinues()
             is SubmitResult.Solved -> onSolved(result.playerMove)
         }
     }
 
-    private fun onWrong() {
-        streak = 0
-        persist()
+    private fun onWrong(expected: MoveStep) {
+        recordOnce { progress.recordFailed() }
         _state.update {
             it.copy(
                 status = PuzzleStatus.FAILED, feedback = Feedback.WRONG,
-                selected = null, legalTargets = emptySet(), hint = null, currentStreak = 0,
-                promptText = "Not the right move — Reset or Next",
+                selected = null, legalTargets = emptySet(),
+                hint = Highlight(expected.from, expected.to), // reveal the correct move
+                promptText = "Not the best move — the answer is highlighted",
             )
         }
     }
@@ -144,26 +163,23 @@ class PuzzleViewModel(
     }
 
     private fun onSolved(playerMove: MoveStep) {
-        solved += 1
-        streak += 1
-        best = maxOf(best, streak)
-        persist()
+        recordOnce { progress.recordSolved() }
         _state.update {
             it.copy(
                 board = session.state.board.toRows(), lastMove = Highlight(playerMove.from, playerMove.to),
                 selected = null, legalTargets = emptySet(), hint = null,
-                status = PuzzleStatus.SOLVED, feedback = Feedback.SOLVED,
-                solvedCount = solved, currentStreak = streak, bestStreak = best, promptText = "Solved!",
+                status = PuzzleStatus.SOLVED, feedback = Feedback.SOLVED, promptText = "Solved!",
             )
         }
     }
 
-    private fun persist() {
-        val snapshot = Progress(solved, streak, best)
-        viewModelScope.launch { progress.save(snapshot) }
+    private fun recordOnce(action: suspend () -> Unit) {
+        if (counted) return
+        counted = true
+        viewModelScope.launch { action() }
     }
 
-    private fun freshState(): PuzzleUiState {
+    private fun sessionState(): PuzzleUiState {
         val snapshot = session.state
         return PuzzleUiState(
             board = snapshot.board.toRows(),
@@ -171,7 +187,7 @@ class PuzzleViewModel(
             lastMove = Highlight(snapshot.lastMove.from, snapshot.lastMove.to),
             status = snapshot.status,
             rating = session.puzzle.rating,
-            solvedCount = solved, currentStreak = streak, bestStreak = best,
+            solvedCount = base.solvedCount, currentStreak = base.currentStreak, bestStreak = base.bestStreak,
             promptText = promptFor(session.playerColor),
         )
     }
