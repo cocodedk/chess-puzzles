@@ -17,6 +17,10 @@ internal val SELECTED_TINT = Color(0x6603A9F4)
 internal val LAST_MOVE_TINT = Color(0x55FFEB3B)
 internal val HINT_TINT = Color(0x553F51B5)
 internal val MARKER = Color(0x40000000)
+internal val PIECE_WHITE = Color.White
+internal val PIECE_DARK = Color(0xFF101010)
+internal val PIECE_WHITE_OUTLINE = Color(0xFF2B2B2B)
+internal val PIECE_DARK_OUTLINE = Color(0xFFEDEDED)
 
 internal fun DrawScope.drawSquares(squarePx: Float, flipped: Boolean) {
     for (file in 0..7) {
@@ -50,23 +54,35 @@ internal fun DrawScope.drawPieces(
     flipped: Boolean,
     textMeasurer: TextMeasurer,
 ) {
+    val fontSize = (squarePx * 0.74f).toSp()
+    val outlineWidth = squarePx * 0.035f
     for (rank in 0..7) {
         for (file in 0..7) {
             val code = state.board[rank][file]
             if (code == ' ') continue
             val topLeft = BoardGeometry.squareTopLeft(Square(file, rank), squarePx, flipped)
-            val color = if (PieceGlyph.isWhite(code)) Color.White else Color(0xFF101010)
-            val layout = textMeasurer.measure(
-                text = PieceGlyph.glyph(code),
-                style = TextStyle(color = color, fontSize = (squarePx * 0.74f).toSp()),
-            )
-            drawText(
-                textLayoutResult = layout,
-                topLeft = Offset(
-                    topLeft.x + (squarePx - layout.size.width) / 2f,
-                    topLeft.y + (squarePx - layout.size.height) / 2f,
+            val white = PieceGlyph.isWhite(code)
+            val glyph = PieceGlyph.glyph(code)
+            // Outline first, fill on top: a contrasting rim so white pieces read on light
+            // squares and dark pieces read on dark squares.
+            val outline = textMeasurer.measure(
+                text = glyph,
+                style = TextStyle(
+                    color = if (white) PIECE_WHITE_OUTLINE else PIECE_DARK_OUTLINE,
+                    fontSize = fontSize,
+                    drawStyle = Stroke(width = outlineWidth),
                 ),
             )
+            val fill = textMeasurer.measure(
+                text = glyph,
+                style = TextStyle(color = if (white) PIECE_WHITE else PIECE_DARK, fontSize = fontSize),
+            )
+            val offset = Offset(
+                topLeft.x + (squarePx - fill.size.width) / 2f,
+                topLeft.y + (squarePx - fill.size.height) / 2f,
+            )
+            drawText(textLayoutResult = outline, topLeft = offset)
+            drawText(textLayoutResult = fill, topLeft = offset)
         }
     }
 }
