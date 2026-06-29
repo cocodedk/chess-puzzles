@@ -96,6 +96,19 @@ class PuzzleSession private constructor(
         return state
     }
 
+    /**
+     * Re-enable play after a wrong attempt. The rejected move is never applied to the board, so the
+     * position is unchanged — this only lifts the FAILED lock so the player can try again, keeping
+     * any correct progress already made in a multi-move puzzle. No-op once the puzzle is solved.
+     */
+    fun retry(): PuzzleSessionState {
+        if (status == PuzzleStatus.FAILED) {
+            status = PuzzleStatus.IN_PROGRESS
+            state = buildState()
+        }
+        return state
+    }
+
     private fun buildState(): PuzzleSessionState =
         PuzzleSessionState(
             puzzleId = puzzle.id,

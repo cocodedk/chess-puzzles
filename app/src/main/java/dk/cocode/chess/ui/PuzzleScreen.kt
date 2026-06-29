@@ -113,5 +113,5 @@ internal fun feedbackMessage(feedback: Feedback): String = when (feedback) {
     Feedback.NONE -> ""
     Feedback.CORRECT -> "Correct — keep going"
     Feedback.SOLVED -> "Solved ✓"
-    Feedback.WRONG -> "Not the best move"
+    Feedback.WRONG -> "Not the best move — try again"
 }
