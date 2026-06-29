@@ -38,14 +38,16 @@ class FakeProgressRepository(initial: Progress = Progress()) : ProgressRepositor
     override suspend fun setIndex(index: Int) = state.update { it.copy(index = index) }
 }
 
-/** Four hand-verified puzzles (mate-in-1 white, mate-in-2, promotion, mate-in-1 black). */
+/** Five hand-verified puzzles (mate-in-1 white, mate-in-2, promotion, mate-in-1 black, hard mate-in-2). */
 fun testPuzzleRepository(): PuzzleRepository {
     val csv = buildString {
+        val mateIn2 = "q3k1nr/1pp1nQpp/3p4/1P2p3/4P3/B1PP1b2/B5PP/5K2 b k - 0 17,e8d7 a2e6 d7d8 f7f8" // M2 == HD
         appendLine("PuzzleId,FEN,Moves,Rating,Themes")
         appendLine("M1,6k1/1Q6/6K1/8/8/8/8/8 b - - 0 1,g8h8 b7g7,800,mate mateIn1")
-        appendLine("M2,q3k1nr/1pp1nQpp/3p4/1P2p3/4P3/B1PP1b2/B5PP/5K2 b k - 0 17,e8d7 a2e6 d7d8 f7f8,1500,mate")
+        appendLine("M2,$mateIn2,1500,mate")
         appendLine("PR,8/p3P3/8/8/8/2k5/8/6K1 b - - 0 1,a7a6 e7e8q,1000,promotion")
         appendLine("BK,8/8/8/8/8/6k1/1q6/6K1 w - - 0 1,g1h1 b2g2,900,mate mateIn1")
+        appendLine("HD,$mateIn2,2100,mate")
     }
     return CsvPuzzleRepository.load { csv.byteInputStream() }
 }

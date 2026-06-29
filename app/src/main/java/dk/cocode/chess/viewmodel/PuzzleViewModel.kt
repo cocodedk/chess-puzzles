@@ -6,7 +6,6 @@ import dk.cocode.chess.core.data.PuzzleRepository
 import dk.cocode.chess.core.engine.PuzzleSession
 import dk.cocode.chess.core.model.MoveIntent
 import dk.cocode.chess.core.model.MoveStep
-import dk.cocode.chess.core.model.PieceColor
 import dk.cocode.chess.core.model.PieceType
 import dk.cocode.chess.core.model.PuzzleStatus
 import dk.cocode.chess.core.model.Square
@@ -31,11 +30,16 @@ class PuzzleViewModel(
 
     private var index = 0
     private var session = PuzzleSession.start(puzzles.all()[0])
-    private var counted = false
+    private val counted = mutableSetOf<Int>()
     private var resumed = false
     private var base = Progress()
+    private val bands: Map<Difficulty, List<Int>> =
+        puzzles.all().withIndex().groupBy({ difficultyOf(it.value.rating) }, { it.index })
 
-    private val _state = MutableStateFlow(sessionState())
+    /** Only the bands that actually contain puzzles, so the UI never offers a dead difficulty. */
+    val availableDifficulties: List<Difficulty> = Difficulty.entries.filter { bands[it]?.isNotEmpty() == true }
+
+    private val _state = MutableStateFlow(session.toUiState(base))
     val state: StateFlow<PuzzleUiState> = _state.asStateFlow()
 
     init {
@@ -102,19 +106,30 @@ class PuzzleViewModel(
 
     fun onReset() {
         session.reset() // a reset puzzle keeps its `counted` flag, so re-solving never re-earns progress
-        _state.value = sessionState()
+        _state.value = session.toUiState(base)
     }
 
     fun onNext() {
-        loadPuzzleAt(if (index + 1 < puzzles.count()) index + 1 else 0)
-        viewModelScope.launch { progress.setIndex(index) }
+        val band = bands.getValue(difficultyOf(session.puzzle.rating))
+        if (band.size > 1) jumpTo(band[(band.indexOf(index) + 1) % band.size])
+    }
+
+    /** Jump to the first puzzle of the chosen band, unless that band is already showing. */
+    fun onDifficultySelected(difficulty: Difficulty) {
+        if (difficulty == difficultyOf(session.puzzle.rating)) return
+        bands[difficulty]?.firstOrNull()?.let { jumpTo(it) }
     }
 
     private fun loadPuzzleAt(target: Int) {
         index = target
         session = PuzzleSession.start(puzzles.all()[target])
-        counted = false
-        _state.value = sessionState()
+        _state.value = session.toUiState(base)
+    }
+
+    private fun jumpTo(target: Int) {
+        resumed = true // a deliberate jump cancels the one-time resume to the saved index
+        loadPuzzleAt(target)
+        viewModelScope.launch { progress.setIndex(index) }
     }
 
     private fun select(square: Square) {
@@ -174,24 +189,6 @@ class PuzzleViewModel(
     }
 
     private fun recordOnce(action: suspend () -> Unit) {
-        if (counted) return
-        counted = true
-        viewModelScope.launch { action() }
+        if (counted.add(index)) viewModelScope.launch { action() } // each puzzle is counted once
     }
-
-    private fun sessionState(): PuzzleUiState {
-        val snapshot = session.state
-        return PuzzleUiState(
-            board = snapshot.board.toRows(),
-            flipped = session.playerColor == PieceColor.BLACK,
-            lastMove = Highlight(snapshot.lastMove.from, snapshot.lastMove.to),
-            status = snapshot.status,
-            rating = session.puzzle.rating,
-            solvedCount = base.solvedCount, currentStreak = base.currentStreak, bestStreak = base.bestStreak,
-            promptText = promptFor(session.playerColor),
-        )
-    }
-
-    private fun promptFor(color: PieceColor): String =
-        (if (color == PieceColor.WHITE) "White" else "Black") + " to move — find the best move"
 }

@@ -31,9 +31,11 @@ import dk.cocode.chess.core.model.PuzzleStatus
 import dk.cocode.chess.core.model.Square
 import dk.cocode.chess.ui.board.ChessBoard
 import dk.cocode.chess.ui.board.PromotionDialog
+import dk.cocode.chess.viewmodel.Difficulty
 import dk.cocode.chess.viewmodel.Feedback
 import dk.cocode.chess.viewmodel.PuzzleUiState
 import dk.cocode.chess.viewmodel.PuzzleViewModel
+import dk.cocode.chess.viewmodel.difficultyOf
 
 @Composable
 fun PuzzleScreen(viewModel: PuzzleViewModel) {
@@ -53,6 +55,8 @@ fun PuzzleScreen(viewModel: PuzzleViewModel) {
             onPromotion = viewModel::onPromotionChosen,
             onPromotionCancel = viewModel::onPromotionCancelled,
             onAbout = { showAbout = true },
+            onDifficulty = viewModel::onDifficultySelected,
+            difficulties = viewModel.availableDifficulties,
         )
     }
 }
@@ -69,6 +73,8 @@ fun PuzzleScreenContent(
     onPromotion: (PieceType) -> Unit,
     onPromotionCancel: () -> Unit,
     onAbout: () -> Unit = {},
+    onDifficulty: (Difficulty) -> Unit = {},
+    difficulties: List<Difficulty> = Difficulty.entries,
 ) {
     Scaffold { padding ->
         Column(
@@ -81,6 +87,8 @@ fun PuzzleScreenContent(
                 Text("Streak ${state.currentStreak}")
                 Text("Best ${state.bestStreak}")
             }
+            Spacer(Modifier.height(8.dp))
+            DifficultyRow(available = difficulties, current = difficultyOf(state.rating), onSelect = onDifficulty)
             Spacer(Modifier.height(8.dp))
             Text(state.promptText, textAlign = TextAlign.Center)
             Spacer(Modifier.height(8.dp))
@@ -107,6 +115,24 @@ fun PuzzleScreenContent(
     state.pendingPromotion?.let {
         PromotionDialog(onSelect = onPromotion, onDismiss = onPromotionCancel)
     }
+}
+
+@Composable
+private fun DifficultyRow(available: List<Difficulty>, current: Difficulty, onSelect: (Difficulty) -> Unit) {
+    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        available.forEach { DifficultyChip(it, current, onSelect) }
+    }
+}
+
+@Composable
+private fun DifficultyChip(value: Difficulty, current: Difficulty, onSelect: (Difficulty) -> Unit) {
+    val label = when (value) {
+        Difficulty.EASY -> "Easy"
+        Difficulty.MEDIUM -> "Medium"
+        Difficulty.HARD -> "Hard"
+    }
+    if (value == current) Button(onClick = { onSelect(value) }) { Text(label) }
+    else OutlinedButton(onClick = { onSelect(value) }) { Text(label) }
 }
 
 internal fun feedbackMessage(feedback: Feedback): String = when (feedback) {
