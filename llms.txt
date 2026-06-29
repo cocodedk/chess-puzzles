@@ -1,0 +1,27 @@
+# Chess Puzzles
+
+> An Android chess puzzle game (Kotlin + Jetpack Compose, multi-module) that serves real tactical puzzles from the Lichess Open Database. Find the best move; the opponent replies automatically; your solved count and streak persist on-device. Built and tested entirely from the CLI with 100% line coverage.
+
+Chess Puzzles is open-source (Apache-2.0), created by Babak Bandpey / Cocode. The codebase splits into a pure-JVM `:core` module (chess rules via chesslib, the `PuzzleSession` state machine, CSV parsing) and an Android `:app` module (a custom Jetpack Compose Canvas board, `PuzzleViewModel`, DataStore persistence).
+
+## Docs
+
+- [README](https://github.com/cocodedk/chess-puzzles/blob/main/README.md): overview, quickstart, modules
+- [Architecture](https://github.com/cocodedk/chess-puzzles/blob/main/docs/ARCHITECTURE.md): modules, the `:core` contract, testing approach
+- [Setup](https://github.com/cocodedk/chess-puzzles/blob/main/docs/SETUP.md): CLI toolchain, build, and emulator commands
+- [Data](https://github.com/cocodedk/chess-puzzles/blob/main/docs/DATA.md): puzzle pipeline and attribution
+- [Plan](https://github.com/cocodedk/chess-puzzles/blob/main/docs/PLAN.md): full architecture and build plan
+- [Contributing](https://github.com/cocodedk/chess-puzzles/blob/main/CONTRIBUTING.md): setup, git hooks, PR checklist
+
+## Project
+
+- [Website (English)](https://cocodedk.github.io/chess-puzzles/)
+- [Website (Persian)](https://cocodedk.github.io/chess-puzzles/fa/)
+- [Source on GitHub](https://github.com/cocodedk/chess-puzzles)
+- [Latest release APK](https://github.com/cocodedk/chess-puzzles/releases/latest/download/ChessPuzzles.apk)
+
+## Author
+
+- [Babak Bandpey — cocode.dk](https://cocode.dk)
+- [LinkedIn](https://linkedin.com/in/babakbandpey)
+- [GitHub](https://github.com/cocodedk)

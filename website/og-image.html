@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1200px; height: 630px; }
+  body {
+    display: flex; align-items: center; gap: 40px; overflow: hidden;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    color: #eceef2;
+    background:
+      radial-gradient(900px 500px at 78% -20%, rgba(240,185,92,0.18), transparent 60%),
+      radial-gradient(700px 450px at -5% 20%, rgba(109,181,140,0.12), transparent 55%),
+      #0e1014;
+  }
+  .left { flex: 1; padding: 0 0 0 80px; }
+  .badge {
+    display: inline-block; font-size: 18px; font-weight: 700; letter-spacing: 0.12em;
+    color: #f0b95c; border: 1px solid rgba(240,185,92,0.4); border-radius: 999px;
+    padding: 8px 18px; margin-bottom: 30px;
+  }
+  .logo-row { display: flex; align-items: center; gap: 18px; margin-bottom: 22px; }
+  .logo-row svg { width: 64px; height: 64px; }
+  .logo-row .name { font-size: 40px; font-weight: 800; }
+  h1 { font-size: 60px; line-height: 1.08; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 22px; }
+  h1 .g { color: #f0b95c; }
+  p.tag { font-size: 26px; color: #98a0ad; max-width: 22ch; margin-bottom: 32px; }
+  .chips { display: flex; gap: 12px; margin-bottom: 40px; }
+  .chip { font-size: 20px; font-weight: 600; color: #eceef2; background: #1d212c;
+    border: 1px solid #2a2f3c; border-radius: 999px; padding: 10px 20px; }
+  .by { font-size: 20px; color: #98a0ad; }
+  .by b { color: #eceef2; font-weight: 700; }
+  .right { width: 430px; height: 630px; display: flex; align-items: center; justify-content: center; position: relative; }
+  .phone { width: 250px; border: 1px solid #2a2f3c; border-radius: 34px; padding: 9px;
+    background: #05070a; box-shadow: 0 30px 70px rgba(0,0,0,0.55); transform: rotate(4deg); }
+  .phone img { width: 100%; display: block; border-radius: 26px; }
+</style>
+</head>
+<body>
+  <div class="left">
+    <span class="badge">ANDROID · FREE · OPEN-SOURCE</span>
+    <div class="logo-row">
+      <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+        <rect width="32" height="32" rx="7" fill="#0e1014"/>
+        <rect x="4" y="4" width="24" height="24" rx="2" fill="#56795f"/>
+        <g fill="#ead9b0">
+          <rect x="4" y="4" width="6" height="6"/><rect x="16" y="4" width="6" height="6"/>
+          <rect x="10" y="10" width="6" height="6"/><rect x="22" y="10" width="6" height="6"/>
+          <rect x="4" y="16" width="6" height="6"/><rect x="16" y="16" width="6" height="6"/>
+          <rect x="10" y="22" width="6" height="6"/><rect x="22" y="22" width="6" height="6"/>
+        </g>
+        <rect x="16" y="10" width="6" height="6" fill="#f0b95c"/>
+        <circle cx="19" cy="13" r="1.7" fill="#0e1014"/>
+      </svg>
+      <span class="name">Chess Puzzles</span>
+    </div>
+    <h1>Sharpen your <span class="g">chess tactics</span></h1>
+    <p class="tag">Real Lichess puzzles. Find the best move — the rest plays itself.</p>
+    <div class="chips">
+      <span class="chip">Real puzzles</span>
+      <span class="chip">Streaks</span>
+      <span class="chip">Offline</span>
+    </div>
+    <p class="by">Built by <b>Babak Bandpey</b> · cocode.dk · linkedin.com/in/babakbandpey</p>
+  </div>
+  <div class="right">
+    <div class="phone"><img src="screenshot-puzzle.png" alt=""></div>
+  </div>
+</body>
+</html>

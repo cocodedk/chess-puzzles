@@ -34,3 +34,9 @@ kover {
         }
     }
 }
+
+tasks.register("buildSmoke") {
+    group = "verification"
+    description = "Build debug APK, run unit tests + the 100% coverage gate, and lint."
+    dependsOn("koverVerify", ":app:lintDebug", ":app:assembleDebug")
+}

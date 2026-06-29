@@ -10,3 +10,13 @@ local.properties
 # Puzzle DB working files (only the sampled assets/puzzles.csv is committed)
 /lichess_db_puzzle.csv
 *.csv.zst
+
+# Android / IDE
+/captures
+.DS_Store
+
+# Signing material — NEVER commit a keystore
+/release.keystore
+*.keystore
+*.jks
+keystore.properties

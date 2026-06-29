@@ -1,5 +1,8 @@
 # Chess Puzzles
 
+[![CI](https://github.com/cocodedk/chess-puzzles/actions/workflows/ci.yml/badge.svg)](https://github.com/cocodedk/chess-puzzles/actions/workflows/ci.yml)
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+
 An Android chess **puzzle** game — Kotlin + Jetpack Compose, built and run entirely from the command
 line (no Android Studio). Solve tactical puzzles from the Lichess database: find the best move, the
 opponent replies automatically, and your solved count / streak are saved on-device.
@@ -7,6 +10,17 @@ opponent replies automatically, and your solved count / streak are saved on-devi
 <img src="docs/screenshot.png" alt="Chess Puzzles running on an emulator" width="280" /> <img src="docs/screenshot-solved.png" alt="A solved puzzle" width="280" />
 
 _Running on a headless Android 15 emulator (left: a puzzle; right: solved, with progress saved)._
+
+## Website
+
+- [English](https://cocodedk.github.io/chess-puzzles/)
+- [فارسی (Persian)](https://cocodedk.github.io/chess-puzzles/fa/)
+
+## Download
+
+[**Download Chess Puzzles (APK)**](https://github.com/cocodedk/chess-puzzles/releases/latest/download/ChessPuzzles.apk)
+— Android 7.0+, signed release. The link is live once the first release is cut (Actions →
+**Release APK** → Run workflow).
 
 ## Quickstart
 
@@ -41,3 +55,11 @@ excluded as their compiler-generated recomposition branches are unreachable by t
 
 Puzzles: [Lichess Open Database](https://database.lichess.org) (CC0 1.0). Chess engine:
 chesslib (Apache-2.0).
+
+## Author
+
+**Babak Bandpey** — [cocode.dk](https://cocode.dk) | [LinkedIn](https://linkedin.com/in/babakbandpey) | [GitHub](https://github.com/cocodedk)
+
+## License
+
+Apache-2.0 | © 2026 [Cocode](https://cocode.dk) | Created by [Babak Bandpey](https://linkedin.com/in/babakbandpey)

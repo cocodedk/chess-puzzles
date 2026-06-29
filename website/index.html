@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- SEO keywords:
+       primary:   chess puzzles android
+       secondary: chess tactics trainer, lichess puzzles, offline chess app
+       intent:    transactional (download) + informational
+  -->
+  <title>Chess Puzzles — Android Tactics Trainer · Cocode</title>
+  <meta name="description" content="Solve real chess puzzles from the Lichess database on Android. Find the best move, build your streak, and track progress offline — free and open-source.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://cocodedk.github.io/chess-puzzles/">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+  <link rel="alternate" hreflang="en" href="https://cocodedk.github.io/chess-puzzles/">
+  <link rel="alternate" hreflang="fa" href="https://cocodedk.github.io/chess-puzzles/fa/">
+  <link rel="alternate" hreflang="x-default" href="https://cocodedk.github.io/chess-puzzles/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Chess Puzzles">
+  <meta property="og:title" content="Chess Puzzles — train tactics on Android">
+  <meta property="og:description" content="Real Lichess puzzles on Android. Find the best move, keep your streak, track progress offline. Free & open-source.">
+  <meta property="og:url" content="https://cocodedk.github.io/chess-puzzles/">
+  <meta property="og:image" content="https://cocodedk.github.io/chess-puzzles/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Chess Puzzles app — a tactics position with the solution square highlighted in gold">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="fa_IR">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Chess Puzzles — train tactics on Android">
+  <meta name="twitter:description" content="Real Lichess puzzles on Android. Find the best move, keep your streak, track progress offline.">
+  <meta name="twitter:image" content="https://cocodedk.github.io/chess-puzzles/og.png">
+  <meta name="twitter:image:alt" content="Chess Puzzles app — a tactics position with the solution square highlighted in gold">
+
+  <link rel="stylesheet" href="styles.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "MobileApplication",
+    "name": "Chess Puzzles",
+    "description": "Solve real chess puzzles from the Lichess database on Android. Find the best move, build your streak, and track progress offline.",
+    "url": "https://cocodedk.github.io/chess-puzzles/",
+    "operatingSystem": "Android 7.0+",
+    "applicationCategory": "GameApplication",
+    "downloadUrl": "https://github.com/cocodedk/chess-puzzles/releases/latest/download/ChessPuzzles.apk",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "author": {
+      "@type": "Person",
+      "name": "Babak Bandpey",
+      "url": "https://cocode.dk",
+      "sameAs": ["https://linkedin.com/in/babakbandpey", "https://github.com/cocodedk"]
+    },
+    "codeRepository": "https://github.com/cocodedk/chess-puzzles",
+    "license": "https://www.apache.org/licenses/LICENSE-2.0"
+  }
+  </script>
+</head>
+<body>
+  <header class="site">
+    <div class="wrap">
+      <span class="brand"><img class="mark" src="favicon.svg" alt="" width="32" height="32"> Chess Puzzles</span>
+      <a href="fa/" class="lang-switch" hreflang="fa" lang="fa">فارسی</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="wrap">
+        <img class="mark-lg" src="favicon.svg" alt="Chess Puzzles logo: a board with the winning move highlighted" width="76" height="76" fetchpriority="high">
+        <h1>Sharpen your <span class="accent">chess tactics</span>, one move at a time</h1>
+        <p class="lede">Solve thousands of real puzzles from the Lichess database on your Android phone. Find the best move — the rest plays itself.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="https://github.com/cocodedk/chess-puzzles/releases/latest/download/ChessPuzzles.apk">Download the APK</a>
+          <a class="btn btn-ghost" href="https://github.com/cocodedk/chess-puzzles">View on GitHub</a>
+        </div>
+        <p class="sub">Free &amp; open-source · Android 7.0+ · no account, fully offline</p>
+      </div>
+    </section>
+
+    <section id="features">
+      <div class="wrap">
+        <h2>Built for focused practice</h2>
+        <p class="intro">No menus to wade through, no sign-up. Open the app and you are already solving.</p>
+        <div class="grid">
+          <article class="card"><div class="ico">🧩</div><h3>Real Lichess puzzles</h3><p>Thousands of tactics sampled from the Lichess Open Database (CC0).</p></article>
+          <article class="card"><div class="ico">🎯</div><h3>One move to find</h3><p>Spot the best move; the opponent replies automatically, just like a real game.</p></article>
+          <article class="card"><div class="ico">🔥</div><h3>Streaks &amp; progress</h3><p>Your solved count and streak are saved on-device, so you pick up where you left off.</p></article>
+          <article class="card"><div class="ico">📴</div><h3>Fully offline</h3><p>No account, no network. Every puzzle ships inside the app.</p></article>
+          <article class="card"><div class="ico">👆</div><h3>Tap or drag</h3><p>Move pieces by tapping squares or dragging — a smooth custom Compose board.</p></article>
+          <article class="card"><div class="ico">⭐</div><h3>Free &amp; open-source</h3><p>Apache-2.0 licensed. No ads, no tracking, ever.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="how">
+      <div class="wrap">
+        <h2>How it works</h2>
+        <div class="steps">
+          <div class="step"><div class="n"></div><div><h3>Open a puzzle</h3><p>A real game position appears, with one side to move.</p></div></div>
+          <div class="step"><div class="n"></div><div><h3>Find the best move</h3><p>Tap or drag the piece. A wrong move just lets you try again.</p></div></div>
+          <div class="step"><div class="n"></div><div><h3>Watch it play out</h3><p>The opponent answers automatically until the puzzle is solved.</p></div></div>
+          <div class="step"><div class="n"></div><div><h3>Keep your streak</h3><p>Solve the next one. Your progress is saved on-device.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="screens">
+      <div class="wrap">
+        <h2>See it in action</h2>
+        <div class="shots">
+          <figure class="phone"><img src="screenshot-puzzle.png" alt="A chess puzzle: white to find the winning move" width="1080" height="2400" loading="lazy"><figcaption>A puzzle to solve</figcaption></figure>
+          <figure class="phone"><img src="screenshot-solved.png" alt="A solved chess puzzle with the streak counter updated" width="1080" height="2400" loading="lazy"><figcaption>Solved — streak saved</figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <section id="tech">
+      <div class="wrap">
+        <h2>Open source, built from the command line</h2>
+        <p class="intro">A multi-module Kotlin project — a pure-JVM chess engine and a Jetpack Compose UI — with 100% test coverage. <a href="https://github.com/cocodedk/chess-puzzles">Read the source and build it yourself.</a></p>
+        <div class="tech">
+          <span class="tag">Kotlin</span>
+          <span class="tag">Jetpack Compose</span>
+          <span class="tag">Android 7.0+</span>
+          <span class="tag">chesslib</span>
+          <span class="tag">100% tested</span>
+          <span class="tag">Apache-2.0</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <p>Created by <a href="https://linkedin.com/in/babakbandpey" target="_blank" rel="noreferrer">Babak Bandpey</a>. Built by <a href="https://cocode.dk" target="_blank" rel="noreferrer">Cocode</a>.</p>
+      <p>Puzzles from the <a href="https://database.lichess.org" target="_blank" rel="noreferrer">Lichess Open Database</a> (CC0 1.0).</p>
+      <p>Apache-2.0 &nbsp;|&nbsp; © 2026 <a href="https://cocode.dk" target="_blank" rel="noreferrer">Cocode</a> &nbsp;|&nbsp; Created by <a href="https://linkedin.com/in/babakbandpey" target="_blank" rel="noreferrer">Babak Bandpey</a></p>
+    </div>
+  </footer>
+</body>
+</html>
