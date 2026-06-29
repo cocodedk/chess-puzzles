@@ -13,13 +13,19 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import dk.cocode.chess.R
 import dk.cocode.chess.core.model.PieceType
 import dk.cocode.chess.core.model.PuzzleStatus
 import dk.cocode.chess.core.model.Square
@@ -32,17 +38,23 @@ import dk.cocode.chess.viewmodel.PuzzleViewModel
 @Composable
 fun PuzzleScreen(viewModel: PuzzleViewModel) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    PuzzleScreenContent(
-        state = state,
-        onSquareTap = viewModel::onSquareTapped,
-        onDragStart = viewModel::onDragStart,
-        onDragEnd = viewModel::onDragEnd,
-        onHint = viewModel::onHint,
-        onReset = viewModel::onReset,
-        onNext = viewModel::onNext,
-        onPromotion = viewModel::onPromotionChosen,
-        onPromotionCancel = viewModel::onPromotionCancelled,
-    )
+    var showAbout by rememberSaveable { mutableStateOf(false) }
+    if (showAbout) {
+        AboutScreen(onBack = { showAbout = false })
+    } else {
+        PuzzleScreenContent(
+            state = state,
+            onSquareTap = viewModel::onSquareTapped,
+            onDragStart = viewModel::onDragStart,
+            onDragEnd = viewModel::onDragEnd,
+            onHint = viewModel::onHint,
+            onReset = viewModel::onReset,
+            onNext = viewModel::onNext,
+            onPromotion = viewModel::onPromotionChosen,
+            onPromotionCancel = viewModel::onPromotionCancelled,
+            onAbout = { showAbout = true },
+        )
+    }
 }
 
 @Composable
@@ -56,6 +68,7 @@ fun PuzzleScreenContent(
     onNext: () -> Unit,
     onPromotion: (PieceType) -> Unit,
     onPromotionCancel: () -> Unit,
+    onAbout: () -> Unit = {},
 ) {
     Scaffold { padding ->
         Column(
@@ -88,6 +101,7 @@ fun PuzzleScreenContent(
                 OutlinedButton(onClick = onReset) { Text("Reset") }
                 Button(onClick = onNext) { Text("Next") }
             }
+            TextButton(onClick = onAbout) { Text(stringResource(R.string.about)) }
         }
     }
     state.pendingPromotion?.let {
