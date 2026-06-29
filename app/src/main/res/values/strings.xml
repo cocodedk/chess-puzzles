@@ -1,4 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Chess Puzzles</string>
+
+    <string name="about">About</string>
+    <string name="about_back">Back</string>
+    <string name="about_tagline">Solve real tactical puzzles from the Lichess database — find the best move, fully offline.</string>
+    <string name="about_version">Version %1$s</string>
+    <string name="about_download">Download the latest APK</string>
+    <string name="about_source">Source on GitHub</string>
+    <string name="about_website">cocode.dk</string>
+    <string name="about_linkedin">Babak Bandpey on LinkedIn</string>
+    <string name="about_credits">Created by Babak Bandpey · Built by Cocode.\nPuzzles: Lichess Open Database (CC0 1.0). Engine: chesslib (Apache-2.0).</string>
+    <string name="about_license">Apache-2.0 · © 2026 Cocode</string>
+
+    <string name="url_cocode" translatable="false">https://cocode.dk</string>
+    <string name="url_github" translatable="false">https://github.com/cocodedk/chess-puzzles</string>
+    <string name="url_linkedin" translatable="false">https://linkedin.com/in/babakbandpey</string>
+    <string name="url_apk" translatable="false">https://github.com/cocodedk/chess-puzzles/releases/latest/download/ChessPuzzles.apk</string>
 </resources>
