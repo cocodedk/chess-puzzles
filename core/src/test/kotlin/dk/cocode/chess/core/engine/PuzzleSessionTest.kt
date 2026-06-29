@@ -76,6 +76,14 @@ class PuzzleSessionTest {
         assertEquals(PuzzleStatus.FAILED, session.state.status)
     }
 
+    @Test fun retryResumesPlayFromCurrentPosition() {
+        val session = PuzzleSession.start(Fixtures.MATE_IN_1_MULTI)
+        assertTrue(session.submitMove(intentOf("b7b2")) is SubmitResult.Wrong)
+        assertEquals(PuzzleStatus.FAILED, session.state.status)
+        assertEquals(PuzzleStatus.IN_PROGRESS, session.retry().status)
+        assertTrue(session.submitMove(intentOf("b7g7")) is SubmitResult.Solved) // can try again
+    }
+
     @Test fun promotionCorrectWrongAndMissing() {
         val correct = PuzzleSession.start(Fixtures.PROMOTION)
         assertTrue(correct.submitMove(intentOf("e7e8q")) is SubmitResult.Solved)

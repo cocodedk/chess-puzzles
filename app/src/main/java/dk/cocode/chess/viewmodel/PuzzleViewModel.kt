@@ -133,20 +133,20 @@ class PuzzleViewModel(
             is SubmitResult.Illegal -> _state.update {
                 it.copy(pendingPromotion = PendingPromotion(from, to), selected = null, legalTargets = emptySet())
             }
-            is SubmitResult.Wrong -> onWrong(result.expected)
+            is SubmitResult.Wrong -> onWrong()
             is SubmitResult.Continues -> onContinues()
             is SubmitResult.Solved -> onSolved(result.playerMove)
         }
     }
 
-    private fun onWrong(expected: MoveStep) {
-        recordOnce { progress.recordFailed() }
+    private fun onWrong() {
+        recordOnce { progress.recordFailed() } // an error breaks the streak, counted once
+        session.retry() // un-lock so the player can try again (the move was never applied)
         _state.update {
             it.copy(
-                status = PuzzleStatus.FAILED, feedback = Feedback.WRONG,
-                selected = null, legalTargets = emptySet(),
-                hint = Highlight(expected.from, expected.to), // reveal the correct move
-                promptText = "Not the best move — the answer is highlighted",
+                status = PuzzleStatus.IN_PROGRESS, feedback = Feedback.WRONG,
+                selected = null, legalTargets = emptySet(), hint = null,
+                promptText = promptFor(session.playerColor),
             )
         }
     }

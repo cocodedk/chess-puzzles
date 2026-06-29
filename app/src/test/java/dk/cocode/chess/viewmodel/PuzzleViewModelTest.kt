@@ -88,20 +88,22 @@ class PuzzleViewModelTest {
         assertEquals(1, progress.current().solvedCount) // solved twice, counted once
     }
 
-    @Test fun wrongMoveRevealsAnswerAndResetsStreak() = runTest(dispatcher) {
+    @Test fun wrongMoveLetsYouRetryAndResetsStreak() = runTest(dispatcher) {
         val progress = FakeProgressRepository(Progress(0, 5, 5, 0))
         val viewModel = vm(progress)
         advanceUntilIdle()
         viewModel.onSquareTapped(sq("b7"))
         viewModel.onSquareTapped(sq("b2")) // legal but not the mate
         with(viewModel.state.value) {
-            assertEquals(PuzzleStatus.FAILED, status)
+            assertEquals(PuzzleStatus.IN_PROGRESS, status) // not locked — you can try again
             assertEquals(Feedback.WRONG, feedback)
-            assertEquals(sq("b7"), hint?.from) // the correct move is revealed
-            assertEquals(sq("g7"), hint?.to)
+            assertNull(hint) // the answer is not auto-revealed
+            assertNull(selected)
         }
         advanceUntilIdle()
-        assertEquals(0, progress.current().currentStreak)
+        assertEquals(0, progress.current().currentStreak) // an error still breaks the streak
+        viewModel.onSquareTapped(sq("b7")); viewModel.onSquareTapped(sq("g7")) // retry succeeds
+        assertEquals(PuzzleStatus.SOLVED, viewModel.state.value.status)
     }
 
     @Test fun mateInTwoAutoPlaysReply() = runTest(dispatcher) {
