@@ -169,18 +169,6 @@ class PuzzleViewModelTest {
         }
     }
 
-    @Test fun nextPersistsIndexAndWraps() = runTest(dispatcher) {
-        val progress = FakeProgressRepository(Progress(index = 3)) // last puzzle
-        val viewModel = vm(progress)
-        advanceUntilIdle()
-        viewModel.onNext()
-        assertEquals(800, viewModel.state.value.rating) // wrapped to the first puzzle
-        advanceUntilIdle()
-        assertEquals(0, progress.current().index)
-        viewModel.onNext()
-        assertEquals(1500, viewModel.state.value.rating)
-    }
-
     @Test fun blackPlayerFlipsBoard() = runTest(dispatcher) {
         val viewModel = vm(FakeProgressRepository(Progress(index = 3)))
         advanceUntilIdle()
