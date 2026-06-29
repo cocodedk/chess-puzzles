@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Brand mark: a 4x4 board tile with the "solution" square highlighted in gold.
+     Sized within the adaptive-icon safe zone of the 108x108 viewport. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <group>
+        <clip-path android:pathData="M32,24 L76,24 Q84,24 84,32 L84,76 Q84,84 76,84 L32,84 Q24,84 24,76 L24,32 Q24,24 32,24 Z" />
+        <path android:fillColor="#56795F" android:pathData="M24,24 H84 V84 H24 Z" />
+        <path
+            android:fillColor="#EAD9B0"
+            android:pathData="M24,24 h15 v15 h-15 z M54,24 h15 v15 h-15 z M39,39 h15 v15 h-15 z M69,39 h15 v15 h-15 z M24,54 h15 v15 h-15 z M54,54 h15 v15 h-15 z M39,69 h15 v15 h-15 z M69,69 h15 v15 h-15 z" />
+        <path android:fillColor="#F0B95C" android:pathData="M54,39 h15 v15 h-15 z" />
+    </group>
+    <path
+        android:fillColor="#0E1014"
+        android:pathData="M59.2,46.5 a2.3,2.3 0 1,0 4.6,0 a2.3,2.3 0 1,0 -4.6,0 Z" />
+</vector>
