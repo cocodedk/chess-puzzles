@@ -5,9 +5,27 @@ updates:
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 5
+    groups:
+      # Batch the safe (non-held) minor/patch library updates into one PR.
+      gradle-minor-patch:
+        patterns: ["*"]
+        update-types: ["minor", "patch"]
+    ignore:
+      # AndroidX 2025+ requires compileSdk 36/37 and a newer AGP/Kotlin than this project
+      # pins (compileSdk 35, AGP 8.7.3, Kotlin 2.0.21) — those bumps fail the build (AAR
+      # metadata / lint). Hold the namespace at the compileSdk-35-compatible line; patches
+      # still flow. Remove these once compileSdk/AGP/Kotlin are upgraded together.
+      - dependency-name: "androidx.*"
+        update-types: ["version-update:semver-minor", "version-update:semver-major"]
+      # Gradle 9 is outside AGP 8.7.3's supported range — hold the major until AGP is upgraded.
+      - dependency-name: "gradle-wrapper"
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 5
+    groups:
+      github-actions:
+        patterns: ["*"]
