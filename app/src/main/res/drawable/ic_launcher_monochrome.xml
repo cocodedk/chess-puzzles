@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Themed-icon (Android 13+) layer: the board's dark squares as a single-colour
+     checker silhouette; the system applies its own tint. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:fillColor="#000000"
+        android:pathData="M39,24 h15 v15 h-15 z M69,24 h15 v15 h-15 z M24,39 h15 v15 h-15 z M54,39 h15 v15 h-15 z M39,54 h15 v15 h-15 z M69,54 h15 v15 h-15 z M24,69 h15 v15 h-15 z M54,69 h15 v15 h-15 z" />
+</vector>
