@@ -11,8 +11,8 @@ import androidx.compose.ui.text.drawText
 import dk.cocode.chess.core.model.Square
 import dk.cocode.chess.viewmodel.PuzzleUiState
 
-internal val LIGHT_SQUARE = Color(0xFFEEEED2)
-internal val DARK_SQUARE = Color(0xFF769656)
+internal val LIGHT_SQUARE = Color(0xFFE0C29A)
+internal val DARK_SQUARE = Color(0xFF9C6B43)
 internal val SELECTED_TINT = Color(0x6603A9F4)
 internal val LAST_MOVE_TINT = Color(0x55FFEB3B)
 internal val HINT_TINT = Color(0x553F51B5)
