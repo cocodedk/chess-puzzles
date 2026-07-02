@@ -1,22 +1,35 @@
 #!/usr/bin/env bash
 # Boots a headless Android emulator, installs the debug APK, launches it, and captures a screenshot.
+# Usage: scripts/emu.sh [screenshot-path]   Env overrides: AVD, IMG, ANDROID_HOME.
 set -uo pipefail
 [ -f "$HOME/.chess-env.sh" ] && source "$HOME/.chess-env.sh"
-export ANDROID_SDK_ROOT="${ANDROID_HOME:?ANDROID_HOME must be set}"
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+export ANDROID_HOME="${ANDROID_HOME:-$HOME/Android/Sdk}"
+export ANDROID_SDK_ROOT="$ANDROID_HOME"
 # avdmanager and the emulator must agree on the AVD location (cmdline-tools defaults differ).
 export ANDROID_USER_HOME="${ANDROID_USER_HOME:-$HOME/.android}"
 export ANDROID_AVD_HOME="${ANDROID_AVD_HOME:-$HOME/.android/avd}"
+PATH="$ANDROID_HOME/platform-tools:$ANDROID_HOME/emulator:$ANDROID_HOME/cmdline-tools/latest/bin:$PATH"
 
-AVD=chess
-IMG="system-images;android-35;google_apis;x86_64"
-APK=/home/agent/projects/chess/app/build/outputs/apk/debug/app-debug.apk
+AVD="${AVD:-chess}"
+IMG="${IMG:-system-images;android-35;google_apis;x86_64}"
+APK="$ROOT/app/build/outputs/apk/debug/app-debug.apk"
 PKG=dk.cocode.chess
-SHOT="${1:-/home/agent/projects/chess/docs/screenshot.png}"
+SHOT="${1:-$ROOT/docs/screenshot.png}"
 SERIAL=emulator-5554
 
-if ! avdmanager list avd 2>/dev/null | grep -q "Name: ${AVD}$"; then
-  echo "[emu] creating AVD $AVD"
-  echo "no" | avdmanager create avd -n "$AVD" -k "$IMG" --force >/dev/null
+[ -f "$APK" ] || { echo "[emu] no debug APK at $APK — run ./gradlew assembleDebug first"; exit 1; }
+
+if ! emulator -list-avds 2>/dev/null | grep -qx "$AVD"; then
+  echo "[emu] creating AVD $AVD from $IMG"
+  echo "no" | avdmanager create avd -n "$AVD" -k "$IMG" --force >/dev/null || {
+    echo "[emu] could not create AVD $AVD. Installed system images:"
+    sdkmanager --list_installed 2>/dev/null | grep system-images || true
+    echo "[emu] pick an image via IMG=... or an existing AVD via AVD=... ; existing AVDs:"
+    emulator -list-avds
+    exit 1
+  }
 fi
 
 if [ -r /dev/kvm ] && [ -w /dev/kvm ]; then
@@ -26,9 +39,10 @@ else
 fi
 
 adb start-server >/dev/null 2>&1
-echo "[emu] booting..."
+echo "[emu] booting $AVD..."
+# -memory 4096: stock AVD RAM is low enough that lowmemorykiller reaps the app mid-run.
 nohup emulator -avd "$AVD" -no-window -no-audio -no-boot-anim -no-snapshot \
-  -gpu swiftshader_indirect -netdelay none -netspeed full \
+  -memory 4096 -cores 4 -gpu swiftshader_indirect -netdelay none -netspeed full \
   -camera-back none -camera-front none "${ACCEL[@]}" >/tmp/emulator.log 2>&1 &
 
 timeout 180 adb -s "$SERIAL" wait-for-device || { echo "[emu] device never came online"; tail -30 /tmp/emulator.log; exit 1; }
