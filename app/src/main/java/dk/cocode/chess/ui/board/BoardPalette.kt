@@ -14,6 +14,9 @@ data class BoardPalette(
     val darkPieceOutline: Color,
     /** Outline stroke width as a fraction of the square size. */
     val pieceOutlineWidth: Float,
+    /** Soft aura behind dark pieces so they can be spotted on dark squares; 0 width disables it. */
+    val darkPieceHalo: Color,
+    val darkPieceHaloWidth: Float,
 )
 
 /** Walnut wood, tuned for daylight. */
@@ -26,6 +29,8 @@ val DayBoardPalette = BoardPalette(
     marker = Color(0x40000000),
     darkPieceOutline = Color(0xFFEDEDED),
     pieceOutlineWidth = 0.035f,
+    darkPieceHalo = Color.Transparent,
+    darkPieceHaloWidth = 0f,
 )
 
 /**
@@ -43,6 +48,8 @@ val NightBoardPalette = BoardPalette(
     marker = Color(0x59FFFFFF),
     darkPieceOutline = Color(0xFFFAFAFA),
     pieceOutlineWidth = 0.06f,
+    darkPieceHalo = Color(0x80FFE9C8),
+    darkPieceHaloWidth = 0.14f,
 )
 
 /** Provided by ChessTheme so the board follows the app's day/night mode. */

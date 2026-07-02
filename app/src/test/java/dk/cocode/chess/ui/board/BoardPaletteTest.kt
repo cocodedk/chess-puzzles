@@ -11,6 +11,12 @@ class BoardPaletteTest {
         assertNotEquals(DayBoardPalette.darkPieceOutline, NightBoardPalette.darkPieceOutline)
     }
 
+    @Test fun onlyNightHasAHaloBehindDarkPieces() {
+        assertTrue(DayBoardPalette.darkPieceHaloWidth == 0f) // day pieces need no aura
+        assertTrue(NightBoardPalette.darkPieceHaloWidth > 0f)
+        assertTrue(NightBoardPalette.darkPieceHalo.alpha > 0f)
+    }
+
     @Test fun nightBoardIsDimmerThanDay() {
         assertTrue(NightBoardPalette.lightSquare.luminance() < DayBoardPalette.lightSquare.luminance())
         assertTrue(NightBoardPalette.darkSquare.luminance() < DayBoardPalette.darkSquare.luminance())
