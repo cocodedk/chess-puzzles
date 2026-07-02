@@ -58,7 +58,7 @@ fun ChessBoard(
         state.lastMove?.let { highlightMove(it.from, it.to, palette.lastMoveTint, squarePx, flipped) }
         state.hint?.let { highlightMove(it.from, it.to, palette.hintTint, squarePx, flipped) }
         state.selected?.let { tintSquare(it, palette.selectedTint, squarePx, flipped) }
-        drawPieces(state, squarePx, flipped, textMeasurer)
+        drawPieces(state, palette, squarePx, flipped, textMeasurer)
         drawTargets(state, palette.marker, squarePx, flipped)
     }
 }

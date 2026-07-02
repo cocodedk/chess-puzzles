@@ -14,7 +14,6 @@ import dk.cocode.chess.viewmodel.PuzzleUiState
 internal val PIECE_WHITE = Color.White
 internal val PIECE_DARK = Color(0xFF101010)
 internal val PIECE_WHITE_OUTLINE = Color(0xFF2B2B2B)
-internal val PIECE_DARK_OUTLINE = Color(0xFFEDEDED)
 
 internal fun DrawScope.drawSquares(palette: BoardPalette, squarePx: Float, flipped: Boolean) {
     for (file in 0..7) {
@@ -44,12 +43,13 @@ internal fun DrawScope.highlightMove(from: Square, to: Square, color: Color, squ
 
 internal fun DrawScope.drawPieces(
     state: PuzzleUiState,
+    palette: BoardPalette,
     squarePx: Float,
     flipped: Boolean,
     textMeasurer: TextMeasurer,
 ) {
     val fontSize = (squarePx * 0.74f).toSp()
-    val outlineWidth = squarePx * 0.035f
+    val outlineWidth = squarePx * palette.pieceOutlineWidth
     for (rank in 0..7) {
         for (file in 0..7) {
             val code = state.board[rank][file]
@@ -62,7 +62,7 @@ internal fun DrawScope.drawPieces(
             val outline = textMeasurer.measure(
                 text = glyph,
                 style = TextStyle(
-                    color = if (white) PIECE_WHITE_OUTLINE else PIECE_DARK_OUTLINE,
+                    color = if (white) PIECE_WHITE_OUTLINE else palette.darkPieceOutline,
                     fontSize = fontSize,
                     drawStyle = Stroke(width = outlineWidth),
                 ),

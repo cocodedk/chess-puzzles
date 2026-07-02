@@ -3,7 +3,7 @@ package dk.cocode.chess.ui.board
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
-/** Square and highlight colors for one board look. */
+/** Square and highlight colors for one board look, plus how piece glyphs are rimmed on it. */
 data class BoardPalette(
     val lightSquare: Color,
     val darkSquare: Color,
@@ -11,6 +11,9 @@ data class BoardPalette(
     val lastMoveTint: Color,
     val hintTint: Color,
     val marker: Color,
+    val darkPieceOutline: Color,
+    /** Outline stroke width as a fraction of the square size. */
+    val pieceOutlineWidth: Float,
 )
 
 /** Walnut wood, tuned for daylight. */
@@ -21,11 +24,15 @@ val DayBoardPalette = BoardPalette(
     lastMoveTint = Color(0x55FFEB3B),
     hintTint = Color(0x553F51B5),
     marker = Color(0x40000000),
+    darkPieceOutline = Color(0xFFEDEDED),
+    pieceOutlineWidth = 0.035f,
 )
 
 /**
  * The walnut board dimmed so it does not glare in a dark room. Highlights are brightened —
  * the day tints sink below 1.25:1 on dark wood; these stay above 1.6:1 (script-verified).
+ * Piece rims are brighter and thicker: a black fill is only ~1.5:1 against the night dark
+ * square, so the rim alone must carry the silhouette.
  */
 val NightBoardPalette = BoardPalette(
     lightSquare = Color(0xFF8A6844),
@@ -34,6 +41,8 @@ val NightBoardPalette = BoardPalette(
     lastMoveTint = Color(0x66FFD54F),
     hintTint = Color(0x9991A7FF),
     marker = Color(0x59FFFFFF),
+    darkPieceOutline = Color(0xFFFAFAFA),
+    pieceOutlineWidth = 0.06f,
 )
 
 /** Provided by ChessTheme so the board follows the app's day/night mode. */
