@@ -3,6 +3,8 @@ package dk.cocode.chess.ui.board
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.TextMeasurer
@@ -57,14 +59,30 @@ internal fun DrawScope.drawPieces(
             val topLeft = BoardGeometry.squareTopLeft(Square(file, rank), squarePx, flipped)
             val white = PieceGlyph.isWhite(code)
             val glyph = PieceGlyph.glyph(code)
-            // Outline first, fill on top: a contrasting rim so white pieces read on light
-            // squares and dark pieces read on dark squares.
+            // Halo (night only), then outline, then fill: a contrasting rim so white pieces
+            // read on light squares and dark pieces read on dark squares; the aura makes dark
+            // pieces spottable on the dimmed night board. Round joins/caps: wide strokes on
+            // sharp glyph corners would otherwise throw long miter spikes.
+            val halo = if (!white && palette.darkPieceHaloWidth > 0f) {
+                textMeasurer.measure(
+                    text = glyph,
+                    style = TextStyle(
+                        color = palette.darkPieceHalo,
+                        fontSize = fontSize,
+                        drawStyle = Stroke(
+                            width = squarePx * palette.darkPieceHaloWidth,
+                            cap = StrokeCap.Round,
+                            join = StrokeJoin.Round,
+                        ),
+                    ),
+                )
+            } else null
             val outline = textMeasurer.measure(
                 text = glyph,
                 style = TextStyle(
                     color = if (white) PIECE_WHITE_OUTLINE else palette.darkPieceOutline,
                     fontSize = fontSize,
-                    drawStyle = Stroke(width = outlineWidth),
+                    drawStyle = Stroke(width = outlineWidth, cap = StrokeCap.Round, join = StrokeJoin.Round),
                 ),
             )
             val fill = textMeasurer.measure(
@@ -75,6 +93,7 @@ internal fun DrawScope.drawPieces(
                 topLeft.x + (squarePx - fill.size.width) / 2f,
                 topLeft.y + (squarePx - fill.size.height) / 2f,
             )
+            halo?.let { drawText(textLayoutResult = it, topLeft = offset) }
             drawText(textLayoutResult = outline, topLeft = offset)
             drawText(textLayoutResult = fill, topLeft = offset)
         }
