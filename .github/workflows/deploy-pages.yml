@@ -31,3 +31,7 @@ jobs:
           path: 'website'
       - id: deployment
         uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128 # v5.0.0
+        with:
+          # The Pages backend sometimes leaves deployments queued well past the
+          # default 10 minutes; give it half an hour before declaring failure.
+          timeout: 1800000
