@@ -9,7 +9,7 @@
        intent:    transactional (download) + informational
   -->
   <title>Chess Puzzles — Android Tactics Trainer · Cocode</title>
-  <meta name="description" content="Solve real chess puzzles from the Lichess database on Android. Find the best move, build your streak, and track progress offline — free and open-source.">
+  <meta name="description" content="Solve real Lichess chess puzzles on Android with announced goals. Light or dark mode, build your streak, and track progress offline — free and open-source.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://cocodedk.github.io/chess-puzzles/">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -21,7 +21,7 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Chess Puzzles">
   <meta property="og:title" content="Chess Puzzles — train tactics on Android">
-  <meta property="og:description" content="Real Lichess puzzles on Android. Find the best move, keep your streak, track progress offline. Free & open-source.">
+  <meta property="og:description" content="Real Lichess puzzles on Android with goal announcements. Light or dark mode, keep your streak, track progress offline. Free & open-source.">
   <meta property="og:url" content="https://cocodedk.github.io/chess-puzzles/">
   <meta property="og:image" content="https://cocodedk.github.io/chess-puzzles/og.png">
   <meta property="og:image:width" content="1200">
@@ -32,7 +32,7 @@
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Chess Puzzles — train tactics on Android">
-  <meta name="twitter:description" content="Real Lichess puzzles on Android. Find the best move, keep your streak, track progress offline.">
+  <meta name="twitter:description" content="Real Lichess puzzles on Android with goal announcements, light & dark mode, streak tracking, offline play.">
   <meta name="twitter:image" content="https://cocodedk.github.io/chess-puzzles/og.png">
   <meta name="twitter:image:alt" content="Chess Puzzles app — a tactics position with the solution square highlighted in gold">
 
@@ -43,7 +43,7 @@
     "@context": "https://schema.org",
     "@type": "MobileApplication",
     "name": "Chess Puzzles",
-    "description": "Solve real chess puzzles from the Lichess database on Android. Find the best move, build your streak, and track progress offline.",
+    "description": "Solve real Lichess puzzles on Android with announced goals. Choose light or dark mode, build your streak, track progress offline.",
     "url": "https://cocodedk.github.io/chess-puzzles/",
     "operatingSystem": "Android 7.0+",
     "applicationCategory": "GameApplication",
@@ -91,9 +91,11 @@
         <p class="intro">No menus to wade through, no sign-up. Open the app and you are already solving.</p>
         <div class="grid">
           <article class="card"><div class="ico">🧩</div><h3>Real Lichess puzzles</h3><p>Thousands of tactics sampled from the Lichess Open Database (CC0).</p></article>
-          <article class="card"><div class="ico">🎯</div><h3>One move to find</h3><p>Spot the best move; the opponent replies automatically, just like a real game.</p></article>
+          <article class="card"><div class="ico">🎯</div><h3>One move to find</h3><p>Each puzzle announces its goal — "checkmate in 2" or "win material". Spot the best move, then watch the opponent reply.</p></article>
+          <article class="card"><div class="ico">🎚️</div><h3>Pick your level</h3><p>Easy, Medium or Hard — jump between rating bands with one tap.</p></article>
           <article class="card"><div class="ico">🔥</div><h3>Streaks &amp; progress</h3><p>Your solved count and streak are saved on-device, so you pick up where you left off.</p></article>
           <article class="card"><div class="ico">📴</div><h3>Fully offline</h3><p>No account, no network. Every puzzle ships inside the app.</p></article>
+          <article class="card"><div class="ico">🌗</div><h3>Day &amp; night theme</h3><p>Follows your system dark mode, or pick Auto/Light/Dark in the app. Night mode dims the board for comfortable play.</p></article>
           <article class="card"><div class="ico">👆</div><h3>Tap or drag</h3><p>Move pieces by tapping squares or dragging — a smooth custom Compose board.</p></article>
           <article class="card"><div class="ico">⭐</div><h3>Free &amp; open-source</h3><p>Apache-2.0 licensed. No ads, no tracking, ever.</p></article>
         </div>
@@ -104,7 +106,7 @@
       <div class="wrap">
         <h2>How it works</h2>
         <div class="steps">
-          <div class="step"><div class="n"></div><div><h3>Open a puzzle</h3><p>A real game position appears, with one side to move.</p></div></div>
+          <div class="step"><div class="n"></div><div><h3>Open a puzzle</h3><p>A real game position appears with its goal — checkmate in 2, win material, or save the game. One side is to move.</p></div></div>
           <div class="step"><div class="n"></div><div><h3>Find the best move</h3><p>Tap or drag the piece. A wrong move just lets you try again.</p></div></div>
           <div class="step"><div class="n"></div><div><h3>Watch it play out</h3><p>The opponent answers automatically until the puzzle is solved.</p></div></div>
           <div class="step"><div class="n"></div><div><h3>Keep your streak</h3><p>Solve the next one. Your progress is saved on-device.</p></div></div>
@@ -117,6 +119,7 @@
         <h2>See it in action</h2>
         <div class="shots">
           <figure class="phone"><img src="screenshot-puzzle.png" alt="A chess puzzle: white to find the winning move" width="1080" height="2400" loading="lazy"><figcaption>A puzzle to solve</figcaption></figure>
+          <figure class="phone"><img src="screenshot-night.png" alt="Night mode: a chess puzzle with dimmed board and readable pieces" width="1080" height="2400" loading="lazy"><figcaption>Night mode — easy on the eyes</figcaption></figure>
           <figure class="phone"><img src="screenshot-solved.png" alt="A solved chess puzzle with the streak counter updated" width="1080" height="2400" loading="lazy"><figcaption>Solved — streak saved</figcaption></figure>
         </div>
       </div>

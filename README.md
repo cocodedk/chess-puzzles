@@ -4,12 +4,12 @@
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 
 An Android chess **puzzle** game — Kotlin + Jetpack Compose, built and run entirely from the command
-line (no Android Studio). Solve tactical puzzles from the Lichess database: find the best move, the
-opponent replies automatically, and your solved count / streak are saved on-device.
+line (no Android Studio). Solve Lichess tactical puzzles with announced goals (e.g. "checkmate in 2"),
+difficulty bands (Easy/Medium/Hard), day/night themes, and saved progress on-device.
 
-<img src="docs/screenshot.png" alt="Chess Puzzles running on an emulator" width="280" /> <img src="docs/screenshot-solved.png" alt="A solved puzzle" width="280" />
+<img src="docs/screenshot.png" alt="Chess Puzzles in light mode" width="250" /> <img src="docs/screenshot-night.png" alt="Chess Puzzles in night mode" width="250" /> <img src="docs/screenshot-solved.png" alt="A solved puzzle" width="250" />
 
-_Running on a headless Android 15 emulator (left: a puzzle; right: solved, with progress saved)._
+_Light mode with goal line and difficulty chips (left), night mode (center), solved puzzle (right)._
 
 ## Website
 
