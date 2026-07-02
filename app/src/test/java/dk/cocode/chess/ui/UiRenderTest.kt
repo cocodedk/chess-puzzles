@@ -4,21 +4,32 @@ import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.graphics.toArgb
+import dk.cocode.chess.PHONE_QUALIFIERS
+import dk.cocode.chess.containsColor
 import dk.cocode.chess.core.model.PieceType
 import dk.cocode.chess.core.model.PuzzleStatus
 import dk.cocode.chess.core.model.Square
+import dk.cocode.chess.data.ThemeMode
 import dk.cocode.chess.renderToBitmap
+import dk.cocode.chess.ui.board.DayBoardPalette
+import dk.cocode.chess.ui.board.NightBoardPalette
+import dk.cocode.chess.ui.theme.ChessTheme
+import dk.cocode.chess.ui.theme.DarkColors
 import dk.cocode.chess.viewmodel.Feedback
 import dk.cocode.chess.viewmodel.Highlight
 import dk.cocode.chess.viewmodel.PendingPromotion
 import dk.cocode.chess.viewmodel.PuzzleUiState
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
+@Config(qualifiers = PHONE_QUALIFIERS)
 class UiRenderTest {
     @get:Rule
     val composeRule = createAndroidComposeRule<ComponentActivity>()
@@ -28,14 +39,23 @@ class UiRenderTest {
         "        ", "        ", "pppppppp", "rnbqkbnr",
     )
 
-    private fun show(state: PuzzleUiState, onPromotion: (PieceType) -> Unit = {}) {
+    private fun show(
+        state: PuzzleUiState,
+        onPromotion: (PieceType) -> Unit = {},
+        darkTheme: Boolean = false,
+        themeMode: ThemeMode = ThemeMode.SYSTEM,
+        onThemeToggle: () -> Unit = {},
+    ) {
         composeRule.setContent {
-            PuzzleScreenContent(
-                state = state,
-                onSquareTap = {}, onDragStart = {}, onDragEnd = {},
-                onHint = {}, onReset = {}, onNext = {},
-                onPromotion = onPromotion, onPromotionCancel = {},
-            )
+            ChessTheme(darkTheme = darkTheme) {
+                PuzzleScreenContent(
+                    state = state,
+                    onSquareTap = {}, onDragStart = {}, onDragEnd = {},
+                    onHint = {}, onReset = {}, onNext = {},
+                    onPromotion = onPromotion, onPromotionCancel = {},
+                    themeMode = themeMode, onThemeToggle = onThemeToggle,
+                )
+            }
         }
     }
 
@@ -52,7 +72,8 @@ class UiRenderTest {
 
     @Test fun rendersRichBoard() {
         show(rich(flipped = false))
-        composeRule.renderToBitmap()
+        val bitmap = composeRule.renderToBitmap()
+        assertTrue(bitmap.containsColor(DayBoardPalette.darkSquare.toArgb())) // day board drawn
         composeRule.onNodeWithText("Hint").assertExists()
     }
 
@@ -65,6 +86,16 @@ class UiRenderTest {
         show(PuzzleUiState(board = board, status = PuzzleStatus.SOLVED, feedback = Feedback.SOLVED))
         composeRule.renderToBitmap()
         composeRule.onNodeWithText("Next").assertExists()
+    }
+
+    @Test fun rendersDarkThemeAndTogglesIt() {
+        var toggled = false
+        show(rich(flipped = false), darkTheme = true, themeMode = ThemeMode.DARK, onThemeToggle = { toggled = true })
+        val bitmap = composeRule.renderToBitmap()
+        assertEquals(DarkColors.background.toArgb(), bitmap.getPixel(1, 1)) // dark scheme applied
+        assertTrue(bitmap.containsColor(NightBoardPalette.darkSquare.toArgb())) // night board drawn
+        composeRule.onNodeWithText("Theme: Dark").performClick()
+        assertTrue(toggled)
     }
 
     @Test fun promotionDialogSelectsPiece() {

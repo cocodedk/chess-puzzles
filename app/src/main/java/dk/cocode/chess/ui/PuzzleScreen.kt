@@ -29,6 +29,7 @@ import dk.cocode.chess.R
 import dk.cocode.chess.core.model.PieceType
 import dk.cocode.chess.core.model.PuzzleStatus
 import dk.cocode.chess.core.model.Square
+import dk.cocode.chess.data.ThemeMode
 import dk.cocode.chess.ui.board.ChessBoard
 import dk.cocode.chess.ui.board.PromotionDialog
 import dk.cocode.chess.viewmodel.Difficulty
@@ -38,7 +39,11 @@ import dk.cocode.chess.viewmodel.PuzzleViewModel
 import dk.cocode.chess.viewmodel.difficultyOf
 
 @Composable
-fun PuzzleScreen(viewModel: PuzzleViewModel) {
+fun PuzzleScreen(
+    viewModel: PuzzleViewModel,
+    themeMode: ThemeMode,
+    onThemeToggle: () -> Unit,
+) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     var showAbout by rememberSaveable { mutableStateOf(false) }
     if (showAbout) {
@@ -46,6 +51,8 @@ fun PuzzleScreen(viewModel: PuzzleViewModel) {
     } else {
         PuzzleScreenContent(
             state = state,
+            themeMode = themeMode,
+            onThemeToggle = onThemeToggle,
             onSquareTap = viewModel::onSquareTapped,
             onDragStart = viewModel::onDragStart,
             onDragEnd = viewModel::onDragEnd,
@@ -75,6 +82,8 @@ fun PuzzleScreenContent(
     onAbout: () -> Unit = {},
     onDifficulty: (Difficulty) -> Unit = {},
     difficulties: List<Difficulty> = Difficulty.entries,
+    themeMode: ThemeMode = ThemeMode.SYSTEM,
+    onThemeToggle: () -> Unit = {},
 ) {
     Scaffold { padding ->
         Column(
@@ -90,7 +99,7 @@ fun PuzzleScreenContent(
             Spacer(Modifier.height(8.dp))
             DifficultyRow(available = difficulties, current = difficultyOf(state.rating), onSelect = onDifficulty)
             Spacer(Modifier.height(8.dp))
-            Text(state.promptText, textAlign = TextAlign.Center)
+            Text(state.promptText, textAlign = TextAlign.Center, style = MaterialTheme.typography.titleMedium)
             Spacer(Modifier.height(8.dp))
             ChessBoard(
                 state = state,
@@ -109,7 +118,10 @@ fun PuzzleScreenContent(
                 OutlinedButton(onClick = onReset) { Text("Reset") }
                 Button(onClick = onNext) { Text("Next") }
             }
-            TextButton(onClick = onAbout) { Text(stringResource(R.string.about)) }
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                TextButton(onClick = onThemeToggle) { Text(themeLabel(themeMode)) }
+                TextButton(onClick = onAbout) { Text(stringResource(R.string.about)) }
+            }
         }
     }
     state.pendingPromotion?.let {
@@ -133,6 +145,12 @@ private fun DifficultyChip(value: Difficulty, current: Difficulty, onSelect: (Di
     }
     if (value == current) Button(onClick = { onSelect(value) }) { Text(label) }
     else OutlinedButton(onClick = { onSelect(value) }) { Text(label) }
+}
+
+internal fun themeLabel(mode: ThemeMode): String = when (mode) {
+    ThemeMode.SYSTEM -> "Theme: Auto"
+    ThemeMode.LIGHT -> "Theme: Light"
+    ThemeMode.DARK -> "Theme: Dark"
 }
 
 internal fun feedbackMessage(feedback: Feedback): String = when (feedback) {

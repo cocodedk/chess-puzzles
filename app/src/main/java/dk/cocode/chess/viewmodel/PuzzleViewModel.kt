@@ -161,7 +161,7 @@ class PuzzleViewModel(
             it.copy(
                 status = PuzzleStatus.IN_PROGRESS, feedback = Feedback.WRONG,
                 selected = null, legalTargets = emptySet(), hint = null,
-                promptText = promptFor(session.playerColor),
+                promptText = session.prompt(),
             )
         }
     }
@@ -172,7 +172,7 @@ class PuzzleViewModel(
             it.copy(
                 board = session.state.board.toRows(), lastMove = Highlight(reply.from, reply.to),
                 selected = null, legalTargets = emptySet(), hint = null,
-                feedback = Feedback.CORRECT, promptText = promptFor(session.playerColor),
+                feedback = Feedback.CORRECT, promptText = session.prompt(),
             )
         }
     }

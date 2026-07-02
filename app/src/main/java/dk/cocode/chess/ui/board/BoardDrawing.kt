@@ -11,23 +11,17 @@ import androidx.compose.ui.text.drawText
 import dk.cocode.chess.core.model.Square
 import dk.cocode.chess.viewmodel.PuzzleUiState
 
-internal val LIGHT_SQUARE = Color(0xFFE0C29A)
-internal val DARK_SQUARE = Color(0xFF9C6B43)
-internal val SELECTED_TINT = Color(0x6603A9F4)
-internal val LAST_MOVE_TINT = Color(0x55FFEB3B)
-internal val HINT_TINT = Color(0x553F51B5)
-internal val MARKER = Color(0x40000000)
 internal val PIECE_WHITE = Color.White
 internal val PIECE_DARK = Color(0xFF101010)
 internal val PIECE_WHITE_OUTLINE = Color(0xFF2B2B2B)
 internal val PIECE_DARK_OUTLINE = Color(0xFFEDEDED)
 
-internal fun DrawScope.drawSquares(squarePx: Float, flipped: Boolean) {
+internal fun DrawScope.drawSquares(palette: BoardPalette, squarePx: Float, flipped: Boolean) {
     for (file in 0..7) {
         for (rank in 0..7) {
             val square = Square(file, rank)
             drawRect(
-                color = if (BoardGeometry.isLight(square)) LIGHT_SQUARE else DARK_SQUARE,
+                color = if (BoardGeometry.isLight(square)) palette.lightSquare else palette.darkSquare,
                 topLeft = BoardGeometry.squareTopLeft(square, squarePx, flipped),
                 size = Size(squarePx, squarePx),
             )
@@ -87,13 +81,13 @@ internal fun DrawScope.drawPieces(
     }
 }
 
-internal fun DrawScope.drawTargets(state: PuzzleUiState, squarePx: Float, flipped: Boolean) {
+internal fun DrawScope.drawTargets(state: PuzzleUiState, marker: Color, squarePx: Float, flipped: Boolean) {
     for (target in state.legalTargets) {
         val center = BoardGeometry.squareCenter(target, squarePx, flipped)
         if (state.board[target.rank][target.file] == ' ') {
-            drawCircle(MARKER, radius = squarePx * 0.16f, center = center)
+            drawCircle(marker, radius = squarePx * 0.16f, center = center)
         } else {
-            drawCircle(MARKER, radius = squarePx * 0.45f, center = center, style = Stroke(width = squarePx * 0.07f))
+            drawCircle(marker, radius = squarePx * 0.45f, center = center, style = Stroke(width = squarePx * 0.07f))
         }
     }
 }
