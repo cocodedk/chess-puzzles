@@ -28,6 +28,7 @@ fun ChessBoard(
     modifier: Modifier = Modifier,
 ) {
     val textMeasurer = rememberTextMeasurer()
+    val palette = LocalBoardPalette.current
     val flipped = state.flipped
     var dragTarget by remember { mutableStateOf(Square(0, 0)) }
 
@@ -53,11 +54,11 @@ fun ChessBoard(
             },
     ) {
         val squarePx = size.width / 8f
-        drawSquares(squarePx, flipped)
-        state.lastMove?.let { highlightMove(it.from, it.to, LAST_MOVE_TINT, squarePx, flipped) }
-        state.hint?.let { highlightMove(it.from, it.to, HINT_TINT, squarePx, flipped) }
-        state.selected?.let { tintSquare(it, SELECTED_TINT, squarePx, flipped) }
+        drawSquares(palette, squarePx, flipped)
+        state.lastMove?.let { highlightMove(it.from, it.to, palette.lastMoveTint, squarePx, flipped) }
+        state.hint?.let { highlightMove(it.from, it.to, palette.hintTint, squarePx, flipped) }
+        state.selected?.let { tintSquare(it, palette.selectedTint, squarePx, flipped) }
         drawPieces(state, squarePx, flipped, textMeasurer)
-        drawTargets(state, squarePx, flipped)
+        drawTargets(state, palette.marker, squarePx, flipped)
     }
 }

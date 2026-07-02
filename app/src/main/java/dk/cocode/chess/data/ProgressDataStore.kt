@@ -4,13 +4,17 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
+import java.io.IOException
 
-/** Production DataStore instance (one per app process). */
-val Context.progressDataStore: DataStore<Preferences> by preferencesDataStore(name = "progress")
+/** The app-wide DataStore (progress + settings). On-disk name stays "progress" for compatibility. */
+val Context.appDataStore: DataStore<Preferences> by preferencesDataStore(name = "progress")
 
 private val SOLVED = intPreferencesKey("solved")
 private val STREAK = intPreferencesKey("streak")
@@ -21,9 +25,13 @@ private val INDEX = intPreferencesKey("index")
 class DataStoreProgressRepository(
     private val dataStore: DataStore<Preferences>,
 ) : ProgressRepository {
-    override val progress: Flow<Progress> = dataStore.data.map { prefs ->
-        Progress(prefs[SOLVED] ?: 0, prefs[STREAK] ?: 0, prefs[BEST] ?: 0, prefs[INDEX] ?: 0)
-    }
+    // catch: an unreadable prefs file must fall back to defaults, not crash the collector.
+    // distinctUntilChanged: the store is shared with settings, so theme writes re-emit unchanged prefs.
+    override val progress: Flow<Progress> = dataStore.data
+        .catch { e -> if (e is IOException) emit(emptyPreferences()) else throw e }
+        .map { prefs ->
+            Progress(prefs[SOLVED] ?: 0, prefs[STREAK] ?: 0, prefs[BEST] ?: 0, prefs[INDEX] ?: 0)
+        }.distinctUntilChanged()
 
     override suspend fun recordSolved() {
         dataStore.edit { prefs ->

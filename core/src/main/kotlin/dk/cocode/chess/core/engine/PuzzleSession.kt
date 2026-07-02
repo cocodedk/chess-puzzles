@@ -21,7 +21,8 @@ class PuzzleSession private constructor(
     val puzzle: Puzzle,
     private val engine: ChessEngine,
     val playerColor: PieceColor,
-    private val finalMoveIsMate: Boolean,
+    /** True when the solution's final move delivers checkmate, i.e. the puzzle's goal is mate. */
+    val endsInMate: Boolean,
 ) {
     private var cursor = 1
     private var status = PuzzleStatus.IN_PROGRESS
@@ -54,7 +55,7 @@ class PuzzleSession private constructor(
         val expected = puzzle.uciMoves[cursor]
         val isFinalPly = cursor == puzzle.uciMoves.lastIndex
         val accepted = candidate == expected ||
-            (isFinalPly && finalMoveIsMate && engine.wouldBeMate(candidate))
+            (isFinalPly && endsInMate && engine.wouldBeMate(candidate))
         if (!accepted) {
             status = PuzzleStatus.FAILED
             state = buildState()

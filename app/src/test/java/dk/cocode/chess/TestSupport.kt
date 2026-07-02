@@ -5,6 +5,9 @@ import android.graphics.Canvas
 import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.junit4.AndroidComposeTestRule
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
+import androidx.datastore.preferences.core.Preferences
 import dk.cocode.chess.core.data.CsvPuzzleRepository
 import dk.cocode.chess.core.data.PuzzleRepository
 import dk.cocode.chess.data.Progress
@@ -12,13 +15,38 @@ import dk.cocode.chess.data.ProgressRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
+import org.robolectric.RuntimeEnvironment
+import java.io.File
 
 /** Draws the hosted content to a software canvas so Compose Canvas draw code runs under Robolectric. */
-fun <A : ComponentActivity> AndroidComposeTestRule<*, A>.renderToBitmap() {
+fun <A : ComponentActivity> AndroidComposeTestRule<*, A>.renderToBitmap(): Bitmap {
     waitForIdle()
     val view = activity.findViewById<View>(android.R.id.content)
     val bitmap = Bitmap.createBitmap(maxOf(1, view.width), maxOf(1, view.height), Bitmap.Config.ARGB_8888)
     view.draw(Canvas(bitmap))
+    return bitmap
+}
+
+/** True when any sampled pixel is exactly [argb] — flat fills like board squares are found reliably. */
+fun Bitmap.containsColor(argb: Int): Boolean =
+    (0 until width step 4).any { x -> (0 until height step 4).any { y -> getPixel(x, y) == argb } }
+
+/** Robolectric screen large enough that the rows below the square board stay on-screen. */
+const val PHONE_QUALIFIERS = "w360dp-h800dp"
+
+/** A fresh on-disk Preferences DataStore in the Robolectric app's cache dir. */
+fun newPreferencesStore(prefix: String): DataStore<Preferences> {
+    val dir = RuntimeEnvironment.getApplication().cacheDir
+    val file = File.createTempFile(prefix, ".preferences_pb", dir).apply { delete() }
+    return PreferenceDataStoreFactory.create { file }
+}
+
+/** A Preferences DataStore whose backing file is garbage, so reads hit the corruption path. */
+fun corruptPreferencesStore(prefix: String): DataStore<Preferences> {
+    val dir = RuntimeEnvironment.getApplication().cacheDir
+    val file = File.createTempFile(prefix, ".preferences_pb", dir)
+    file.writeBytes(byteArrayOf(-1, -1, -1, -1))
+    return PreferenceDataStoreFactory.create { file }
 }
 
 /** In-memory [ProgressRepository] with the same atomic semantics as the DataStore implementation. */
