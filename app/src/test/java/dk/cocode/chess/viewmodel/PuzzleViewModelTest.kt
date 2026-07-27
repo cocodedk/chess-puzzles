@@ -104,6 +104,8 @@ class PuzzleViewModelTest {
         assertEquals(0, progress.current().currentStreak) // an error still breaks the streak
         viewModel.onSquareTapped(sq("b7")); viewModel.onSquareTapped(sq("g7")) // retry succeeds
         assertEquals(PuzzleStatus.SOLVED, viewModel.state.value.status)
+        advanceUntilIdle()
+        assertEquals(Progress(1, 1, 5, 0), progress.current()) // the solve still counts; streak restarts
     }
 
     @Test fun mateInTwoAutoPlaysReply() = runTest(dispatcher) {
