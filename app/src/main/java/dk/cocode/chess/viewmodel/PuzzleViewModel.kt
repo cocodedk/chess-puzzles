@@ -20,8 +20,8 @@ import kotlinx.coroutines.launch
 
 /**
  * Drives the puzzle screen. Progress is the persisted source of truth (collected from [progress]);
- * solves/fails record atomically and are counted at most once per puzzle. Requires a non-empty
- * [puzzles] (the caller guarantees this).
+ * solves and fails record atomically, each at most once per puzzle — solving after a wrong attempt
+ * still counts. Requires a non-empty [puzzles] (the caller guarantees this).
  */
 class PuzzleViewModel(
     private val puzzles: PuzzleRepository,
@@ -30,7 +30,8 @@ class PuzzleViewModel(
 
     private var index = 0
     private var session = PuzzleSession.start(puzzles.all()[0])
-    private val counted = mutableSetOf<Int>()
+    private val failCounted = mutableSetOf<Int>()
+    private val solveCounted = mutableSetOf<Int>()
     private var resumed = false
     private var base = Progress()
     private val bands: Map<Difficulty, List<Int>> =
@@ -105,7 +106,7 @@ class PuzzleViewModel(
     }
 
     fun onReset() {
-        session.reset() // a reset puzzle keeps its `counted` flag, so re-solving never re-earns progress
+        session.reset() // a reset puzzle keeps its counted flags, so re-solving never re-earns progress
         _state.value = session.toUiState(base)
     }
 
@@ -155,7 +156,8 @@ class PuzzleViewModel(
     }
 
     private fun onWrong() {
-        recordOnce { progress.recordFailed() } // an error breaks the streak, counted once
+        // A first mistake breaks the streak once; a puzzle already solved cannot break it again.
+        if (index !in solveCounted) recordOnce(failCounted) { progress.recordFailed() }
         session.retry() // un-lock so the player can try again (the move was never applied)
         _state.update {
             it.copy(
@@ -178,7 +180,7 @@ class PuzzleViewModel(
     }
 
     private fun onSolved(playerMove: MoveStep) {
-        recordOnce { progress.recordSolved() }
+        recordOnce(solveCounted) { progress.recordSolved() }
         _state.update {
             it.copy(
                 board = session.state.board.toRows(), lastMove = Highlight(playerMove.from, playerMove.to),
@@ -188,7 +190,7 @@ class PuzzleViewModel(
         }
     }
 
-    private fun recordOnce(action: suspend () -> Unit) {
-        if (counted.add(index)) viewModelScope.launch { action() } // each puzzle is counted once
+    private fun recordOnce(counted: MutableSet<Int>, action: suspend () -> Unit) {
+        if (counted.add(index)) viewModelScope.launch { action() } // each event counted once per puzzle
     }
 }
