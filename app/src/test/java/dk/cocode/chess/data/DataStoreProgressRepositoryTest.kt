@@ -15,11 +15,21 @@ class DataStoreProgressRepositoryTest {
     fun defaultsThenAtomicUpdates() = runTest {
         val repository = DataStoreProgressRepository(newPreferencesStore("progress"))
         assertEquals(Progress(0, 0, 0, 0), repository.progress.first())
-        repository.recordSolved()
-        repository.recordSolved()
+        repository.recordSolved(10)
+        repository.recordSolved(10)
         repository.recordFailed()
         repository.setIndex(5)
-        assertEquals(Progress(2, 0, 2, 5), repository.progress.first())
+        assertEquals(Progress(2, 0, 2, 5, 1, 10), repository.progress.first())
+    }
+
+    @Test
+    fun dayStreakExtendsOnConsecutiveDaysAndRestartsAfterAGap() = runTest {
+        val repository = DataStoreProgressRepository(newPreferencesStore("days"))
+        repository.recordSolved(10)
+        repository.recordSolved(11)
+        assertEquals(2, repository.progress.first().dayStreak)
+        repository.recordSolved(13)
+        assertEquals(Progress(3, 3, 3, 0, 1, 13), repository.progress.first())
     }
 
     @Test

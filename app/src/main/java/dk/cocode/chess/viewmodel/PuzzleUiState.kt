@@ -26,5 +26,6 @@ data class PuzzleUiState(
     val solvedCount: Int = 0,
     val currentStreak: Int = 0,
     val bestStreak: Int = 0,
+    val dayStreak: Int = 0,
     val promptText: String = "",
 )

@@ -12,6 +12,7 @@ import dk.cocode.chess.core.data.CsvPuzzleRepository
 import dk.cocode.chess.core.data.PuzzleRepository
 import dk.cocode.chess.data.Progress
 import dk.cocode.chess.data.ProgressRepository
+import dk.cocode.chess.data.solvedOn
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
@@ -56,10 +57,7 @@ class FakeProgressRepository(initial: Progress = Progress()) : ProgressRepositor
 
     fun current(): Progress = state.value
 
-    override suspend fun recordSolved() = state.update {
-        val streak = it.currentStreak + 1
-        it.copy(solvedCount = it.solvedCount + 1, currentStreak = streak, bestStreak = maxOf(it.bestStreak, streak))
-    }
+    override suspend fun recordSolved(epochDay: Long) = state.update { it.solvedOn(epochDay) }
 
     override suspend fun recordFailed() = state.update { it.copy(currentStreak = 0) }
 

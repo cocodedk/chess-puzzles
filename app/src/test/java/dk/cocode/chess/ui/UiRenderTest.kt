@@ -66,7 +66,7 @@ class UiRenderTest {
         lastMove = Highlight(Square.of("d2"), Square.of("d4")),
         hint = Highlight(Square.of("g1"), Square.of("f3")),
         status = PuzzleStatus.IN_PROGRESS, feedback = Feedback.CORRECT,
-        rating = 1500, solvedCount = 3, currentStreak = 2, bestStreak = 5,
+        rating = 1500, solvedCount = 3, currentStreak = 2, bestStreak = 5, dayStreak = 4,
         promptText = "White to move",
     )
 
@@ -75,6 +75,7 @@ class UiRenderTest {
         val bitmap = composeRule.renderToBitmap()
         assertTrue(bitmap.containsColor(DayBoardPalette.darkSquare.toArgb())) // day board drawn
         composeRule.onNodeWithText("Hint").assertExists()
+        composeRule.onNodeWithText("Day 4").assertExists() // daily streak in the stats row
     }
 
     @Test fun rendersRichBoardFlipped() {

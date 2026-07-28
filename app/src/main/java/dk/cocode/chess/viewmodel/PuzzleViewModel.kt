@@ -12,6 +12,7 @@ import dk.cocode.chess.core.model.Square
 import dk.cocode.chess.core.model.SubmitResult
 import dk.cocode.chess.data.Progress
 import dk.cocode.chess.data.ProgressRepository
+import dk.cocode.chess.util.localEpochDay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -20,18 +21,18 @@ import kotlinx.coroutines.launch
 
 /**
  * Drives the puzzle screen. Progress is the persisted source of truth (collected from [progress]);
- * solves and fails record atomically, each at most once per puzzle — solving after a wrong attempt
+ * solves and fails record atomically, gated by [SolveAccounting] — solving after a wrong attempt
  * still counts. Requires a non-empty [puzzles] (the caller guarantees this).
  */
 class PuzzleViewModel(
     private val puzzles: PuzzleRepository,
     private val progress: ProgressRepository,
+    private val today: () -> Long = { localEpochDay() },
 ) : ViewModel() {
 
     private var index = 0
     private var session = PuzzleSession.start(puzzles.all()[0])
-    private val failCounted = mutableSetOf<Int>()
-    private val solveCounted = mutableSetOf<Int>()
+    private val accounting = SolveAccounting()
     private var resumed = false
     private var base = Progress()
     private val bands: Map<Difficulty, List<Int>> =
@@ -40,7 +41,7 @@ class PuzzleViewModel(
     /** Only the bands that actually contain puzzles, so the UI never offers a dead difficulty. */
     val availableDifficulties: List<Difficulty> = Difficulty.entries.filter { bands[it]?.isNotEmpty() == true }
 
-    private val _state = MutableStateFlow(session.toUiState(base))
+    private val _state = MutableStateFlow(render())
     val state: StateFlow<PuzzleUiState> = _state.asStateFlow()
 
     init {
@@ -51,13 +52,7 @@ class PuzzleViewModel(
                     resumed = true
                     if (saved.index in 1 until puzzles.count()) loadPuzzleAt(saved.index)
                 }
-                _state.update {
-                    it.copy(
-                        solvedCount = saved.solvedCount,
-                        currentStreak = saved.currentStreak,
-                        bestStreak = saved.bestStreak,
-                    )
-                }
+                _state.update { it.withProgress(saved, today()) }
             }
         }
     }
@@ -106,8 +101,8 @@ class PuzzleViewModel(
     }
 
     fun onReset() {
-        session.reset() // a reset puzzle keeps its counted flags, so re-solving never re-earns progress
-        _state.value = session.toUiState(base)
+        session.reset() // accounting keeps its counted flags, so re-solving today never re-earns
+        _state.value = render()
     }
 
     fun onNext() {
@@ -124,8 +119,11 @@ class PuzzleViewModel(
     private fun loadPuzzleAt(target: Int) {
         index = target
         session = PuzzleSession.start(puzzles.all()[target])
-        _state.value = session.toUiState(base)
+        _state.value = render()
     }
+
+    /** The full render recipe — the single place the clock is sampled for display. */
+    private fun render() = session.toUiState(base, today())
 
     private fun jumpTo(target: Int) {
         resumed = true // a deliberate jump cancels the one-time resume to the saved index
@@ -156,8 +154,7 @@ class PuzzleViewModel(
     }
 
     private fun onWrong() {
-        // A first mistake breaks the streak once; a puzzle already solved cannot break it again.
-        if (index !in solveCounted) recordOnce(failCounted) { progress.recordFailed() }
+        if (accounting.countFail(today(), index)) viewModelScope.launch { progress.recordFailed() }
         session.retry() // un-lock so the player can try again (the move was never applied)
         _state.update {
             it.copy(
@@ -180,7 +177,8 @@ class PuzzleViewModel(
     }
 
     private fun onSolved(playerMove: MoveStep) {
-        recordOnce(solveCounted) { progress.recordSolved() }
+        val day = today() // sampled at the solve, not when the write coroutine runs
+        if (accounting.countSolve(day, index)) viewModelScope.launch { progress.recordSolved(day) }
         _state.update {
             it.copy(
                 board = session.state.board.toRows(), lastMove = Highlight(playerMove.from, playerMove.to),
@@ -188,9 +186,5 @@ class PuzzleViewModel(
                 status = PuzzleStatus.SOLVED, feedback = Feedback.SOLVED, promptText = "Solved!",
             )
         }
-    }
-
-    private fun recordOnce(counted: MutableSet<Int>, action: suspend () -> Unit) {
-        if (counted.add(index)) viewModelScope.launch { action() } // each event counted once per puzzle
     }
 }

@@ -2,10 +2,12 @@ package dk.cocode.chess.data
 
 import android.content.Context
 import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.MutablePreferences
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -20,6 +22,22 @@ private val SOLVED = intPreferencesKey("solved")
 private val STREAK = intPreferencesKey("streak")
 private val BEST = intPreferencesKey("best")
 private val INDEX = intPreferencesKey("index")
+private val DAY_STREAK = intPreferencesKey("dayStreak")
+private val LAST_SOLVED_DAY = longPreferencesKey("lastSolvedDay")
+
+private fun Preferences.toProgress() = Progress(
+    this[SOLVED] ?: 0, this[STREAK] ?: 0, this[BEST] ?: 0, this[INDEX] ?: 0,
+    this[DAY_STREAK] ?: 0, this[LAST_SOLVED_DAY] ?: 0L,
+)
+
+private fun MutablePreferences.write(progress: Progress) {
+    this[SOLVED] = progress.solvedCount
+    this[STREAK] = progress.currentStreak
+    this[BEST] = progress.bestStreak
+    this[INDEX] = progress.index
+    this[DAY_STREAK] = progress.dayStreak
+    this[LAST_SOLVED_DAY] = progress.lastSolvedDay
+}
 
 /** [ProgressRepository] backed by a Jetpack Preferences DataStore with atomic updates. */
 class DataStoreProgressRepository(
@@ -29,17 +47,11 @@ class DataStoreProgressRepository(
     // distinctUntilChanged: the store is shared with settings, so theme writes re-emit unchanged prefs.
     override val progress: Flow<Progress> = dataStore.data
         .catch { e -> if (e is IOException) emit(emptyPreferences()) else throw e }
-        .map { prefs ->
-            Progress(prefs[SOLVED] ?: 0, prefs[STREAK] ?: 0, prefs[BEST] ?: 0, prefs[INDEX] ?: 0)
-        }.distinctUntilChanged()
+        .map { prefs -> prefs.toProgress() }
+        .distinctUntilChanged()
 
-    override suspend fun recordSolved() {
-        dataStore.edit { prefs ->
-            val streak = (prefs[STREAK] ?: 0) + 1
-            prefs[SOLVED] = (prefs[SOLVED] ?: 0) + 1
-            prefs[STREAK] = streak
-            prefs[BEST] = maxOf(prefs[BEST] ?: 0, streak)
-        }
+    override suspend fun recordSolved(epochDay: Long) {
+        dataStore.edit { prefs -> prefs.write(prefs.toProgress().solvedOn(epochDay)) }
     }
 
     override suspend fun recordFailed() {

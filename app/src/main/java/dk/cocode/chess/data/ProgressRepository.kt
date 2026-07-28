@@ -2,20 +2,42 @@ package dk.cocode.chess.data
 
 import kotlinx.coroutines.flow.Flow
 
-/** Persisted player progress across sessions. [index] is the puzzle to resume at. */
+/**
+ * Persisted player progress across sessions. [index] is the puzzle to resume at; [dayStreak] is
+ * the run of consecutive local calendar days ([lastSolvedDay], epoch-based) with a solve.
+ */
 data class Progress(
     val solvedCount: Int = 0,
     val currentStreak: Int = 0,
     val bestStreak: Int = 0,
     val index: Int = 0,
+    val dayStreak: Int = 0,
+    val lastSolvedDay: Long = 0,
 )
+
+/** Pure update for one solve on [epochDay]: counters, best, and the daily run. */
+fun Progress.solvedOn(epochDay: Long): Progress {
+    val streak = currentStreak + 1
+    val days = when {
+        epochDay <= lastSolvedDay -> maxOf(dayStreak, 1) // same day — or a clock that moved backwards
+        epochDay == lastSolvedDay + 1 -> dayStreak + 1
+        else -> 1
+    }
+    return copy(
+        solvedCount = solvedCount + 1, currentStreak = streak, bestStreak = maxOf(bestStreak, streak),
+        dayStreak = days, lastSolvedDay = maxOf(lastSolvedDay, epochDay), // the marker only advances
+    )
+}
+
+/** The day streak to display on [today]: a run not extended today or yesterday has lapsed. */
+fun Progress.dayStreakAsOf(today: Long): Int = if (today - lastSolvedDay > 1) 0 else dayStreak
 
 interface ProgressRepository {
     /** Emits the current progress and every subsequent change. */
     val progress: Flow<Progress>
 
-    /** Atomically: solved++, streak++, best = max(best, streak). */
-    suspend fun recordSolved()
+    /** Atomically applies [solvedOn] for a solve on the local [epochDay]. */
+    suspend fun recordSolved(epochDay: Long)
 
     /** Atomically resets the current streak to 0. */
     suspend fun recordFailed()

@@ -4,9 +4,10 @@ import dk.cocode.chess.core.engine.PuzzleSession
 import dk.cocode.chess.core.model.PieceColor
 import dk.cocode.chess.core.model.Puzzle
 import dk.cocode.chess.data.Progress
+import dk.cocode.chess.data.dayStreakAsOf
 
 /** Builds the rendered [PuzzleUiState] from the session snapshot and persisted [base] progress. */
-internal fun PuzzleSession.toUiState(base: Progress): PuzzleUiState {
+internal fun PuzzleSession.toUiState(base: Progress, today: Long): PuzzleUiState {
     val snapshot = state
     return PuzzleUiState(
         board = snapshot.board.toRows(),
@@ -14,12 +15,17 @@ internal fun PuzzleSession.toUiState(base: Progress): PuzzleUiState {
         lastMove = Highlight(snapshot.lastMove.from, snapshot.lastMove.to),
         status = snapshot.status,
         rating = puzzle.rating,
-        solvedCount = base.solvedCount,
-        currentStreak = base.currentStreak,
-        bestStreak = base.bestStreak,
         promptText = prompt(),
-    )
+    ).withProgress(base, today)
 }
+
+/** Copies the persisted counters into the rendered state; the daily run lapses if [today] is late. */
+internal fun PuzzleUiState.withProgress(base: Progress, today: Long): PuzzleUiState = copy(
+    solvedCount = base.solvedCount,
+    currentStreak = base.currentStreak,
+    bestStreak = base.bestStreak,
+    dayStreak = base.dayStreakAsOf(today),
+)
 
 /** E.g. "White to move — checkmate in 2", counting down as the solution progresses. */
 internal fun PuzzleSession.prompt(): String {
