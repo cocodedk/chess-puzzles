@@ -88,7 +88,7 @@ class PuzzleViewModelTest {
         assertEquals(Progress(1, 1, 1, 0, 1, 100), progress.current()) // solved twice, counted once
     }
 
-    @Test fun wrongMoveLetsYouRetryAndResetsStreak() = runTest(dispatcher) {
+    @Test fun wrongMoveLetsYouRetryWithoutBreakingTheStreak() = runTest(dispatcher) {
         val progress = FakeProgressRepository(Progress(0, 5, 5, 0))
         val viewModel = vm(progress)
         advanceUntilIdle()
@@ -101,11 +101,11 @@ class PuzzleViewModelTest {
             assertNull(selected)
         }
         advanceUntilIdle()
-        assertEquals(0, progress.current().currentStreak) // an error still breaks the streak
+        assertEquals(5, progress.current().currentStreak) // mistakes alone never break the streak
         viewModel.onSquareTapped(sq("b7")); viewModel.onSquareTapped(sq("g7")) // retry succeeds
         assertEquals(PuzzleStatus.SOLVED, viewModel.state.value.status)
         advanceUntilIdle()
-        assertEquals(Progress(1, 1, 5, 0, 1, 100), progress.current()) // the solve still counts; streak restarts
+        assertEquals(Progress(1, 6, 6, 0, 1, 100), progress.current()) // the solve extends the run
     }
 
     @Test fun mateInTwoAutoPlaysReply() = runTest(dispatcher) {

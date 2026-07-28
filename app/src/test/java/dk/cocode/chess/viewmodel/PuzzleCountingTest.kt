@@ -29,20 +29,21 @@ class PuzzleCountingTest {
     private fun vm(progress: FakeProgressRepository, today: () -> Long = { 100 }) =
         PuzzleViewModel(testPuzzleRepository(), progress, today)
 
-    @Test fun aFailedPuzzleBreaksTheStreakOnceAndStillEarnsItsSolve() = runTest(dispatcher) {
-        val progress = FakeProgressRepository(Progress(index = 3)) // BK, last in the easy band [0,2,3]
+    @Test fun skippingAFailedPuzzleBreaksTheStreakOnlyOncePerDay() = runTest(dispatcher) {
+        val progress = FakeProgressRepository(Progress(0, 5, 5, 3)) // resume on BK with a streak of 5
         val viewModel = vm(progress)
         advanceUntilIdle()
-        viewModel.onSquareTapped(Square.of("b2")); viewModel.onSquareTapped(Square.of("a2")) // wrong
-        viewModel.onNext() // wraps to M1 (index 0)
+        viewModel.onSquareTapped(Square.of("b2")); viewModel.onSquareTapped(Square.of("a2")) // wrong on BK
+        viewModel.onNext() // skipping the failed puzzle is what breaks the streak
+        advanceUntilIdle()
+        assertEquals(0, progress.current().currentStreak)
         viewModel.onSquareTapped(Square.of("b7")); viewModel.onSquareTapped(Square.of("g7")) // solve M1
         viewModel.onNext() // PR (index 2)
         viewModel.onNext() // back to BK (index 3)
-        viewModel.onSquareTapped(Square.of("b2")); viewModel.onSquareTapped(Square.of("a2")) // wrong again
-        viewModel.onSquareTapped(Square.of("b2")); viewModel.onSquareTapped(Square.of("g2")) // solve BK
+        viewModel.onSquareTapped(Square.of("b2")); viewModel.onSquareTapped(Square.of("a2")) // fail BK again
+        viewModel.onNext() // skipping it again today cannot break the streak twice
         advanceUntilIdle()
-        // BK broke the streak only on its first wrong move, and its later solve still counted.
-        assertEquals(Progress(2, 2, 2, 3, 1, 100), progress.current())
+        assertEquals(Progress(1, 1, 5, 0, 1, 100), progress.current())
     }
 
     @Test fun replayOfASolvedPuzzleCannotBreakTheStreak() = runTest(dispatcher) {
@@ -51,8 +52,10 @@ class PuzzleCountingTest {
         viewModel.onSquareTapped(Square.of("b7")); viewModel.onSquareTapped(Square.of("g7")) // solve M1
         viewModel.onReset()
         viewModel.onSquareTapped(Square.of("b7")); viewModel.onSquareTapped(Square.of("b2")) // wrong replay
+        viewModel.onNext() // even skipping the failed replay is free — it was already solved today
+        viewModel.onNext() // and the pending fail flag must not leak onto the untouched next puzzle
         advanceUntilIdle()
-        assertEquals(Progress(1, 1, 1, 0, 1, 100), progress.current()) // no penalty: the solve already counted
+        assertEquals(Progress(1, 1, 1, 3, 1, 100), progress.current())
     }
 
     @Test fun dayStreakGrowsPerDayAndLapsesWhenDisplayedStale() = runTest(dispatcher) {
