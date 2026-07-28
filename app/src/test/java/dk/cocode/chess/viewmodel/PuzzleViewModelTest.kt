@@ -31,7 +31,7 @@ class PuzzleViewModelTest {
     @After fun tearDown() = Dispatchers.resetMain()
 
     private fun vm(progress: FakeProgressRepository = FakeProgressRepository()) =
-        PuzzleViewModel(testPuzzleRepository(), progress)
+        PuzzleViewModel(testPuzzleRepository(), progress) { 100 } // fixed clock: epoch day 100
 
     private fun sq(name: String) = Square.of(name)
 
@@ -73,7 +73,7 @@ class PuzzleViewModelTest {
         assertEquals(PuzzleStatus.SOLVED, viewModel.state.value.status)
         assertEquals(Feedback.SOLVED, viewModel.state.value.feedback)
         advanceUntilIdle()
-        assertEquals(Progress(1, 1, 1, 0), progress.current())
+        assertEquals(Progress(1, 1, 1, 0, 1, 100), progress.current())
         assertEquals(1, viewModel.state.value.solvedCount)
     }
 
@@ -85,7 +85,7 @@ class PuzzleViewModelTest {
         viewModel.onReset()
         viewModel.onSquareTapped(sq("b7")); viewModel.onSquareTapped(sq("g7"))
         advanceUntilIdle()
-        assertEquals(1, progress.current().solvedCount) // solved twice, counted once
+        assertEquals(Progress(1, 1, 1, 0, 1, 100), progress.current()) // solved twice, counted once
     }
 
     @Test fun wrongMoveLetsYouRetryAndResetsStreak() = runTest(dispatcher) {
@@ -105,7 +105,7 @@ class PuzzleViewModelTest {
         viewModel.onSquareTapped(sq("b7")); viewModel.onSquareTapped(sq("g7")) // retry succeeds
         assertEquals(PuzzleStatus.SOLVED, viewModel.state.value.status)
         advanceUntilIdle()
-        assertEquals(Progress(1, 1, 5, 0), progress.current()) // the solve still counts; streak restarts
+        assertEquals(Progress(1, 1, 5, 0, 1, 100), progress.current()) // the solve still counts; streak restarts
     }
 
     @Test fun mateInTwoAutoPlaysReply() = runTest(dispatcher) {

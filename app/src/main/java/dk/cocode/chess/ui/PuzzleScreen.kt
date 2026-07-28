@@ -92,6 +92,7 @@ fun PuzzleScreenContent(
         ) {
             Text("Puzzle ${state.rating}", style = MaterialTheme.typography.titleLarge)
             Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                Text("Day ${state.dayStreak}")
                 Text("Solved ${state.solvedCount}")
                 Text("Streak ${state.currentStreak}")
                 Text("Best ${state.bestStreak}")
