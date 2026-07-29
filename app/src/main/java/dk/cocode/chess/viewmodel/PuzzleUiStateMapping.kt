@@ -22,6 +22,7 @@ internal fun PuzzleSession.toUiState(base: Progress, today: Long): PuzzleUiState
 /** Copies the persisted counters into the rendered state; the daily run lapses if [today] is late. */
 internal fun PuzzleUiState.withProgress(base: Progress, today: Long): PuzzleUiState = copy(
     solvedCount = base.solvedCount,
+    hintFreeCount = base.hintFreeCount,
     currentStreak = base.currentStreak,
     bestStreak = base.bestStreak,
     dayStreak = base.dayStreakAsOf(today),

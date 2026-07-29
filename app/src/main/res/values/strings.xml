@@ -2,6 +2,12 @@
 <resources>
     <string name="app_name">Chess Puzzles</string>
 
+    <string name="stat_day">Day streak</string>
+    <string name="stat_solved">Solved</string>
+    <string name="stat_hint_free">Solved without a hint</string>
+    <string name="stat_streak">Current streak</string>
+    <string name="stat_best">Best streak</string>
+
     <string name="about">About</string>
     <string name="about_back">Back</string>
     <string name="about_tagline">Solve real tactical puzzles from the Lichess database — find the best move, fully offline.</string>

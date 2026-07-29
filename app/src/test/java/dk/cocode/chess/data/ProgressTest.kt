@@ -3,20 +3,27 @@ package dk.cocode.chess.data
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-/** Pure day-streak rules on [Progress]: how a solve extends the run and when the display lapses. */
+/** Pure solve rules on [Progress]: the daily run, when the display lapses, and the hint-free tally. */
 class ProgressTest {
     @Test fun firstSolveOnTheDefaultDayStillStartsTheDailyRun() {
-        assertEquals(1, Progress().solvedOn(0).dayStreak)
+        assertEquals(1, Progress().solvedOn(0, hintFree = true).dayStreak)
     }
 
     @Test fun aSecondSolveTheSameDayKeepsTheRun() {
-        assertEquals(3, Progress(dayStreak = 3, lastSolvedDay = 100).solvedOn(100).dayStreak)
+        assertEquals(3, Progress(dayStreak = 3, lastSolvedDay = 100).solvedOn(100, hintFree = true).dayStreak)
     }
 
     @Test fun aClockThatMovedBackwardsKeepsTheRunAndNeverRewindsTheMarker() {
         // Westward travel: the run survives AND lastSolvedDay stays at 100, so the corrected clock
         // neither lapses the run retroactively nor double-counts day 100.
-        assertEquals(Progress(1, 1, 1, 0, 3, 100), Progress(dayStreak = 3, lastSolvedDay = 100).solvedOn(99))
+        val progress = Progress(dayStreak = 3, lastSolvedDay = 100)
+        assertEquals(Progress(1, 1, 1, 0, 3, 100), progress.solvedOn(99, hintFree = false))
+    }
+
+    @Test fun onlyHintFreeSolvesRaiseTheHintFreeTally() {
+        val progress = Progress().solvedOn(5, hintFree = true).solvedOn(5, hintFree = false)
+        assertEquals(2, progress.solvedCount)
+        assertEquals(1, progress.hintFreeCount)
     }
 
     @Test fun displayedDayStreakLapsesAfterAMissedDay() {

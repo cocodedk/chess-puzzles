@@ -57,7 +57,8 @@ class FakeProgressRepository(initial: Progress = Progress()) : ProgressRepositor
 
     fun current(): Progress = state.value
 
-    override suspend fun recordSolved(epochDay: Long) = state.update { it.solvedOn(epochDay) }
+    override suspend fun recordSolved(epochDay: Long, hintFree: Boolean) =
+        state.update { it.solvedOn(epochDay, hintFree) }
 
     override suspend fun recordFailed() = state.update { it.copy(currentStreak = 0) }
 

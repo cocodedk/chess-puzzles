@@ -24,6 +24,7 @@ data class PuzzleUiState(
     val feedback: Feedback = Feedback.NONE,
     val rating: Int = 0,
     val solvedCount: Int = 0,
+    val hintFreeCount: Int = 0,
     val currentStreak: Int = 0,
     val bestStreak: Int = 0,
     val dayStreak: Int = 0,

@@ -4,7 +4,8 @@ import kotlinx.coroutines.flow.Flow
 
 /**
  * Persisted player progress across sessions. [index] is the puzzle to resume at; [dayStreak] is
- * the run of consecutive local calendar days ([lastSolvedDay], epoch-based) with a solve.
+ * the run of consecutive local calendar days ([lastSolvedDay], epoch-based) with a solve;
+ * [hintFreeCount] is the subset of [solvedCount] solved without the hint ever being shown.
  */
 data class Progress(
     val solvedCount: Int = 0,
@@ -13,10 +14,11 @@ data class Progress(
     val index: Int = 0,
     val dayStreak: Int = 0,
     val lastSolvedDay: Long = 0,
+    val hintFreeCount: Int = 0,
 )
 
-/** Pure update for one solve on [epochDay]: counters, best, and the daily run. */
-fun Progress.solvedOn(epochDay: Long): Progress {
+/** Pure update for one solve on [epochDay]: counters, best, the daily run, and the [hintFree] tally. */
+fun Progress.solvedOn(epochDay: Long, hintFree: Boolean): Progress {
     val streak = currentStreak + 1
     val days = when {
         epochDay <= lastSolvedDay -> maxOf(dayStreak, 1) // same day — or a clock that moved backwards
@@ -26,6 +28,7 @@ fun Progress.solvedOn(epochDay: Long): Progress {
     return copy(
         solvedCount = solvedCount + 1, currentStreak = streak, bestStreak = maxOf(bestStreak, streak),
         dayStreak = days, lastSolvedDay = maxOf(lastSolvedDay, epochDay), // the marker only advances
+        hintFreeCount = hintFreeCount + if (hintFree) 1 else 0,
     )
 }
 
@@ -37,7 +40,7 @@ interface ProgressRepository {
     val progress: Flow<Progress>
 
     /** Atomically applies [solvedOn] for a solve on the local [epochDay]. */
-    suspend fun recordSolved(epochDay: Long)
+    suspend fun recordSolved(epochDay: Long, hintFree: Boolean)
 
     /** Atomically resets the current streak to 0. */
     suspend fun recordFailed()

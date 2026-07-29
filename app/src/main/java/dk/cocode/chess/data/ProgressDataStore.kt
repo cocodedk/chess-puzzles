@@ -24,10 +24,11 @@ private val BEST = intPreferencesKey("best")
 private val INDEX = intPreferencesKey("index")
 private val DAY_STREAK = intPreferencesKey("dayStreak")
 private val LAST_SOLVED_DAY = longPreferencesKey("lastSolvedDay")
+private val HINT_FREE = intPreferencesKey("hintFree")
 
 private fun Preferences.toProgress() = Progress(
     this[SOLVED] ?: 0, this[STREAK] ?: 0, this[BEST] ?: 0, this[INDEX] ?: 0,
-    this[DAY_STREAK] ?: 0, this[LAST_SOLVED_DAY] ?: 0L,
+    this[DAY_STREAK] ?: 0, this[LAST_SOLVED_DAY] ?: 0L, this[HINT_FREE] ?: 0,
 )
 
 private fun MutablePreferences.write(progress: Progress) {
@@ -37,6 +38,7 @@ private fun MutablePreferences.write(progress: Progress) {
     this[INDEX] = progress.index
     this[DAY_STREAK] = progress.dayStreak
     this[LAST_SOLVED_DAY] = progress.lastSolvedDay
+    this[HINT_FREE] = progress.hintFreeCount
 }
 
 /** [ProgressRepository] backed by a Jetpack Preferences DataStore with atomic updates. */
@@ -50,8 +52,8 @@ class DataStoreProgressRepository(
         .map { prefs -> prefs.toProgress() }
         .distinctUntilChanged()
 
-    override suspend fun recordSolved(epochDay: Long) {
-        dataStore.edit { prefs -> prefs.write(prefs.toProgress().solvedOn(epochDay)) }
+    override suspend fun recordSolved(epochDay: Long, hintFree: Boolean) {
+        dataStore.edit { prefs -> prefs.write(prefs.toProgress().solvedOn(epochDay, hintFree)) }
     }
 
     override suspend fun recordFailed() {
