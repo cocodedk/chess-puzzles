@@ -28,7 +28,7 @@ val DayBoardPalette = BoardPalette(
     hintTint = Color(0x553F51B5),
     marker = Color(0x40000000),
     darkPieceOutline = Color(0xFFEDEDED),
-    pieceOutlineWidth = 0.035f,
+    pieceOutlineWidth = 0.05f,
     darkPieceHalo = Color.Transparent,
     darkPieceHaloWidth = 0f,
 )
@@ -36,12 +36,13 @@ val DayBoardPalette = BoardPalette(
 /**
  * The walnut board dimmed so it does not glare in a dark room. Highlights are brightened —
  * the day tints sink below 1.25:1 on dark wood; these stay above 1.6:1 (script-verified).
- * Piece rims are brighter and thicker: a black fill is only ~1.5:1 against the night dark
- * square, so the rim alone must carry the silhouette.
+ * The dark square is deliberately not as deep as the dimming would suggest: below ~#50 the
+ * dark pieces sink into it (a #0A1420 fill was 1.5:1 against #46301C, and is ~2:1 here).
+ * Piece rims are still brighter and thicker than day — the rim carries the silhouette.
  */
 val NightBoardPalette = BoardPalette(
     lightSquare = Color(0xFF8A6844),
-    darkSquare = Color(0xFF46301C),
+    darkSquare = Color(0xFF5C4126),
     selectedTint = Color(0x8842C6FF),
     lastMoveTint = Color(0x66FFD54F),
     hintTint = Color(0x9991A7FF),

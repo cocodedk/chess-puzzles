@@ -14,7 +14,8 @@ import dk.cocode.chess.core.model.Square
 import dk.cocode.chess.viewmodel.PuzzleUiState
 
 internal val PIECE_WHITE = Color.White
-internal val PIECE_DARK = Color(0xFF101010)
+// Cool ink rather than neutral black: at equal luminance it separates by hue from the warm wood.
+internal val PIECE_DARK = Color(0xFF0A1420)
 internal val PIECE_WHITE_OUTLINE = Color(0xFF2B2B2B)
 
 internal fun DrawScope.drawSquares(palette: BoardPalette, squarePx: Float, flipped: Boolean) {

@@ -1,12 +1,14 @@
 package dk.cocode.chess.ui.board
 
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class BoardPaletteTest {
     @Test fun nightRimIsThickerAndBrighterThanDay() {
-        // A black fill is ~1.5:1 against the night dark square, so the rim carries the piece.
+        // A dark fill is only ~2:1 against the night dark square, so the rim carries the piece.
         assertTrue(NightBoardPalette.pieceOutlineWidth > DayBoardPalette.pieceOutlineWidth)
         assertNotEquals(DayBoardPalette.darkPieceOutline, NightBoardPalette.darkPieceOutline)
     }
@@ -22,6 +24,19 @@ class BoardPaletteTest {
         assertTrue(NightBoardPalette.darkSquare.luminance() < DayBoardPalette.darkSquare.luminance())
     }
 
-    private fun androidx.compose.ui.graphics.Color.luminance(): Float =
-        0.2126f * red + 0.7152f * green + 0.0722f * blue
+    /**
+     * The dark squares are tuned around [PIECE_DARK] — the night square is deliberately lighter than
+     * the dimming alone would give, so the pieces do not sink into it. Prose cannot enforce that.
+     */
+    @Test fun darkPiecesStayLegibleOnTheSquaresTheySitOn() {
+        assertTrue(contrast(PIECE_DARK, DayBoardPalette.darkSquare) > 3.5f)
+        assertTrue(contrast(PIECE_DARK, NightBoardPalette.darkSquare) > 1.85f)
+    }
+
+    /** WCAG contrast ratio between two opaque colors. */
+    private fun contrast(a: Color, b: Color): Float {
+        val hi = maxOf(a.luminance(), b.luminance())
+        val lo = minOf(a.luminance(), b.luminance())
+        return (hi + 0.05f) / (lo + 0.05f)
+    }
 }
