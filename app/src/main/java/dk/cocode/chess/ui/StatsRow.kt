@@ -16,20 +16,23 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import dk.cocode.chess.R
-import dk.cocode.chess.viewmodel.PuzzleUiState
 
 /**
  * The counters above the board. Each is an icon plus its number — five labelled stats would not fit
  * on one line on a small phone. The icon's content description is what a screen reader announces.
+ *
+ * Takes the five numbers rather than the whole [dk.cocode.chess.viewmodel.PuzzleUiState]: that type
+ * holds collections Compose cannot prove stable, so passing it would re-run this row on every board
+ * tap. With plain Ints the row is skipped until a counter actually changes.
  */
 @Composable
-fun StatsRow(state: PuzzleUiState) {
+fun StatsRow(dayStreak: Int, solved: Int, hintFree: Int, streak: Int, best: Int) {
     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
-        Stat(R.drawable.ic_stat_day, R.string.stat_day, state.dayStreak)
-        Stat(R.drawable.ic_stat_solved, R.string.stat_solved, state.solvedCount)
-        Stat(R.drawable.ic_stat_hint_free, R.string.stat_hint_free, state.hintFreeCount)
-        Stat(R.drawable.ic_stat_streak, R.string.stat_streak, state.currentStreak)
-        Stat(R.drawable.ic_stat_best, R.string.stat_best, state.bestStreak)
+        Stat(R.drawable.ic_stat_day, R.string.stat_day, dayStreak)
+        Stat(R.drawable.ic_stat_solved, R.string.stat_solved, solved)
+        Stat(R.drawable.ic_stat_hint_free, R.string.stat_hint_free, hintFree)
+        Stat(R.drawable.ic_stat_streak, R.string.stat_streak, streak)
+        Stat(R.drawable.ic_stat_best, R.string.stat_best, best)
     }
 }
 

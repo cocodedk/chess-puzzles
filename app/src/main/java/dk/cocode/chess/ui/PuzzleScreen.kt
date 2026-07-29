@@ -91,7 +91,10 @@ fun PuzzleScreenContent(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text("Puzzle ${state.rating}", style = MaterialTheme.typography.titleLarge)
-            StatsRow(state)
+            StatsRow(
+                dayStreak = state.dayStreak, solved = state.solvedCount, hintFree = state.hintFreeCount,
+                streak = state.currentStreak, best = state.bestStreak,
+            )
             Spacer(Modifier.height(8.dp))
             DifficultyRow(available = difficulties, current = difficultyOf(state.rating), onSelect = onDifficulty)
             Spacer(Modifier.height(8.dp))

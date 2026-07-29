@@ -64,7 +64,7 @@ class PuzzleViewModel(
         when {
             current.selected == null -> select(square)
             square == current.selected -> clearSelection()
-            square in current.legalTargets -> attempt(current.selected, square, null)
+            square in current.legalTargets -> submit(current.selected, square, null)
             else -> select(square)
         }
     }
@@ -75,13 +75,13 @@ class PuzzleViewModel(
 
     fun onDragEnd(target: Square) {
         val from = _state.value.selected ?: return
-        if (target in _state.value.legalTargets) attempt(from, target, null) else clearSelection()
+        if (target in _state.value.legalTargets) submit(from, target, null) else clearSelection()
     }
 
     fun onPromotionChosen(type: PieceType) {
         val pending = _state.value.pendingPromotion ?: return
         _state.update { it.copy(pendingPromotion = null) }
-        attempt(pending.from, pending.to, type)
+        submit(pending.from, pending.to, type)
     }
 
     fun onPromotionCancelled() {
@@ -146,7 +146,7 @@ class PuzzleViewModel(
     private fun clearSelection() =
         _state.update { it.copy(selected = null, legalTargets = emptySet(), hint = null) }
 
-    private fun attempt(from: Square, to: Square, promotion: PieceType?) {
+    private fun submit(from: Square, to: Square, promotion: PieceType?) {
         when (val result = session.submitMove(MoveIntent(from, to, promotion))) {
             // The only illegal move the UI can submit is a pawn reaching the last rank without a
             // promotion piece chosen yet, so surface the promotion picker.
