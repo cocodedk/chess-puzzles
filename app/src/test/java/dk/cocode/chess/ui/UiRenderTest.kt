@@ -1,10 +1,14 @@
 package dk.cocode.chess.ui
 
 import androidx.activity.ComponentActivity
+import androidx.compose.ui.test.getUnclippedBoundsInRoot
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.unit.width
 import dk.cocode.chess.PHONE_QUALIFIERS
 import dk.cocode.chess.containsColor
 import dk.cocode.chess.core.model.PieceType
@@ -66,7 +70,7 @@ class UiRenderTest {
         lastMove = Highlight(Square.of("d2"), Square.of("d4")),
         hint = Highlight(Square.of("g1"), Square.of("f3")),
         status = PuzzleStatus.IN_PROGRESS, feedback = Feedback.CORRECT,
-        rating = 1500, solvedCount = 3, currentStreak = 2, bestStreak = 5, dayStreak = 4,
+        rating = 1500, solvedCount = 3, hintFreeCount = 2, currentStreak = 6, bestStreak = 5, dayStreak = 4,
         promptText = "White to move",
     )
 
@@ -75,7 +79,17 @@ class UiRenderTest {
         val bitmap = composeRule.renderToBitmap()
         assertTrue(bitmap.containsColor(DayBoardPalette.darkSquare.toArgb())) // day board drawn
         composeRule.onNodeWithText("Hint").assertExists()
-        composeRule.onNodeWithText("Day 4").assertExists() // daily streak in the stats row
+        composeRule.onNodeWithContentDescription("Day streak").assertExists() // stats row icons
+        composeRule.onNodeWithText("2").assertExists() // ... each with its number: hint-free solves
+    }
+
+    @Test fun statsRowKeepsFiveIconsOnOneLine() {
+        show(rich(flipped = false))
+        composeRule.renderToBitmap()
+        val day = composeRule.onNodeWithContentDescription("Day streak").getUnclippedBoundsInRoot()
+        val best = composeRule.onNodeWithContentDescription("Best streak").getUnclippedBoundsInRoot()
+        assertEquals(day.top, best.top) // one row ...
+        assertTrue(best.right <= composeRule.onRoot().getUnclippedBoundsInRoot().width) // ... and on screen
     }
 
     @Test fun rendersRichBoardFlipped() {

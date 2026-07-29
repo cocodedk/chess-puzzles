@@ -33,7 +33,7 @@ class PuzzleViewModel(
     private var index = 0
     private var session = PuzzleSession.start(puzzles.all()[0])
     private val accounting = SolveAccounting()
-    private var failedAttempt = false // an unresolved wrong attempt on the current puzzle
+    private var attempt = PuzzleAttempt() // what the current puzzle has cost so far
     private var resumed = false
     private var base = Progress()
     private val bands: Map<Difficulty, List<Int>> =
@@ -91,6 +91,7 @@ class PuzzleViewModel(
 
     fun onHint() {
         if (_state.value.status != PuzzleStatus.IN_PROGRESS) return
+        attempt.hintUsed = true
         val hint = session.hint()
         _state.update {
             it.copy(
@@ -119,7 +120,7 @@ class PuzzleViewModel(
 
     private fun loadPuzzleAt(target: Int) {
         index = target
-        failedAttempt = false
+        attempt = PuzzleAttempt()
         session = PuzzleSession.start(puzzles.all()[target])
         _state.value = render()
     }
@@ -131,7 +132,7 @@ class PuzzleViewModel(
         resumed = true // a deliberate jump cancels the one-time resume to the saved index
         // Skipping a puzzle you failed and never solved breaks the streak (reads the OLD `index` —
         // the fail belongs to the puzzle being left; setIndex below persists the destination).
-        if (failedAttempt && accounting.countFail(today(), index)) viewModelScope.launch { progress.recordFailed() }
+        if (attempt.failed && accounting.countFail(today(), index)) viewModelScope.launch { progress.recordFailed() }
         loadPuzzleAt(target)
         viewModelScope.launch { progress.setIndex(index) }
     }
@@ -159,7 +160,7 @@ class PuzzleViewModel(
     }
 
     private fun onWrong() {
-        failedAttempt = true // mistakes alone never break the streak — see jumpTo
+        attempt.failed = true // mistakes alone never break the streak — see jumpTo
         session.retry() // un-lock so the player can try again (the move was never applied)
         _state.update {
             it.copy(
@@ -182,9 +183,10 @@ class PuzzleViewModel(
     }
 
     private fun onSolved(playerMove: MoveStep) {
-        failedAttempt = false // solved after all — the earlier mistakes are forgiven
+        attempt.failed = false // solved after all — the earlier mistakes are forgiven
         val day = today() // sampled at the solve, not when the write coroutine runs
-        if (accounting.countSolve(day, index)) viewModelScope.launch { progress.recordSolved(day) }
+        val hintFree = !attempt.hintUsed // read now: loading a puzzle swaps `attempt` before the write runs
+        if (accounting.countSolve(day, index)) viewModelScope.launch { progress.recordSolved(day, hintFree) }
         _state.update {
             it.copy(
                 board = session.state.board.toRows(), lastMove = Highlight(playerMove.from, playerMove.to),

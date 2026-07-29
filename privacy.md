@@ -14,9 +14,10 @@ network access.
 ## Your progress stays on your device
 
 So you can pick up where you left off, the app saves a small amount of data on your device: the
-number of puzzles you have solved, your current and best streak, which puzzle you are on, and your
-light/dark theme choice. This is kept in a private data store on your own phone. It is never sent to
-us or to any third party, and it is removed if you delete the app or clear its data.
+number of puzzles you have solved, how many of those you solved without a hint, your current and best
+streak, which puzzle you are on, and your light/dark theme choice. This is kept in a private data
+store on your own phone. It is never sent to us or to any third party, and it is removed if you
+delete the app or clear its data.
 
 ## No internet, no tracking
 

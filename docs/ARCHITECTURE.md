@@ -34,7 +34,7 @@ Two Gradle modules so the chess/puzzle logic is pure-JVM and fully unit-testable
   `PromotionDialog`.
 - `ui/` — `PuzzleScreen` (stateful) + `PuzzleScreenContent` (stateless); `theme/`.
 - `data/` — `PuzzleAssetDataSource` (reads `assets/puzzles.csv`), `ProgressRepository` +
-  `DataStoreProgressRepository` (Preferences DataStore: solved count, streaks).
+  `DataStoreProgressRepository` (Preferences DataStore: solved count, hint-free solves, streaks).
 - `ChessApp` (composition root, lazy repos), `MainActivity`.
 
 ## Testing & coverage (100%, headless)
