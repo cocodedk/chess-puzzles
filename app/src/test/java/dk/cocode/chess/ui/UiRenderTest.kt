@@ -86,10 +86,13 @@ class UiRenderTest {
     @Test fun statsRowKeepsFiveIconsOnOneLine() {
         show(rich(flipped = false))
         composeRule.renderToBitmap()
-        val day = composeRule.onNodeWithContentDescription("Day streak").getUnclippedBoundsInRoot()
-        val best = composeRule.onNodeWithContentDescription("Best streak").getUnclippedBoundsInRoot()
-        assertEquals(day.top, best.top) // one row ...
-        assertTrue(best.right <= composeRule.onRoot().getUnclippedBoundsInRoot().width) // ... and on screen
+        val screen = composeRule.onRoot().getUnclippedBoundsInRoot().width
+        val stats = listOf("Day streak", "Solved", "Solved without a hint", "Current streak", "Best streak")
+            .map { composeRule.onNodeWithContentDescription(it).getUnclippedBoundsInRoot() }
+        stats.forEach {
+            assertEquals(stats[0].top, it.top) // all five share one row ...
+            assertTrue(it.right <= screen) // ... and none is pushed off a 360dp screen
+        }
     }
 
     @Test fun rendersRichBoardFlipped() {
