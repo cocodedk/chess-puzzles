@@ -51,7 +51,7 @@ internal fun DrawScope.drawPieces(
     flipped: Boolean,
     textMeasurer: TextMeasurer,
 ) {
-    val fontSize = (squarePx * 0.74f).toSp()
+    val fontSize = (squarePx * 0.86f).toSp()
     val outlineWidth = squarePx * palette.pieceOutlineWidth
     for (rank in 0..7) {
         for (file in 0..7) {

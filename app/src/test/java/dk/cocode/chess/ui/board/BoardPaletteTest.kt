@@ -25,13 +25,16 @@ class BoardPaletteTest {
     }
 
     /**
-     * The dark squares are tuned around [PIECE_DARK]: both boards keep the ink pieces above the
-     * WCAG 3:1 bar for non-text, which is what stops them sinking into the wood. Prose cannot
-     * enforce that — dimming the night board any further breaks it.
+     * The squares sit in a narrow mid band so that BOTH piece colours clear the WCAG 3:1 bar for
+     * non-text on the square each one is worst against — ink on dark, white on light. Widening the
+     * band (a lighter light square, or a deeper dark one) buys checker contrast by sinking a piece
+     * colour into the wood, which is exactly what this guards.
      */
-    @Test fun darkPiecesStayLegibleOnTheSquaresTheySitOn() {
+    @Test fun bothPieceColoursStayLegibleOnTheSquaresTheySitOn() {
         assertTrue(contrast(PIECE_DARK, DayBoardPalette.darkSquare) > 3f)
         assertTrue(contrast(PIECE_DARK, NightBoardPalette.darkSquare) > 3f)
+        assertTrue(contrast(PIECE_WHITE, DayBoardPalette.lightSquare) > 3f)
+        assertTrue(contrast(PIECE_WHITE, NightBoardPalette.lightSquare) > 3f)
     }
 
     /** WCAG contrast ratio between two opaque colors. */

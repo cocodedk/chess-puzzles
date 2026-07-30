@@ -19,39 +19,43 @@ data class BoardPalette(
     val darkPieceHaloWidth: Float,
 )
 
-/** Walnut wood, tuned for daylight. */
+/**
+ * Walnut wood, tuned for daylight. The squares sit in a narrow mid band rather than spanning
+ * light-to-dark: a square at luminance 0.19 is equidistant from both piece colours, so pulling them
+ * in is what lets white AND ink clear 3:1 at once. It costs checker contrast (2.69 -> 1.61:1), which
+ * the eye reads easily anyway from the grid.
+ */
 val DayBoardPalette = BoardPalette(
-    lightSquare = Color(0xFFE0C29A),
-    darkSquare = Color(0xFF9C6B43),
-    selectedTint = Color(0x6603A9F4),
-    lastMoveTint = Color(0x55FFEB3B),
-    hintTint = Color(0x553F51B5),
-    marker = Color(0x40000000),
+    lightSquare = Color(0xFFB08A61),
+    darkSquare = Color(0xFF8A6844),
+    selectedTint = Color(0xE0A5E4FF),
+    lastMoveTint = Color(0xCCFFE082),
+    hintTint = Color(0xCC1A237E),
+    marker = Color(0x73000000),
     darkPieceOutline = Color(0xFFEDEDED),
-    pieceOutlineWidth = 0.05f,
+    pieceOutlineWidth = 0.07f,
     darkPieceHalo = Color.Transparent,
     darkPieceHaloWidth = 0f,
 )
 
 /**
- * The walnut board for a dark room. Dimming it further is what used to bury the pieces: against a
- * deep dark square a #0A1420 fill managed only 1.5-2:1, so the rim and aura had to carry the whole
- * silhouette. These squares keep the ink pieces at 3.66:1 on dark and 8.27:1 on light — legible on
- * their own — at the cost of a board that is only a little dimmer than day.
+ * The same narrow band as day, shifted one step down for a dark room. Dimming it further is what
+ * used to bury the pieces: against a deep dark square a #0A1420 fill managed only 1.5-2:1, so the
+ * rim and aura had to carry the whole silhouette.
  *
- * Because the board is now mid-tone rather than deep, the highlight tints follow the day treatment:
- * they read by hue at roughly 1.2-1.9:1, the same range the day tints already ship at. The old
- * night set was brightened for a deep board and would sink to ~1.0:1 on these squares.
+ * Both boards being mid-tone, the tints are shared: a mid-hue wash (the old #03A9F4 at 40-53%)
+ * lands on the squares' own luminance and vanishes — 1.0:1 — so each tint is pushed to an extreme,
+ * pale or deep, at high alpha. Every one clears 2:1 on all four squares.
  */
 val NightBoardPalette = BoardPalette(
-    lightSquare = Color(0xFFC9A87C),
-    darkSquare = Color(0xFF8A6844),
-    selectedTint = Color(0x8803A9F4),
-    lastMoveTint = Color(0x77FFD54F),
-    hintTint = Color(0x77303F9F),
-    marker = Color(0x59000000),
+    lightSquare = Color(0xFFA8825A),
+    darkSquare = Color(0xFF7E5E3E),
+    selectedTint = Color(0xE0A5E4FF),
+    lastMoveTint = Color(0xCCFFE082),
+    hintTint = Color(0xCC1A237E),
+    marker = Color(0x73000000),
     darkPieceOutline = Color(0xFFFAFAFA),
-    pieceOutlineWidth = 0.06f,
+    pieceOutlineWidth = 0.08f,
     darkPieceHalo = Color(0x80FFE9C8),
     darkPieceHaloWidth = 0.14f,
 )
