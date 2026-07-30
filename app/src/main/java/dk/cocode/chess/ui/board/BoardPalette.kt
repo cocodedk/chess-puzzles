@@ -20,21 +20,18 @@ data class BoardPalette(
 )
 
 /**
- * Neutral slate for daylight. The board is deliberately colourless: the pieces are neon
- * ([PIECE_WHITE], [PIECE_DARK]) and any warmth in the squares competes with them — on the walnut
- * board this replaced, magenta landed on the wood's own luminance at 1.04:1.
- *
- * Both squares sit low so the neon reads by luminance as well as chroma: cyan 4.4-6.2:1, magenta
- * 2.1-2.9:1. The checker step is small (1.39:1) because widening it would push one square back up
- * into the magenta.
+ * Walnut wood, tuned for daylight. The squares sit in a narrow mid band rather than spanning
+ * light-to-dark: a square at luminance 0.19 is equidistant from both piece colours, so pulling them
+ * in is what lets white AND ink clear 3:1 at once. It costs checker contrast (2.69 -> 1.61:1), which
+ * the eye reads easily anyway from the grid.
  */
 val DayBoardPalette = BoardPalette(
-    lightSquare = Color(0xFF5A5A66),
-    darkSquare = Color(0xFF45454F),
+    lightSquare = Color(0xFFB08A61),
+    darkSquare = Color(0xFF8A6844),
     selectedTint = Color(0xE0A5E4FF),
     lastMoveTint = Color(0xCCFFE082),
-    hintTint = Color(0xCCD0A5FF),
-    marker = Color(0x8CFFFFFF),
+    hintTint = Color(0xCC1A237E),
+    marker = Color(0x73000000),
     darkPieceOutline = Color(0xFFEDEDED),
     pieceOutlineWidth = 0.07f,
     darkPieceHalo = Color.Transparent,
@@ -42,20 +39,21 @@ val DayBoardPalette = BoardPalette(
 )
 
 /**
- * The same slate dropped for a dark room, where the neon has the most to work with: cyan reaches
- * 7.3-9.8:1 and magenta 3.4-4.6:1.
+ * The same narrow band as day, shifted one step down for a dark room. Dimming it further is what
+ * used to bury the pieces: against a deep dark square a #0A1420 fill managed only 1.5-2:1, so the
+ * rim and aura had to carry the whole silhouette.
  *
- * Both tint sets are light overlays. A dark wash is invisible here — the old deep-indigo hint and
- * black marker measured 1.09:1 and 1.21:1 on these squares — so the hint is a pale lavender and the
- * marker a white scrim, each kept off the selection's pale blue by hue.
+ * Both boards being mid-tone, the tints are shared: a mid-hue wash (the old #03A9F4 at 40-53%)
+ * lands on the squares' own luminance and vanishes — 1.0:1 — so each tint is pushed to an extreme,
+ * pale or deep, at high alpha. Every one clears 2:1 on all four squares.
  */
 val NightBoardPalette = BoardPalette(
-    lightSquare = Color(0xFF3A3A44),
-    darkSquare = Color(0xFF26262E),
+    lightSquare = Color(0xFFA8825A),
+    darkSquare = Color(0xFF7E5E3E),
     selectedTint = Color(0xE0A5E4FF),
     lastMoveTint = Color(0xCCFFE082),
-    hintTint = Color(0xCCD0A5FF),
-    marker = Color(0x8CFFFFFF),
+    hintTint = Color(0xCC1A237E),
+    marker = Color(0x73000000),
     darkPieceOutline = Color(0xFFFAFAFA),
     pieceOutlineWidth = 0.08f,
     darkPieceHalo = Color(0x80FFE9C8),
