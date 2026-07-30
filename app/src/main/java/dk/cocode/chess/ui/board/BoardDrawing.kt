@@ -13,11 +13,9 @@ import androidx.compose.ui.text.drawText
 import dk.cocode.chess.core.model.Square
 import dk.cocode.chess.viewmodel.PuzzleUiState
 
-// Neon on slate. The board is neutral so these two carry all the colour; the light side is the
-// brighter of the pair (cyan 4.4-9.8:1 against the squares), the dark side magenta (2.1-4.6:1),
-// which reads as much by chroma against the grey as by luminance.
-internal val PIECE_WHITE = Color(0xFF00E5FF)
-internal val PIECE_DARK = Color(0xFFFF00E5)
+internal val PIECE_WHITE = Color.White
+// Cool ink rather than neutral black: at equal luminance it separates by hue from the warm wood.
+internal val PIECE_DARK = Color(0xFF0A1420)
 internal val PIECE_WHITE_OUTLINE = Color(0xFF2B2B2B)
 
 internal fun DrawScope.drawSquares(palette: BoardPalette, squarePx: Float, flipped: Boolean) {
