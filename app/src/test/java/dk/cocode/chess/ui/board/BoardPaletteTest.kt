@@ -8,7 +8,7 @@ import org.junit.Test
 
 class BoardPaletteTest {
     @Test fun nightRimIsThickerAndBrighterThanDay() {
-        // A dark fill is only ~2:1 against the night dark square, so the rim carries the piece.
+        // The rim is what separates a neon glyph from a square close to it in luminance.
         assertTrue(NightBoardPalette.pieceOutlineWidth > DayBoardPalette.pieceOutlineWidth)
         assertNotEquals(DayBoardPalette.darkPieceOutline, NightBoardPalette.darkPieceOutline)
     }
@@ -25,16 +25,19 @@ class BoardPaletteTest {
     }
 
     /**
-     * The squares sit in a narrow mid band so that BOTH piece colours clear the WCAG 3:1 bar for
-     * non-text on the square each one is worst against — ink on dark, white on light. Widening the
-     * band (a lighter light square, or a deeper dark one) buys checker contrast by sinking a piece
-     * colour into the wood, which is exactly what this guards.
+     * The neon set buys its separation from chroma as much as luminance, so it cannot hold the 3:1
+     * non-text bar a near-black set could. What it must hold is a floor on EVERY piece/square pair
+     * — the worst is magenta on the day light square at 2.07:1 — and enough distance between the
+     * two sides that they stay tellable apart at a glance.
      */
-    @Test fun bothPieceColoursStayLegibleOnTheSquaresTheySitOn() {
-        assertTrue(contrast(PIECE_DARK, DayBoardPalette.darkSquare) > 3f)
-        assertTrue(contrast(PIECE_DARK, NightBoardPalette.darkSquare) > 3f)
-        assertTrue(contrast(PIECE_WHITE, DayBoardPalette.lightSquare) > 3f)
-        assertTrue(contrast(PIECE_WHITE, NightBoardPalette.lightSquare) > 3f)
+    @Test fun everyPieceSquarePairStaysSeparable() {
+        for (palette in listOf(DayBoardPalette, NightBoardPalette)) {
+            for (piece in listOf(PIECE_WHITE, PIECE_DARK)) {
+                assertTrue(contrast(piece, palette.lightSquare) > 2f)
+                assertTrue(contrast(piece, palette.darkSquare) > 2f)
+            }
+        }
+        assertTrue(contrast(PIECE_WHITE, PIECE_DARK) > 2f) // the two sides, from each other
     }
 
     /** WCAG contrast ratio between two opaque colors. */
