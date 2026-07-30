@@ -34,19 +34,22 @@ val DayBoardPalette = BoardPalette(
 )
 
 /**
- * The walnut board dimmed so it does not glare in a dark room. Highlights are brightened —
- * the day tints sink below 1.25:1 on dark wood; these stay above 1.6:1 (script-verified).
- * The dark square is deliberately not as deep as the dimming would suggest: below ~#50 the
- * dark pieces sink into it (a #0A1420 fill was 1.5:1 against #46301C, and is ~2:1 here).
- * Piece rims are still brighter and thicker than day — the rim carries the silhouette.
+ * The walnut board for a dark room. Dimming it further is what used to bury the pieces: against a
+ * deep dark square a #0A1420 fill managed only 1.5-2:1, so the rim and aura had to carry the whole
+ * silhouette. These squares keep the ink pieces at 3.66:1 on dark and 8.27:1 on light — legible on
+ * their own — at the cost of a board that is only a little dimmer than day.
+ *
+ * Because the board is now mid-tone rather than deep, the highlight tints follow the day treatment:
+ * they read by hue at roughly 1.2-1.9:1, the same range the day tints already ship at. The old
+ * night set was brightened for a deep board and would sink to ~1.0:1 on these squares.
  */
 val NightBoardPalette = BoardPalette(
-    lightSquare = Color(0xFF8A6844),
-    darkSquare = Color(0xFF5C4126),
-    selectedTint = Color(0x8842C6FF),
-    lastMoveTint = Color(0x66FFD54F),
-    hintTint = Color(0x9991A7FF),
-    marker = Color(0x59FFFFFF),
+    lightSquare = Color(0xFFC9A87C),
+    darkSquare = Color(0xFF8A6844),
+    selectedTint = Color(0x8803A9F4),
+    lastMoveTint = Color(0x77FFD54F),
+    hintTint = Color(0x77303F9F),
+    marker = Color(0x59000000),
     darkPieceOutline = Color(0xFFFAFAFA),
     pieceOutlineWidth = 0.06f,
     darkPieceHalo = Color(0x80FFE9C8),
