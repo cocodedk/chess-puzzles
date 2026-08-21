@@ -1,0 +1,1 @@
+Offline chess tactics from real Lichess puzzles. No account, ads, or tracking

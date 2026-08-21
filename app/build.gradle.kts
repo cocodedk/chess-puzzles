@@ -5,10 +5,14 @@ plugins {
     alias(libs.plugins.kover)
 }
 
-// Version: the git tag (vMAJOR.MINOR.PATCH) is the single source of truth; the release
-// workflow passes it in as VERSION_NAME. Local/debug builds fall back to a dev version.
+// Version: the git tag (vMAJOR.MINOR.PATCH) is the single source of truth. F-Droid
+// passes it as a Gradle property; the release workflow passes it as an environment variable.
+// Local/debug builds have neither and fall back to a dev version.
 val appVersionName: String =
-    (System.getenv("VERSION_NAME")?.takeIf { it.isNotBlank() } ?: "0.1.0").removePrefix("v")
+    providers.gradleProperty("VERSION_NAME").filter { it.isNotBlank() }
+        .orElse(providers.environmentVariable("VERSION_NAME").filter { it.isNotBlank() })
+        .getOrElse("0.1.0")
+        .removePrefix("v")
 val semver: List<String> = appVersionName.split(".")
 val appVersionCode: Int = (semver.getOrNull(0)?.toIntOrNull() ?: 0) * 1_000_000 +
     (semver.getOrNull(1)?.toIntOrNull() ?: 0) * 1_000 +
