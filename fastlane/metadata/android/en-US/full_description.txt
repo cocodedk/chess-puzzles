@@ -1,0 +1,12 @@
+<p>Chess Puzzles is an offline tactics trainer built from real positions in the Lichess puzzle database. Find the best move, follow the tactical line, and improve at your own pace.</p>
+
+<ul>
+<li><b>Clear goals.</b> Each puzzle tells you what to find, such as checkmate in two.</li>
+<li><b>Three difficulty bands.</b> Choose Easy, Medium, or Hard puzzles.</li>
+<li><b>Useful hints.</b> Reveal the move to play when you need a nudge.</li>
+<li><b>Saved progress.</b> Track solved puzzles, hint-free solves, and streaks on your device.</li>
+<li><b>Light and dark themes.</b> Use the board that suits your screen.</li>
+<li><b>Fully offline.</b> Every puzzle is bundled with the app.</li>
+</ul>
+
+<p>The app needs no account and requests no permissions. It contains no ads, analytics, or tracking. Puzzles come from the Lichess Open Database under CC0 1.0.</p>

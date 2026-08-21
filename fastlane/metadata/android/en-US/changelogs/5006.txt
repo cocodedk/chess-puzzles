@@ -1,0 +1,2 @@
+First F-Droid release. Offline tactics trainer with Lichess puzzles, three
+difficulty bands, hints, progress tracking, and light and dark boards.
