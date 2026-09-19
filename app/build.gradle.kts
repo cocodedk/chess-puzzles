@@ -67,6 +67,16 @@ android {
         includeInApk = false
         includeInBundle = false
     }
+    packaging {
+        jniLibs {
+            // The only .so files in the APK are prebuilts from AndroidX (datastore, graphics-path).
+            // AGP strips them with whatever NDK it finds, so a rebuild without that exact NDK
+            // produces different bytes — F-Droid's builder has none unless its recipe pins one.
+            // Keeping the symbols leaves the libraries exactly as their AARs ship them, which
+            // rebuilds identically anywhere, and costs a few kB.
+            keepDebugSymbols += "**/*.so"
+        }
+    }
     testOptions {
         unitTests {
             isIncludeAndroidResources = true
