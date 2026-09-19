@@ -90,7 +90,8 @@ fun PuzzleScreenContent(
             modifier = Modifier.padding(padding).fillMaxSize().padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Text("Puzzle ${state.rating}", style = MaterialTheme.typography.titleLarge)
+            Text("Puzzle ${state.position} of ${state.bandSize}", style = MaterialTheme.typography.titleLarge)
+            Text("Rating ${state.rating}", style = MaterialTheme.typography.labelMedium)
             StatsRow(
                 dayStreak = state.dayStreak, solved = state.solvedCount, hintFree = state.hintFreeCount,
                 streak = state.currentStreak, best = state.bestStreak,

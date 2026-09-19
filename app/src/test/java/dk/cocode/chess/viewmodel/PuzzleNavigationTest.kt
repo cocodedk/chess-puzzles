@@ -86,6 +86,20 @@ class PuzzleNavigationTest {
         assertEquals(1, progress.current().solvedCount) // still 1 — already counted, not re-earned
     }
 
+    /** The title's number is the place in the band. It used to be the rating, which often repeats. */
+    @Test fun nextAdvancesThePositionShownInTheTitle() = runTest(dispatcher) {
+        val viewModel = vm(FakeProgressRepository())
+        advanceUntilIdle()
+        fun shown() = viewModel.state.value.let { it.position to it.bandSize }
+        assertEquals(1 to 3, shown()) // M1, first of the easy band [0,2,3]
+        viewModel.onNext()
+        assertEquals(2 to 3, shown())
+        viewModel.onNext()
+        assertEquals(3 to 3, shown())
+        viewModel.onNext()
+        assertEquals(1 to 3, shown()) // wrapped
+    }
+
     @Test fun availableDifficultiesAreThePopulatedBands() {
         assertEquals(listOf(Difficulty.EASY, Difficulty.MEDIUM, Difficulty.HARD), vm().availableDifficulties)
     }

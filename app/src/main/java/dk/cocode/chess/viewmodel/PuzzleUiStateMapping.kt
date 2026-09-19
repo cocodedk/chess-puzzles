@@ -7,7 +7,7 @@ import dk.cocode.chess.data.Progress
 import dk.cocode.chess.data.dayStreakAsOf
 
 /** Builds the rendered [PuzzleUiState] from the session snapshot and persisted [base] progress. */
-internal fun PuzzleSession.toUiState(base: Progress, today: Long): PuzzleUiState {
+internal fun PuzzleSession.toUiState(base: Progress, today: Long, position: Int, bandSize: Int): PuzzleUiState {
     val snapshot = state
     return PuzzleUiState(
         board = snapshot.board.toRows(),
@@ -15,6 +15,8 @@ internal fun PuzzleSession.toUiState(base: Progress, today: Long): PuzzleUiState
         lastMove = Highlight(snapshot.lastMove.from, snapshot.lastMove.to),
         status = snapshot.status,
         rating = puzzle.rating,
+        position = position,
+        bandSize = bandSize,
         promptText = prompt(),
     ).withProgress(base, today)
 }
