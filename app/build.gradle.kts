@@ -64,6 +64,13 @@ android {
     buildFeatures {
         compose = true
     }
+    // AGP otherwise adds a "Dependency metadata" block to the APK signing block,
+    // encrypted with a key only Google Play holds. F-Droid rejects release APKs
+    // that carry it, and v0.5.6 did.
+    dependenciesInfo {
+        includeInApk = false
+        includeInBundle = false
+    }
     testOptions {
         unitTests {
             isIncludeAndroidResources = true

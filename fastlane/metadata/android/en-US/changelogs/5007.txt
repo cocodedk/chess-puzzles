@@ -1,0 +1,1 @@
+Build-only release so F-Droid can verify the APK. No change to the app.
