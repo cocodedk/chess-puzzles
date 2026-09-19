@@ -108,7 +108,7 @@ class PuzzleViewModel(
     }
 
     fun onNext() {
-        val band = bands.getValue(difficultyOf(session.puzzle.rating))
+        val band = band()
         if (band.size > 1) jumpTo(band[(band.indexOf(index) + 1) % band.size])
     }
 
@@ -126,7 +126,9 @@ class PuzzleViewModel(
     }
 
     /** The full render recipe — the single place the clock is sampled for display. */
-    private fun render() = session.toUiState(base, today())
+    private fun render() = band().let { session.toUiState(base, today(), it.indexOf(index) + 1, it.size) }
+
+    private fun band() = bands.getValue(difficultyOf(session.puzzle.rating)) // indices, bundle order
 
     private fun jumpTo(target: Int) {
         resumed = true // a deliberate jump cancels the one-time resume to the saved index

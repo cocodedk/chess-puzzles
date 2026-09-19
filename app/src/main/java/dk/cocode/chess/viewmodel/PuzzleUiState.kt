@@ -23,6 +23,8 @@ data class PuzzleUiState(
     val status: PuzzleStatus = PuzzleStatus.IN_PROGRESS,
     val feedback: Feedback = Feedback.NONE,
     val rating: Int = 0,
+    val position: Int = 0, // 1-based place in the difficulty band; the title's number
+    val bandSize: Int = 0,
     val solvedCount: Int = 0,
     val hintFreeCount: Int = 0,
     val currentStreak: Int = 0,
