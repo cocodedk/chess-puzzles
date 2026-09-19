@@ -49,7 +49,9 @@ android {
     }
     buildTypes {
         release {
-            isMinifyEnabled = false
+            // F-Droid's reviewer rejects release builds with minify off for no reason (fdroiddata !49432).
+            isMinifyEnabled = true
+            isShrinkResources = true
             if (hasSigning) signingConfig = signingConfigs.getByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
