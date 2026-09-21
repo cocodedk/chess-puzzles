@@ -15,8 +15,8 @@ Chess Puzzles is open-source (Apache-2.0), created by Babak Bandpey / Cocode. Th
 
 ## Project
 
-- [Website (English)](https://cocodedk.github.io/chess-puzzles/)
-- [Website (Persian)](https://cocodedk.github.io/chess-puzzles/fa/)
+- [Website (English)](https://chess.cocode.dk/)
+- [Website (Persian)](https://chess.cocode.dk/fa/)
 - [Source on GitHub](https://github.com/cocodedk/chess-puzzles)
 - [Latest release APK](https://github.com/cocodedk/chess-puzzles/releases/latest/download/ChessPuzzles.apk)
 

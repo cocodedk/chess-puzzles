@@ -13,8 +13,8 @@ _Light mode with goal line and difficulty chips (left), night mode (center), sol
 
 ## Website
 
-- [English](https://cocodedk.github.io/chess-puzzles/)
-- [فارسی (Persian)](https://cocodedk.github.io/chess-puzzles/fa/)
+- [English](https://chess.cocode.dk/)
+- [فارسی (Persian)](https://chess.cocode.dk/fa/)
 
 ## Download
 

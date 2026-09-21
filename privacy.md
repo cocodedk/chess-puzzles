@@ -5,7 +5,7 @@
 **Last updated:** 14 July 2026
 
 > The canonical, always-current version of this policy (English + Persian) is published at
-> **https://cocodedk.github.io/chess-puzzles/privacy.html**
+> **https://chess.cocode.dk/privacy.html**
 
 **Chess Puzzles does not collect, transmit, or share any personal data.**
 It is a chess tactics trainer that runs entirely on your device — no account, no sign-up, and no

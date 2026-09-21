@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://cocodedk.github.io/chess-puzzles/sitemap.xml
+Sitemap: https://chess.cocode.dk/sitemap.xml
