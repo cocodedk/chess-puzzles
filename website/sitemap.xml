@@ -2,31 +2,31 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://cocodedk.github.io/chess-puzzles/</loc>
+    <loc>https://chess.cocode.dk/</loc>
     <lastmod>2026-07-02</lastmod>
-    <xhtml:link rel="alternate" hreflang="en" href="https://cocodedk.github.io/chess-puzzles/" />
-    <xhtml:link rel="alternate" hreflang="fa" href="https://cocodedk.github.io/chess-puzzles/fa/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://cocodedk.github.io/chess-puzzles/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://chess.cocode.dk/" />
+    <xhtml:link rel="alternate" hreflang="fa" href="https://chess.cocode.dk/fa/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://chess.cocode.dk/" />
   </url>
   <url>
-    <loc>https://cocodedk.github.io/chess-puzzles/fa/</loc>
+    <loc>https://chess.cocode.dk/fa/</loc>
     <lastmod>2026-07-02</lastmod>
-    <xhtml:link rel="alternate" hreflang="en" href="https://cocodedk.github.io/chess-puzzles/" />
-    <xhtml:link rel="alternate" hreflang="fa" href="https://cocodedk.github.io/chess-puzzles/fa/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://cocodedk.github.io/chess-puzzles/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://chess.cocode.dk/" />
+    <xhtml:link rel="alternate" hreflang="fa" href="https://chess.cocode.dk/fa/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://chess.cocode.dk/" />
   </url>
   <url>
-    <loc>https://cocodedk.github.io/chess-puzzles/about/</loc>
+    <loc>https://chess.cocode.dk/about/</loc>
     <lastmod>2026-07-02</lastmod>
-    <xhtml:link rel="alternate" hreflang="en" href="https://cocodedk.github.io/chess-puzzles/about/" />
-    <xhtml:link rel="alternate" hreflang="fa" href="https://cocodedk.github.io/chess-puzzles/fa/about/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://cocodedk.github.io/chess-puzzles/about/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://chess.cocode.dk/about/" />
+    <xhtml:link rel="alternate" hreflang="fa" href="https://chess.cocode.dk/fa/about/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://chess.cocode.dk/about/" />
   </url>
   <url>
-    <loc>https://cocodedk.github.io/chess-puzzles/fa/about/</loc>
+    <loc>https://chess.cocode.dk/fa/about/</loc>
     <lastmod>2026-07-02</lastmod>
-    <xhtml:link rel="alternate" hreflang="en" href="https://cocodedk.github.io/chess-puzzles/about/" />
-    <xhtml:link rel="alternate" hreflang="fa" href="https://cocodedk.github.io/chess-puzzles/fa/about/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://cocodedk.github.io/chess-puzzles/about/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://chess.cocode.dk/about/" />
+    <xhtml:link rel="alternate" hreflang="fa" href="https://chess.cocode.dk/fa/about/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://chess.cocode.dk/about/" />
   </url>
 </urlset>
