@@ -35,6 +35,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap">
   <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="https://brand.cocode.dk/v1.css">
+  <script type="module" src="https://brand.cocode.dk/v1.js"></script>
 
   <script type="application/ld+json">
   {
@@ -60,15 +62,14 @@
   </script>
 </head>
 <body>
-  <header class="site">
-    <div class="wrap">
-      <span class="brand"><img class="mark" src="../favicon.svg" alt="" width="32" height="32"> معمای شطرنج</span>
-      <nav style="display:flex;gap:10px;align-items:center">
-        <a href="about/" class="lang-switch">درباره</a>
-        <a href="../" class="lang-switch" hreflang="en" lang="en">English</a>
-      </nav>
-    </div>
-  </header>
+
+<!-- The cocode.dk family frame. Without JavaScript its children show instead: a way
+     home, the About link and the language link. -->
+<cocode-head project="معمای شطرنج" accent="#f0b95c" on-accent="#1a1205" dark links="درباره:about/">
+  <a href="https://cocode.dk">cocode.dk</a>
+  <a href="about/">درباره</a>
+  <a href="../" hreflang="en" lang="en">English</a>
+</cocode-head>
 
   <main>
     <section class="hero">
@@ -143,11 +144,13 @@
 
   <footer>
     <div class="wrap">
-      <p>ساخته شده توسط <a href="https://linkedin.com/in/babakbandpey" target="_blank" rel="noreferrer">بابک بندپی</a>. تولید شده توسط <a href="https://cocode.dk" target="_blank" rel="noreferrer">Cocode</a>.</p>
       <p>معماها از <a href="https://database.lichess.org" target="_blank" rel="noreferrer">پایگاه‌دادهٔ باز Lichess</a> (CC0 1.0).</p>
       <p><a href="../privacy.html">سیاست حریم خصوصی</a></p>
-      <p>Apache-2.0 &nbsp;|&nbsp; © ۱۴۰۵ <a href="https://cocode.dk" target="_blank" rel="noreferrer">Cocode</a> &nbsp;|&nbsp; ساخته شده توسط <a href="https://linkedin.com/in/babakbandpey" target="_blank" rel="noreferrer">بابک بندپی</a></p>
     </div>
   </footer>
+
+<cocode-foot repo="cocodedk/chess-puzzles" dark>
+  <a href="https://cocode.dk">cocode.dk</a>
+</cocode-foot>
 </body>
 </html>
