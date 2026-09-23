@@ -37,6 +37,8 @@
   <meta name="twitter:image:alt" content="Chess Puzzles app — a tactics position with the solution square highlighted in gold">
 
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://brand.cocode.dk/v1.css">
+  <script type="module" src="https://brand.cocode.dk/v1.js"></script>
 
   <script type="application/ld+json">
   {
@@ -61,15 +63,14 @@
   </script>
 </head>
 <body>
-  <header class="site">
-    <div class="wrap">
-      <span class="brand"><img class="mark" src="favicon.svg" alt="" width="32" height="32"> Chess Puzzles</span>
-      <nav style="display:flex;gap:10px;align-items:center">
-        <a href="about/" class="lang-switch">About</a>
-        <a href="fa/" class="lang-switch" hreflang="fa" lang="fa">فارسی</a>
-      </nav>
-    </div>
-  </header>
+
+<!-- The cocode.dk family frame. Without JavaScript its children show instead: a way
+     home, the About link and the language link. -->
+<cocode-head project="Chess Puzzles" accent="#f0b95c" on-accent="#1a1205" dark links="About:about/">
+  <a href="https://cocode.dk">cocode.dk</a>
+  <a href="about/">About</a>
+  <a href="fa/" hreflang="fa">فارسی</a>
+</cocode-head>
 
   <main>
     <section class="hero">
@@ -143,11 +144,13 @@
 
   <footer>
     <div class="wrap">
-      <p>Created by <a href="https://linkedin.com/in/babakbandpey" target="_blank" rel="noreferrer">Babak Bandpey</a>. Built by <a href="https://cocode.dk" target="_blank" rel="noreferrer">Cocode</a>.</p>
       <p>Puzzles from the <a href="https://database.lichess.org" target="_blank" rel="noreferrer">Lichess Open Database</a> (CC0 1.0).</p>
       <p><a href="privacy.html">Privacy Policy</a></p>
-      <p>Apache-2.0 &nbsp;|&nbsp; © 2026 <a href="https://cocode.dk" target="_blank" rel="noreferrer">Cocode</a> &nbsp;|&nbsp; Created by <a href="https://linkedin.com/in/babakbandpey" target="_blank" rel="noreferrer">Babak Bandpey</a></p>
     </div>
   </footer>
+
+<cocode-foot repo="cocodedk/chess-puzzles" dark>
+  <a href="https://cocode.dk">cocode.dk</a>
+</cocode-foot>
 </body>
 </html>

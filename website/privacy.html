@@ -48,11 +48,21 @@
     strong { color: var(--gold); }
     .divider { height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent); margin: 44px 0; }
     section[dir="rtl"] { font-family: "Vazirmatn", var(--font); text-align: right; }
-    footer { color: var(--muted); font-size: 0.88rem; margin-top: 38px; text-align: center; }
-    footer a { color: var(--text); }
+    /* This page has no styles.css and no fixed side padding on .container (it uses
+       min(760px, 92vw)); these values reproduce that same left edge at both the
+       phone and desktop widths the frame is checked at. */
+    cocode-head, cocode-foot { --cocode-max: calc(760px + 8vw); --cocode-gutter: 4vw; }
   </style>
+  <link rel="stylesheet" href="https://brand.cocode.dk/v1.css">
+  <script type="module" src="https://brand.cocode.dk/v1.js"></script>
 </head>
 <body>
+
+<!-- The cocode.dk family frame. Without JavaScript its child shows instead: a way home. -->
+<cocode-head project="Chess Puzzles" accent="#f0b95c" on-accent="#1a1205" dark>
+  <a href="https://cocode.dk">cocode.dk</a>
+</cocode-head>
+
   <div class="container">
     <a class="back" href="./index.html">&larr; Chess Puzzles</a>
     <div class="card">
@@ -170,7 +180,10 @@
       </section>
 
     </div>
-    <footer>Apache-2.0 &nbsp;|&nbsp; © 2026 <a href="https://cocode.dk" rel="noopener" target="_blank">Cocode</a> — Babak Bandpey</footer>
   </div>
+
+<cocode-foot repo="cocodedk/chess-puzzles" dark>
+  <a href="https://cocode.dk">cocode.dk</a>
+</cocode-foot>
 </body>
 </html>

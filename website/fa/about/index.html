@@ -24,14 +24,17 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap">
   <link rel="stylesheet" href="../../styles.css">
+  <link rel="stylesheet" href="https://brand.cocode.dk/v1.css">
+  <script type="module" src="https://brand.cocode.dk/v1.js"></script>
 </head>
 <body>
-  <header class="site">
-    <div class="wrap">
-      <a class="brand" href="../"><img class="mark" src="../../favicon.svg" alt="" width="32" height="32"> معمای شطرنج</a>
-      <a href="../../about/" class="lang-switch" hreflang="en" lang="en">English</a>
-    </div>
-  </header>
+
+<!-- The cocode.dk family frame. Without JavaScript its children show instead: a way
+     home and the language link. -->
+<cocode-head project="معمای شطرنج" accent="#f0b95c" on-accent="#1a1205" dark>
+  <a href="https://cocode.dk">cocode.dk</a>
+  <a href="../../about/" hreflang="en" lang="en">English</a>
+</cocode-head>
 
   <main>
     <section class="hero">
@@ -64,8 +67,11 @@
   <footer>
     <div class="wrap">
       <p><a href="../">→ بازگشت به خانه</a></p>
-      <p>Apache-2.0 &nbsp;|&nbsp; © ۱۴۰۵ <a href="https://cocode.dk" target="_blank" rel="noreferrer">Cocode</a> &nbsp;|&nbsp; ساخته شده توسط <a href="https://linkedin.com/in/babakbandpey" target="_blank" rel="noreferrer">بابک بندپی</a></p>
     </div>
   </footer>
+
+<cocode-foot repo="cocodedk/chess-puzzles" dark>
+  <a href="https://cocode.dk">cocode.dk</a>
+</cocode-foot>
 </body>
 </html>

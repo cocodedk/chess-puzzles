@@ -38,15 +38,9 @@ h1, h2, h3 { line-height: 1.2; letter-spacing: -0.01em; }
 .wrap { width: 100%; max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
 .muted { color: var(--muted); }
 
-/* Header */
-header.site { padding: 18px 0; border-bottom: 1px solid var(--border); }
-header.site .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.brand { display: flex; align-items: center; gap: 10px; font-weight: 700; color: var(--text); }
-.brand .mark { width: 32px; height: 32px; flex: 0 0 auto; }
-.lang-switch {
-  font-size: 0.95rem; padding: 8px 14px; border: 1px solid var(--border);
-  border-radius: 999px; color: var(--text); min-height: 44px; display: inline-flex; align-items: center;
-}
+/* The cocode.dk frame (brand.cocode.dk) lines up with this column; the gutter never
+   changes at any breakpoint, so one rule covers every width. */
+cocode-head, cocode-foot { --cocode-max: var(--maxw); --cocode-gutter: 20px; }
 
 /* Hero */
 .hero { padding: 56px 0 36px; text-align: center; }
