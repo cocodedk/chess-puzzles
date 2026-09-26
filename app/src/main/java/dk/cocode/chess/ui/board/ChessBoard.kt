@@ -10,6 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.rememberTextMeasurer
@@ -18,7 +19,7 @@ import dk.cocode.chess.viewmodel.PuzzleUiState
 
 const val BOARD_TEST_TAG = "chessBoard"
 
-/** The interactive 8x8 board: draws squares, highlights and pieces, and reports tap/drag squares. */
+/** The interactive framed 8x8 board: draws frame, squares, highlights and pieces, and reports tap/drag squares. */
 @Composable
 fun ChessBoard(
     state: PuzzleUiState,
@@ -27,7 +28,7 @@ fun ChessBoard(
     onDragEnd: (Square) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val textMeasurer = rememberTextMeasurer()
+    val textMeasurer = rememberTextMeasurer(cacheSize = 16)   // the frame's 16 coordinate labels
     val palette = LocalBoardPalette.current
     val flipped = state.flipped
     var dragTarget by remember { mutableStateOf(Square(0, 0)) }
@@ -38,27 +39,32 @@ fun ChessBoard(
             .testTag(BOARD_TEST_TAG)
             .pointerInput(flipped) {
                 detectTapGestures { offset ->
-                    onSquareTap(BoardGeometry.squareAt(offset.x, offset.y, size.width / 8f, flipped))
+                    onSquareTap(BoardGeometry.squareOnBoard(offset.x, offset.y, size.width.toFloat(), flipped))
                 }
             }
             .pointerInput(flipped) {
                 detectDragGestures(
                     onDragStart = { offset ->
-                        onDragStart(BoardGeometry.squareAt(offset.x, offset.y, size.width / 8f, flipped))
+                        onDragStart(BoardGeometry.squareOnBoard(offset.x, offset.y, size.width.toFloat(), flipped))
                     },
                     onDrag = { change, _ ->
-                        dragTarget = BoardGeometry.squareAt(change.position.x, change.position.y, size.width / 8f, flipped)
+                        val at = change.position
+                        dragTarget = BoardGeometry.squareOnBoard(at.x, at.y, size.width.toFloat(), flipped)
                     },
                     onDragEnd = { onDragEnd(dragTarget) },
                 )
             },
     ) {
-        val squarePx = size.width / 8f
-        drawSquares(palette, squarePx, flipped)
-        state.lastMove?.let { highlightMove(it.from, it.to, palette.lastMoveTint, squarePx, flipped) }
-        state.hint?.let { highlightMove(it.from, it.to, palette.hintTint, squarePx, flipped) }
-        state.selected?.let { tintSquare(it, palette.selectedTint, squarePx, flipped) }
-        drawPieces(state, palette, squarePx, flipped, textMeasurer)
-        drawTargets(state, palette.marker, squarePx, flipped)
+        val frame = BoardGeometry.frameDepth(size.width)
+        val squarePx = BoardGeometry.squareSize(size.width)
+        drawFrame(frame, squarePx, flipped, textMeasurer)
+        translate(frame, frame) {
+            drawSquares(palette, squarePx, flipped)
+            state.lastMove?.let { highlightMove(it.from, it.to, palette.lastMoveTint, squarePx, flipped) }
+            state.hint?.let { highlightMove(it.from, it.to, palette.hintTint, squarePx, flipped, palette.hintRing) }
+            state.selected?.let { tintSquare(it, palette.selectedTint, squarePx, flipped, palette.selectedRing) }
+            drawPieces(state, palette, squarePx, flipped)
+            drawTargets(state, palette.marker, squarePx, flipped)
+        }
     }
 }

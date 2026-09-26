@@ -3,100 +3,45 @@ package dk.cocode.chess.ui.board
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.text.TextMeasurer
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.drawText
+import androidx.compose.ui.graphics.isSpecified
 import dk.cocode.chess.core.model.Square
 import dk.cocode.chess.viewmodel.PuzzleUiState
 
-internal val PIECE_WHITE = Color.White
-// Cool ink rather than neutral black: at equal luminance it separates by hue from the warm wood.
-internal val PIECE_DARK = Color(0xFF0A1420)
-internal val PIECE_WHITE_OUTLINE = Color(0xFF2B2B2B)
-
-internal fun DrawScope.drawSquares(palette: BoardPalette, squarePx: Float, flipped: Boolean) {
-    for (file in 0..7) {
-        for (rank in 0..7) {
-            val square = Square(file, rank)
-            drawRect(
-                color = if (BoardGeometry.isLight(square)) palette.lightSquare else palette.darkSquare,
-                topLeft = BoardGeometry.squareTopLeft(square, squarePx, flipped),
-                size = Size(squarePx, squarePx),
-            )
-        }
+/** Washes [square] in [color], with an inset [ring] round its edge unless it is unspecified. */
+internal fun DrawScope.tintSquare(square: Square, color: Color, squarePx: Float, flipped: Boolean, ring: Color) {
+    val topLeft = BoardGeometry.squareTopLeft(square, squarePx, flipped)
+    drawRect(color = color, topLeft = topLeft, size = Size(squarePx, squarePx))
+    if (ring.isSpecified) {
+        val width = squarePx * .06f
+        drawRect(
+            color = ring,
+            topLeft = topLeft + Offset(width / 2f, width / 2f),
+            size = Size(squarePx - width, squarePx - width),
+            style = Stroke(width),
+        )
     }
 }
 
-internal fun DrawScope.tintSquare(square: Square, color: Color, squarePx: Float, flipped: Boolean) {
-    drawRect(
-        color = color,
-        topLeft = BoardGeometry.squareTopLeft(square, squarePx, flipped),
-        size = Size(squarePx, squarePx),
-    )
-}
-
-internal fun DrawScope.highlightMove(from: Square, to: Square, color: Color, squarePx: Float, flipped: Boolean) {
-    tintSquare(from, color, squarePx, flipped)
-    tintSquare(to, color, squarePx, flipped)
-}
-
-internal fun DrawScope.drawPieces(
-    state: PuzzleUiState,
-    palette: BoardPalette,
+internal fun DrawScope.highlightMove(
+    from: Square,
+    to: Square,
+    color: Color,
     squarePx: Float,
     flipped: Boolean,
-    textMeasurer: TextMeasurer,
+    ring: Color = Color.Unspecified,
 ) {
-    val fontSize = (squarePx * 0.86f).toSp()
-    val outlineWidth = squarePx * palette.pieceOutlineWidth
+    tintSquare(from, color, squarePx, flipped, ring)
+    tintSquare(to, color, squarePx, flipped, ring)
+}
+
+internal fun DrawScope.drawPieces(state: PuzzleUiState, palette: BoardPalette, squarePx: Float, flipped: Boolean) {
     for (rank in 0..7) {
         for (file in 0..7) {
             val code = state.board[rank][file]
             if (code == ' ') continue
-            val topLeft = BoardGeometry.squareTopLeft(Square(file, rank), squarePx, flipped)
-            val white = PieceGlyph.isWhite(code)
-            val glyph = PieceGlyph.glyph(code)
-            // Halo (night only), then outline, then fill: a contrasting rim so white pieces
-            // read on light squares and dark pieces read on dark squares; the aura makes dark
-            // pieces spottable on the dimmed night board. Round joins/caps: wide strokes on
-            // sharp glyph corners would otherwise throw long miter spikes.
-            val halo = if (!white && palette.darkPieceHaloWidth > 0f) {
-                textMeasurer.measure(
-                    text = glyph,
-                    style = TextStyle(
-                        color = palette.darkPieceHalo,
-                        fontSize = fontSize,
-                        drawStyle = Stroke(
-                            width = squarePx * palette.darkPieceHaloWidth,
-                            cap = StrokeCap.Round,
-                            join = StrokeJoin.Round,
-                        ),
-                    ),
-                )
-            } else null
-            val outline = textMeasurer.measure(
-                text = glyph,
-                style = TextStyle(
-                    color = if (white) PIECE_WHITE_OUTLINE else palette.darkPieceOutline,
-                    fontSize = fontSize,
-                    drawStyle = Stroke(width = outlineWidth, cap = StrokeCap.Round, join = StrokeJoin.Round),
-                ),
-            )
-            val fill = textMeasurer.measure(
-                text = glyph,
-                style = TextStyle(color = if (white) PIECE_WHITE else PIECE_DARK, fontSize = fontSize),
-            )
-            val offset = Offset(
-                topLeft.x + (squarePx - fill.size.width) / 2f,
-                topLeft.y + (squarePx - fill.size.height) / 2f,
-            )
-            halo?.let { drawText(textLayoutResult = it, topLeft = offset) }
-            drawText(textLayoutResult = outline, topLeft = offset)
-            drawText(textLayoutResult = fill, topLeft = offset)
+            drawPiece(code, BoardGeometry.squareTopLeft(Square(file, rank), squarePx, flipped), squarePx, palette)
         }
     }
 }

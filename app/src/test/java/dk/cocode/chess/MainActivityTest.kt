@@ -1,6 +1,5 @@
 package dk.cocode.chess
 
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.test.click
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
@@ -10,6 +9,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeRight
 import dk.cocode.chess.ui.board.BOARD_TEST_TAG
+import dk.cocode.chess.ui.board.DayBoardPalette
 import dk.cocode.chess.ui.board.NightBoardPalette
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -48,7 +48,7 @@ class MainActivityTest {
         composeRule.onNodeWithText("Theme: Light").performClick()
         awaitText("Theme: Dark")
         val bitmap = composeRule.renderToBitmap()
-        assertTrue(bitmap.containsColor(NightBoardPalette.darkSquare.toArgb())) // night board really drawn
+        assertTrue(bitmap.showsWood(NightBoardPalette.darkSquare, DayBoardPalette.darkSquare)) // night board really drawn
         // Cycle back to SYSTEM: the DataStore singleton outlives this test in the Robolectric JVM.
         composeRule.onNodeWithText("Theme: Dark").performClick()
         awaitText("Theme: Auto")

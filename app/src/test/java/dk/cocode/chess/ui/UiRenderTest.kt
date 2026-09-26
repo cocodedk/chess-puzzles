@@ -16,7 +16,10 @@ import dk.cocode.chess.core.model.PuzzleStatus
 import dk.cocode.chess.core.model.Square
 import dk.cocode.chess.data.ThemeMode
 import dk.cocode.chess.renderToBitmap
+import dk.cocode.chess.showsWood
+import dk.cocode.chess.toBitmap
 import dk.cocode.chess.ui.board.DayBoardPalette
+import dk.cocode.chess.ui.board.IVORY
 import dk.cocode.chess.ui.board.NightBoardPalette
 import dk.cocode.chess.ui.theme.ChessTheme
 import dk.cocode.chess.ui.theme.DarkColors
@@ -31,6 +34,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import org.robolectric.shadows.ShadowDialog
 
 @RunWith(RobolectricTestRunner::class)
 @Config(qualifiers = PHONE_QUALIFIERS)
@@ -77,7 +81,7 @@ class UiRenderTest {
     @Test fun rendersRichBoard() {
         show(rich(flipped = false))
         val bitmap = composeRule.renderToBitmap()
-        assertTrue(bitmap.containsColor(DayBoardPalette.darkSquare.toArgb())) // day board drawn
+        assertTrue(bitmap.showsWood(DayBoardPalette.darkSquare, NightBoardPalette.darkSquare)) // the day board, not the night
         composeRule.onNodeWithText("Hint").assertExists()
         composeRule.onNodeWithContentDescription("Day streak").assertExists() // stats row icons
         composeRule.onNodeWithText("2").assertExists() // ... each with its number: hint-free solves
@@ -111,7 +115,7 @@ class UiRenderTest {
         show(rich(flipped = false), darkTheme = true, themeMode = ThemeMode.DARK, onThemeToggle = { toggled = true })
         val bitmap = composeRule.renderToBitmap()
         assertEquals(DarkColors.background.toArgb(), bitmap.getPixel(1, 1)) // dark scheme applied
-        assertTrue(bitmap.containsColor(NightBoardPalette.darkSquare.toArgb())) // night board drawn
+        assertTrue(bitmap.showsWood(NightBoardPalette.darkSquare, DayBoardPalette.darkSquare)) // the night board, not the day
         composeRule.onNodeWithText("Theme: Dark").performClick()
         assertTrue(toggled)
     }
@@ -123,8 +127,11 @@ class UiRenderTest {
             onPromotion = { chosen = it },
         )
         composeRule.renderToBitmap()
+        // The dialog has its own window: draw that too, so its drawn pieces really paint.
+        val chooser = ShadowDialog.getLatestDialog().window!!.decorView.toBitmap()
+        assertTrue(chooser.containsColor(IVORY.shading[2].second.toArgb(), tolerance = 6)) // a shade only the ivory pieces paint
         composeRule.onNodeWithText("Promote to").assertExists()
-        composeRule.onNodeWithText("♜").performClick() // rook glyph
+        composeRule.onNodeWithContentDescription("Rook").performClick() // drawn rook, named for talkback
         assertEquals(PieceType.ROOK, chosen)
     }
 }

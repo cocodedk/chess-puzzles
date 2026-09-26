@@ -4,6 +4,8 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.view.View
 import androidx.activity.ComponentActivity
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.test.junit4.AndroidComposeTestRule
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
@@ -22,15 +24,37 @@ import java.io.File
 /** Draws the hosted content to a software canvas so Compose Canvas draw code runs under Robolectric. */
 fun <A : ComponentActivity> AndroidComposeTestRule<*, A>.renderToBitmap(): Bitmap {
     waitForIdle()
-    val view = activity.findViewById<View>(android.R.id.content)
-    val bitmap = Bitmap.createBitmap(maxOf(1, view.width), maxOf(1, view.height), Bitmap.Config.ARGB_8888)
-    view.draw(Canvas(bitmap))
-    return bitmap
+    return activity.findViewById<View>(android.R.id.content).toBitmap()
 }
 
-/** True when any sampled pixel is exactly [argb] — flat fills like board squares are found reliably. */
-fun Bitmap.containsColor(argb: Int): Boolean =
-    (0 until width step 4).any { x -> (0 until height step 4).any { y -> getPixel(x, y) == argb } }
+/** Draws this view to a software canvas the size of the view. */
+fun View.toBitmap(): Bitmap =
+    Bitmap.createBitmap(maxOf(1, width), maxOf(1, height), Bitmap.Config.ARGB_8888).also { draw(Canvas(it)) }
+
+/** True when any sampled pixel lies within [tolerance] of [argb] on every channel. */
+fun Bitmap.containsColor(argb: Int, tolerance: Int): Boolean = countColor(argb, tolerance) > 0
+
+/**
+ * How far a grained square's pixels stray from its wood's base colour, which the grain and sheen never
+ * leave bare. Grain and shadow can still darken one wood toward another, so a check of which look was
+ * drawn compares counts ([showsWood]) rather than asking whether a colour appears at all.
+ */
+const val WOOD_TOLERANCE = 6
+
+/** How many sampled pixels lie within [tolerance] of [argb]. */
+fun Bitmap.countColor(argb: Int, tolerance: Int): Int =
+    (0 until width step 4).sumOf { x -> (0 until height step 4).count { y -> near(getPixel(x, y), argb, tolerance) } }
+
+/**
+ * True when [wood], not [other], is the board drawn: a board's own wood shows between the fibres of
+ * every square, while another wood turns up only where grain or shadow happens to shade toward it.
+ */
+fun Bitmap.showsWood(wood: Color, other: Color): Boolean =
+    countColor(wood.toArgb(), WOOD_TOLERANCE) > 4 * countColor(other.toArgb(), WOOD_TOLERANCE)
+
+/** True when [a] and [b] differ by at most [tolerance] on each of alpha, red, green and blue. */
+fun near(a: Int, b: Int, tolerance: Int): Boolean =
+    listOf(24, 16, 8, 0).all { shift -> Math.abs((a shr shift and 0xFF) - (b shr shift and 0xFF)) <= tolerance }
 
 /** Robolectric screen large enough that the rows below the square board stay on-screen. */
 const val PHONE_QUALIFIERS = "w360dp-h800dp"

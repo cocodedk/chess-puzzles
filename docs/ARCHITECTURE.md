@@ -29,9 +29,10 @@ Two Gradle modules so the chess/puzzle logic is pure-JVM and fully unit-testable
 - `viewmodel/` — `PuzzleUiState` (immutable screen state) and `PuzzleViewModel` (a `StateFlow`;
   maps tap/drag/buttons to `PuzzleSession` calls; opponent reply applied synchronously; progress
   counters updated in-memory and persisted asynchronously).
-- `ui/board/` — `BoardGeometry` (pure square⇄pixel mapping, flips for Black), `PieceGlyph` (Unicode
-  glyphs), `BoardDrawing` (pure `DrawScope` helpers), `ChessBoard` (`Canvas` + tap/drag gestures),
-  `PromotionDialog`.
+- `ui/board/` — `BoardGeometry` (pure square⇄pixel mapping inside the frame, flips for Black),
+  `WoodGrain`, `BoardFrame` and `BrassCorner` (the maple-and-walnut board in its mahogany frame),
+  `PieceArt` and `PieceDrawing` (vector Staunton pieces, ivory and ebony), `BoardDrawing` (pure
+  `DrawScope` helpers), `ChessBoard` (`Canvas` + tap/drag gestures), `PromotionDialog`.
 - `ui/` — `PuzzleScreen` (stateful) + `PuzzleScreenContent` (stateless); `theme/`.
 - `data/` — `PuzzleAssetDataSource` (reads `assets/puzzles.csv`), `ProgressRepository` +
   `DataStoreProgressRepository` (Preferences DataStore: solved count, hint-free solves, streaks).
@@ -40,7 +41,7 @@ Two Gradle modules so the chess/puzzle logic is pure-JVM and fully unit-testable
 ## Testing & coverage (100%, headless)
 
 - `:core` — JUnit 5 with hand-verified puzzle fixtures.
-- `:app` — pure JUnit for `BoardGeometry`/`PieceGlyph`/`feedbackMessage`; `PuzzleViewModel` via
+- `:app` — pure JUnit for `BoardGeometry`/`feedbackMessage`; `PuzzleViewModel` via
   `kotlinx-coroutines-test`; Robolectric for DataStore, asset loading, `MainActivity`, and the
   Compose UI. Compose draw code is covered by drawing the hosted view to a software `Canvas` under
   Robolectric `@GraphicsMode(NATIVE)` (see `TestSupport.renderToBitmap`) — Compose's `captureToImage`

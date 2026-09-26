@@ -23,4 +23,9 @@
     <string name="url_github" translatable="false">https://github.com/cocodedk/chess-puzzles</string>
     <string name="url_linkedin" translatable="false">https://linkedin.com/in/babakbandpey</string>
     <string name="url_apk" translatable="false">https://github.com/cocodedk/chess-puzzles/releases/latest/download/ChessPuzzles.apk</string>
+    <!-- The spoken names of the promotion choices, for TalkBack. -->
+    <string name="piece_queen">Queen</string>
+    <string name="piece_rook">Rook</string>
+    <string name="piece_bishop">Bishop</string>
+    <string name="piece_knight">Knight</string>
 </resources>
