@@ -3,61 +3,48 @@ package dk.cocode.chess.ui.board
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
-/** Square and highlight colors for one board look, plus how piece glyphs are rimmed on it. */
+/** Square woods and highlight colours for one board look, plus the aura lifting ebony off walnut. */
 data class BoardPalette(
     val lightSquare: Color,
     val darkSquare: Color,
     val selectedTint: Color,
+    val selectedRing: Color,
     val lastMoveTint: Color,
     val hintTint: Color,
+    val hintRing: Color,
     val marker: Color,
-    val darkPieceOutline: Color,
-    /** Outline stroke width as a fraction of the square size. */
-    val pieceOutlineWidth: Float,
-    /** Soft aura behind dark pieces so they can be spotted on dark squares; 0 width disables it. */
-    val darkPieceHalo: Color,
-    val darkPieceHaloWidth: Float,
+    /** Warm aura stroked around ebony pieces so they read on walnut; width is in the piece's 100-unit box. */
+    val ebonyHalo: Color,
+    val ebonyHaloWidth: Float,
 )
 
 /**
- * Walnut wood, tuned for daylight. The squares sit in a narrow mid band rather than spanning
- * light-to-dark: a square at luminance 0.19 is equidistant from both piece colours, so pulling them
- * in is what lets white AND ink clear 3:1 at once. It costs checker contrast (2.69 -> 1.61:1), which
- * the eye reads easily anyway from the grid.
+ * Pale maple and walnut, as in the reference. Ivory reads on maple through its dark outline, and ebony
+ * on walnut through a faint warm aura, as the reference's drop-shadow glow does. The selection and the
+ * last move are brass washes; the hint is a felt green, so the two never look alike.
  */
 val DayBoardPalette = BoardPalette(
-    lightSquare = Color(0xFFB08A61),
-    darkSquare = Color(0xFF8A6844),
-    selectedTint = Color(0xE0A5E4FF),
-    lastMoveTint = Color(0xCCFFE082),
-    hintTint = Color(0xCC1A237E),
-    marker = Color(0x73000000),
-    darkPieceOutline = Color(0xFFEDEDED),
-    pieceOutlineWidth = 0.07f,
-    darkPieceHalo = Color.Transparent,
-    darkPieceHaloWidth = 0f,
+    lightSquare = Color(0xFFE8D0AA),
+    darkSquare = Color(0xFF8A5A3B),
+    selectedTint = Color(0x80FFD878),
+    selectedRing = Color(0xB3FFEEBE),
+    lastMoveTint = Color(0x6BDEB040),
+    hintTint = Color(0x8C2E8B57),
+    hintRing = Color(0xCCB4F0C8),
+    marker = Color(0x99241208),   // dark enough to stand out on the night walnut, not only on maple
+    ebonyHalo = Color(0x59FFE2B8),
+    ebonyHaloWidth = 4f,
 )
 
 /**
- * The same narrow band as day, shifted one step down for a dark room. Dimming it further is what
- * used to bury the pieces: against a deep dark square a #0A1420 fill managed only 1.5-2:1, so the
- * rim and aura had to carry the whole silhouette.
- *
- * Both boards being mid-tone, the tints are shared: a mid-hue wash (the old #03A9F4 at 40-53%)
- * lands on the squares' own luminance and vanishes — 1.0:1 — so each tint is pushed to an extreme,
- * pale or deep, at high alpha. Every one clears 2:1 on all four squares.
+ * The same woods a step darker so the maple doesn't glare in a dark room. Ebony all but vanishes into
+ * dim walnut, so its aura is brighter and wider; the rest of the colours are shared with day.
  */
-val NightBoardPalette = BoardPalette(
-    lightSquare = Color(0xFFA8825A),
-    darkSquare = Color(0xFF7E5E3E),
-    selectedTint = Color(0xE0A5E4FF),
-    lastMoveTint = Color(0xCCFFE082),
-    hintTint = Color(0xCC1A237E),
-    marker = Color(0x73000000),
-    darkPieceOutline = Color(0xFFFAFAFA),
-    pieceOutlineWidth = 0.08f,
-    darkPieceHalo = Color(0x80FFE9C8),
-    darkPieceHaloWidth = 0.14f,
+val NightBoardPalette = DayBoardPalette.copy(
+    lightSquare = Color(0xFFC4A882),
+    darkSquare = Color(0xFF6E4830),
+    ebonyHalo = Color(0x80FFE9C8),
+    ebonyHaloWidth = 8f,
 )
 
 /** Provided by ChessTheme so the board follows the app's day/night mode. */

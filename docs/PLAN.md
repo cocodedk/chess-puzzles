@@ -175,8 +175,8 @@ we always build `Move(uci, sideToMove)` from UCI; legality is pre-checked agains
 ### `:app` UI & ViewModel (Compose)
 
 - **`ChessBoard` (Canvas)** — single-pass draw of squares, last-move/selected/hint tints, coordinate
-  labels, pieces (Unicode glyphs `♚♛♜♝♞♟` tinted by color, behind a `PieceRenderer` interface so a
-  vector piece set can be swapped in later), and legal-move dots/rings. Two coexisting `pointerInput`
+  labels, pieces (vector Staunton pieces, ivory and ebony, drawn from paths in `PieceArt` and
+  `PieceDrawing` on a wood-grain board in a brass-cornered frame), and legal-move dots/rings. Two coexisting `pointerInput`
   blocks: `detectTapGestures` (tap-select-then-tap-target) and `detectDragGestures` (drag a floating
   piece). Pure `BoardGeometry` (square↔pixel, flip when player is Black) is unit-tested on the JVM.
 - **`PuzzleScreen`** = stateful wrapper + **stateless `PuzzleScreenContent`** (so `@Preview` and the
