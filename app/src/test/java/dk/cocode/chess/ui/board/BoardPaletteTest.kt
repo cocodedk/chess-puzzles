@@ -1,10 +1,17 @@
 package dk.cocode.chess.ui.board
 
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Canvas
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asAndroidBitmap
+import androidx.compose.ui.graphics.drawscope.CanvasDrawScope
 import androidx.compose.ui.graphics.colorspace.ColorSpaces
 import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.LayoutDirection
 import dk.cocode.chess.WOOD_TOLERANCE
 import dk.cocode.chess.near
 import org.junit.Assert.assertFalse
@@ -36,12 +43,22 @@ class BoardPaletteTest {
     }
 
     /**
-     * Every shade the wood shows under a piece: the bare square, each fibre the grain lays on it, and
-     * both ends of the sheen over each of those — the darkest pore to the palest fleck.
+     * Every colour the board really paints on its light and on its dark squares, at a phone's square
+     * size: grain, crossing fibres and sheen included, so no shade of the wood is left out.
      */
-    private fun woodShades(square: Color): List<Color> =
-        (listOf(square) + (0 until 64).flatMap { grainFor(it) }.map { it.color.compositeOver(square) })
-            .flatMap { listOf(it, SHEEN_LIGHT.compositeOver(it), SHEEN_DARK.compositeOver(it)) }
+    private fun paintedWood(palette: BoardPalette): Pair<Set<Color>, Set<Color>> {
+        val px = 1024
+        val squarePx = px / 8f
+        val image = ImageBitmap(px, px)
+        CanvasDrawScope().draw(Density(1f), LayoutDirection.Ltr, Canvas(image), Size(px.toFloat(), px.toFloat())) {
+            drawSquares(palette, squarePx, flipped = false)
+        }
+        val pixels = IntArray(px * px).also { image.asAndroidBitmap().getPixels(it, 0, px, 0, 0, px, px) }
+        val (light, dark) = pixels.indices.partition { i ->
+            BoardGeometry.isLight(BoardGeometry.squareAt((i % px).toFloat(), (i / px).toFloat(), squarePx, false))
+        }
+        return light.map { pixels[it] }.toSet().map { Color(it) }.toSet() to dark.map { pixels[it] }.toSet().map { Color(it) }.toSet()
+    }
 
     /**
      * Each colour clears the WCAG 3:1 bar for non-text on every shade of the grained wood, through
@@ -52,14 +69,15 @@ class BoardPaletteTest {
      */
     @Test fun everyPieceColourClearsThreeToOneOnTheGrainedWood() {
         palettes.forEach { p ->
-            for (shade in woodShades(p.lightSquare)) {
-                assertTrue("ivory rim on maple", contrast(IVORY.outline, shade) > 3f)
-                assertTrue("ebony body on maple", contrast(EBONY.shading[1].second, shade) > 3f)
-            }
-            for (shade in woodShades(p.darkSquare)) {
-                assertTrue("ebony aura on walnut", contrast(EBONY.outline, p.ebonyHalo.compositeOver(shade)) > 3f)
-                assertTrue("lit ivory on walnut", contrast(IVORY.shading[1].second, shade) > 3f)
-            }
+            val (maple, walnut) = paintedWood(p)
+            fun worst(on: Set<Color>, edge: (Color) -> Float) = on.minOf(edge)
+            val found = mapOf(
+                "ivory rim on maple" to worst(maple) { contrast(IVORY.outline, it) },
+                "ebony body on maple" to worst(maple) { contrast(EBONY.shading[1].second, it) },
+                "ebony aura on walnut" to worst(walnut) { contrast(EBONY.outline, p.ebonyHalo.compositeOver(it)) },
+                "lit ivory on walnut" to worst(walnut) { contrast(IVORY.shading[1].second, it) },
+            )
+            found.forEach { (edge, ratio) -> assertTrue("$edge: $ratio in $found", ratio > 3f) }
         }
     }
 
@@ -112,4 +130,5 @@ class BoardPaletteTest {
         val lo = minOf(a.luminance(), b.luminance())
         return (hi + 0.05f) / (lo + 0.05f)
     }
+
 }

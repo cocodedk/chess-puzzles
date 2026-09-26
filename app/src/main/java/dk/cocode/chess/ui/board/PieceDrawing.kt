@@ -31,9 +31,9 @@ internal class PieceSet(
 
 internal val IVORY = PieceSet(
     shading = arrayOf(0f to Color(0xFFFFFDF8), .36f to Color(0xFFF7F0E1), .74f to Color(0xFFE3D3B3), 1f to Color(0xFFBDA27A)),
-    // Dark enough that the rim or the body clears 3:1 on every shade of the grained maple:
-    // wherever the rim's contrast falls, the body's rises, and they cross above 3:1.
-    outline = Color(0xFF4A3C27),
+    // Dark enough to clear 3:1 on every colour the night maple really paints, crossing pores
+    // included (the darkest, #8E7152): the rim alone carries ivory's edge on maple.
+    outline = Color(0xFF30261A),
     highlight = Color(0xD9FFFFFF),
     line = Color(0x8C6B5638),
     eye = Color(0xFF4D3B26),
