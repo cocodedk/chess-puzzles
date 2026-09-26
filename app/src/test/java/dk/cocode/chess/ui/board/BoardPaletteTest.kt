@@ -44,16 +44,21 @@ class BoardPaletteTest {
             .flatMap { listOf(it, SHEEN_LIGHT.compositeOver(it), SHEEN_DARK.compositeOver(it)) }
 
     /**
-     * Something at each piece's edge clears the WCAG 3:1 bar for non-text against every shade of the
-     * grained wood it sits on, on both woods in both looks. Ivory is barely lighter than maple, so its
-     * dark outline carries it there; ebony nearly matches dim walnut, so the aura around its outline does.
+     * Each colour clears the WCAG 3:1 bar for non-text on every shade of the grained wood, through
+     * whatever carries its edge there. On the wood it is worst against, that is ivory's dark rim on
+     * maple and ebony's aura on walnut. On the other wood it is ivory's lit body and ebony's own dark
+     * body. A carved piece's shaded flank is darker by design: ivory's dips to about 2:1 on walnut,
+     * and only its lit side is held to the bar there.
      */
-    @Test fun everyPieceEdgeClearsThreeToOneOnTheGrainedWood() {
-        val ivoryBody = IVORY.shading[1].second
+    @Test fun everyPieceColourClearsThreeToOneOnTheGrainedWood() {
         palettes.forEach { p ->
-            for (shade in woodShades(p.lightSquare) + woodShades(p.darkSquare)) {
-                assertTrue(maxOf(contrast(IVORY.outline, shade), contrast(ivoryBody, shade)) > 3f)
-                assertTrue(contrast(EBONY.outline, p.ebonyHalo.compositeOver(shade)) > 3f)
+            for (shade in woodShades(p.lightSquare)) {
+                assertTrue("ivory rim on maple", contrast(IVORY.outline, shade) > 3f)
+                assertTrue("ebony body on maple", contrast(EBONY.shading[1].second, shade) > 3f)
+            }
+            for (shade in woodShades(p.darkSquare)) {
+                assertTrue("ebony aura on walnut", contrast(EBONY.outline, p.ebonyHalo.compositeOver(shade)) > 3f)
+                assertTrue("lit ivory on walnut", contrast(IVORY.shading[1].second, shade) > 3f)
             }
         }
     }
