@@ -1,0 +1,1 @@
+A bigger board: the frame is now a thin rim, the files and ranks are written on the squares, and the board and pieces fill the screen's width.

@@ -79,16 +79,46 @@ class BoardRenderTest {
         assertEquals(listOf(Square.of("e2"), Square.of("e4")), drags)
     }
 
-    @Test fun boardSitsInAMahoganyFrameWithBrassCorners() {
+    @Test fun boardSitsInAMahoganyRimWithBrassCorners() {
         val bitmap = show()
         val board = boardPx()
         val frame = BoardGeometry.frameDepth(board)
-        val lacquer = Color(bitmap.getPixel((frame * .15f).toInt(), (board / 2 + 7).toInt()))
+        val lacquer = Color(bitmap.getPixel((frame * .3f).toInt(), (board / 2 + 7).toInt()))
         assertTrue(lacquer.red > lacquer.green * 1.5f && lacquer.red < .45f) // deep red-brown mahogany
-        for ((x, y) in listOf(frame * .89f to frame * .28f, board - frame * .89f to board - frame * .28f)) {
+        // A bracket's arm runs 3 to 16 units deep in its 64-unit box, filling the mahogany outside the bands.
+        val k = frame * (1 - BAND_REACH) / 16f
+        for ((x, y) in listOf(30 * k to 9.5f * k, board - 30 * k to board - 9.5f * k)) {
             val brass = Color(bitmap.getPixel(x.toInt(), y.toInt()))
             assertTrue(brass.red > .6f && brass.green > .45f && brass.blue < brass.green) // a gold plate
         }
+    }
+
+    /** How many pixels in the quarter of [square] at [corner] (its fractions across and down) are [ink]. */
+    private fun inkIn(bitmap: Bitmap, square: String, ink: Color, corner: Offset, flipped: Boolean = false): Int {
+        val squarePx = BoardGeometry.squareSize(boardPx())
+        val from = centerOf(Square.of(square), flipped) + (corner - Offset(.5f, .5f)) * squarePx
+        val xs = from.x.toInt() until (from.x + squarePx / 2).toInt()
+        val ys = from.y.toInt() until (from.y + squarePx / 2).toInt()
+        return xs.sumOf { x -> ys.count { y -> near(bitmap.getPixel(x, y), ink.toArgb(), 40) } }
+    }
+
+    private val topLeft = Offset.Zero
+    private val bottomRight = Offset(.5f, .5f)
+
+    @Test fun filesAndRanksAreWrittenOnTheEdgeSquares() {
+        val bitmap = show()
+        assertTrue(inkIn(bitmap, "e1", LABEL_ON_WALNUT, bottomRight) > 0) // e1's file, pale on walnut
+        assertTrue(inkIn(bitmap, "d1", LABEL_ON_MAPLE, bottomRight) > 0) // d1's file, dark on maple
+        assertTrue(inkIn(bitmap, "a4", LABEL_ON_MAPLE, topLeft) > 0) // the fourth rank
+        assertEquals(0, inkIn(bitmap, "e1", LABEL_ON_WALNUT, topLeft)) // only the a-file carries ranks
+        assertEquals(0, inkIn(bitmap, "e2", LABEL_ON_MAPLE, bottomRight)) // only the first rank carries files
+    }
+
+    @Test fun flippedBoardWritesItsCoordinatesOnBlacksEdges() {
+        val bitmap = show(empty.copy(flipped = true))
+        assertTrue(inkIn(bitmap, "e8", LABEL_ON_MAPLE, bottomRight, flipped = true) > 0) // e8 is at the bottom now
+        assertTrue(inkIn(bitmap, "h5", LABEL_ON_MAPLE, topLeft, flipped = true) > 0) // h is the left-hand file
+        assertEquals(0, inkIn(bitmap, "e1", LABEL_ON_WALNUT, bottomRight, flipped = true)) // e1 is at the top
     }
 
     @Test fun mapleHasVisibleGrainByDay() = assertGrain(DayBoardPalette)
