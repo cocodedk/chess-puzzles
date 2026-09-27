@@ -61,11 +61,10 @@ class PuzzleViewModel(
     fun onSquareTapped(square: Square) {
         val current = _state.value
         if (current.status != PuzzleStatus.IN_PROGRESS) return
-        when {
-            current.selected == null -> select(square)
-            square == current.selected -> clearSelection()
-            square in current.legalTargets -> submit(current.selected, square, null)
-            else -> select(square)
+        when (val tap = resolveTap(current.selected, current.legalTargets, square)) {
+            is Tap.Select -> select(tap.square)
+            is Tap.Clear -> clearSelection()
+            is Tap.Move -> submit(tap.from, tap.to, null)
         }
     }
 
