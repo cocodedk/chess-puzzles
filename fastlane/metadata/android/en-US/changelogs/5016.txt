@@ -1,0 +1,1 @@
+New: a ◀ button beside Next goes back to the previous puzzle in the same difficulty band.

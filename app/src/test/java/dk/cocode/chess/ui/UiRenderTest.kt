@@ -114,6 +114,22 @@ class UiRenderTest {
         composeRule.renderToBitmap()
     }
 
+    @Test fun previousButtonAsksForThePreviousPuzzle() {
+        var asked = 0
+        composeRule.setContent {
+            ChessTheme(darkTheme = false) {
+                PuzzleScreenContent(
+                    state = rich(flipped = false),
+                    onSquareTap = {}, onDragStart = {}, onDragEnd = {},
+                    onHint = {}, onReset = {}, onNext = {},
+                    onPromotion = {}, onPromotionCancel = {}, onPrevious = { asked++ },
+                )
+            }
+        }
+        composeRule.onNodeWithContentDescription("Previous puzzle").performClick()
+        assertEquals(1, asked)
+    }
+
     @Test fun rendersSolvedState() {
         show(PuzzleUiState(board = board, status = PuzzleStatus.SOLVED, feedback = Feedback.SOLVED))
         composeRule.renderToBitmap()

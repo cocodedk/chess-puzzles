@@ -41,6 +41,7 @@ fun PuzzleScreen(
             onHint = viewModel::onHint,
             onReset = viewModel::onReset,
             onNext = viewModel::onNext,
+            onPrevious = viewModel::onPrevious,
             onPromotion = viewModel::onPromotionChosen,
             onPromotionCancel = viewModel::onPromotionCancelled,
             onAbout = { showAbout = true },
@@ -62,6 +63,7 @@ fun PuzzleScreenContent(
     onNext: () -> Unit,
     onPromotion: (PieceType) -> Unit,
     onPromotionCancel: () -> Unit,
+    onPrevious: () -> Unit = {},
     onAbout: () -> Unit = {},
     onDifficulty: (Difficulty) -> Unit = {},
     difficulties: List<Difficulty> = Difficulty.entries,
@@ -85,9 +87,9 @@ fun PuzzleScreenContent(
             if (stacked) {
                 PuzzlePrompt(state)
                 Spacer(Modifier.height(16.dp))
-                PuzzleControls(state, onHint, onReset, onNext, stacked)
+                PuzzleControls(state, onHint, onReset, onPrevious, onNext, stacked)
             } else {
-                PuzzleControls(state, onHint, onReset, onNext, stacked)
+                PuzzleControls(state, onHint, onReset, onPrevious, onNext, stacked)
                 PuzzleSettings(themeMode, onThemeToggle, onAbout)
             }
         },

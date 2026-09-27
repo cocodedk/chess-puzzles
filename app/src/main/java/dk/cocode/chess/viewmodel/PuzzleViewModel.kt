@@ -106,10 +106,10 @@ class PuzzleViewModel(
         _state.value = render()
     }
 
-    fun onNext() {
-        val band = band()
-        if (band.size > 1) jumpTo(band[(band.indexOf(index) + 1) % band.size])
-    }
+    fun onNext() = stepBand(1)
+    fun onPrevious() = stepBand(-1)
+
+    private fun stepBand(by: Int) = band().let { if (it.size > 1) jumpTo(it.stepFrom(index, by)) }
 
     /** Jump to the first puzzle of the chosen band, unless that band is already showing. */
     fun onDifficultySelected(difficulty: Difficulty) {
