@@ -81,6 +81,20 @@ class BoardPaletteTest {
         }
     }
 
+    /**
+     * The coordinates are small text, so they clear WCAG's 4.5:1 on their square's wood, and 3:1 on every
+     * shade its grain paints. No ink reaches 4.5:1 on walnut's palest fleck: even white stops near 3.4:1.
+     */
+    @Test fun coordinatesReadOnTheirWood() {
+        palettes.forEach { p ->
+            val (maple, walnut) = paintedWood(p)
+            val onWood = listOf(contrast(LABEL_ON_MAPLE, p.lightSquare), contrast(LABEL_ON_WALNUT, p.darkSquare))
+            val onGrain = listOf(maple.minOf { contrast(LABEL_ON_MAPLE, it) }, walnut.minOf { contrast(LABEL_ON_WALNUT, it) })
+            assertTrue("maple, walnut: $onWood", onWood.all { it >= 4.5f })
+            assertTrue("maple, walnut grain: $onGrain", onGrain.all { it >= 3f })
+        }
+    }
+
     /** CIE ΔE between two opaque colours: about 10 and up reads as a different colour at a glance. */
     private fun deltaE(a: Color, b: Color): Float {
         val (p, q) = a.convert(ColorSpaces.CieLab) to b.convert(ColorSpaces.CieLab)

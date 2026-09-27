@@ -9,7 +9,7 @@ import dk.cocode.chess.core.model.Square
  */
 object BoardGeometry {
     /** How deep the frame around the squares is, as a fraction of the framed board's width. */
-    private const val FRAME_FRACTION = 0.058f
+    private const val FRAME_FRACTION = 0.02f
 
     fun frameDepth(boardPx: Float): Float = boardPx * FRAME_FRACTION
 

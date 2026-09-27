@@ -30,7 +30,8 @@ Two Gradle modules so the chess/puzzle logic is pure-JVM and fully unit-testable
   maps tap/drag/buttons to `PuzzleSession` calls; opponent reply applied synchronously; progress
   counters updated in-memory and persisted asynchronously).
 - `ui/board/` — `BoardGeometry` (pure square⇄pixel mapping inside the frame, flips for Black),
-  `WoodGrain`, `BoardFrame` and `BrassCorner` (the maple-and-walnut board in its mahogany frame),
+  `WoodGrain`, `BoardFrame` and `BrassCorner` (the maple-and-walnut board in its thin mahogany rim),
+  `BoardCoordinates` (files and ranks written on the edge squares),
   `PieceArt` and `PieceDrawing` (vector Staunton pieces, ivory and ebony), `BoardDrawing` (pure
   `DrawScope` helpers), `ChessBoard` (`Canvas` + tap/drag gestures), `PromotionDialog`.
 - `ui/` — `PuzzleScreen` (stateful) + `PuzzleScreenContent` (stateless); `theme/`.

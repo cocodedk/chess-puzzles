@@ -40,7 +40,7 @@ class BoardGeometryTest {
     @Test fun frameLeavesEightSquaresBetweenItsSides() {
         val board = 1000f
         val frame = BoardGeometry.frameDepth(board)
-        assertEquals(58f, frame, 1e-3f)
+        assertEquals(20f, frame, 1e-3f)
         assertEquals(board, 2 * frame + 8 * BoardGeometry.squareSize(board), 1e-3f)
     }
 

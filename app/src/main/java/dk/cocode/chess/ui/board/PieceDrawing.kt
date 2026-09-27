@@ -12,6 +12,7 @@ import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.graphics.drawscope.translate
+import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.graphics.vector.PathParser
 
 /** One colour of the set: the body's light-to-shadow gradient, its outline, and the detail inks. */
@@ -65,6 +66,10 @@ private val SHADOW = Color(0x47000000)
 internal const val OUTLINE_WIDTH = 1.5f
 private val OUTLINE = Stroke(width = OUTLINE_WIDTH, cap = StrokeCap.Round, join = StrokeJoin.Round)
 
+/** The set spans y 11 (the king's cross) to 94 (the bases' shadow) of its box, so it is drawn this much larger. */
+private const val PIECE_FILL = 1.12f
+private val FILL_PIVOT = Offset(50f, 52f)
+
 /**
  * Draws the piece for FEN letter [code] filling the [size]-px square at [topLeft]: a drop shadow, a
  * warm aura behind ebony, then each shaded, outlined body part back to front and its carved marks.
@@ -72,23 +77,25 @@ private val OUTLINE = Stroke(width = OUTLINE_WIDTH, cap = StrokeCap.Round, join 
 internal fun DrawScope.drawPiece(code: Char, topLeft: Offset, size: Float, palette: BoardPalette) {
     val set = pieceSet(code)
     val paths = PIECE_PATHS.getValue(code.lowercaseChar())
-    translate(topLeft.x, topLeft.y) {
-        scale(size / 100f, pivot = Offset.Zero) {
-            translate(top = 3f) { drawPath(paths.silhouette, SHADOW) }
-            if (set === EBONY) {
-                val aura = Stroke(width = palette.ebonyHaloWidth, join = StrokeJoin.Round)
-                drawPath(paths.silhouette, palette.ebonyHalo, style = aura)
-            }
-            for ((part, bounds) in paths.body) {
-                // The reference shades each part across its own box, lit from the upper left.
-                val end = Offset(bounds.right, bounds.top + bounds.height * .22f)
-                drawPath(part, Brush.linearGradient(*set.shading, start = bounds.topLeft, end = end))
-                drawPath(part, set.outline, style = OUTLINE)
-            }
-            for ((mark, path) in paths.marks) {
-                val style = if (mark.filled) Fill else Stroke(mark.width, cap = StrokeCap.Round, join = StrokeJoin.Round)
-                drawPath(path, set.ink(mark.ink), style = style)
-            }
+    withTransform({
+        translate(topLeft.x, topLeft.y)
+        scale(size / 100f, pivot = Offset.Zero)
+        scale(PIECE_FILL, pivot = FILL_PIVOT)
+    }) {
+        translate(top = 3f) { drawPath(paths.silhouette, SHADOW) }
+        if (set === EBONY) {
+            val aura = Stroke(width = palette.ebonyHaloWidth, join = StrokeJoin.Round)
+            drawPath(paths.silhouette, palette.ebonyHalo, style = aura)
+        }
+        for ((part, bounds) in paths.body) {
+            // The reference shades each part across its own box, lit from the upper left.
+            val end = Offset(bounds.right, bounds.top + bounds.height * .22f)
+            drawPath(part, Brush.linearGradient(*set.shading, start = bounds.topLeft, end = end))
+            drawPath(part, set.outline, style = OUTLINE)
+        }
+        for ((mark, path) in paths.marks) {
+            val style = if (mark.filled) Fill else Stroke(mark.width, cap = StrokeCap.Round, join = StrokeJoin.Round)
+            drawPath(path, set.ink(mark.ink), style = style)
         }
     }
 }

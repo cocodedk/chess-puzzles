@@ -29,9 +29,9 @@ private val BRASS = arrayOf(
 private val SCREW = arrayOf(0f to Color(0xFFFFF2C9), .5f to Color(0xFFC9A45C), 1f to Color(0xFF6E5125))
 private val ENGRAVING = Color(0xFF4D3713)
 
-/** Brass brackets [sizePx] square over the four corners of the board. */
-internal fun DrawScope.drawBrassCorners(sizePx: Float) {
-    val k = sizePx / 64f
+/** Brass brackets over the four corners of the board, their arms reaching [depth] px in from its edges. */
+internal fun DrawScope.drawBrassCorners(depth: Float) {
+    val k = depth / 16f   // the plate's arms end 16 units into its 64-unit box
     for ((x, y) in listOf(0f to 0f, size.width to 0f, 0f to size.height, size.width to size.height)) {
         withTransform({
             translate(x, y)

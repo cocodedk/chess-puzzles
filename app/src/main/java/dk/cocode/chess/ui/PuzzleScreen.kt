@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
@@ -86,8 +85,10 @@ fun PuzzleScreenContent(
     onThemeToggle: () -> Unit = {},
 ) {
     Scaffold { padding ->
+        val textInset = Modifier.padding(horizontal = 16.dp)
         Column(
-            modifier = Modifier.padding(padding).fillMaxSize().padding(16.dp),
+            // No side padding, so the board can run the full width; the text rows carry their own.
+            modifier = Modifier.padding(padding).fillMaxSize().padding(vertical = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text("Puzzle ${state.position} of ${state.bandSize}", style = MaterialTheme.typography.titleLarge)
@@ -99,17 +100,23 @@ fun PuzzleScreenContent(
             Spacer(Modifier.height(8.dp))
             DifficultyRow(available = difficulties, current = difficultyOf(state.rating), onSelect = onDifficulty)
             Spacer(Modifier.height(8.dp))
-            Text(state.promptText, textAlign = TextAlign.Center, style = MaterialTheme.typography.titleMedium)
+            Text(
+                state.promptText,
+                modifier = textInset,
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.titleMedium,
+            )
             Spacer(Modifier.height(8.dp))
             ChessBoard(
                 state = state,
                 onSquareTap = onSquareTap,
                 onDragStart = onDragStart,
                 onDragEnd = onDragEnd,
-                modifier = Modifier.fillMaxWidth(),
+                // The largest square that fits both the width and the height the other rows leave.
+                modifier = Modifier.weight(1f, fill = false),
             )
             Spacer(Modifier.height(8.dp))
-            Text(feedbackMessage(state.feedback))
+            Text(feedbackMessage(state.feedback), modifier = textInset)
             Spacer(Modifier.height(16.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 OutlinedButton(onClick = onHint, enabled = state.status == PuzzleStatus.IN_PROGRESS) {

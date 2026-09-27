@@ -28,7 +28,7 @@ fun ChessBoard(
     onDragEnd: (Square) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val textMeasurer = rememberTextMeasurer(cacheSize = 16)   // the frame's 16 coordinate labels
+    val textMeasurer = rememberTextMeasurer(cacheSize = 16)   // the 16 coordinate labels
     val palette = LocalBoardPalette.current
     val flipped = state.flipped
     var dragTarget by remember { mutableStateOf(Square(0, 0)) }
@@ -57,12 +57,13 @@ fun ChessBoard(
     ) {
         val frame = BoardGeometry.frameDepth(size.width)
         val squarePx = BoardGeometry.squareSize(size.width)
-        drawFrame(frame, squarePx, flipped, textMeasurer)
+        drawFrame(frame, squarePx)
         translate(frame, frame) {
             drawSquares(palette, squarePx, flipped)
             state.lastMove?.let { highlightMove(it.from, it.to, palette.lastMoveTint, squarePx, flipped) }
             state.hint?.let { highlightMove(it.from, it.to, palette.hintTint, squarePx, flipped, palette.hintRing) }
             state.selected?.let { tintSquare(it, palette.selectedTint, squarePx, flipped, palette.selectedRing) }
+            drawCoordinates(squarePx, flipped, textMeasurer)
             drawPieces(state, palette, squarePx, flipped)
             drawTargets(state, palette.marker, squarePx, flipped)
         }

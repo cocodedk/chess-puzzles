@@ -91,6 +91,13 @@ class PieceRenderTest {
         assertTrue(facts, only('n', lopsided) { a, b -> a > b + 3 })   // 7% against at most 1%
     }
 
+    /** The set is drawn larger than its art box so it fills the square: the king nearly to the top, the pawn two-thirds up. */
+    @Test fun piecesFillTheirSquare() {
+        fun rows(code: Char) = silhouette(piece(code, Color.Black), Color.Black).map { it / px }
+        assertTrue(rows('K').min() < 8)   // the bare art's cross starts at row 10
+        assertTrue(rows('P').let { it.max() - it.min() } > 64)   // the bare art's pawn is 60 rows tall
+    }
+
     @Test fun ivoryIsPaleAndEbonyIsDarkWithShading() {
         val ivory = piece('Q', Color.Black)
         val ebony = piece('q', Color.White)
