@@ -1,35 +1,18 @@
 package dk.cocode.chess.ui
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dk.cocode.chess.core.model.PieceType
 import dk.cocode.chess.core.model.Square
 import dk.cocode.chess.data.ThemeMode
-import dk.cocode.chess.ui.board.ChessBoard
 import dk.cocode.chess.ui.board.PromotionDialog
 import dk.cocode.chess.viewmodel.Difficulty
 import dk.cocode.chess.viewmodel.Feedback
@@ -41,6 +24,7 @@ fun PuzzleScreen(
     viewModel: PuzzleViewModel,
     themeMode: ThemeMode,
     onThemeToggle: () -> Unit,
+    tabs: @Composable () -> Unit = {},
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     var showAbout by rememberSaveable { mutableStateOf(false) }
@@ -62,6 +46,7 @@ fun PuzzleScreen(
             onAbout = { showAbout = true },
             onDifficulty = viewModel::onDifficultySelected,
             difficulties = viewModel.availableDifficulties,
+            tabs = tabs,
         )
     }
 }
@@ -82,80 +67,35 @@ fun PuzzleScreenContent(
     difficulties: List<Difficulty> = Difficulty.entries,
     themeMode: ThemeMode = ThemeMode.SYSTEM,
     onThemeToggle: () -> Unit = {},
+    tabs: @Composable () -> Unit = {},
 ) {
-    Scaffold(contentWindowInsets = WindowInsets.safeDrawing) { padding ->
-        BoxWithConstraints(Modifier.padding(padding).fillMaxSize()) {
-            when (boardLayout(maxWidth, maxHeight)) {
-                BoardLayout.BETWEEN_PANELS -> Row(Modifier.fillMaxSize()) {
-                    SidePanel {
-                        PuzzleStats(state, difficulties, onDifficulty, stacked = true)
-                        Spacer(Modifier.height(8.dp))
-                        PuzzleSettings(themeMode, onThemeToggle, onAbout)
-                    }
-                    ChessBoard(state, onSquareTap, onDragStart, onDragEnd, Modifier.fillMaxHeight())
-                    SidePanel {
-                        PuzzlePrompt(state)
-                        Spacer(Modifier.height(16.dp))
-                        PuzzleControls(state, onHint, onReset, onNext, stacked = true)
-                    }
-                }
-                BoardLayout.BESIDE_PANEL -> Row(Modifier.fillMaxSize()) {
-                    ChessBoard(state, onSquareTap, onDragStart, onDragEnd, Modifier.fillMaxHeight())
-                    SidePanel {
-                        PuzzleStats(state, difficulties, onDifficulty, stacked = false)
-                        Spacer(Modifier.height(8.dp))
-                        PuzzlePrompt(state)
-                        Spacer(Modifier.height(16.dp))
-                        PuzzleControls(state, onHint, onReset, onNext, stacked = false)
-                        PuzzleSettings(themeMode, onThemeToggle, onAbout)
-                    }
-                }
-                // STACKED. An `else`: as the lambda's last expression an exhaustive `when` hides an unreachable throw.
-                else -> Column(
-                    Modifier.fillMaxSize().padding(vertical = 16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    PuzzleStats(state, difficulties, onDifficulty, stacked = false)
-                    Spacer(Modifier.height(8.dp))
-                    PuzzlePrompt(state)
-                    Spacer(Modifier.height(8.dp))
-                    // The largest square that fits both the width and the height the other rows leave.
-                    ChessBoard(state, onSquareTap, onDragStart, onDragEnd, Modifier.weight(1f, fill = false))
-                    Spacer(Modifier.height(8.dp))
-                    PuzzleControls(state, onHint, onReset, onNext, stacked = false)
-                    PuzzleSettings(themeMode, onThemeToggle, onAbout)
-                }
+    // `stacked` is true only when each slot has a side panel to itself. Then the settings sit under the
+    // stats and the prompt above the buttons, balancing the two panels; when both slots share one
+    // column the rows read top to bottom: stats, prompt, (board), buttons, settings.
+    BoardScaffold(
+        state = state,
+        onSquareTap = onSquareTap, onDragStart = onDragStart, onDragEnd = onDragEnd,
+        tabs = tabs,
+        header = { stacked ->
+            PuzzleStats(state, difficulties, onDifficulty, stacked)
+            Spacer(Modifier.height(8.dp))
+            if (stacked) PuzzleSettings(themeMode, onThemeToggle, onAbout) else PuzzlePrompt(state)
+        },
+        body = { stacked ->
+            if (stacked) {
+                PuzzlePrompt(state)
+                Spacer(Modifier.height(16.dp))
+                PuzzleControls(state, onHint, onReset, onNext, stacked)
+            } else {
+                PuzzleControls(state, onHint, onReset, onNext, stacked)
+                PuzzleSettings(themeMode, onThemeToggle, onAbout)
             }
-        }
-    }
+        },
+    )
     state.pendingPromotion?.let {
         PromotionDialog(onSelect = onPromotion, onDismiss = onPromotionCancel)
     }
 }
-
-/** One side of a board as tall as the screen: its rows centred, scrolling if the screen is too short. */
-@Composable
-private fun RowScope.SidePanel(content: @Composable ColumnScope.() -> Unit) = Column(
-    Modifier.weight(1f).fillMaxHeight().verticalScroll(rememberScrollState()).padding(vertical = 16.dp),
-    horizontalAlignment = Alignment.CenterHorizontally,
-    verticalArrangement = Arrangement.Center,
-    content = content,
-)
-
-/** Where the board goes, given the room a board as tall as the screen leaves beside it. */
-internal enum class BoardLayout { BETWEEN_PANELS, BESIDE_PANEL, STACKED }
-
-internal fun boardLayout(width: Dp, height: Dp): BoardLayout = when {
-    width - height >= NARROW_PANEL * 2 -> BoardLayout.BETWEEN_PANELS
-    width - height >= WIDE_PANEL -> BoardLayout.BESIDE_PANEL   // a 16:9 phone on its side
-    else -> BoardLayout.STACKED
-}
-
-/** A side panel of stacked bands and buttons: wide enough for the five stats and the Theme and About links. */
-private val NARROW_PANEL = 190.dp
-
-/** A single panel keeping its rows: wide enough for the three bands side by side. */
-private val WIDE_PANEL = 280.dp
 
 internal fun themeLabel(mode: ThemeMode): String = when (mode) {
     ThemeMode.SYSTEM -> "Theme: Auto"

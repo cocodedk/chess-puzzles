@@ -33,12 +33,19 @@ import dk.cocode.chess.viewmodel.Difficulty
 import dk.cocode.chess.viewmodel.PuzzleUiState
 import dk.cocode.chess.viewmodel.difficultyOf
 
-/** Keeps the text rows off the screen edge, which the board is allowed to touch. */
-private val TextInset = Modifier.padding(horizontal = 16.dp)
+/** Keeps the text rows off the screen edge, which the board is allowed to touch. Reused by the openings panels. */
+internal val TextInset = Modifier.padding(horizontal = 16.dp)
 
-/** Buttons drawn lower and slimmer than Material's default; the touch target stays 48dp. */
-private val CompactButton = Modifier.heightIn(min = 36.dp)
-private val CompactPadding = PaddingValues(horizontal = 16.dp)
+/** Buttons drawn lower and slimmer than Material's default; the touch target stays 48dp. Reused by the openings panels. */
+internal val CompactButton = Modifier.heightIn(min = 36.dp)
+internal val CompactPadding = PaddingValues(horizontal = 16.dp)
+
+/** The selected-state colors shared by every filter chip in the puzzle and openings screens. */
+@Composable
+internal fun selectedChipColors() = FilterChipDefaults.filterChipColors(
+    selectedContainerColor = MaterialTheme.colorScheme.primary,
+    selectedLabelColor = MaterialTheme.colorScheme.onPrimary,
+)
 
 /** The puzzle's number and rating, the stats and the bands; [stacked] lines the bands up in a column. */
 @Composable
@@ -63,10 +70,7 @@ internal fun PuzzleStats(
                 onClick = { onDifficulty(band) },
                 label = { Text(bandLabel(band), item, textAlign = TextAlign.Center) },
                 modifier = item,
-                colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = MaterialTheme.colorScheme.primary,
-                    selectedLabelColor = MaterialTheme.colorScheme.onPrimary,
-                ),
+                colors = selectedChipColors(),
             )
         }
     }
@@ -104,9 +108,10 @@ internal fun PuzzleSettings(themeMode: ThemeMode, onThemeToggle: () -> Unit, onA
 /**
  * A row of [content], or when [stacked] a column of it as wide as its widest item, each item stretched to
  * match; the 48dp touch targets already space the column. [content] gets the modifier each item wears.
+ * Reused by the openings panels for their own chip rows.
  */
 @Composable
-private fun Lineup(stacked: Boolean, content: @Composable (item: Modifier) -> Unit) {
+internal fun Lineup(stacked: Boolean, content: @Composable (item: Modifier) -> Unit) {
     if (stacked) {
         Column(Modifier.width(IntrinsicSize.Max), horizontalAlignment = Alignment.CenterHorizontally) {
             content(Modifier.fillMaxWidth())

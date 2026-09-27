@@ -53,4 +53,13 @@ class MainActivityTest {
         composeRule.onNodeWithText("Theme: Dark").performClick()
         awaitText("Theme: Auto")
     }
+
+    @Test
+    fun tabsSwitchBetweenPuzzlesAndOpenings() {
+        awaitText("Hint")
+        composeRule.onNodeWithText("Openings").performClick()
+        awaitText("As White")
+        composeRule.onNodeWithText("Puzzles").performClick()
+        awaitText("Hint")
+    }
 }

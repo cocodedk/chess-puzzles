@@ -11,7 +11,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
@@ -21,9 +24,14 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import dk.cocode.chess.core.data.openings.Openings
 import dk.cocode.chess.data.ThemeMode
+import dk.cocode.chess.ui.AppTab
+import dk.cocode.chess.ui.ModeTabs
+import dk.cocode.chess.ui.OpeningScreen
 import dk.cocode.chess.ui.PuzzleScreen
 import dk.cocode.chess.ui.theme.ChessTheme
+import dk.cocode.chess.viewmodel.OpeningViewModel
 import dk.cocode.chess.viewmodel.PuzzleViewModel
 import kotlinx.coroutines.launch
 
@@ -73,12 +81,25 @@ private fun AppContent(app: ChessApp, themeMode: ThemeMode, onThemeToggle: () ->
     if (app.puzzles.count() == 0) {
         EmptyState()
     } else {
-        val viewModel: PuzzleViewModel = viewModel(
-            factory = viewModelFactory {
-                initializer { PuzzleViewModel(app.puzzles, app.progress) }
-            },
-        )
-        PuzzleScreen(viewModel = viewModel, themeMode = themeMode, onThemeToggle = onThemeToggle)
+        var tab by rememberSaveable { mutableStateOf(AppTab.PUZZLES) }
+        val tabs: @Composable () -> Unit = { ModeTabs(selected = tab, onSelect = { tab = it }) }
+        when (tab) {
+            AppTab.PUZZLES -> {
+                val viewModel: PuzzleViewModel = viewModel(
+                    factory = viewModelFactory { initializer { PuzzleViewModel(app.puzzles, app.progress) } },
+                )
+                PuzzleScreen(viewModel = viewModel, themeMode = themeMode, onThemeToggle = onThemeToggle, tabs = tabs)
+            }
+            AppTab.OPENINGS -> {
+                val viewModel: OpeningViewModel = viewModel(
+                    factory = viewModelFactory { initializer { OpeningViewModel(Openings.all, app.openingProgress) } },
+                )
+                OpeningScreen(
+                    viewModel = viewModel, openings = Openings.all,
+                    themeMode = themeMode, onThemeToggle = onThemeToggle, tabs = tabs,
+                )
+            }
+        }
     }
 }
 
