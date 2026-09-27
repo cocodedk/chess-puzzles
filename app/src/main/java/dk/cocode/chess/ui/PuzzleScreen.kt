@@ -3,7 +3,9 @@ package dk.cocode.chess.ui
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -83,27 +85,45 @@ fun PuzzleScreenContent(
 ) {
     Scaffold(contentWindowInsets = WindowInsets.safeDrawing) { padding ->
         BoxWithConstraints(Modifier.padding(padding).fillMaxSize()) {
-            if (boardBesideControls(maxWidth, maxHeight)) {
-                Row(Modifier.fillMaxSize()) {
+            when (boardLayout(maxWidth, maxHeight)) {
+                BoardLayout.BETWEEN_PANELS -> Row(Modifier.fillMaxSize()) {
+                    SidePanel {
+                        PuzzleStats(state, difficulties, onDifficulty, stacked = true)
+                        Spacer(Modifier.height(8.dp))
+                        PuzzleSettings(themeMode, onThemeToggle, onAbout)
+                    }
                     ChessBoard(state, onSquareTap, onDragStart, onDragEnd, Modifier.fillMaxHeight())
-                    Column(
-                        Modifier.weight(1f).fillMaxHeight().verticalScroll(rememberScrollState()).padding(vertical = 16.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center,
-                    ) {
-                        PuzzleHeader(state, difficulties, onDifficulty)
+                    SidePanel {
+                        PuzzlePrompt(state)
                         Spacer(Modifier.height(16.dp))
-                        PuzzleControls(state, onHint, onReset, onNext, themeMode, onThemeToggle, onAbout)
+                        PuzzleControls(state, onHint, onReset, onNext, stacked = true)
                     }
                 }
-            } else {
-                Column(Modifier.fillMaxSize().padding(vertical = 16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-                    PuzzleHeader(state, difficulties, onDifficulty)
+                BoardLayout.BESIDE_PANEL -> Row(Modifier.fillMaxSize()) {
+                    ChessBoard(state, onSquareTap, onDragStart, onDragEnd, Modifier.fillMaxHeight())
+                    SidePanel {
+                        PuzzleStats(state, difficulties, onDifficulty, stacked = false)
+                        Spacer(Modifier.height(8.dp))
+                        PuzzlePrompt(state)
+                        Spacer(Modifier.height(16.dp))
+                        PuzzleControls(state, onHint, onReset, onNext, stacked = false)
+                        PuzzleSettings(themeMode, onThemeToggle, onAbout)
+                    }
+                }
+                // STACKED. An `else`: as the lambda's last expression an exhaustive `when` hides an unreachable throw.
+                else -> Column(
+                    Modifier.fillMaxSize().padding(vertical = 16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    PuzzleStats(state, difficulties, onDifficulty, stacked = false)
+                    Spacer(Modifier.height(8.dp))
+                    PuzzlePrompt(state)
                     Spacer(Modifier.height(8.dp))
                     // The largest square that fits both the width and the height the other rows leave.
                     ChessBoard(state, onSquareTap, onDragStart, onDragEnd, Modifier.weight(1f, fill = false))
                     Spacer(Modifier.height(8.dp))
-                    PuzzleControls(state, onHint, onReset, onNext, themeMode, onThemeToggle, onAbout)
+                    PuzzleControls(state, onHint, onReset, onNext, stacked = false)
+                    PuzzleSettings(themeMode, onThemeToggle, onAbout)
                 }
             }
         }
@@ -113,11 +133,29 @@ fun PuzzleScreenContent(
     }
 }
 
-/** Side by side when a board as tall as the screen still leaves the controls room beside it. */
-internal fun boardBesideControls(width: Dp, height: Dp): Boolean = width - height >= CONTROLS_MIN_WIDTH
+/** One side of a board as tall as the screen: its rows centred, scrolling if the screen is too short. */
+@Composable
+private fun RowScope.SidePanel(content: @Composable ColumnScope.() -> Unit) = Column(
+    Modifier.weight(1f).fillMaxHeight().verticalScroll(rememberScrollState()).padding(vertical = 16.dp),
+    horizontalAlignment = Alignment.CenterHorizontally,
+    verticalArrangement = Arrangement.Center,
+    content = content,
+)
 
-/** Wide enough for the three difficulty chips and the Hint, Reset and Next buttons. */
-private val CONTROLS_MIN_WIDTH = 300.dp
+/** Where the board goes, given the room a board as tall as the screen leaves beside it. */
+internal enum class BoardLayout { BETWEEN_PANELS, BESIDE_PANEL, STACKED }
+
+internal fun boardLayout(width: Dp, height: Dp): BoardLayout = when {
+    width - height >= NARROW_PANEL * 2 -> BoardLayout.BETWEEN_PANELS
+    width - height >= WIDE_PANEL -> BoardLayout.BESIDE_PANEL   // a 16:9 phone on its side
+    else -> BoardLayout.STACKED
+}
+
+/** A side panel of stacked bands and buttons: wide enough for the five stats and the Theme and About links. */
+private val NARROW_PANEL = 190.dp
+
+/** A single panel keeping its rows: wide enough for the three bands side by side. */
+private val WIDE_PANEL = 280.dp
 
 internal fun themeLabel(mode: ThemeMode): String = when (mode) {
     ThemeMode.SYSTEM -> "Theme: Auto"

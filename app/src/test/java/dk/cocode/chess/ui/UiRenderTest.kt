@@ -99,6 +99,16 @@ class UiRenderTest {
         }
     }
 
+    @Test fun difficultyChipsShareOneRowOnScreen() {
+        show(rich(flipped = false))
+        val screen = composeRule.onRoot().getUnclippedBoundsInRoot()
+        val chips = listOf("Easy", "Medium", "Hard").map { composeRule.onNodeWithText(it).getUnclippedBoundsInRoot() }
+        chips.forEach {
+            assertEquals(chips[0].top, it.top) // one row ...
+            assertTrue(it.left >= screen.left && it.right <= screen.right) // ... every band on screen
+        }
+    }
+
     @Test fun rendersRichBoardFlipped() {
         show(rich(flipped = true))
         composeRule.renderToBitmap()
