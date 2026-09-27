@@ -1,0 +1,1 @@
+On its side at a large font size, the stats and the Theme/About links wrap whole onto a new line instead of squeezing the last score or splitting "About".
