@@ -34,7 +34,10 @@ Two Gradle modules so the chess/puzzle logic is pure-JVM and fully unit-testable
   `BoardCoordinates` (files and ranks written on the edge squares),
   `PieceArt` and `PieceDrawing` (vector Staunton pieces, ivory and ebony), `BoardDrawing` (pure
   `DrawScope` helpers), `ChessBoard` (`Canvas` + tap/drag gestures), `PromotionDialog`.
-- `ui/` — `PuzzleScreen` (stateful) + `PuzzleScreenContent` (stateless); `theme/`.
+- `ui/` — `PuzzleScreen` (stateful) + `PuzzleScreenContent` (stateless), which places the board by
+  `boardLayout`: stacked between the rows upright; on its side, a full-height board between two panels
+  (stats and settings left, goal and buttons right), or on a 16:9 phone beside one. `PuzzlePanels` holds
+  the pieces those layouts share (`PuzzleStats`, `PuzzlePrompt`, `PuzzleControls`, `PuzzleSettings`); `theme/`.
 - `data/` — `PuzzleAssetDataSource` (reads `assets/puzzles.csv`), `ProgressRepository` +
   `DataStoreProgressRepository` (Preferences DataStore: solved count, hint-free solves, streaks).
 - `ChessApp` (composition root, lazy repos), `MainActivity`.
