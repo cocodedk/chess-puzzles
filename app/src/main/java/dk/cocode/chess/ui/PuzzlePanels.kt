@@ -24,6 +24,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import dk.cocode.chess.R
@@ -72,15 +74,28 @@ internal fun PuzzlePrompt(state: PuzzleUiState) {
     Text(state.promptText, modifier = TextInset, textAlign = TextAlign.Center, style = MaterialTheme.typography.titleMedium)
 }
 
-/** The verdict on the last move and the Hint, Reset and Next buttons; [stacked] lines them up in a column. */
+/** The verdict on the last move and the Hint, Reset, Previous and Next buttons; [stacked] lines them up in a column. */
 @Composable
-internal fun PuzzleControls(state: PuzzleUiState, onHint: () -> Unit, onReset: () -> Unit, onNext: () -> Unit, stacked: Boolean) {
+internal fun PuzzleControls(
+    state: PuzzleUiState,
+    onHint: () -> Unit,
+    onReset: () -> Unit,
+    onPrevious: () -> Unit,
+    onNext: () -> Unit,
+    stacked: Boolean,
+) {
     Text(feedbackMessage(state.feedback), modifier = TextInset, textAlign = TextAlign.Center)
     Spacer(Modifier.height(12.dp))
     Lineup(stacked) { item ->
         val inProgress = state.status == PuzzleStatus.IN_PROGRESS
         OutlinedButton(onHint, item.then(CompactButton), enabled = inProgress, contentPadding = CompactPadding) { Text("Hint") }
         OutlinedButton(onReset, item.then(CompactButton), contentPadding = CompactPadding) { Text("Reset") }
+        // An arrow, not a word, so four buttons still fit one row on a small phone at a large font.
+        OutlinedButton(
+            onPrevious,
+            item.then(CompactButton).semantics { contentDescription = "Previous puzzle" },
+            contentPadding = CompactPadding,
+        ) { Text("◀") }
         Button(onNext, item.then(CompactButton), contentPadding = CompactPadding) { Text("Next") }
     }
 }

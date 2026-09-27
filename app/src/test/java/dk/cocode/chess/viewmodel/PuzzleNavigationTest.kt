@@ -40,6 +40,25 @@ class PuzzleNavigationTest {
         assertEquals(1000, viewModel.state.value.rating) // next easy puzzle (index 2); skips the 1500 medium
     }
 
+    @Test fun previousStepsBackWithinDifficultyAndWraps() = runTest(dispatcher) {
+        val progress = FakeProgressRepository() // starts at index 0, first in the easy band [0,2,3]
+        val viewModel = vm(progress)
+        advanceUntilIdle()
+        viewModel.onPrevious()
+        assertEquals(900, viewModel.state.value.rating) // wrapped back to the last easy puzzle (index 3)
+        advanceUntilIdle()
+        assertEquals(3, progress.current().index)
+        viewModel.onPrevious()
+        assertEquals(1000, viewModel.state.value.rating) // index 2; the 1500 medium in between is skipped
+    }
+
+    @Test fun stepFromWrapsBothWays() {
+        val band = listOf(3, 5, 9)
+        assertEquals(9, band.stepFrom(5, 1))
+        assertEquals(3, band.stepFrom(9, 1))
+        assertEquals(9, band.stepFrom(3, -1))
+    }
+
     @Test fun difficultyPickerJumpsToBand() = runTest(dispatcher) {
         val progress = FakeProgressRepository()
         val viewModel = vm(progress)
