@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
-import androidx.compose.material3.FilterChip
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,17 +31,10 @@ internal fun OpeningLearnPanel(
     Text(opening.idea, modifier = TextInset, textAlign = TextAlign.Center)
     if (state.lineNames.size > 1) {
         Spacer(Modifier.height(8.dp))
-        Lineup(stacked) { item ->
-            state.lineNames.forEachIndexed { index, name ->
-                FilterChip(
-                    selected = index == state.line,
-                    onClick = { onLine(index) },
-                    label = { Text(name, item, textAlign = TextAlign.Center) },
-                    modifier = item,
-                    colors = selectedChipColors(),
-                )
-            }
-        }
+        ChipRow(
+            stacked, state.lineNames.indices.toList(),
+            selected = { it == state.line }, onSelect = onLine, label = { state.lineNames[it] },
+        )
     }
     Spacer(Modifier.height(8.dp))
     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {

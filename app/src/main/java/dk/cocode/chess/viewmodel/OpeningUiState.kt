@@ -11,8 +11,9 @@ enum class OpeningFeedback { NONE, CORRECT, WRONG, COMPLETE }
 /**
  * The complete, immutable state the openings screens render. [openingId] null means the list is
  * shown. [lineNames]/[line]/[ply]/[moveSan] drive Learn's branch chips, stepping and move list;
- * [feedback]/[clean] drive Practise's verdict text. [cleanRuns] is collected from the progress
- * repository regardless of which opening (if any) is open.
+ * [feedback]/[clean]/[bookSan] drive Practise's verdict text — [bookSan] names the book move after
+ * a wrong one, cleared on the next correct move, Again, or a new drill. [cleanRuns] is collected
+ * from the progress repository regardless of which opening (if any) is open.
  */
 data class OpeningUiState(
     override val board: List<String> = List(8) { "        " },
@@ -29,5 +30,6 @@ data class OpeningUiState(
     val moveSan: List<String> = emptyList(),
     val feedback: OpeningFeedback = OpeningFeedback.NONE,
     val clean: Boolean = true,
+    val bookSan: String? = null,
     val cleanRuns: Map<String, Int> = emptyMap(),
 ) : BoardState

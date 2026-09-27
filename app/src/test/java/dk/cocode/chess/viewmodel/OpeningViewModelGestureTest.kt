@@ -7,6 +7,7 @@ import dk.cocode.chess.testWhiteOpening
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
@@ -63,5 +64,24 @@ class OpeningViewModelGestureTest {
         val viewModel = practising()
         viewModel.onDragEnd(sq("e4"))
         assertNull(viewModel.state.value.selected)
+    }
+
+    @Test fun dragAfterCompletionChangesNothingAndRecordsNoExtraCleanRun() = runTest(dispatcher) {
+        val progress = FakeOpeningProgressRepository()
+        val viewModel = OpeningViewModel(listOf(whiteOpening), progress, ZERO_RANDOM)
+        viewModel.onOpen(whiteOpening.id)
+        viewModel.onMode(OpeningMode.PRACTISE)
+        viewModel.onDragStart(sq("e2")); viewModel.onDragEnd(sq("e4"))
+        viewModel.onDragStart(sq("g1")); viewModel.onDragEnd(sq("f3")) // completes the line
+        advanceUntilIdle()
+        assertEquals(listOf(whiteOpening.id), progress.recordedIds)
+        val stateAfterComplete = viewModel.state.value
+
+        viewModel.onDragStart(sq("f3"))
+        viewModel.onDragEnd(sq("d4"))
+        advanceUntilIdle()
+
+        assertEquals(stateAfterComplete, viewModel.state.value)
+        assertEquals(listOf(whiteOpening.id), progress.recordedIds)
     }
 }

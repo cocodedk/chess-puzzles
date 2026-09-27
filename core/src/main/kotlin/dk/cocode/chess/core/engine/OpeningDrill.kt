@@ -17,8 +17,9 @@ sealed interface DrillResult {
     /** Book move played and the line ends here — right after it ([reply] null) or after [reply]. */
     data class Complete(val playerMove: MoveStep, val reply: MoveStep?, val clean: Boolean) : DrillResult
 
-    /** A legal move that isn't the book move. Not applied; the position is unchanged. */
-    data class Wrong(val book: MoveStep) : DrillResult
+    /** A legal move that isn't the book move. Not applied; the position is unchanged. [san] names
+     * the book move ("Nf3") so the UI can tell the player what it was, not just highlight it. */
+    data class Wrong(val book: MoveStep, val san: String) : DrillResult
 
     /** Not a legal chess move (or a promotion piece was required but missing). */
     data object Illegal : DrillResult
@@ -61,7 +62,7 @@ class OpeningDrill(
         val book = bookMove()
         if (intent.toUci() != book.uci) {
             clean = false
-            return DrillResult.Wrong(book)
+            return DrillResult.Wrong(book, node.children.getValue(book.uci).san)
         }
         advance(book.uci)
         if (complete) return DrillResult.Complete(book, reply = null, clean = clean)

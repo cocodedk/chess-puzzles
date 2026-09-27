@@ -3,7 +3,6 @@ package dk.cocode.chess.ui
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
-import androidx.compose.material3.FilterChip
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -12,7 +11,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import dk.cocode.chess.core.model.Opening
 import dk.cocode.chess.viewmodel.OpeningMode
@@ -34,17 +32,7 @@ internal fun OpeningHeader(
     val clean = state.cleanRuns[opening.id] ?: 0
     Text(opening.eco + if (clean > 0) "  ×$clean clean" else "", style = MaterialTheme.typography.labelMedium)
     Spacer(Modifier.height(8.dp))
-    Lineup(stacked) { item ->
-        OpeningMode.entries.forEach { candidate ->
-            FilterChip(
-                selected = state.mode == candidate,
-                onClick = { onMode(candidate) },
-                label = { Text(modeLabel(candidate), item, textAlign = TextAlign.Center) },
-                modifier = item,
-                colors = selectedChipColors(),
-            )
-        }
-    }
+    ChipRow(stacked, OpeningMode.entries, selected = { it == state.mode }, onSelect = onMode, label = ::modeLabel)
 }
 
 internal fun modeLabel(mode: OpeningMode): String = when (mode) {

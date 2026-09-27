@@ -18,8 +18,9 @@ data class Ply(val san: String, val move: MoveStep, val board: BoardView)
  * pick a single "correct" reply for the player at every one of their turns.
  */
 class OpeningTree(opening: Opening) {
-    /** A merged tree node; keyed by the UCI move leading into each child. */
-    internal class Node {
+    /** A merged tree node; keyed by the UCI move leading into each child. [san] is the SAN of the
+     * move that leads into this node — blank for [root], which no move leads into. */
+    internal class Node(val san: String = "") {
         val children = LinkedHashMap<String, Node>()
     }
 
@@ -41,7 +42,7 @@ class OpeningTree(opening: Opening) {
         opening.lines.forEachIndexed { i, line ->
             require(lines[i].uci.isNotEmpty()) { "Opening ${opening.id}: line ${i + 1} \"$line\" is empty" }
         }
-        lines.forEach { merge(it.uci, opening) }
+        lines.forEach { merge(it.uci, it.san, opening) }
     }
 
     // Computed after the init block above, so the tree is fully merged before names are derived.
@@ -57,7 +58,7 @@ class OpeningTree(opening: Opening) {
 
     fun plies(line: Int): List<Ply> = lines[line].plies
 
-    private fun merge(ucis: List<String>, opening: Opening) {
+    private fun merge(ucis: List<String>, sans: List<String>, opening: Opening) {
         var node = root
         ucis.forEachIndexed { i, uci ->
             val sideToMove = if (i % 2 == 0) PieceColor.WHITE else PieceColor.BLACK
@@ -65,7 +66,7 @@ class OpeningTree(opening: Opening) {
                 require(sideToMove != opening.side || node.children.isEmpty()) {
                     "Opening ${opening.id}: two book moves for ${opening.side} at ply ${i + 1}"
                 }
-                Node()
+                Node(sans[i])
             }
         }
     }

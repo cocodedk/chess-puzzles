@@ -16,6 +16,7 @@ internal class OpeningPractise(private val drill: OpeningDrill) {
     var legalTargets: Set<Square> = emptySet(); private set
     var hint: Highlight? = null; private set
     var feedback: OpeningFeedback = OpeningFeedback.NONE; private set
+    var bookSan: String? = null; private set
 
     val board get() = drill.board
     val lastMove get() = drill.lastMove?.let { Highlight(it.from, it.to) }
@@ -44,15 +45,18 @@ internal class OpeningPractise(private val drill: OpeningDrill) {
         return when (val result = drill.submit(MoveIntent(from, to))) {
             is DrillResult.Correct -> {
                 feedback = OpeningFeedback.CORRECT
+                bookSan = null
                 false
             }
             is DrillResult.Wrong -> {
                 hint = Highlight(result.book.from, result.book.to)
                 feedback = OpeningFeedback.WRONG
+                bookSan = result.san
                 false
             }
             is DrillResult.Complete -> {
                 feedback = OpeningFeedback.COMPLETE
+                bookSan = null
                 result.clean
             }
             DrillResult.Illegal -> false
@@ -62,6 +66,7 @@ internal class OpeningPractise(private val drill: OpeningDrill) {
     fun restart() {
         drill.restart()
         feedback = OpeningFeedback.NONE
+        bookSan = null
         clear()
     }
 }

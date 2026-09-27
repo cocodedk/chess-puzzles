@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
+import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
@@ -92,7 +93,9 @@ private fun AppContent(app: ChessApp, themeMode: ThemeMode, onThemeToggle: () ->
             }
             AppTab.OPENINGS -> {
                 val viewModel: OpeningViewModel = viewModel(
-                    factory = viewModelFactory { initializer { OpeningViewModel(Openings.all, app.openingProgress) } },
+                    factory = viewModelFactory {
+                        initializer { OpeningViewModel(Openings.all, app.openingProgress, savedStateHandle = createSavedStateHandle()) }
+                    },
                 )
                 OpeningScreen(
                     viewModel = viewModel, openings = Openings.all,

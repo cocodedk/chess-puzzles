@@ -48,6 +48,7 @@ class OpeningPractiseTest {
         assertEquals(OpeningFeedback.CORRECT, p.feedback)
         assertTrue(p.clean)
         assertEquals(sq("e7"), p.lastMove?.from) // the auto-played reply, e7e5
+        assertNull(p.bookSan)
     }
 
     @Test fun wrongMoveShowsTheHintAndBreaksClean() {
@@ -58,6 +59,14 @@ class OpeningPractiseTest {
         assertFalse(p.clean)
         assertEquals(sq("e2"), p.hint?.from)
         assertEquals(sq("e4"), p.hint?.to)
+        assertEquals("e4", p.bookSan)
+    }
+
+    @Test fun aCorrectMoveClearsAPreviousWrongsBookSan() {
+        val p = practise()
+        p.submit(sq("d2"), sq("d4")) // wrong -> bookSan set to "e4"
+        p.submit(sq("e2"), sq("e4")) // now correct
+        assertNull(p.bookSan)
     }
 
     @Test fun illegalMoveIsIgnored() {
@@ -98,5 +107,6 @@ class OpeningPractiseTest {
         assertEquals(OpeningFeedback.NONE, p.feedback)
         assertNull(p.selected)
         assertFalse(p.complete)
+        assertNull(p.bookSan)
     }
 }

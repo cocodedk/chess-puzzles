@@ -48,6 +48,7 @@ class OpeningDrillTest {
         val result = drill.submit(intentOf("d2d4"))
         check(result is DrillResult.Wrong)
         assertEquals("e2e4", result.book.uci)
+        assertEquals("e4", result.san)
         assertEquals(startBoard, drill.board)
         assertNull(drill.lastMove)
         assertFalse(drill.clean)
@@ -56,6 +57,15 @@ class OpeningDrillTest {
         val recovered = drill.submit(intentOf("e2e4"))
         assertTrue(recovered is DrillResult.Correct)
         assertFalse(drill.clean)
+    }
+
+    @Test fun wrongMoveNamesTheBookMoveForBlack() {
+        val tree = OpeningTree(OpeningFixtures.SICILIAN_DEMO)
+        val drill = OpeningDrill(tree, PieceColor.BLACK, Random(1))
+        val result = drill.submit(intentOf("e7e5")) // not the book move (c7c5)
+        check(result is DrillResult.Wrong)
+        assertEquals("c7c5", result.book.uci)
+        assertEquals("c5", result.san)
     }
 
     @Test fun illegalMoveChangesNothing() {

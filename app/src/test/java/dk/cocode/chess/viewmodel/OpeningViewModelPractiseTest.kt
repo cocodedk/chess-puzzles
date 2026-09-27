@@ -46,6 +46,7 @@ class OpeningViewModelPractiseTest {
             assertEquals(OpeningFeedback.CORRECT, feedback)
             assertEquals(sq("e5"), lastMove?.to)
             assertTrue(clean)
+            assertNull(bookSan)
         }
     }
 
@@ -61,6 +62,7 @@ class OpeningViewModelPractiseTest {
             assertEquals(sq("e4"), hint?.to)
             assertFalse(clean)
             assertNull(selected)
+            assertEquals("e4", bookSan)
         }
     }
 

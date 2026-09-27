@@ -62,18 +62,8 @@ internal fun PuzzleStats(
         streak = state.currentStreak, best = state.bestStreak,
     )
     Spacer(Modifier.height(8.dp))
-    Lineup(stacked) { item ->
-        val current = difficultyOf(state.rating)
-        difficulties.forEach { band ->
-            FilterChip(
-                selected = band == current,
-                onClick = { onDifficulty(band) },
-                label = { Text(bandLabel(band), item, textAlign = TextAlign.Center) },
-                modifier = item,
-                colors = selectedChipColors(),
-            )
-        }
-    }
+    val current = difficultyOf(state.rating)
+    ChipRow(stacked, difficulties, selected = { it == current }, onSelect = onDifficulty, label = ::bandLabel)
 }
 
 /** What the puzzle asks of the player. */
@@ -119,6 +109,26 @@ internal fun Lineup(stacked: Boolean, content: @Composable (item: Modifier) -> U
     } else {
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
             content(Modifier)
+        }
+    }
+}
+
+/**
+ * One [Lineup] of [FilterChip]s, one per item in [items] — [selected] and [onSelect] key off the
+ * item itself, [label] renders its text. Shared by the puzzle band chips and the openings' mode and
+ * line chips, which otherwise repeated this exact chip wiring three times.
+ */
+@Composable
+internal fun <T> ChipRow(stacked: Boolean, items: List<T>, selected: (T) -> Boolean, onSelect: (T) -> Unit, label: (T) -> String) {
+    Lineup(stacked) { item ->
+        items.forEach { value ->
+            FilterChip(
+                selected = selected(value),
+                onClick = { onSelect(value) },
+                label = { Text(label(value), item, textAlign = TextAlign.Center) },
+                modifier = item,
+                colors = selectedChipColors(),
+            )
         }
     }
 }

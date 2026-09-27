@@ -33,10 +33,23 @@ class OpeningTextTest {
     }
 
     @Test fun allFeedbackValues() {
-        assertEquals("", practiseFeedback(OpeningFeedback.NONE, clean = true))
-        assertTrue(practiseFeedback(OpeningFeedback.CORRECT, clean = true).contains("Book move"))
-        assertTrue(practiseFeedback(OpeningFeedback.WRONG, clean = false).contains("Not the book move"))
-        assertEquals("Line complete ✓", practiseFeedback(OpeningFeedback.COMPLETE, clean = true))
-        assertEquals("Line complete — try it clean", practiseFeedback(OpeningFeedback.COMPLETE, clean = false))
+        assertEquals("", practiseFeedback(OpeningFeedback.NONE, clean = true, bookSan = null))
+        assertTrue(practiseFeedback(OpeningFeedback.CORRECT, clean = true, bookSan = null).contains("Book move"))
+        assertEquals(
+            "Not the book move — the book plays Nf3",
+            practiseFeedback(OpeningFeedback.WRONG, clean = false, bookSan = "Nf3"),
+        )
+        assertEquals("Line complete ✓", practiseFeedback(OpeningFeedback.COMPLETE, clean = true, bookSan = null))
+        assertEquals(
+            "Line complete — try it clean",
+            practiseFeedback(OpeningFeedback.COMPLETE, clean = false, bookSan = null),
+        )
+    }
+
+    @Test fun wrongFeedbackFallsBackWithoutABookSan() {
+        assertEquals(
+            "Not the book move — play the highlighted one",
+            practiseFeedback(OpeningFeedback.WRONG, clean = false, bookSan = null),
+        )
     }
 }

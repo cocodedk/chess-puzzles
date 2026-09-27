@@ -20,14 +20,17 @@ internal fun OpeningPractisePanel(state: OpeningUiState, opening: Opening, onAga
         if (opening.side == PieceColor.WHITE) "Play White's moves from memory." else "Play Black's moves from memory."
     Text(prompt, modifier = TextInset, textAlign = TextAlign.Center)
     Spacer(Modifier.height(12.dp))
-    Text(practiseFeedback(state.feedback, state.clean), modifier = TextInset, textAlign = TextAlign.Center)
+    Text(practiseFeedback(state.feedback, state.clean, state.bookSan), modifier = TextInset, textAlign = TextAlign.Center)
     Spacer(Modifier.height(12.dp))
     OutlinedButton(onClick = onAgain, modifier = CompactButton, contentPadding = CompactPadding) { Text("Again") }
 }
 
-internal fun practiseFeedback(feedback: OpeningFeedback, clean: Boolean): String = when (feedback) {
+/** [bookSan] names the wrong move's book reply ("Nf3"); a fallback covers the case (never expected
+ * in practice) where WRONG feedback arrives without one. */
+internal fun practiseFeedback(feedback: OpeningFeedback, clean: Boolean, bookSan: String?): String = when (feedback) {
     OpeningFeedback.NONE -> ""
     OpeningFeedback.CORRECT -> "Book move ✓"
-    OpeningFeedback.WRONG -> "Not the book move — play the highlighted one"
+    OpeningFeedback.WRONG -> bookSan?.let { "Not the book move — the book plays $it" }
+        ?: "Not the book move — play the highlighted one"
     OpeningFeedback.COMPLETE -> if (clean) "Line complete ✓" else "Line complete — try it clean"
 }

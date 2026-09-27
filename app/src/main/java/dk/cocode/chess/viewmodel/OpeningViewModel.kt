@@ -1,5 +1,6 @@
 package dk.cocode.chess.viewmodel
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dk.cocode.chess.core.engine.OpeningDrill
@@ -15,16 +16,24 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
+/** [SavedStateHandle] keys the open opening and its mode are recorded under, so a fresh process
+ * can reopen where the player left off. Internal so the saved-state test can plant/read them. */
+internal const val OPENING_ID_KEY = "opening_id"
+internal const val OPENING_MODE_KEY = "opening_mode"
+
 /**
  * Drives the openings screens. [onOpen] switches from the list into Learn mode for one opening;
  * [onMode] toggles Learn/Practise, starting a fresh [OpeningDrill] every time Practise begins;
  * [onLine]/[onStep] step through a line in Learn; the tap/drag handlers drive Practise via
  * [OpeningPractise]. [progress] is the source of truth for [OpeningUiState.cleanRuns].
+ * [savedStateHandle] records the open opening and mode, and construction reopens them — a restored
+ * Practise drill simply starts fresh rather than replaying moves.
  */
 class OpeningViewModel(
     private val openings: List<Opening>,
     private val progress: OpeningProgressRepository,
     private val random: Random = Random.Default,
+    private val savedStateHandle: SavedStateHandle = SavedStateHandle(),
 ) : ViewModel() {
 
     /** An opening and the tree merged from its lines — always opened and closed together. */
@@ -35,14 +44,27 @@ class OpeningViewModel(
     private var learnLine = 0
     private var learnPly = 0
     private var practise: OpeningPractise? = null
+    private var cleanRuns: Map<String, Int> = emptyMap()
 
     private val _state = MutableStateFlow(OpeningUiState())
     val state: StateFlow<OpeningUiState> = _state.asStateFlow()
 
     init {
         viewModelScope.launch {
-            progress.cleanRuns.collect { runs -> _state.update { it.copy(cleanRuns = runs) } }
+            progress.cleanRuns.collect { runs ->
+                cleanRuns = runs
+                _state.update { it.copy(cleanRuns = runs) }
+            }
         }
+        restoreSession()
+    }
+
+    /** Reopens the opening [savedStateHandle] recorded before the process died, in its saved mode. */
+    private fun restoreSession() {
+        val id = savedStateHandle.get<String>(OPENING_ID_KEY)?.takeIf { saved -> openings.any { it.id == saved } } ?: return
+        val savedMode = savedStateHandle.get<String>(OPENING_MODE_KEY) // read first: onOpen records LEARN
+        onOpen(id)
+        savedMode?.let { onMode(OpeningMode.valueOf(it)) }
     }
 
     fun onOpen(id: String) {
@@ -52,12 +74,15 @@ class OpeningViewModel(
         learnLine = 0
         learnPly = 0
         practise = null
+        savedStateHandle[OPENING_ID_KEY] = id
+        savedStateHandle[OPENING_MODE_KEY] = mode.name
         _state.value = render()
     }
 
     fun onBack() {
         session = null
         practise = null
+        savedStateHandle.remove<String>(OPENING_ID_KEY)
         _state.value = render()
     }
 
@@ -65,6 +90,7 @@ class OpeningViewModel(
         if (newMode == mode) return
         mode = newMode
         if (newMode == OpeningMode.PRACTISE) practise = startDrill()
+        savedStateHandle[OPENING_MODE_KEY] = mode.name
         _state.value = render()
     }
 
@@ -103,6 +129,7 @@ class OpeningViewModel(
 
     fun onDragEnd(target: Square) {
         val p = practise ?: return
+        if (p.complete) return
         val from = p.selected ?: return
         if (target in p.legalTargets) recordIfClean(p.submit(from, target)) else p.clear()
         _state.value = render()
@@ -120,8 +147,7 @@ class OpeningViewModel(
 
     /** The one render recipe: the list when nothing is open, else the open opening in its current mode. */
     private fun render(): OpeningUiState {
-        val (op, t) = session ?: return OpeningUiState(cleanRuns = _state.value.cleanRuns)
-        val cleanRuns = _state.value.cleanRuns
+        val (op, t) = session ?: return OpeningUiState(cleanRuns = cleanRuns)
         val base = OpeningUiState(
             flipped = op.side == PieceColor.BLACK, openingId = op.id, lineNames = t.lineNames, cleanRuns = cleanRuns,
         )
@@ -130,7 +156,7 @@ class OpeningViewModel(
             return base.copy(
                 board = p.board.toRows(), mode = OpeningMode.PRACTISE, selected = p.selected,
                 legalTargets = p.legalTargets, lastMove = p.lastMove, hint = p.hint,
-                feedback = p.feedback, clean = p.clean,
+                feedback = p.feedback, clean = p.clean, bookSan = p.bookSan,
             )
         }
         val plies = t.plies(learnLine)
