@@ -15,14 +15,14 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.rememberTextMeasurer
 import dk.cocode.chess.core.model.Square
-import dk.cocode.chess.viewmodel.PuzzleUiState
+import dk.cocode.chess.viewmodel.BoardState
 
 const val BOARD_TEST_TAG = "chessBoard"
 
 /** The interactive framed 8x8 board: draws frame, squares, highlights and pieces, and reports tap/drag squares. */
 @Composable
 fun ChessBoard(
-    state: PuzzleUiState,
+    state: BoardState,
     onSquareTap: (Square) -> Unit,
     onDragStart: (Square) -> Unit,
     onDragEnd: (Square) -> Unit,

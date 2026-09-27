@@ -7,7 +7,7 @@ An Android chess **puzzle** game — Kotlin + Jetpack Compose, built and run ent
 line (no Android Studio). Solve Lichess tactical puzzles with announced goals (e.g. "checkmate in 2"),
 difficulty bands (Easy/Medium/Hard), day/night themes, and saved progress on-device.
 
-<img src="docs/screenshot.png" alt="Chess Puzzles in light mode" width="250" /> <img src="docs/screenshot-night.png" alt="Chess Puzzles in night mode" width="250" /> <img src="docs/screenshot-solved.png" alt="A solved puzzle" width="250" />
+<img src="docs/screenshot.png" alt="Chess Puzzles in light mode" width="250" /> <img src="docs/screenshot-night.png" alt="Chess Puzzles in night mode" width="250" /> <img src="docs/screenshot-solved.png" alt="A solved puzzle" width="250" /> <img src="docs/screenshot-openings.png" alt="Learning the Italian Game in the Openings tab" width="250" />
 
 _Light mode with goal line and difficulty chips (left), night mode (center), solved puzzle (right)._
 

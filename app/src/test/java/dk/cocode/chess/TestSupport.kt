@@ -12,6 +12,9 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import dk.cocode.chess.core.data.CsvPuzzleRepository
 import dk.cocode.chess.core.data.PuzzleRepository
+import dk.cocode.chess.core.model.Opening
+import dk.cocode.chess.core.model.OpeningGroup
+import dk.cocode.chess.data.OpeningProgressRepository
 import dk.cocode.chess.data.Progress
 import dk.cocode.chess.data.ProgressRepository
 import dk.cocode.chess.data.solvedOn
@@ -20,6 +23,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import org.robolectric.RuntimeEnvironment
 import java.io.File
+import kotlin.random.Random
 
 /** Draws the hosted content to a software canvas so Compose Canvas draw code runs under Robolectric. */
 fun <A : ComponentActivity> AndroidComposeTestRule<*, A>.renderToBitmap(): Bitmap {
@@ -101,4 +105,32 @@ fun testPuzzleRepository(): PuzzleRepository {
         appendLine("HD,$mateIn2,2100,mate")
     }
     return CsvPuzzleRepository.load { csv.byteInputStream() }
+}
+
+/** In-memory [OpeningProgressRepository] for [dk.cocode.chess.viewmodel.OpeningViewModel] tests. */
+class FakeOpeningProgressRepository : OpeningProgressRepository {
+    private val state = MutableStateFlow<Map<String, Int>>(emptyMap())
+    override val cleanRuns: Flow<Map<String, Int>> = state
+    val recordedIds = mutableListOf<String>()
+
+    override suspend fun recordCleanRun(openingId: String) {
+        recordedIds.add(openingId)
+        state.update { it + (openingId to (it[openingId] ?: 0) + 1) }
+    }
+}
+
+/** A minimal opening for tests: one 4-ply line, no branching, played from the standard start. */
+fun testOpening(id: String, group: OpeningGroup) = Opening(
+    id = id, name = "Test Opening $id", eco = "T00", group = group,
+    idea = "Grab the centre.", lines = listOf("e4 e5 Nf3 Nc6"),
+)
+
+fun testWhiteOpening(id: String = "white-test") = testOpening(id, OpeningGroup.WHITE)
+
+/** As [testWhiteOpening], but drilled as Black — the opponent's first move (e4) is chosen at random. */
+fun testBlackOpening(id: String = "black-test") = testOpening(id, OpeningGroup.BLACK_VS_E4)
+
+/** Always picks the first candidate, so a drill's random opponent choices are deterministic in tests. */
+val ZERO_RANDOM: Random = object : Random() {
+    override fun nextBits(bitCount: Int) = 0
 }

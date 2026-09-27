@@ -7,7 +7,7 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.isSpecified
 import dk.cocode.chess.core.model.Square
-import dk.cocode.chess.viewmodel.PuzzleUiState
+import dk.cocode.chess.viewmodel.BoardState
 
 /** Washes [square] in [color], with an inset [ring] round its edge unless it is unspecified. */
 internal fun DrawScope.tintSquare(square: Square, color: Color, squarePx: Float, flipped: Boolean, ring: Color) {
@@ -36,7 +36,7 @@ internal fun DrawScope.highlightMove(
     tintSquare(to, color, squarePx, flipped, ring)
 }
 
-internal fun DrawScope.drawPieces(state: PuzzleUiState, palette: BoardPalette, squarePx: Float, flipped: Boolean) {
+internal fun DrawScope.drawPieces(state: BoardState, palette: BoardPalette, squarePx: Float, flipped: Boolean) {
     for (rank in 0..7) {
         for (file in 0..7) {
             val code = state.board[rank][file]
@@ -46,7 +46,7 @@ internal fun DrawScope.drawPieces(state: PuzzleUiState, palette: BoardPalette, s
     }
 }
 
-internal fun DrawScope.drawTargets(state: PuzzleUiState, marker: Color, squarePx: Float, flipped: Boolean) {
+internal fun DrawScope.drawTargets(state: BoardState, marker: Color, squarePx: Float, flipped: Boolean) {
     for (target in state.legalTargets) {
         val center = BoardGeometry.squareCenter(target, squarePx, flipped)
         if (state.board[target.rank][target.file] == ' ') {

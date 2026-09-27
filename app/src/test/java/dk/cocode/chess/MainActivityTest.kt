@@ -11,6 +11,7 @@ import androidx.compose.ui.test.swipeRight
 import dk.cocode.chess.ui.board.BOARD_TEST_TAG
 import dk.cocode.chess.ui.board.DayBoardPalette
 import dk.cocode.chess.ui.board.NightBoardPalette
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -52,5 +53,25 @@ class MainActivityTest {
         // Cycle back to SYSTEM: the DataStore singleton outlives this test in the Robolectric JVM.
         composeRule.onNodeWithText("Theme: Dark").performClick()
         awaitText("Theme: Auto")
+    }
+
+    @Test
+    fun tabsSwitchBetweenPuzzlesAndOpenings() {
+        awaitText("Hint")
+        composeRule.onNodeWithText("Openings").performClick()
+        awaitText("As White")
+        composeRule.onNodeWithText("Puzzles").performClick()
+        awaitText("Hint")
+    }
+
+    @Test
+    fun theBackButtonLeavesAnOpeningForTheList() {
+        awaitText("Hint")
+        composeRule.onNodeWithText("Openings").performClick()
+        composeRule.onNodeWithText("Italian Game").performClick()
+        awaitText("Learn")
+        composeRule.activityRule.scenario.onActivity { it.onBackPressedDispatcher.onBackPressed() }
+        awaitText("As White") // back on the list, not out of the app
+        assertFalse(composeRule.activity.isFinishing)
     }
 }

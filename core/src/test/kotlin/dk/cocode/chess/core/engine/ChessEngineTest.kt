@@ -7,6 +7,7 @@ import dk.cocode.chess.core.model.PieceType
 import dk.cocode.chess.core.model.Square
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
@@ -60,5 +61,34 @@ class ChessEngineTest {
         assertTrue(engine.wouldBeMate("b7h7"))
         assertFalse(engine.wouldBeMate("b7b2"))
         assertEquals(PieceColor.WHITE, engine.sideToMove()) // probing left the board unchanged
+    }
+
+    @Test fun sanLineToUciNormalMoves() {
+        assertEquals(listOf("e2e4", "d7d5", "e4d5"), ChessEngine.sanLineToUci("e4 d5 exd5"))
+    }
+
+    @Test fun sanLineToUciCastling() {
+        assertEquals(
+            listOf("e2e4", "e7e5", "g1f3", "b8c6", "f1c4", "f8c5", "e1g1"),
+            ChessEngine.sanLineToUci("e4 e5 Nf3 Nc6 Bc4 Bc5 O-O"),
+        )
+    }
+
+    @Test fun sanLineToUciPromotion() {
+        // Black ignores the advancing pawn each move (captures are never mandatory), so it walks
+        // to b7 and then captures-and-promotes on a8.
+        val uci = ChessEngine.sanLineToUci("a4 Nf6 a5 Ng8 a6 Nf6 axb7 Ng8 bxa8=Q")
+        assertEquals("b7a8q", uci.last())
+    }
+
+    @Test fun sanLineToUciBlankLineIsEmpty() {
+        assertTrue(ChessEngine.sanLineToUci("   ").isEmpty())
+    }
+
+    @Test fun sanLineToUciIllegalMoveThrows() {
+        val error = assertThrows(IllegalArgumentException::class.java) {
+            ChessEngine.sanLineToUci("e4 e5 Nf9")
+        }
+        assertTrue(error.message!!.contains("Nf9"))
     }
 }
