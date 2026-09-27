@@ -49,6 +49,9 @@ class OpeningViewModelGestureTest {
     @Test fun dragSelectsAndMoves() = runTest(dispatcher) {
         val viewModel = practising()
         viewModel.onDragStart(sq("e2"))
+        // Shown while the finger is still down, as on the puzzle screen.
+        assertEquals(sq("e2"), viewModel.state.value.selected)
+        assertEquals(setOf(sq("e3"), sq("e4")), viewModel.state.value.legalTargets)
         viewModel.onDragEnd(sq("e4"))
         assertEquals(OpeningFeedback.CORRECT, viewModel.state.value.feedback)
     }

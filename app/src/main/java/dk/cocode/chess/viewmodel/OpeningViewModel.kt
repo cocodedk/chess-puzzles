@@ -124,7 +124,9 @@ class OpeningViewModel(
 
     fun onDragStart(square: Square) {
         val p = practise ?: return
-        if (!p.complete) p.select(square)
+        if (p.complete) return
+        p.select(square)
+        _state.value = render() // show the selection and its targets while the finger is down
     }
 
     fun onDragEnd(target: Square) {
