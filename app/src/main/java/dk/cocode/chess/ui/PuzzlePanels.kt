@@ -2,6 +2,8 @@ package dk.cocode.chess.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -89,10 +91,11 @@ internal fun PuzzleControls(state: PuzzleUiState, onHint: () -> Unit, onReset: (
     }
 }
 
-/** The theme toggle and the About link. */
+/** The theme toggle and the About link; in a narrow panel About moves under the theme whole, never split. */
+@OptIn(ExperimentalLayoutApi::class) // FlowRow is still marked experimental (checked up to foundation 1.11)
 @Composable
 internal fun PuzzleSettings(themeMode: ThemeMode, onThemeToggle: () -> Unit, onAbout: () -> Unit) {
-    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+    FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally)) {
         TextButton(onClick = onThemeToggle) { Text(themeLabel(themeMode)) }
         TextButton(onClick = onAbout) { Text(stringResource(R.string.about)) }
     }

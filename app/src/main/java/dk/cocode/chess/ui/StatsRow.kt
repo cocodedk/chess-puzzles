@@ -3,6 +3,8 @@ package dk.cocode.chess.ui
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
@@ -25,9 +27,16 @@ import dk.cocode.chess.R
  * holds collections Compose cannot prove stable, so passing it would re-run this row on every board
  * tap. With plain Ints the row is skipped until a counter actually changes.
  */
+@OptIn(ExperimentalLayoutApi::class) // FlowRow is still marked experimental (checked up to foundation 1.11)
 @Composable
 fun StatsRow(dayStreak: Int, solved: Int, hintFree: Int, streak: Int, best: Int) {
-    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
+    // A flow row: in a narrow side panel, or at a large font size, whole stats move to a second line
+    // instead of the last ones being squeezed to nothing.
+    FlowRow(
+        Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
         Stat(R.drawable.ic_stat_day, R.string.stat_day, dayStreak)
         Stat(R.drawable.ic_stat_solved, R.string.stat_solved, solved)
         Stat(R.drawable.ic_stat_hint_free, R.string.stat_hint_free, hintFree)

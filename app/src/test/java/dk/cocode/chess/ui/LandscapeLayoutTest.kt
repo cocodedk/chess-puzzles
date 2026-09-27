@@ -27,10 +27,12 @@ class LandscapeLayoutTest {
     @get:Rule
     val composeRule = createAndroidComposeRule<ComponentActivity>()
 
-    private fun show() = composeRule.setContent {
+    private val empty = PuzzleUiState(board = List(8) { "        " }, promptText = "White to move")
+
+    private fun show(state: PuzzleUiState = empty) = composeRule.setContent {
         ChessTheme(darkTheme = false) {
             PuzzleScreenContent(
-                state = PuzzleUiState(board = List(8) { "        " }, promptText = "White to move"),
+                state = state,
                 onSquareTap = {}, onDragStart = {}, onDragEnd = {},
                 onHint = {}, onReset = {}, onNext = {},
                 onPromotion = {}, onPromotionCancel = {},
@@ -51,6 +53,23 @@ class LandscapeLayoutTest {
         assertTrue(stats.right <= board.left) // the numbers on its left ...
         assertTrue(bounds("Hint").left >= board.right) // ... the buttons on its right ...
         assertTrue(bounds("Next").bottom <= screen.bottom) // ... stacked, and all on screen
+    }
+
+    /**
+     * A phone on its side at a 1.3× font with long numbers, its side panels about 206dp wide: too narrow
+     * for the five stats or for Theme and About side by side, so whole items must move to a new line.
+     */
+    @Test @Config(qualifiers = "w720dp-h356dp-land", fontScale = 1.3f) // set before the activity starts
+    fun aLargeFontWrapsWholeItemsInsteadOfSqueezingThem() {
+        show(empty.copy(dayStreak = 1, solvedCount = 1441, hintFreeCount = 1101, currentStreak = 53, bestStreak = 120))
+        val board = composeRule.onNodeWithTag(BOARD_TEST_TAG).getUnclippedBoundsInRoot()
+        val oneLine = bounds("1").height.value
+        for (number in listOf("1441", "1101", "53", "120")) {
+            val stat = bounds(number)
+            assertEquals("$number on one line", oneLine, stat.height.value, 0f)
+            assertTrue("$number beside, not under, the board", stat.right <= board.left)
+        }
+        assertEquals(bounds("Theme: Auto").height.value, bounds("About").height.value, 0f) // About on one line
     }
 
     @Test @Config(qualifiers = "w1000dp-h600dp-land")
