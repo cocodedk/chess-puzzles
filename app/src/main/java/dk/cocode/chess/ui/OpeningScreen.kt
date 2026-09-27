@@ -1,5 +1,6 @@
 package dk.cocode.chess.ui
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,13 +33,16 @@ fun OpeningScreen(
             openings = openings, cleanRuns = state.cleanRuns, onOpen = viewModel::onOpen,
             tabs = tabs, themeMode = themeMode, onThemeToggle = onThemeToggle, onAbout = { showAbout = true },
         )
-        else -> OpeningScreenContent(
-            state = state, opening = remember(openingId) { openings.first { it.id == openingId } },
-            onBack = viewModel::onBack, onMode = viewModel::onMode,
-            onLine = viewModel::onLine, onStep = viewModel::onStep,
-            onSquareTap = viewModel::onSquareTapped, onDragStart = viewModel::onDragStart,
-            onDragEnd = viewModel::onDragEnd, onAgain = viewModel::onAgain,
-            tabs = tabs, themeMode = themeMode, onThemeToggle = onThemeToggle, onAbout = { showAbout = true },
-        )
+        else -> {
+            BackHandler(onBack = viewModel::onBack) // the phone's Back returns to the list, as the arrow does
+            OpeningScreenContent(
+                state = state, opening = remember(openingId) { openings.first { it.id == openingId } },
+                onBack = viewModel::onBack, onMode = viewModel::onMode,
+                onLine = viewModel::onLine, onStep = viewModel::onStep,
+                onSquareTap = viewModel::onSquareTapped, onDragStart = viewModel::onDragStart,
+                onDragEnd = viewModel::onDragEnd, onAgain = viewModel::onAgain,
+                tabs = tabs, themeMode = themeMode, onThemeToggle = onThemeToggle, onAbout = { showAbout = true },
+            )
+        }
     }
 }

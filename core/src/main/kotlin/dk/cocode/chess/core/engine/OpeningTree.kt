@@ -6,6 +6,8 @@ import dk.cocode.chess.core.model.Opening
 import dk.cocode.chess.core.model.PieceColor
 import dk.cocode.chess.core.util.Uci
 
+private val WHITESPACE = Regex("\\s+")
+
 /** One move of an opening line: [board] is the position right after [move] is played. */
 data class Ply(val san: String, val move: MoveStep, val board: BoardView)
 
@@ -24,10 +26,6 @@ class OpeningTree(opening: Opening) {
     /** One opening line's SAN tokens, parsed UCI moves, and plies, kept together so the three
      * stay in lockstep instead of three separately-indexed parallel lists. */
     private class Line(val san: List<String>, val uci: List<String>, val plies: List<Ply>)
-
-    private companion object {
-        val WHITESPACE = Regex("\\s+")
-    }
 
     internal val root = Node()
 

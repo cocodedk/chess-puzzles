@@ -15,6 +15,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dk.cocode.chess.core.model.Opening
@@ -34,11 +35,11 @@ fun OpeningListScreen(
 ) {
     val grouped = remember(openings) { openings.groupBy { it.group } }
     Scaffold(contentWindowInsets = WindowInsets.safeDrawing) { padding ->
-        Column(Modifier.padding(padding).fillMaxSize()) {
+        Column(Modifier.padding(padding).fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
             tabs()
             LazyColumn(Modifier.weight(1f, fill = true)) {
                 grouped.forEach { (group, rows) ->
-                    item { Text(groupTitle(group), style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(16.dp)) }
+                    item { GroupTitle(groupTitle(group)) }
                     items(rows) { opening -> OpeningRow(opening, cleanRuns[opening.id] ?: 0, onOpen) }
                 }
             }
@@ -46,6 +47,15 @@ fun OpeningListScreen(
         }
     }
 }
+
+/** A group heading, set apart from the rows under it: smaller, in the accent colour, with room above. */
+@Composable
+private fun GroupTitle(title: String) = Text(
+    title,
+    style = MaterialTheme.typography.titleSmall,
+    color = MaterialTheme.colorScheme.primary,
+    modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, top = 20.dp, bottom = 4.dp),
+)
 
 @Composable
 private fun OpeningRow(opening: Opening, cleanCount: Int, onOpen: (String) -> Unit) {
