@@ -38,6 +38,8 @@ fun OpeningScreenContent(
             }
             PuzzleSettings(themeMode, onThemeToggle, onAbout)
         },
-        scrollWhenStacked = true, // Learn's rows would otherwise squeeze the board on a phone
+        // Learn's many rows would squeeze the board on a phone; Practise's few fit, and fitting keeps its
+        // feedback and Again in view on a small screen.
+        scrollWhenStacked = state.mode == OpeningMode.LEARN,
     )
 }

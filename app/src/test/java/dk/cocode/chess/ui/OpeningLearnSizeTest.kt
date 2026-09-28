@@ -55,6 +55,7 @@ class OpeningLearnSizeTest {
         val board = composeRule.onNodeWithTag(BOARD_TEST_TAG).getUnclippedBoundsInRoot()
         assertEquals(screen.right.value - screen.left.value, board.right.value - board.left.value, 1f)
         val next = composeRule.onNodeWithContentDescription("Next move").getUnclippedBoundsInRoot()
+        assertTrue("Next move at ${next.top} under the board at ${board.bottom}", next.top >= board.bottom)
         assertTrue("Next move at ${next.bottom} of ${screen.bottom}", next.bottom <= screen.bottom)
     }
 }
