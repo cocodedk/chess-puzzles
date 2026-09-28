@@ -38,5 +38,6 @@ fun OpeningScreenContent(
             }
             PuzzleSettings(themeMode, onThemeToggle, onAbout)
         },
+        scrollWhenStacked = true, // Learn's rows would otherwise squeeze the board on a phone
     )
 }
