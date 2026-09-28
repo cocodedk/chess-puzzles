@@ -52,7 +52,8 @@ class LandscapeLayoutTest {
         val stats = composeRule.onNodeWithContentDescription("Day streak").getUnclippedBoundsInRoot()
         assertTrue(stats.right <= board.left) // the numbers on its left ...
         assertTrue(bounds("Hint").left >= board.right) // ... the buttons on its right ...
-        assertTrue(bounds("Next").bottom <= screen.bottom) // ... stacked, and all on screen
+        val next = composeRule.onNodeWithContentDescription("Next puzzle").getUnclippedBoundsInRoot()
+        assertTrue(next.bottom <= screen.bottom) // ... stacked, and all on screen
     }
 
     /**
