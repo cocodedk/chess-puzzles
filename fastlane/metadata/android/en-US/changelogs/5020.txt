@@ -1,0 +1,1 @@
+Screen readers such as TalkBack can now use the Openings tab: openings, lines and moves are read aloud, and each step, book reply and result is spoken.
