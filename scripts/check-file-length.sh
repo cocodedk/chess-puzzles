@@ -5,7 +5,8 @@ set -eu
 cd "$(git rev-parse --show-toplevel)"
 
 max=200
-files=$(git ls-files '*.kt' '*.kts' '*.sh' '*.py' .githooks)
+# Untracked files count too: the lean loop's builder never commits, and its gate runs this.
+files=$(git ls-files --cached --others --exclude-standard '*.kt' '*.kts' '*.sh' '*.py' .githooks)
 over=$(printf '%s\n' "$files" | while IFS= read -r f; do
   if [ -n "$f" ] && [ -f "$f" ]; then
     # awk's NR counts a final line even without a trailing newline (wc -l does not).

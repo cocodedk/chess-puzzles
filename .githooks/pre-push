@@ -10,7 +10,14 @@ OWNER="cocodedk"
 remote_url="${2:-}"
 
 # ── Part 1: owner-lock the push URL ───────────────────────────────────────────
-case "$remote_url" in
+# An SSH host alias from ~/.ssh/config (git@github.com-cocodedk:…) is judged by the host it
+# resolves to, so origin's alias passes and an alias for any other host is still refused.
+target_url="$remote_url"
+if [[ "$remote_url" =~ ^git@([^:]+):(.*)$ ]]; then
+  real_host=$(ssh -G "${BASH_REMATCH[1]}" 2>/dev/null | awk '$1 == "hostname" { print $2; exit }') || true
+  target_url="git@${real_host:-${BASH_REMATCH[1]}}:${BASH_REMATCH[2]}"
+fi
+case "$target_url" in
   https://github.com/$OWNER/*|git@github.com:$OWNER/*|ssh://git@github.com/$OWNER/*) ;;
   *)
     echo "pre-push: refusing — push URL is not under github.com/$OWNER" >&2
