@@ -42,6 +42,10 @@ object BoardGeometry {
         return Square(file, rank)
     }
 
+    /** All 64 squares as they are shown, the top row left to right and then the next row down. */
+    fun squaresInReadingOrder(flipped: Boolean): List<Square> =
+        (0..63).map { squareAt((it % 8) + .5f, (it / 8) + .5f, 1f, flipped) }
+
     /** Light squares are the ones where file+rank is odd (a1 is dark). */
     fun isLight(square: Square): Boolean = (square.file + square.rank) % 2 == 1
 }

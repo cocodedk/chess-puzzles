@@ -83,8 +83,8 @@ class UiRenderTest {
         val bitmap = composeRule.renderToBitmap()
         assertTrue(bitmap.showsWood(DayBoardPalette.darkSquare, NightBoardPalette.darkSquare)) // the day board, not the night
         composeRule.onNodeWithText("Hint").assertExists()
-        composeRule.onNodeWithContentDescription("Day streak").assertExists() // stats row icons
-        composeRule.onNodeWithText("2").assertExists() // ... each with its number: hint-free solves
+        composeRule.onNodeWithContentDescription("Day streak", useUnmergedTree = true).assertExists() // stats row icons
+        composeRule.onNodeWithText("2", useUnmergedTree = true).assertExists() // ... each with its number: hint-free solves
     }
 
     @Test fun statsRowKeepsFiveIconsOnOneLine() {
@@ -92,7 +92,7 @@ class UiRenderTest {
         composeRule.renderToBitmap()
         val screen = composeRule.onRoot().getUnclippedBoundsInRoot().width
         val stats = listOf("Day streak", "Solved", "Solved without a hint", "Current streak", "Best streak")
-            .map { composeRule.onNodeWithContentDescription(it).getUnclippedBoundsInRoot() }
+            .map { composeRule.onNodeWithContentDescription(it, useUnmergedTree = true).getUnclippedBoundsInRoot() }
         stats.forEach {
             assertEquals(stats[0].top, it.top) // all five share one row ...
             assertTrue(it.right <= screen) // ... and none is pushed off a 360dp screen

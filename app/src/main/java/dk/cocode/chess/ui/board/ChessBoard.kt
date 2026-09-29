@@ -3,7 +3,9 @@ package dk.cocode.chess.ui.board
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -19,7 +21,10 @@ import dk.cocode.chess.viewmodel.BoardState
 
 const val BOARD_TEST_TAG = "chessBoard"
 
-/** The interactive framed 8x8 board: draws frame, squares, highlights and pieces, and reports tap/drag squares. */
+/**
+ * The interactive framed 8x8 board: draws frame, squares, highlights and pieces, and reports tap/drag
+ * squares. A screen reader sees the 64 [BoardSquares] over the drawing.
+ */
 @Composable
 fun ChessBoard(
     state: BoardState,
@@ -28,14 +33,27 @@ fun ChessBoard(
     onDragEnd: (Square) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    Box(modifier.aspectRatio(1f)) {
+        BoardCanvas(state, onSquareTap, onDragStart, onDragEnd)
+        BoardSquares(state, onSquareTap, Modifier.matchParentSize())
+    }
+}
+
+@Composable
+private fun BoardCanvas(
+    state: BoardState,
+    onSquareTap: (Square) -> Unit,
+    onDragStart: (Square) -> Unit,
+    onDragEnd: (Square) -> Unit,
+) {
     val textMeasurer = rememberTextMeasurer(cacheSize = 16)   // the 16 coordinate labels
     val palette = LocalBoardPalette.current
     val flipped = state.flipped
     var dragTarget by remember { mutableStateOf(Square(0, 0)) }
 
     Canvas(
-        modifier = modifier
-            .aspectRatio(1f)
+        modifier = Modifier
+            .fillMaxSize()
             .testTag(BOARD_TEST_TAG)
             .pointerInput(flipped) {
                 detectTapGestures { offset ->

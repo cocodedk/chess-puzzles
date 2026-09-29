@@ -23,11 +23,17 @@ class PuzzleSession private constructor(
     val playerColor: PieceColor,
     /** True when the solution's final move delivers checkmate, i.e. the puzzle's goal is mate. */
     val endsInMate: Boolean,
+    /** SAN of the opponent's setup move, played before the player's turn. */
+    val setupSan: String,
 ) {
     private var cursor = 1
     private var status = PuzzleStatus.IN_PROGRESS
     private var lastMove: MoveStep = Uci.toMoveStep(puzzle.setupMoveUci)
     private var pendingReply: String? = null
+
+    /** SAN of the move most recently submitted (a wrong one included) or answered by the opponent. */
+    var lastSan: String = setupSan
+        private set
 
     var state: PuzzleSessionState = buildState()
         private set
@@ -52,6 +58,7 @@ class PuzzleSession private constructor(
         if (!engine.isLegal(move)) return SubmitResult.Illegal("Illegal move")
 
         val candidate = move.toUci()
+        lastSan = engine.san(candidate)
         val expected = puzzle.uciMoves[cursor]
         val isFinalPly = cursor == puzzle.uciMoves.lastIndex
         val accepted = candidate == expected ||
@@ -78,6 +85,7 @@ class PuzzleSession private constructor(
 
     fun applyOpponentReply(): MoveStep {
         val replyUci = checkNotNull(pendingReply) { "No opponent reply pending" }
+        lastSan = engine.san(replyUci)
         engine.applyUci(replyUci)
         lastMove = Uci.toMoveStep(replyUci)
         pendingReply = null
@@ -91,6 +99,7 @@ class PuzzleSession private constructor(
         engine.applyUci(puzzle.setupMoveUci)
         cursor = 1
         status = PuzzleStatus.IN_PROGRESS
+        lastSan = setupSan
         lastMove = Uci.toMoveStep(puzzle.setupMoveUci)
         pendingReply = null
         state = buildState()
@@ -127,8 +136,9 @@ class PuzzleSession private constructor(
         fun start(puzzle: Puzzle): PuzzleSession {
             val engine = ChessEngine()
             engine.loadFen(puzzle.fen)
+            val setupSan = engine.san(puzzle.setupMoveUci)
             engine.applyUci(puzzle.setupMoveUci)
-            return PuzzleSession(puzzle, engine, engine.sideToMove(), finalMoveIsMate(puzzle))
+            return PuzzleSession(puzzle, engine, engine.sideToMove(), finalMoveIsMate(puzzle), setupSan)
         }
 
         private fun finalMoveIsMate(puzzle: Puzzle): Boolean {

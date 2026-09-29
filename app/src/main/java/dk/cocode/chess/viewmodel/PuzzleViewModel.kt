@@ -51,7 +51,7 @@ class PuzzleViewModel(
                 base = saved
                 if (!resumed) {
                     resumed = true
-                    if (saved.index in 1 until puzzles.count()) loadPuzzleAt(saved.index)
+                    if (saved.index in 1 until puzzles.count()) loadPuzzleAt(saved.index) else announceShown()
                 }
                 _state.update { it.withProgress(saved, today()) }
             }
@@ -92,18 +92,16 @@ class PuzzleViewModel(
         if (_state.value.status != PuzzleStatus.IN_PROGRESS) return
         attempt.hintUsed = true
         val hint = session.hint()
+        val highlight = Highlight(hint.from, hint.to)
         _state.update {
-            it.copy(
-                hint = Highlight(hint.from, hint.to),
-                selected = hint.from,
-                legalTargets = session.legalDestinations(hint.from).toSet(),
-            )
+            it.withSelection(hint.from, session.legalDestinations(hint.from).toSet())
+                .copy(hint = highlight, announcement = hintSentence(it, highlight))
         }
     }
 
     fun onReset() {
         session.reset() // accounting keeps its counted flags, so re-solving today never re-earns
-        _state.value = render()
+        _state.value = render().copy(announcement = "Puzzle reset. ${session.prompt()}.")
     }
 
     fun onNext() = stepBand(1)
@@ -122,7 +120,10 @@ class PuzzleViewModel(
         attempt = PuzzleAttempt()
         session = PuzzleSession.start(puzzles.all()[target])
         _state.value = render()
+        announceShown()
     }
+
+    private fun announceShown() = _state.update { it.copy(announcement = session.shownSentence(it.position, it.bandSize)) }
 
     /** The full render recipe — the single place the clock is sampled for display. */
     private fun render() = band().let { session.toUiState(base, today(), it.indexOf(index) + 1, it.size) }
@@ -140,12 +141,11 @@ class PuzzleViewModel(
 
     private fun select(square: Square) {
         val targets = session.legalDestinations(square).toSet()
-        if (targets.isEmpty()) clearSelection()
-        else _state.update { it.copy(selected = square, legalTargets = targets, hint = null) }
+        if (targets.isEmpty()) clearSelection(noMovesSentence(square))
+        else _state.update { it.withSelection(square, targets) }
     }
 
-    private fun clearSelection() =
-        _state.update { it.copy(selected = null, legalTargets = emptySet(), hint = null) }
+    private fun clearSelection(said: String = SELECTION_CLEARED) = _state.update { it.withoutSelection(said) }
 
     private fun submit(from: Square, to: Square, promotion: PieceType?) {
         when (val result = session.submitMove(MoveIntent(from, to, promotion))) {
@@ -164,20 +164,18 @@ class PuzzleViewModel(
         attempt.failed = true // mistakes alone never break the streak — see jumpTo
         session.retry() // un-lock so the player can try again (the move was never applied)
         _state.update {
-            it.copy(
-                status = PuzzleStatus.IN_PROGRESS, feedback = Feedback.WRONG,
-                selected = null, legalTargets = emptySet(), hint = null,
-                promptText = session.prompt(),
-            )
+            it.withoutSelection(wrongSentence(session.lastSan))
+                .copy(status = PuzzleStatus.IN_PROGRESS, feedback = Feedback.WRONG, promptText = session.prompt())
         }
     }
 
     private fun onContinues() {
+        val played = session.lastSan
         val reply = session.applyOpponentReply()
+        val said = correctSentence(played, session.playerColor.opposite(), session.lastSan)
         _state.update {
-            it.copy(
+            it.withoutSelection(said).copy(
                 board = session.state.board.toRows(), lastMove = Highlight(reply.from, reply.to),
-                selected = null, legalTargets = emptySet(), hint = null,
                 feedback = Feedback.CORRECT, promptText = session.prompt(),
             )
         }
@@ -189,9 +187,8 @@ class PuzzleViewModel(
         val hintFree = !attempt.hintUsed // read now: loading a puzzle swaps `attempt` before the write runs
         if (accounting.countSolve(day, index)) viewModelScope.launch { progress.recordSolved(day, hintFree) }
         _state.update {
-            it.copy(
+            it.withoutSelection(solvedSentence(session.lastSan)).copy(
                 board = session.state.board.toRows(), lastMove = Highlight(playerMove.from, playerMove.to),
-                selected = null, legalTargets = emptySet(), hint = null,
                 status = PuzzleStatus.SOLVED, feedback = Feedback.SOLVED, promptText = "Solved!",
             )
         }

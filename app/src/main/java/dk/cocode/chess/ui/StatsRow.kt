@@ -16,6 +16,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.unit.dp
 import dk.cocode.chess.R
 
@@ -47,11 +49,14 @@ fun StatsRow(dayStreak: Int, solved: Int, hintFree: Int, streak: Int, best: Int)
 
 @Composable
 private fun Stat(@DrawableRes icon: Int, @StringRes label: Int, value: Int) {
+    val name = stringResource(label)
     Row(
+        // One item for a screen reader: "Day streak, 4".
+        Modifier.clearAndSetSemantics { contentDescription = "$name, $value" },
         horizontalArrangement = Arrangement.spacedBy(4.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Icon(painterResource(icon), contentDescription = stringResource(label), Modifier.size(16.dp))
+        Icon(painterResource(icon), contentDescription = name, Modifier.size(16.dp))
         Text("$value", style = MaterialTheme.typography.bodyMedium)
     }
 }
