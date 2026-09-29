@@ -16,8 +16,8 @@ network access.
 So you can pick up where you left off, the app saves a small amount of data on your device: the
 number of puzzles you have solved, how many of those you solved without a hint, your current and best
 streak, which puzzle you are on, and your light/dark theme choice. This is kept in a private data
-store on your own phone. It is never sent to us or to any third party, and it is removed if you
-delete the app or clear its data.
+store on your own phone. The app never sends it to us or to any third party. Deleting the app or clearing its data removes
+the copy on your phone; a device backup (see below) may keep a separate copy.
 
 ## No internet, no tracking
 
@@ -37,7 +37,8 @@ offline and creates no record anywhere except the progress saved on your own dev
 
 If you have enabled Android Auto Backup or Google account backup on your device, the operating system
 may include this app's local data (your progress and theme choice) in your own personal Google
-backup. This is controlled entirely by you and Google — we have no access to it. See
+backup, and may restore it if you reinstall the app or set up a new phone. That copy is separate from
+the one on your phone, so deleting the app does not delete it. This is controlled entirely by you and Google — we have no access to it. See
 [Google's Privacy Policy](https://policies.google.com/privacy) for details.
 
 ## External links
