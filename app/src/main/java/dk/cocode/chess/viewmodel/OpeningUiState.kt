@@ -32,4 +32,9 @@ data class OpeningUiState(
     val clean: Boolean = true,
     val bookSan: String? = null,
     val cleanRuns: Map<String, Int> = emptyMap(),
-) : BoardState
+    /** What a screen reader says about the last event; empty until there is one, and after a restart. */
+    val announcement: String = "",
+) : BoardState {
+    /** Learn ignores taps, and so does a completed line, until Again. */
+    override val tappable: Boolean get() = mode == OpeningMode.PRACTISE && feedback != OpeningFeedback.COMPLETE
+}

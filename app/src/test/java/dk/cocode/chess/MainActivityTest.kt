@@ -69,7 +69,7 @@ class MainActivityTest {
     fun theBackButtonLeavesAnOpeningForTheList() {
         awaitText("Hint")
         composeRule.onNodeWithText("Openings").performClick()
-        composeRule.onNodeWithText("Italian Game").performClick()
+        composeRule.onNodeWithText("Italian Game", useUnmergedTree = true).performClick()
         awaitText("Learn")
         composeRule.activityRule.scenario.onActivity { it.onBackPressedDispatcher.onBackPressed() }
         awaitText("As White") // back on the list, not out of the app

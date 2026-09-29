@@ -11,15 +11,22 @@ import kotlin.random.Random
 
 /** Result of [OpeningDrill.submit]. */
 sealed interface DrillResult {
-    /** Book move played; the opponent's [reply] follows and the line continues. */
-    data class Correct(val playerMove: MoveStep, val reply: MoveStep) : DrillResult
+    /** Book move played ([san] is its notation); the opponent's [reply] ([replySan]) follows and the line continues. */
+    data class Correct(val playerMove: MoveStep, val reply: MoveStep, val san: String, val replySan: String) : DrillResult
 
-    /** Book move played and the line ends here — right after it ([reply] null) or after [reply]. */
-    data class Complete(val playerMove: MoveStep, val reply: MoveStep?, val clean: Boolean) : DrillResult
+    /** Book move played and the line ends here — right after it ([reply] and [replySan] null) or after [reply]. */
+    data class Complete(
+        val playerMove: MoveStep,
+        val reply: MoveStep?,
+        val clean: Boolean,
+        val san: String,
+        val replySan: String?,
+    ) : DrillResult
 
     /** A legal move that isn't the book move. Not applied; the position is unchanged. [san] names
-     * the book move ("Nf3") so the UI can tell the player what it was, not just highlight it. */
-    data class Wrong(val book: MoveStep, val san: String) : DrillResult
+     * the book move ("Nf3") so the UI can tell the player what it was, not just highlight it;
+     * [playedSan] names the move that was played instead. */
+    data class Wrong(val book: MoveStep, val san: String, val playedSan: String) : DrillResult
 
     /** Not a legal chess move (or a promotion piece was required but missing). */
     data object Illegal : DrillResult
@@ -32,7 +39,7 @@ sealed interface DrillResult {
  */
 class OpeningDrill(
     private val tree: OpeningTree,
-    private val side: PieceColor,
+    val side: PieceColor,
     private val random: Random,
 ) {
     private lateinit var engine: ChessEngine
@@ -41,6 +48,10 @@ class OpeningDrill(
 
     val board: BoardView get() = engine.boardView()
     val lastMove: MoveStep? get() = lastMoveStep
+
+    /** The notation of [lastMove], e.g. White's auto-played first move when [side] is BLACK. */
+    var lastMoveSan: String? = null
+        private set
     var clean: Boolean = true
         private set
     val complete: Boolean get() = node.children.isEmpty()
@@ -60,21 +71,30 @@ class OpeningDrill(
     fun submit(intent: MoveIntent): DrillResult {
         if (complete || !engine.isLegal(intent)) return DrillResult.Illegal
         val book = bookMove()
+        val san = sanOf(book.uci)
         if (intent.toUci() != book.uci) {
             clean = false
-            return DrillResult.Wrong(book, node.children.getValue(book.uci).san)
+            return DrillResult.Wrong(book, san, engine.san(intent.toUci()))
         }
         advance(book.uci)
-        if (complete) return DrillResult.Complete(book, reply = null, clean = clean)
+        if (complete) return DrillResult.Complete(book, reply = null, clean = clean, san = san, replySan = null)
         val reply = advance(randomChildUci())
-        return if (complete) DrillResult.Complete(book, reply, clean) else DrillResult.Correct(book, reply)
+        val replySan = node.san // advance moved `node` onto the reply
+        return if (complete) {
+            DrillResult.Complete(book, reply, clean, san, replySan)
+        } else {
+            DrillResult.Correct(book, reply, san, replySan)
+        }
     }
+
+    private fun sanOf(uci: String): String = node.children.getValue(uci).san
 
     /** Back to the start, with [clean] reset — re-choosing White's first move again if [side] is BLACK. */
     fun restart() {
         engine = ChessEngine()
         node = tree.root
         lastMoveStep = null
+        lastMoveSan = null
         clean = true
         if (side == PieceColor.BLACK) advance(randomChildUci())
     }
@@ -84,6 +104,7 @@ class OpeningDrill(
     private fun advance(uci: String): MoveStep {
         engine.applyUci(uci)
         node = node.children.getValue(uci)
+        lastMoveSan = node.san
         val step = Uci.toMoveStep(uci)
         lastMoveStep = step
         return step

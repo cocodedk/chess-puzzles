@@ -15,4 +15,7 @@ interface BoardState {
     val legalTargets: Set<Square>
     val lastMove: Highlight?
     val hint: Highlight?
+
+    /** Whether a tap on a square does anything; a screen reader is only offered a double-tap when it does. */
+    val tappable: Boolean
 }
