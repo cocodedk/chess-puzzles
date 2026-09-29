@@ -1,0 +1,1 @@
+Screen readers such as TalkBack can now play the puzzles: every square is read aloud, and each move, hint and result is spoken.
