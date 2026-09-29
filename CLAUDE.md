@@ -47,3 +47,14 @@ with its tests.
 ## Per-change workflow
 write code + tests → `/loop /simplify` (to fixpoint) → `/loop /code-review --fix` (to fixpoint) →
 `./gradlew test koverVerify` green → commit → push (pre-push hook re-runs tests + coverage).
+
+## Work built by graph-loop's lean loop
+
+Features can be built by [graph-loop](https://github.com/cocodedk/graph-loop)'s lean loop, one spec
+in `docs/lean/` per run. Its builder edits a fresh checkout and never commits, and the loop commits
+and opens the pull request itself, so rules 2 and 3 cannot run before that commit. For a
+`lean/<feature>` pull request they run on the pull request instead: before it is merged, run
+`/simplify` and `/code-review --fix` over its branch to a fixpoint and push the result there. Rules
+1, 4 and 5 hold on every round: the loop's gate is the suite in
+[profile-android-gradle.md](profile-android-gradle.md). The spec settles the decisions, so the
+builder does not stop to ask a person.

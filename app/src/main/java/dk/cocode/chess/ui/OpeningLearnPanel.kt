@@ -19,7 +19,10 @@ import androidx.compose.ui.unit.dp
 import dk.cocode.chess.core.model.Opening
 import dk.cocode.chess.viewmodel.OpeningUiState
 
-/** Learn mode: the idea, branch chips (when there is more than one line), ◀ ▶ stepping and the move list. */
+/**
+ * Learn mode: ◀ ▶ stepping and the branch chips (when there is more than one line) first, right under
+ * the board where the thumb is, then the move list and the idea, which may scroll below it.
+ */
 @Composable
 internal fun OpeningLearnPanel(
     state: OpeningUiState,
@@ -28,15 +31,6 @@ internal fun OpeningLearnPanel(
     onStep: (Int) -> Unit,
     stacked: Boolean,
 ) {
-    Text(opening.idea, modifier = TextInset, textAlign = TextAlign.Center)
-    if (state.lineNames.size > 1) {
-        Spacer(Modifier.height(8.dp))
-        ChipRow(
-            stacked, state.lineNames.indices.toList(),
-            selected = { it == state.line }, onSelect = onLine, label = { state.lineNames[it] },
-        )
-    }
-    Spacer(Modifier.height(8.dp))
     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         IconButton(
             onClick = { onStep(-1) }, enabled = state.ply > 0,
@@ -47,8 +41,16 @@ internal fun OpeningLearnPanel(
             modifier = Modifier.semantics { contentDescription = "Next move" },
         ) { Text("▶") }
     }
+    if (state.lineNames.size > 1) {
+        ChipRow(
+            stacked, state.lineNames.indices.toList(),
+            selected = { it == state.line }, onSelect = onLine, label = { state.lineNames[it] },
+        )
+    }
     Spacer(Modifier.height(8.dp))
     Text(moveListText(state.moveSan, state.ply), modifier = TextInset, textAlign = TextAlign.Center)
+    Spacer(Modifier.height(12.dp))
+    Text(opening.idea, modifier = TextInset, textAlign = TextAlign.Center)
 }
 
 /** "1.e4 e5 2.Nf3 …" with the current ply's move bold; only White's moves carry the move number. */

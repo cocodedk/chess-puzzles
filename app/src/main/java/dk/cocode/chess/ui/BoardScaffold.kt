@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
@@ -32,6 +33,7 @@ import dk.cocode.chess.viewmodel.BoardState
  * top-of-screen slot, [body] the right panel / bottom-of-screen slot; each is told whether it must
  * lay its own rows out as a stacked column — only true when it stands alone beside the board in its
  * own panel ([BoardLayout.BETWEEN_PANELS]), never when it shares a panel or a column with the other.
+ * [scrollWhenStacked] trades the upright fit for a full-width board with the rows below it scrolling.
  */
 @Composable
 fun BoardScaffold(
@@ -42,6 +44,7 @@ fun BoardScaffold(
     tabs: @Composable () -> Unit,
     header: @Composable ColumnScope.(stacked: Boolean) -> Unit,
     body: @Composable ColumnScope.(stacked: Boolean) -> Unit,
+    scrollWhenStacked: Boolean = false,
 ) {
     Scaffold(contentWindowInsets = WindowInsets.safeDrawing) { padding ->
         BoxWithConstraints(Modifier.padding(padding).fillMaxSize()) {
@@ -61,14 +64,19 @@ fun BoardScaffold(
                     }
                 }
                 // STACKED. An `else`: as the lambda's last expression an exhaustive `when` hides an unreachable throw.
+                // With [scrollWhenStacked] the board takes the full width and the rows below it scroll;
+                // otherwise it is the largest square that fits the height the other rows leave.
                 else -> Column(
-                    Modifier.fillMaxSize().padding(vertical = 16.dp),
+                    Modifier.fillMaxSize()
+                        .then(if (scrollWhenStacked) Modifier.verticalScroll(rememberScrollState()) else Modifier)
+                        .padding(vertical = 16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     tabs()
                     header(false)
                     Spacer(Modifier.height(8.dp))
-                    ChessBoard(state, onSquareTap, onDragStart, onDragEnd, Modifier.weight(1f, fill = false))
+                    val boardSize = if (scrollWhenStacked) Modifier.fillMaxWidth() else Modifier.weight(1f, fill = false)
+                    ChessBoard(state, onSquareTap, onDragStart, onDragEnd, boardSize)
                     Spacer(Modifier.height(8.dp))
                     body(false)
                 }

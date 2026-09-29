@@ -133,7 +133,7 @@ class UiRenderTest {
     @Test fun rendersSolvedState() {
         show(PuzzleUiState(board = board, status = PuzzleStatus.SOLVED, feedback = Feedback.SOLVED))
         composeRule.renderToBitmap()
-        composeRule.onNodeWithText("Next").assertExists()
+        composeRule.onNodeWithContentDescription("Next puzzle").assertExists()
     }
 
     @Test fun rendersDarkThemeAndTogglesIt() {

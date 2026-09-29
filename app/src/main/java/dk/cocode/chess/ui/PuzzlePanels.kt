@@ -90,13 +90,17 @@ internal fun PuzzleControls(
         val inProgress = state.status == PuzzleStatus.IN_PROGRESS
         OutlinedButton(onHint, item.then(CompactButton), enabled = inProgress, contentPadding = CompactPadding) { Text("Hint") }
         OutlinedButton(onReset, item.then(CompactButton), contentPadding = CompactPadding) { Text("Reset") }
-        // An arrow, not a word, so four buttons still fit one row on a small phone at a large font.
+        // Arrows, not words, so four buttons still fit one row on a small phone at a large font.
         OutlinedButton(
             onPrevious,
             item.then(CompactButton).semantics { contentDescription = "Previous puzzle" },
             contentPadding = CompactPadding,
         ) { Text("◀") }
-        Button(onNext, item.then(CompactButton), contentPadding = CompactPadding) { Text("Next") }
+        Button(
+            onNext,
+            item.then(CompactButton).semantics { contentDescription = "Next puzzle" },
+            contentPadding = CompactPadding,
+        ) { Text("▶") }
     }
 }
 
