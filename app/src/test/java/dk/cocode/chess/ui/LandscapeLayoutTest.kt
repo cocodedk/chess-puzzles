@@ -40,7 +40,9 @@ class LandscapeLayoutTest {
         }
     }
 
-    private fun bounds(text: String) = composeRule.onNodeWithText(text).getUnclippedBoundsInRoot()
+    // A stat's number is only in the unmerged tree: the stat is one item for a screen reader.
+    private fun bounds(text: String, unmerged: Boolean = false) =
+        composeRule.onNodeWithText(text, useUnmergedTree = unmerged).getUnclippedBoundsInRoot()
 
     @Test fun squareBoardSitsBetweenTheNumbersAndTheButtons() {
         show()
@@ -49,7 +51,7 @@ class LandscapeLayoutTest {
         assertEquals(screen.height.value, board.height.value, 1f) // as tall as the screen ...
         assertEquals(board.height.value, board.width.value, 1f) // ... square ...
         assertEquals((board.left - screen.left).value, (screen.right - board.right).value, 1f) // ... and in the middle
-        val stats = composeRule.onNodeWithContentDescription("Day streak").getUnclippedBoundsInRoot()
+        val stats = composeRule.onNodeWithContentDescription("Day streak", useUnmergedTree = true).getUnclippedBoundsInRoot()
         assertTrue(stats.right <= board.left) // the numbers on its left ...
         assertTrue(bounds("Hint").left >= board.right) // ... the buttons on its right ...
         val next = composeRule.onNodeWithContentDescription("Next puzzle").getUnclippedBoundsInRoot()
@@ -64,9 +66,9 @@ class LandscapeLayoutTest {
     fun aLargeFontWrapsWholeItemsInsteadOfSqueezingThem() {
         show(empty.copy(dayStreak = 1, solvedCount = 1441, hintFreeCount = 1101, currentStreak = 53, bestStreak = 120))
         val board = composeRule.onNodeWithTag(BOARD_TEST_TAG).getUnclippedBoundsInRoot()
-        val oneLine = bounds("1").height.value
+        val oneLine = bounds("1", unmerged = true).height.value
         for (number in listOf("1441", "1101", "53", "120")) {
-            val stat = bounds(number)
+            val stat = bounds(number, unmerged = true)
             assertEquals("$number on one line", oneLine, stat.height.value, 0f)
             assertTrue("$number beside, not under, the board", stat.right <= board.left)
         }

@@ -36,6 +36,14 @@ class ModelTest {
         assertEquals('n', Piece(PieceColor.BLACK, PieceType.KNIGHT).fenChar)
     }
 
+    @Test fun pieceTypeFromLetter() {
+        PieceType.entries.forEach {
+            assertEquals(it, PieceType.fromLetter(it.letter))
+            assertEquals(it, PieceType.fromLetter(it.letter.uppercaseChar()))
+        }
+        assertEquals(null, PieceType.fromLetter('x'))
+    }
+
     @Test fun colorOpposite() {
         assertEquals(PieceColor.BLACK, PieceColor.WHITE.opposite())
         assertEquals(PieceColor.WHITE, PieceColor.BLACK.opposite())

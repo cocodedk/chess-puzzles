@@ -31,4 +31,6 @@ data class PuzzleUiState(
     val bestStreak: Int = 0,
     val dayStreak: Int = 0,
     val promptText: String = "",
+    /** What a screen reader says about the last event; empty until there is one. */
+    val announcement: String = "",
 ) : BoardState

@@ -2,9 +2,18 @@ package dk.cocode.chess.ui.board
 
 import dk.cocode.chess.core.model.Square
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class BoardGeometryTest {
+    @Test fun squareEdgesTileTheBoardInsideTheFrame() {
+        val edges = BoardGeometry.squareEdgesPx(1001f) // a width whose squares are not whole pixels
+        assertEquals(9, edges.size)
+        assertEquals(20, edges.first()) // the frame, rounded
+        assertEquals(981, edges.last())
+        edges.zipWithNext { a, b -> assertTrue(b - a in 120..121) } // neighbours share an edge: no gap, no overlap
+    }
+
     @Test fun topLeftNotFlipped() {
         val a1 = BoardGeometry.squareTopLeft(Square.of("a1"), 10f, false)
         assertEquals(0f, a1.x, 0f)

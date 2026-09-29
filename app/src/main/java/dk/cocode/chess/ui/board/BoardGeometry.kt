@@ -2,6 +2,7 @@ package dk.cocode.chess.ui.board
 
 import androidx.compose.ui.geometry.Offset
 import dk.cocode.chess.core.model.Square
+import kotlin.math.roundToInt
 
 /**
  * Maps between board squares and pixel positions on an 8x8 board whose squares are [squarePx] wide.
@@ -20,6 +21,16 @@ object BoardGeometry {
     fun squareOnBoard(x: Float, y: Float, boardPx: Float, flipped: Boolean): Square {
         val frame = frameDepth(boardPx)
         return squareAt(x - frame, y - frame, squareSize(boardPx), flipped)
+    }
+
+    /**
+     * The 9 whole-pixel lines that bound the columns (and the rows) on a framed board [boardPx] wide,
+     * each rounded once, so squares laid between neighbouring lines tile the board with no gap.
+     */
+    fun squareEdgesPx(boardPx: Float): List<Int> {
+        val frame = frameDepth(boardPx)
+        val square = squareSize(boardPx)
+        return (0..8).map { (frame + it * square).roundToInt() }
     }
 
     fun squareTopLeft(square: Square, squarePx: Float, flipped: Boolean): Offset {
@@ -41,6 +52,10 @@ object BoardGeometry {
         val rank = if (flipped) rowFromTop else 7 - rowFromTop
         return Square(file, rank)
     }
+
+    /** All 64 squares as they are shown, the top row left to right and then the next row down. */
+    fun squaresInReadingOrder(flipped: Boolean): List<Square> =
+        (0..63).map { squareAt((it % 8) + .5f, (it / 8) + .5f, 1f, flipped) }
 
     /** Light squares are the ones where file+rank is odd (a1 is dark). */
     fun isLight(square: Square): Boolean = (square.file + square.rank) % 2 == 1

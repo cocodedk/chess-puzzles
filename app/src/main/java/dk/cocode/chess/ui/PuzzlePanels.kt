@@ -24,7 +24,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -42,6 +46,12 @@ internal val TextInset = Modifier.padding(horizontal = 16.dp)
 internal val CompactButton = Modifier.heightIn(min = 36.dp)
 internal val CompactPadding = PaddingValues(horizontal = 16.dp)
 
+/** A polite live region that reads [announcement] aloud when it changes; with none, the line reads as its text. */
+internal fun Modifier.announces(announcement: String): Modifier = semantics {
+    liveRegion = LiveRegionMode.Polite
+    if (announcement.isNotEmpty()) contentDescription = announcement
+}
+
 /** The selected-state colors shared by every filter chip in the puzzle and openings screens. */
 @Composable
 internal fun selectedChipColors() = FilterChipDefaults.filterChipColors(
@@ -57,7 +67,11 @@ internal fun PuzzleStats(
     onDifficulty: (Difficulty) -> Unit,
     stacked: Boolean,
 ) {
-    Text("Puzzle ${state.position} of ${state.bandSize}", style = MaterialTheme.typography.titleLarge)
+    Text(
+        "Puzzle ${state.position} of ${state.bandSize}",
+        Modifier.semantics { heading() },
+        style = MaterialTheme.typography.titleLarge,
+    )
     Text("Rating ${state.rating}", style = MaterialTheme.typography.labelMedium)
     StatsRow(
         dayStreak = state.dayStreak, solved = state.solvedCount, hintFree = state.hintFreeCount,
@@ -84,7 +98,7 @@ internal fun PuzzleControls(
     onNext: () -> Unit,
     stacked: Boolean,
 ) {
-    Text(feedbackMessage(state.feedback), modifier = TextInset, textAlign = TextAlign.Center)
+    Text(feedbackMessage(state.feedback), modifier = TextInset.announces(state.announcement), textAlign = TextAlign.Center)
     Spacer(Modifier.height(12.dp))
     Lineup(stacked) { item ->
         val inProgress = state.status == PuzzleStatus.IN_PROGRESS
@@ -95,12 +109,12 @@ internal fun PuzzleControls(
             onPrevious,
             item.then(CompactButton).semantics { contentDescription = "Previous puzzle" },
             contentPadding = CompactPadding,
-        ) { Text("◀") }
+        ) { Text("◀", Modifier.clearAndSetSemantics {}) }
         Button(
             onNext,
             item.then(CompactButton).semantics { contentDescription = "Next puzzle" },
             contentPadding = CompactPadding,
-        ) { Text("▶") }
+        ) { Text("▶", Modifier.clearAndSetSemantics {}) }
     }
 }
 

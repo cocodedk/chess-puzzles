@@ -50,6 +50,13 @@ internal class ChessEngine {
 
     fun applyUci(uci: String): Boolean = board.doMove(CbMove(uci, board.sideToMove))
 
+    /** SAN of the legal move [uci] in the current position (with `+`/`#`), without playing it. */
+    fun san(uci: String): String {
+        val moves = MoveList(board.fen)
+        moves.add(CbMove(uci, board.sideToMove))
+        return moves.toSanArray().single()
+    }
+
     /** Side-effect-free: would the legal move [uci] deliver checkmate? */
     fun wouldBeMate(uci: String): Boolean {
         board.doMove(CbMove(uci, board.sideToMove))

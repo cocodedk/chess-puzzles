@@ -32,10 +32,14 @@ internal fun PuzzleUiState.withProgress(base: Progress, today: Long): PuzzleUiSt
 
 /** E.g. "White to move — checkmate in 2", counting down as the solution progresses. */
 internal fun PuzzleSession.prompt(): String {
-    val side = if (playerColor == PieceColor.WHITE) "White" else "Black"
     val remaining = state.totalPlayerMoves - state.playerMovesDone
-    return "$side to move — ${goalText(endsInMate, remaining, puzzle)}"
+    return "${playerColor.label()} to move — ${goalText(endsInMate, remaining, puzzle)}"
 }
+
+/** What is said when a puzzle is shown: its place, rating, the opponent's first move, then the prompt. */
+internal fun PuzzleSession.shownSentence(position: Int, bandSize: Int): String =
+    "Puzzle $position of $bandSize, rating ${puzzle.rating}. " +
+        "${playerColor.opposite().label()} played ${spokenMove(setupSan)}. ${prompt()}."
 
 /**
  * The puzzle's announced goal. Mate is detected from the actual solution (more reliable than tags);

@@ -8,27 +8,24 @@ enum class PieceColor {
     fun opposite(): PieceColor = if (this == WHITE) BLACK else WHITE
 }
 
-enum class PieceType {
-    PAWN,
-    KNIGHT,
-    BISHOP,
-    ROOK,
-    QUEEN,
-    KING,
+/** [letter] is the lowercase FEN letter; SAN and white's FEN use it in uppercase. */
+enum class PieceType(val letter: Char) {
+    PAWN('p'),
+    KNIGHT('n'),
+    BISHOP('b'),
+    ROOK('r'),
+    QUEEN('q'),
+    KING('k'),
+    ;
+
+    companion object {
+        /** The type a FEN or SAN letter names, either case; null for any other character. */
+        fun fromLetter(letter: Char): PieceType? = entries.firstOrNull { it.letter == letter.lowercaseChar() }
+    }
 }
 
 data class Piece(val color: PieceColor, val type: PieceType) {
     /** FEN letter: uppercase for white, lowercase for black (e.g. a white queen -> 'Q'). */
     val fenChar: Char
-        get() {
-            val lower = when (type) {
-                PieceType.PAWN -> 'p'
-                PieceType.KNIGHT -> 'n'
-                PieceType.BISHOP -> 'b'
-                PieceType.ROOK -> 'r'
-                PieceType.QUEEN -> 'q'
-                PieceType.KING -> 'k'
-            }
-            return if (color == PieceColor.WHITE) lower.uppercaseChar() else lower
-        }
+        get() = if (color == PieceColor.WHITE) type.letter.uppercaseChar() else type.letter
 }
