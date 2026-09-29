@@ -19,11 +19,13 @@ const val BOARD_SQUARES_TAG = "chessBoardSquares"
 /**
  * The 64 squares a screen reader sees over the drawn board: one item per square, in reading order,
  * each covering the square it names and saying what [squareDescription] says. They draw nothing and
- * take no touches; a double-tap runs [onSquareTap], as a finger tap on the square does.
+ * take no touches; a double-tap runs [onSquareTap], as a finger tap on the square does — unless the
+ * state is not [BoardState.tappable], when the items are read but offer no click.
  */
 @Composable
 internal fun BoardSquares(state: BoardState, onSquareTap: (Square) -> Unit, modifier: Modifier = Modifier) {
     val flipped = state.flipped
+    val tappable = state.tappable
     val order = remember(flipped) { BoardGeometry.squaresInReadingOrder(flipped) }
     Layout(
         content = {
@@ -31,7 +33,7 @@ internal fun BoardSquares(state: BoardState, onSquareTap: (Square) -> Unit, modi
                 Box(
                     Modifier.semantics {
                         contentDescription = squareDescription(state, square)
-                        onClick { onSquareTap(square); true }
+                        if (tappable) onClick { onSquareTap(square); true }
                     },
                 )
             }

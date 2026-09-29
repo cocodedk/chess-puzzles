@@ -110,6 +110,47 @@ class OpeningDrillTest {
         assertEquals(setOf("g1f3", "c2c3"), seen)
     }
 
+    @Test fun resultsNameTheMovesInNotation() {
+        val drill = italianDrill()
+        val correct = drill.submit(intentOf("e2e4"))
+        check(correct is DrillResult.Correct)
+        assertEquals("e4", correct.san)
+        assertEquals("e5", correct.replySan)
+        assertEquals("e5", drill.lastMoveSan)
+
+        val single = OpeningDrill(OpeningTree(OpeningFixtures.SINGLE_LINE), PieceColor.WHITE, Random(1))
+        single.submit(intentOf("e2e4"))
+        val ended = single.submit(intentOf("g1f3"))
+        check(ended is DrillResult.Complete)
+        assertEquals("Nf3", ended.san)
+        assertNull(ended.replySan)
+    }
+
+    @Test fun aWrongMoveNamesTheMovePlayedAndTheBookMove() {
+        val result = italianDrill().submit(intentOf("d2d4"))
+        check(result is DrillResult.Wrong)
+        assertEquals("d4", result.playedSan)
+        assertEquals("e4", result.san)
+    }
+
+    @Test fun aLineEndingOnTheOpponentsReplyNamesBothMoves() {
+        val black = OpeningDrill(OpeningTree(OpeningFixtures.SICILIAN_DEMO), PieceColor.BLACK, Random(1))
+        assertEquals("e4", black.lastMoveSan)
+        black.restart()
+        assertEquals("e4", black.lastMoveSan)
+
+        val drill = italianDrill()
+        var last: DrillResult = drill.submit(intentOf(drill.bookMove().uci))
+        while (!drill.complete) last = drill.submit(intentOf(drill.bookMove().uci))
+        check(last is DrillResult.Complete)
+        // Both Italian lines end on Black's reply, after White's c3 or d3.
+        assertTrue(last.san in setOf("c3", "d3"))
+        assertTrue(last.replySan in setOf("Nf6", "Be7"))
+        assertEquals(last.replySan, drill.lastMoveSan)
+        drill.restart()
+        assertNull(drill.lastMoveSan)
+    }
+
     @Test fun restartResetsPositionAndCleanFlag() {
         val drill = italianDrill()
         drill.submit(intentOf("d2d4")) // wrong -> not clean

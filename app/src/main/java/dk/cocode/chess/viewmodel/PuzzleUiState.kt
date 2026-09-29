@@ -33,4 +33,7 @@ data class PuzzleUiState(
     val promptText: String = "",
     /** What a screen reader says about the last event; empty until there is one. */
     val announcement: String = "",
-) : BoardState
+) : BoardState {
+    /** Every square takes a tap, whether or not the puzzle is still in progress. */
+    override val tappable: Boolean get() = true
+}

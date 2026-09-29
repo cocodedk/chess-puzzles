@@ -20,7 +20,10 @@ internal fun OpeningPractisePanel(state: OpeningUiState, opening: Opening, onAga
         if (opening.side == PieceColor.WHITE) "Play White's moves from memory." else "Play Black's moves from memory."
     Text(prompt, modifier = TextInset, textAlign = TextAlign.Center)
     Spacer(Modifier.height(12.dp))
-    Text(practiseFeedback(state.feedback, state.clean, state.bookSan), modifier = TextInset, textAlign = TextAlign.Center)
+    Text(
+        practiseFeedback(state.feedback, state.clean, state.bookSan),
+        modifier = TextInset.announces(state.announcement), textAlign = TextAlign.Center,
+    )
     Spacer(Modifier.height(12.dp))
     OutlinedButton(onClick = onAgain, modifier = CompactButton, contentPadding = CompactPadding) { Text("Again") }
 }

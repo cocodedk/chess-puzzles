@@ -18,8 +18,15 @@ internal class OpeningPractise(private val drill: OpeningDrill) {
     var feedback: OpeningFeedback = OpeningFeedback.NONE; private set
     var bookSan: String? = null; private set
 
+    /** What a screen reader says about the last move [submit] was given. */
+    var said: String = ""; private set
+
+    val side get() = drill.side
     val board get() = drill.board
     val lastMove get() = drill.lastMove?.let { Highlight(it.from, it.to) }
+
+    /** The book's first move when it is the opponent's, else null. */
+    val openingSan get() = drill.lastMoveSan
     val clean get() = drill.clean
     val complete get() = drill.complete
 
@@ -42,24 +49,31 @@ internal class OpeningPractise(private val drill: OpeningDrill) {
 
     fun submit(from: Square, to: Square): Boolean {
         clear()
+        val opponent = drill.side.opposite()
         return when (val result = drill.submit(MoveIntent(from, to))) {
             is DrillResult.Correct -> {
                 feedback = OpeningFeedback.CORRECT
                 bookSan = null
+                said = bookMoveSentence(result.san, opponent, result.replySan)
                 false
             }
             is DrillResult.Wrong -> {
                 hint = Highlight(result.book.from, result.book.to)
                 feedback = OpeningFeedback.WRONG
                 bookSan = result.san
+                said = notBookSentence(result.playedSan, result.san)
                 false
             }
             is DrillResult.Complete -> {
                 feedback = OpeningFeedback.COMPLETE
                 bookSan = null
+                said = lineCompleteSentence(bookMoveSentence(result.san, opponent, result.replySan), result.clean)
                 result.clean
             }
-            DrillResult.Illegal -> false
+            DrillResult.Illegal -> {
+                said = SELECTION_CLEARED // the selection was dropped, and nothing else changed
+                false
+            }
         }
     }
 

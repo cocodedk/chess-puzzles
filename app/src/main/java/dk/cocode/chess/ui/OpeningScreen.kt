@@ -2,6 +2,7 @@ package dk.cocode.chess.ui
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,6 +36,8 @@ fun OpeningScreen(
         )
         else -> {
             BackHandler(onBack = viewModel::onBack) // the phone's Back returns to the list, as the arrow does
+            // Its live regions are rebuilt on return, which would read the last sentence again.
+            DisposableEffect(viewModel) { onDispose(viewModel::onScreenLeft) }
             OpeningScreenContent(
                 state = state, opening = remember(openingId) { openings.first { it.id == openingId } },
                 onBack = viewModel::onBack, onMode = viewModel::onMode,

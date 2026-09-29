@@ -8,6 +8,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.AnnotatedString
@@ -18,6 +19,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import dk.cocode.chess.core.model.Opening
 import dk.cocode.chess.viewmodel.OpeningUiState
+import dk.cocode.chess.viewmodel.spokenLineName
+import dk.cocode.chess.viewmodel.spokenMoveList
 
 /**
  * Learn mode: ◀ ▶ stepping and the branch chips (when there is more than one line) first, right under
@@ -35,20 +38,26 @@ internal fun OpeningLearnPanel(
         IconButton(
             onClick = { onStep(-1) }, enabled = state.ply > 0,
             modifier = Modifier.semantics { contentDescription = "Previous move" },
-        ) { Text("◀") }
+        ) { Text("◀", Modifier.clearAndSetSemantics {}) }
         IconButton(
             onClick = { onStep(1) }, enabled = state.ply < state.moveSan.size,
             modifier = Modifier.semantics { contentDescription = "Next move" },
-        ) { Text("▶") }
+        ) { Text("▶", Modifier.clearAndSetSemantics {}) }
     }
     if (state.lineNames.size > 1) {
         ChipRow(
             stacked, state.lineNames.indices.toList(),
             selected = { it == state.line }, onSelect = onLine, label = { state.lineNames[it] },
+            spoken = { spokenLineName(state.lineNames[it]) },
         )
     }
     Spacer(Modifier.height(8.dp))
-    Text(moveListText(state.moveSan, state.ply), modifier = TextInset, textAlign = TextAlign.Center)
+    // Read aloud as the announcement when there is one, else in words; both are said again when they change.
+    Text(
+        moveListText(state.moveSan, state.ply),
+        modifier = TextInset.announces(state.announcement.ifEmpty { spokenMoveList(state.moveSan) }),
+        textAlign = TextAlign.Center,
+    )
     Spacer(Modifier.height(12.dp))
     Text(opening.idea, modifier = TextInset, textAlign = TextAlign.Center)
 }

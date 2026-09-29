@@ -149,17 +149,25 @@ internal fun Lineup(stacked: Boolean, content: @Composable (item: Modifier) -> U
 /**
  * One [Lineup] of [FilterChip]s, one per item in [items] — [selected] and [onSelect] key off the
  * item itself, [label] renders its text. Shared by the puzzle band chips and the openings' mode and
- * line chips, which otherwise repeated this exact chip wiring three times.
+ * line chips, which otherwise repeated this exact chip wiring three times. A chip whose [spoken] is not
+ * null is read as that, not as its label.
  */
 @Composable
-internal fun <T> ChipRow(stacked: Boolean, items: List<T>, selected: (T) -> Boolean, onSelect: (T) -> Unit, label: (T) -> String) {
+internal fun <T> ChipRow(
+    stacked: Boolean,
+    items: List<T>,
+    selected: (T) -> Boolean,
+    onSelect: (T) -> Unit,
+    label: (T) -> String,
+    spoken: (T) -> String? = { null },
+) {
     Lineup(stacked) { item ->
         items.forEach { value ->
             FilterChip(
                 selected = selected(value),
                 onClick = { onSelect(value) },
                 label = { Text(label(value), item, textAlign = TextAlign.Center) },
-                modifier = item,
+                modifier = item.semantics { spoken(value)?.let { contentDescription = it } },
                 colors = selectedChipColors(),
             )
         }
