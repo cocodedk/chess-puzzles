@@ -165,9 +165,7 @@ class OpeningViewModel(
 
     /** What is said on choosing the current mode: Learn where it was left, or a fresh Practise drill. */
     private fun modeSentence(): String {
-        val p = practise
-        if (mode == OpeningMode.PRACTISE && p != null) return practiseSentence(p.side, p.openingSan)
-        return learnChosenSentence(learnSentence())
+        return practise?.let { practiseSentence(it.side, it.openingSan) } ?: learnChosenSentence(learnSentence())
     }
 
     /** The move Learn shows now, or the start position. */

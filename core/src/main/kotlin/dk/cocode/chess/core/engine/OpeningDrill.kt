@@ -50,8 +50,7 @@ class OpeningDrill(
     val lastMove: MoveStep? get() = lastMoveStep
 
     /** The notation of [lastMove], e.g. White's auto-played first move when [side] is BLACK. */
-    var lastMoveSan: String? = null
-        private set
+    val lastMoveSan: String? get() = if (lastMoveStep == null) null else node.san
     var clean: Boolean = true
         private set
     val complete: Boolean get() = node.children.isEmpty()
@@ -94,7 +93,6 @@ class OpeningDrill(
         engine = ChessEngine()
         node = tree.root
         lastMoveStep = null
-        lastMoveSan = null
         clean = true
         if (side == PieceColor.BLACK) advance(randomChildUci())
     }
@@ -104,7 +102,6 @@ class OpeningDrill(
     private fun advance(uci: String): MoveStep {
         engine.applyUci(uci)
         node = node.children.getValue(uci)
-        lastMoveSan = node.san
         val step = Uci.toMoveStep(uci)
         lastMoveStep = step
         return step
