@@ -48,7 +48,7 @@ bash scripts/emu.sh                      # boot a headless emulator, install, sc
 ## Engineering rules
 
 See [`CLAUDE.md`](CLAUDE.md): 200-line file cap, `/simplify` + `/code-review` before every commit, a
-pre-push test+coverage hook, and 100% test coverage (enforced by Kover; `@Composable` functions are
+pre-push test+coverage hook, and 100% line coverage (enforced by Kover; `@Composable` functions are
 excluded as their compiler-generated recomposition branches are unreachable by tests).
 
 ## Credits
