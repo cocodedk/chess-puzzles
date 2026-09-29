@@ -20,14 +20,17 @@ data class PuzzleSessionState(
 
 /** Result of submitting a player move. */
 sealed interface SubmitResult {
-    /** Correct, non-final move; the opponent has a reply queued (call applyOpponentReply). */
-    data class Continues(val state: PuzzleSessionState, val playerMove: MoveStep) : SubmitResult
+    /** Correct, non-final move; the opponent has a reply queued (call applyOpponentReply). [san] is
+     * the player's move and [replySan] the queued reply, both in SAN. */
+    data class Continues(val state: PuzzleSessionState, val playerMove: MoveStep, val san: String, val replySan: String) :
+        SubmitResult
 
-    /** Correct final move; the puzzle is solved. */
-    data class Solved(val state: PuzzleSessionState, val playerMove: MoveStep) : SubmitResult
+    /** Correct final move; the puzzle is solved. [san] is the player's move in SAN. */
+    data class Solved(val state: PuzzleSessionState, val playerMove: MoveStep, val san: String) : SubmitResult
 
-    /** A legal chess move that is not the solution; the puzzle is now failed. */
-    data class Wrong(val state: PuzzleSessionState, val expected: MoveStep) : SubmitResult
+    /** A legal chess move that is not the solution; the puzzle is now failed. [san] is the player's
+     * move in SAN, never applied. */
+    data class Wrong(val state: PuzzleSessionState, val expected: MoveStep, val san: String) : SubmitResult
 
     /** Not a legal move (or missing promotion / puzzle finished); engine state is unchanged. */
     data class Illegal(val reason: String) : SubmitResult

@@ -13,7 +13,6 @@ import androidx.compose.ui.unit.Constraints
 import dk.cocode.chess.core.model.Square
 import dk.cocode.chess.viewmodel.BoardState
 import dk.cocode.chess.viewmodel.squareDescription
-import kotlin.math.roundToInt
 
 const val BOARD_SQUARES_TAG = "chessBoardSquares"
 
@@ -39,16 +38,15 @@ internal fun BoardSquares(state: BoardState, onSquareTap: (Square) -> Unit, modi
         },
         modifier = modifier.testTag(BOARD_SQUARES_TAG),
     ) { measurables, constraints ->
-        val boardPx = constraints.maxWidth.toFloat()
-        val frame = BoardGeometry.frameDepth(boardPx)
-        val squarePx = BoardGeometry.squareSize(boardPx)
-        val side = squarePx.roundToInt()
-        val placeables = measurables.map { it.measure(Constraints.fixed(side, side)) }
+        // Reading order runs row by row from the top, so item i sits in column i % 8 and row i / 8.
+        val edges = BoardGeometry.squareEdgesPx(constraints.maxWidth.toFloat())
+        val placeables = measurables.mapIndexed { i, measurable ->
+            val col = i % 8
+            val row = i / 8
+            measurable.measure(Constraints.fixed(edges[col + 1] - edges[col], edges[row + 1] - edges[row]))
+        }
         layout(constraints.maxWidth, constraints.maxHeight) {
-            placeables.forEachIndexed { i, placeable ->
-                val at = BoardGeometry.squareTopLeft(order[i], squarePx, flipped)
-                placeable.place((frame + at.x).roundToInt(), (frame + at.y).roundToInt())
-            }
+            placeables.forEachIndexed { i, placeable -> placeable.place(edges[i % 8], edges[i / 8]) }
         }
     }
 }

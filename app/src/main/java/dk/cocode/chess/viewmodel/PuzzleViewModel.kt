@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import dk.cocode.chess.core.data.PuzzleRepository
 import dk.cocode.chess.core.engine.PuzzleSession
 import dk.cocode.chess.core.model.MoveIntent
-import dk.cocode.chess.core.model.MoveStep
 import dk.cocode.chess.core.model.PieceType
 import dk.cocode.chess.core.model.PuzzleStatus
 import dk.cocode.chess.core.model.Square
@@ -94,14 +93,16 @@ class PuzzleViewModel(
         val hint = session.hint()
         val highlight = Highlight(hint.from, hint.to)
         _state.update {
-            it.withSelection(hint.from, session.legalDestinations(hint.from).toSet())
-                .copy(hint = highlight, announcement = hintSentence(it, highlight))
+            it.copy(
+                selected = hint.from, legalTargets = session.legalDestinations(hint.from).toSet(),
+                hint = highlight, announcement = hintSentence(it, highlight),
+            )
         }
     }
 
     fun onReset() {
         session.reset() // accounting keeps its counted flags, so re-solving today never re-earns
-        _state.value = render().copy(announcement = "Puzzle reset. ${session.prompt()}.")
+        _state.value = render().copy(announcement = resetSentence(session.prompt()))
     }
 
     fun onNext() = stepBand(1)
@@ -119,11 +120,12 @@ class PuzzleViewModel(
         index = target
         attempt = PuzzleAttempt()
         session = PuzzleSession.start(puzzles.all()[target])
-        _state.value = render()
-        announceShown()
+        _state.value = render().withShownAnnouncement()
     }
 
-    private fun announceShown() = _state.update { it.copy(announcement = session.shownSentence(it.position, it.bandSize)) }
+    private fun announceShown() = _state.update { it.withShownAnnouncement() }
+
+    private fun PuzzleUiState.withShownAnnouncement() = copy(announcement = session.shownSentence(position, bandSize))
 
     /** The full render recipe — the single place the clock is sampled for display. */
     private fun render() = band().let { session.toUiState(base, today(), it.indexOf(index) + 1, it.size) }
@@ -154,25 +156,24 @@ class PuzzleViewModel(
             is SubmitResult.Illegal -> _state.update {
                 it.copy(pendingPromotion = PendingPromotion(from, to), selected = null, legalTargets = emptySet())
             }
-            is SubmitResult.Wrong -> onWrong()
-            is SubmitResult.Continues -> onContinues()
-            is SubmitResult.Solved -> onSolved(result.playerMove)
+            is SubmitResult.Wrong -> onWrong(result.san)
+            is SubmitResult.Continues -> onContinues(result)
+            is SubmitResult.Solved -> onSolved(result)
         }
     }
 
-    private fun onWrong() {
+    private fun onWrong(san: String) {
         attempt.failed = true // mistakes alone never break the streak — see jumpTo
         session.retry() // un-lock so the player can try again (the move was never applied)
         _state.update {
-            it.withoutSelection(wrongSentence(session.lastSan))
+            it.withoutSelection(wrongSentence(san))
                 .copy(status = PuzzleStatus.IN_PROGRESS, feedback = Feedback.WRONG, promptText = session.prompt())
         }
     }
 
-    private fun onContinues() {
-        val played = session.lastSan
+    private fun onContinues(result: SubmitResult.Continues) {
         val reply = session.applyOpponentReply()
-        val said = correctSentence(played, session.playerColor.opposite(), session.lastSan)
+        val said = correctSentence(result.san, session.playerColor.opposite(), result.replySan)
         _state.update {
             it.withoutSelection(said).copy(
                 board = session.state.board.toRows(), lastMove = Highlight(reply.from, reply.to),
@@ -181,14 +182,14 @@ class PuzzleViewModel(
         }
     }
 
-    private fun onSolved(playerMove: MoveStep) {
+    private fun onSolved(result: SubmitResult.Solved) {
         attempt.failed = false // solved after all — the earlier mistakes are forgiven
         val day = today() // sampled at the solve, not when the write coroutine runs
         val hintFree = !attempt.hintUsed // read now: loading a puzzle swaps `attempt` before the write runs
         if (accounting.countSolve(day, index)) viewModelScope.launch { progress.recordSolved(day, hintFree) }
         _state.update {
-            it.withoutSelection(solvedSentence(session.lastSan)).copy(
-                board = session.state.board.toRows(), lastMove = Highlight(playerMove.from, playerMove.to),
+            it.withoutSelection(solvedSentence(result.san)).copy(
+                board = session.state.board.toRows(), lastMove = Highlight(result.playerMove.from, result.playerMove.to),
                 status = PuzzleStatus.SOLVED, feedback = Feedback.SOLVED, promptText = "Solved!",
             )
         }

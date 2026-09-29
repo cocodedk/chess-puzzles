@@ -83,6 +83,9 @@ class PuzzleAnnouncementTest {
         assertEquals("No moves from e5.", viewModel.said())
         viewModel.tap("h8") // the opponent's piece
         assertEquals("No moves from h8.", viewModel.said())
+        viewModel.onDifficultySelected(Difficulty.MEDIUM) // M2, where White's e4 pawn is blocked by e5
+        viewModel.tap("e4") // a piece with no moves
+        assertEquals("No moves from e4.", viewModel.said())
     }
 
     @Test fun tappingTheSelectionAgainClearsIt() = runTest(dispatcher) {

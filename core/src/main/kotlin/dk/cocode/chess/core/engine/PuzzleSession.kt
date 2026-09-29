@@ -31,10 +31,6 @@ class PuzzleSession private constructor(
     private var lastMove: MoveStep = Uci.toMoveStep(puzzle.setupMoveUci)
     private var pendingReply: String? = null
 
-    /** SAN of the move most recently submitted (a wrong one included) or answered by the opponent. */
-    var lastSan: String = setupSan
-        private set
-
     var state: PuzzleSessionState = buildState()
         private set
 
@@ -58,7 +54,7 @@ class PuzzleSession private constructor(
         if (!engine.isLegal(move)) return SubmitResult.Illegal("Illegal move")
 
         val candidate = move.toUci()
-        lastSan = engine.san(candidate)
+        val san = engine.san(candidate)
         val expected = puzzle.uciMoves[cursor]
         val isFinalPly = cursor == puzzle.uciMoves.lastIndex
         val accepted = candidate == expected ||
@@ -66,7 +62,7 @@ class PuzzleSession private constructor(
         if (!accepted) {
             status = PuzzleStatus.FAILED
             state = buildState()
-            return SubmitResult.Wrong(state, Uci.toMoveStep(expected))
+            return SubmitResult.Wrong(state, Uci.toMoveStep(expected), san)
         }
 
         engine.applyUci(candidate)
@@ -75,17 +71,17 @@ class PuzzleSession private constructor(
         return if (cursor > puzzle.uciMoves.lastIndex) {
             status = PuzzleStatus.SOLVED
             state = buildState()
-            SubmitResult.Solved(state, lastMove)
+            SubmitResult.Solved(state, lastMove, san)
         } else {
-            pendingReply = puzzle.uciMoves[cursor]
+            val reply = puzzle.uciMoves[cursor]
+            pendingReply = reply
             state = buildState()
-            SubmitResult.Continues(state, lastMove)
+            SubmitResult.Continues(state, lastMove, san, engine.san(reply))
         }
     }
 
     fun applyOpponentReply(): MoveStep {
         val replyUci = checkNotNull(pendingReply) { "No opponent reply pending" }
-        lastSan = engine.san(replyUci)
         engine.applyUci(replyUci)
         lastMove = Uci.toMoveStep(replyUci)
         pendingReply = null
@@ -99,7 +95,6 @@ class PuzzleSession private constructor(
         engine.applyUci(puzzle.setupMoveUci)
         cursor = 1
         status = PuzzleStatus.IN_PROGRESS
-        lastSan = setupSan
         lastMove = Uci.toMoveStep(puzzle.setupMoveUci)
         pendingReply = null
         state = buildState()

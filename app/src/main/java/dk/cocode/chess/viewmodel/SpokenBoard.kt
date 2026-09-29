@@ -7,17 +7,8 @@ import dk.cocode.chess.core.model.Square
 /** The board's FEN letter at [square], or ' ' when it is empty. */
 private fun BoardState.codeAt(square: Square): Char = board[square.rank][square.file]
 
-private fun typeOf(code: Char): PieceType = when (code.lowercaseChar()) {
-    'p' -> PieceType.PAWN
-    'n' -> PieceType.KNIGHT
-    'b' -> PieceType.BISHOP
-    'r' -> PieceType.ROOK
-    'q' -> PieceType.QUEEN
-    else -> PieceType.KING
-}
-
 /** The piece on the occupied [square] in words with no colour, e.g. "knight". */
-private fun BoardState.pieceWordAt(square: Square): String = spokenPiece(typeOf(codeAt(square)))
+private fun BoardState.pieceWordAt(square: Square): String = spokenPiece(PieceType.fromLetter(codeAt(square))!!)
 
 /**
  * What a screen reader says for one board square: "e4, white knight, last move". The square, its

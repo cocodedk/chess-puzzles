@@ -23,7 +23,7 @@ import dk.cocode.chess.R
 
 /**
  * The counters above the board. Each is an icon plus its number — five labelled stats would not fit
- * on one line on a small phone. The icon's content description is what a screen reader announces.
+ * on one line on a small phone. A screen reader hears each stat as one item, its label and number.
  *
  * Takes the five numbers rather than the whole [dk.cocode.chess.viewmodel.PuzzleUiState]: that type
  * holds collections Compose cannot prove stable, so passing it would re-run this row on every board

@@ -29,22 +29,21 @@ fun spokenMove(san: String): String {
 }
 
 private fun spokenPlay(play: String, promotion: String): String {
-    val type = PIECE_LETTERS[play.first()]
+    val type = sanPiece(play.first())
     val rest = if (type == null) play else play.drop(1)
     val target = rest.takeLast(2)
-    val disambiguation = rest.dropLast(2).removeSuffix("x")
-    val takes = rest.dropLast(2).endsWith("x")
+    val before = rest.dropLast(2)
+    val disambiguation = before.removeSuffix("x")
+    val takes = before.endsWith("x")
     val words = if (type == null) {
         if (takes) "$disambiguation pawn takes $target" else "pawn $target"
     } else {
         listOfNotNull(spokenPiece(type), disambiguation.takeIf { it.isNotEmpty() }, "takes".takeIf { takes }, target)
             .joinToString(" ")
     }
-    val promotes = promotion.firstOrNull()?.let { PIECE_LETTERS[it] }?.let { ", promotes to ${spokenPiece(it)}" }.orEmpty()
+    val promotes = promotion.firstOrNull()?.let(::sanPiece)?.let { ", promotes to ${spokenPiece(it)}" }.orEmpty()
     return words + promotes
 }
 
-private val PIECE_LETTERS = mapOf(
-    'K' to PieceType.KING, 'Q' to PieceType.QUEEN, 'R' to PieceType.ROOK,
-    'B' to PieceType.BISHOP, 'N' to PieceType.KNIGHT,
-)
+/** A SAN piece letter is uppercase; a lowercase first letter is a pawn's file. */
+private fun sanPiece(letter: Char): PieceType? = if (letter.isUpperCase()) PieceType.fromLetter(letter) else null
