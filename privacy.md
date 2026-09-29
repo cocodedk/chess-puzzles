@@ -38,7 +38,8 @@ offline and creates no record anywhere except the progress saved on your own dev
 If you have enabled Android Auto Backup or Google account backup on your device, the operating system
 may include this app's local data (your progress and theme choice) in your own personal Google
 backup, and may restore it if you reinstall the app or set up a new phone. That copy is separate from
-the one on your phone, so deleting the app does not delete it. This is controlled entirely by you and Google — we have no access to it. See
+the one on your phone, so deleting the app does not delete it. Whether a backup happens depends on the app's backup setting and your device and account
+settings. We have no access to the backup. See
 [Google's Privacy Policy](https://policies.google.com/privacy) for details.
 
 ## External links
