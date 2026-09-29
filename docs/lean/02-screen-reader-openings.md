@@ -35,9 +35,9 @@ are spec 01's, reused unchanged.
 - The opening's name is a heading.
 - The line under it says `C50` or `C50, 3 clean runs` (`1 clean run` for one), not "×3 clean".
 - The Learn and Practise chips already read correctly.
-- A line chip shows where the line leaves the others in notation (`3…Bc5`, `4.d3`; `Main line` when
-  there is one line). It is read in words, as the move it names: `Move 3, Black: bishop c5`,
-  `Move 4, White: pawn d3`; `Main line` as it is. Its selected state reads as now.
+- Line chips appear only when an opening has more than one line. Each shows where its line leaves
+  the others, in notation (`3…Bc5`, `4.d3`), and is read in words, as the move it names:
+  `Move 3, Black: bishop c5`, `Move 4, White: pawn d3`. Its selected state reads as now.
 - The Previous move and Next move buttons say only their names: the arrows are not read.
 - The move list is read in words, numbered as shown: `1. pawn e4, pawn e5. 2. knight f3, knight c6.
   3. bishop c4.` A move list that is empty is not read.
@@ -59,7 +59,7 @@ text. When there is no announcement, the node is read as described above. `<Side
 | Learn: a line chip is chosen | `Line: move 3, Black: bishop c5. Start position.` (the chip's spoken name after `Line: `, its first letter lowered) |
 | Learn is chosen | `Learn. Start position.`, or `Learn. Move 3, White: knight f3.` when Learn was left partway |
 | Practise is chosen, or Again | `Practise. Play White's moves from memory.`; when the book's first move is the opponent's, it follows: `Practise. Play Black's moves from memory. White played pawn e4.` |
-| A book move that the book answers | `Book move. You played knight f3. Black played knight c6.` |
+| A book move that the book answers | `Book move. You played knight f3. Black played knight c6.`; the reply is the opponent's, so in a Black opening: `Book move. You played pawn c5. White played knight f3.` |
 | A move that is not the book's | `You played pawn d4. Not the book move — the book plays knight f3.` |
 | The move that ends the line | `Book move. You played bishop c4. Line complete.`, or `… Line complete — try it clean.` when a mistake was made; when the book answers that move first, its reply comes before `Line complete` as in the row above |
 | Back to the list | nothing new |
@@ -72,7 +72,7 @@ Two identical sentences in a row may be spoken only once; that is accepted.
    clean runs, `…, 3 clean runs` and `…, 1 clean run`; clicking it opens the opening.
 2. The header: Back exposes no arrow text; the name is a heading; the clean-run line reads as above.
 3. The move list's spoken text for a line with an odd and with an even number of moves, and the
-   spoken names of a White-move chip, a Black-move chip and `Main line`.
+   spoken names of a White-move chip and a Black-move chip.
 4. View-model tests for every row of the announcement table, exact sentences, for a White opening and
    for a Black one.
 5. The Learn move list and the Practise verdict line each have a polite live region exposing the
