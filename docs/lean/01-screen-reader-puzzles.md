@@ -1,3 +1,8 @@
+---
+lean_status: pr_open
+lean_worktree: /tmp/graph-89esq_ln/task-01-screen-reader-puzzles
+lean_pr: https://github.com/cocodedk/chess-puzzles/pull/68
+---
 # 01 — A screen reader can play the puzzles
 
 ## Why
@@ -96,8 +101,8 @@ as its visible text. `<Side>` is `White` or `Black`: whoever made that move.
 | A puzzle is shown (first launch, Next, Previous, a band chip, and after the app is restored) | `Puzzle 4 of 812, rating 1520. Black played pawn e5. White to move — checkmate in 2.` (the title, the rating, the opponent's first move, then the prompt text as shown) |
 | A piece is selected by a tap or the start of a drag | `Knight g1 selected. Moves: f3, h3.` (piece name with a capital, no colour; the legal target squares in the order a1, b1 … h8) |
 | A tap selects nothing (an empty square, an opponent's piece, a piece with no moves) | `No moves from e5.` |
-| The selected square is tapped again | `Selection cleared.` |
-| A correct move that the opponent answers | `Correct. You played knight f3. Black played pawn takes d5.` |
+| The selected square is tapped again, or a drag ends on a square that is not a legal move | `Selection cleared.` |
+| A correct move that the opponent answers | `Correct. You played knight f3. Black played e pawn takes d5.` (every move, the opponent's included, is spoken with the table above) |
 | A wrong move | `You played knight f3. Not the best move — try again.` |
 | The solving move | `Solved. You played queen takes f7, checkmate.` |
 | Hint | `Hint: knight g1 to f3.` |
@@ -107,8 +112,18 @@ as its visible text. `<Side>` is `White` or `Black`: whoever made that move.
 A promotion move is announced when the piece is chosen, as any other move (`You played pawn e8,
 promotes to queen.` and so on). Cancelling the chooser is `Selection cleared.`
 
+Coming back to the Puzzles tab from Openings, or from About, says nothing new: the last sentence
+stays on the verdict line, where the player can read it again.
+
 Two identical sentences in a row may be spoken only once; that is accepted. Every move is preceded by
 a selection, whose sentence differs, so a repeated move is still heard.
+
+## Before a puzzle, and no puzzles
+
+Puzzles are bundled with the app, so there is no loading error to handle. Until the first saved
+progress is read, the screen stays as it is today and nothing new is spoken; the first puzzle's
+sentence comes when it is shown. If the bundle holds no puzzles, the existing "No puzzles available"
+text is shown and read as it is, and nothing else is on the screen. Neither state changes.
 
 ## The rest of the Puzzles screen
 

@@ -1,3 +1,7 @@
+---
+lean_status: pr_open
+lean_pr: https://github.com/cocodedk/chess-puzzles/pull/70
+---
 # 02 — A screen reader can learn and practise the openings
 
 ## Why
@@ -64,7 +68,22 @@ text. When there is no announcement, the node is read as described above. `<Side
 | The move that ends the line | `Book move. You played bishop c4. Line complete.`, or `… Line complete — try it clean.` when a mistake was made; when the book answers that move first, its reply comes before `Line complete` as in the row above |
 | Back to the list | nothing new |
 
+Coming back to the Openings tab from Puzzles, or from About, says nothing new. A drag that ends on a
+square that is not a legal move says `Selection cleared.`, as in spec 01.
+
 Two identical sentences in a row may be spoken only once; that is accepted.
+
+## Restart, loading, and Learn taps
+
+- When the app restarts and reopens a saved opening straight into Learn or Practise, nothing is
+  announced: the screen is read as it stands, as when coming back to the tab. The announcement is empty.
+- Clean-run counts are read from storage. While they load, if reading them fails, or when there are
+  none, every opening is read without a count (`Italian Game, C50`). No extra sentence and no visual
+  change. The list is built into the app, so it is never empty.
+- In Learn a tap on the board does nothing, so in Learn the 64 square items are read (spec 01's
+  descriptions) but carry no click action; TalkBack must not offer a double-tap there. In Practise
+  they keep the click action until the line is complete; a completed line ignores taps, so its
+  square items carry no click action either, until Again.
 
 ## Acceptance tests
 
@@ -77,6 +96,8 @@ Two identical sentences in a row may be spoken only once; that is accepted.
    for a Black one.
 5. The Learn move list and the Practise verdict line each have a polite live region exposing the
    announcement.
+6. A restored opening has an empty announcement; a row reads without a count when there are no counts;
+   in Learn the square items have no click action, and in Practise they do.
 
 No existing test's assertion changes. A test may change how it finds a node (for example
 `useUnmergedTree = true`) where merging a row into one item changes which node a finder returns.
