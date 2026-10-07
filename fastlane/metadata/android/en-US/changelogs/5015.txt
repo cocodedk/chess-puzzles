@@ -1,1 +1,1 @@
-New: an Openings tab. Learn twenty common openings move by move, then play them back from memory against the most common replies; each clean run-through is counted.
+New: an Openings tab. Learn twenty openings move by move, then practise them from memory against selected replies. Each run completed without mistakes is counted.

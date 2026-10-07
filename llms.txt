@@ -1,6 +1,6 @@
 # Chess Puzzles
 
-> An Android chess puzzle game (Kotlin + Jetpack Compose, multi-module) that serves real tactical puzzles from the Lichess Open Database. Find the best move; the opponent replies automatically; your solved count and streak persist on-device. Built and tested entirely from the CLI with 100% line coverage.
+> An Android chess puzzle game (Kotlin + Jetpack Compose, multi-module) that serves real tactical puzzles from the Lichess Open Database. Find the best move; the opponent replies automatically; your solved count and streak persist on-device. Built and tested entirely from the CLI; the build enforces 100% line coverage of non-Composable code.
 
 Chess Puzzles is open-source (Apache-2.0), created by Babak Bandpey / Cocode. The codebase splits into a pure-JVM `:core` module (chess rules via chesslib, the `PuzzleSession` state machine, CSV parsing) and an Android `:app` module (a custom Jetpack Compose Canvas board, `PuzzleViewModel`, DataStore persistence).
 
@@ -16,6 +16,7 @@ Chess Puzzles is open-source (Apache-2.0), created by Babak Bandpey / Cocode. Th
 ## Project
 
 - [Website (English)](https://chess.cocode.dk/)
+- [Website (Danish)](https://chess.cocode.dk/da/)
 - [Website (Persian)](https://chess.cocode.dk/fa/)
 - [Source on GitHub](https://github.com/cocodedk/chess-puzzles)
 - [Latest release APK](https://github.com/cocodedk/chess-puzzles/releases/latest/download/ChessPuzzles.apk)

@@ -3,34 +3,64 @@
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://chess.cocode.dk/</loc>
-    <lastmod>2026-07-02</lastmod>
+    <lastmod>2026-10-07</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://chess.cocode.dk/" />
+    <xhtml:link rel="alternate" hreflang="da" href="https://chess.cocode.dk/da/" />
     <xhtml:link rel="alternate" hreflang="fa" href="https://chess.cocode.dk/fa/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://chess.cocode.dk/" />
   </url>
   <url>
     <loc>https://chess.cocode.dk/fa/</loc>
-    <lastmod>2026-07-02</lastmod>
+    <lastmod>2026-10-07</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://chess.cocode.dk/" />
+    <xhtml:link rel="alternate" hreflang="da" href="https://chess.cocode.dk/da/" />
+    <xhtml:link rel="alternate" hreflang="fa" href="https://chess.cocode.dk/fa/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://chess.cocode.dk/" />
+  </url>
+  <url>
+    <loc>https://chess.cocode.dk/da/</loc>
+    <lastmod>2026-10-07</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://chess.cocode.dk/" />
+    <xhtml:link rel="alternate" hreflang="da" href="https://chess.cocode.dk/da/" />
     <xhtml:link rel="alternate" hreflang="fa" href="https://chess.cocode.dk/fa/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://chess.cocode.dk/" />
   </url>
   <url>
     <loc>https://chess.cocode.dk/about/</loc>
-    <lastmod>2026-07-02</lastmod>
+    <lastmod>2026-10-07</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://chess.cocode.dk/about/" />
+    <xhtml:link rel="alternate" hreflang="da" href="https://chess.cocode.dk/da/about/" />
     <xhtml:link rel="alternate" hreflang="fa" href="https://chess.cocode.dk/fa/about/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://chess.cocode.dk/about/" />
   </url>
   <url>
     <loc>https://chess.cocode.dk/fa/about/</loc>
-    <lastmod>2026-07-02</lastmod>
+    <lastmod>2026-10-07</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://chess.cocode.dk/about/" />
+    <xhtml:link rel="alternate" hreflang="da" href="https://chess.cocode.dk/da/about/" />
+    <xhtml:link rel="alternate" hreflang="fa" href="https://chess.cocode.dk/fa/about/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://chess.cocode.dk/about/" />
+  </url>
+  <url>
+    <loc>https://chess.cocode.dk/da/about/</loc>
+    <lastmod>2026-10-07</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://chess.cocode.dk/about/" />
+    <xhtml:link rel="alternate" hreflang="da" href="https://chess.cocode.dk/da/about/" />
     <xhtml:link rel="alternate" hreflang="fa" href="https://chess.cocode.dk/fa/about/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://chess.cocode.dk/about/" />
   </url>
   <url>
     <loc>https://chess.cocode.dk/privacy/</loc>
     <lastmod>2026-10-07</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://chess.cocode.dk/privacy/" />
+    <xhtml:link rel="alternate" hreflang="da" href="https://chess.cocode.dk/da/privacy/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://chess.cocode.dk/privacy/" />
+  </url>
+  <url>
+    <loc>https://chess.cocode.dk/da/privacy/</loc>
+    <lastmod>2026-10-07</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://chess.cocode.dk/privacy/" />
+    <xhtml:link rel="alternate" hreflang="da" href="https://chess.cocode.dk/da/privacy/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://chess.cocode.dk/privacy/" />
   </url>
 </urlset>

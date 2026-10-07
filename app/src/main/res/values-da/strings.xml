@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Chess Puzzles</string>
+    <string name="no_puzzles">Der er ingen opgaver</string>
+
+    <!-- The two tabs on every screen. -->
+    <string name="tab_puzzles">Opgaver</string>
+    <string name="tab_openings">Åbninger</string>
+
+    <string name="stat_day">Dage i træk</string>
+    <string name="stat_solved">Løst</string>
+    <string name="stat_hint_free">Løst uden hint</string>
+    <string name="stat_streak">Nuværende serie</string>
+    <string name="stat_best">Bedste serie</string>
+    <!-- What a screen reader says for one stat: its label, then its number. -->
+    <string name="stat_description">%1$s, %2$d</string>
+
+    <!-- The puzzle screen. -->
+    <string name="puzzle_title">Opgave %1$d af %2$d</string>
+    <string name="puzzle_rating">Rating %1$d</string>
+    <string name="puzzle_hint">Hint</string>
+    <string name="puzzle_reset">Start forfra</string>
+    <string name="puzzle_previous">Forrige opgave</string>
+    <string name="puzzle_next">Næste opgave</string>
+    <string name="band_easy">Let</string>
+    <string name="band_medium">Middel</string>
+    <string name="band_hard">Svær</string>
+    <!-- The theme button says what a tap does; a screen reader also hears the theme in use now. -->
+    <string name="theme_auto">Tema: Følg telefonen</string>
+    <string name="theme_light">Tema: Lyst</string>
+    <string name="theme_dark">Tema: Mørkt</string>
+    <string name="theme_to_light">Brug lyst tema</string>
+    <string name="theme_to_dark">Brug mørkt tema</string>
+    <string name="theme_to_auto">Følg telefonens tema</string>
+    <string name="feedback_correct">Rigtigt, fortsæt</string>
+    <string name="feedback_solved">Løst ✓</string>
+    <string name="feedback_wrong">Ikke det bedste træk, prøv igen</string>
+    <string name="promote_to">Forvandl din bonde til</string>
+
+    <!-- What a puzzle asks: the side to move, then the goal. -->
+    <string name="prompt_to_move">%1$s i trækket: %2$s</string>
+    <string name="prompt_solved">Løst!</string>
+    <string name="goal_mate">mat i %1$d træk</string>
+    <string name="goal_defense">find det bedste forsvar</string>
+    <string name="goal_save">red partiet</string>
+    <string name="goal_winning">få en vindende fordel</string>
+    <string name="goal_upper_hand">få overtaget</string>
+    <string name="goal_best_move">find det bedste træk</string>
+    <string name="side_white">Hvid</string>
+    <string name="side_black">Sort</string>
+
+    <!-- The openings screens. -->
+    <string name="opening_back">Tilbage</string>
+    <string name="opening_code">Åbningskode %1$s</string>
+    <plurals name="opening_runs">
+        <item quantity="one">%1$d gennemspilning uden fejl</item>
+        <item quantity="other">%1$d gennemspilninger uden fejl</item>
+    </plurals>
+    <string name="opening_row_description">%1$s, %2$s</string>
+    <string name="mode_learn">Lær</string>
+    <string name="mode_practise">Øv</string>
+    <string name="learn_previous">Forrige træk</string>
+    <string name="learn_next">Næste træk</string>
+    <string name="group_white">Som hvid</string>
+    <string name="group_black_e4">Som sort mod 1.e4</string>
+    <string name="group_black_d4">Som sort mod 1.d4</string>
+    <string name="practise_prompt">Spil trækkene for %1$s fra hukommelsen.</string>
+    <string name="practise_again">Start forfra</string>
+    <string name="practise_book_move">Rigtigt åbningstræk ✓</string>
+    <string name="practise_not_book">Det er ikke det træk, åbningen lærer dig. Spil %1$s.</string>
+    <string name="practise_not_book_fallback">Det er ikke det træk, åbningen lærer dig. Spil det markerede træk.</string>
+    <string name="practise_complete_clean">Linjen er færdig ✓</string>
+    <string name="practise_complete">Linjen er færdig. Prøv igen uden fejl.</string>
+
+    <!-- What a screen reader says for a piece: each one by name, and its colour. -->
+    <string name="spoken_pawn">bonde</string>
+    <string name="spoken_knight">springer</string>
+    <string name="spoken_bishop">løber</string>
+    <string name="spoken_rook">tårn</string>
+    <string name="spoken_queen">dronning</string>
+    <string name="spoken_king">konge</string>
+    <string name="spoken_white_piece">%1$s i hvid</string>
+    <string name="spoken_black_piece">%1$s i sort</string>
+
+    <!-- A board square, read as the square, its contents, then any of these states. -->
+    <string name="spoken_empty">tomt felt</string>
+    <string name="spoken_selected">valgt</string>
+    <string name="spoken_legal_move">muligt træk</string>
+    <string name="spoken_last_move">sidste træk</string>
+    <string name="spoken_hint">hint</string>
+
+    <!-- A move in words. The target and any disambiguation are squares and files as they are written. -->
+    <string name="spoken_castling_kingside">kort rokade</string>
+    <string name="spoken_castling_queenside">lang rokade</string>
+    <string name="spoken_pawn_move">bonde %1$s</string>
+    <string name="spoken_pawn_takes">%1$s-bonde slår %2$s</string>
+    <string name="spoken_piece_move">%1$s %2$s</string>
+    <string name="spoken_piece_move_from">%1$s %2$s %3$s</string>
+    <string name="spoken_piece_takes">%1$s slår %2$s</string>
+    <string name="spoken_piece_takes_from">%1$s %2$s slår %3$s</string>
+    <string name="spoken_promotes">%1$s, forvandles til %2$s</string>
+    <string name="spoken_check">%1$s, skak</string>
+    <string name="spoken_checkmate">%1$s, mat</string>
+
+    <!-- Sentences a screen reader says after an event on the puzzle screen. -->
+    <string name="sentence_selection_cleared">Valget er fjernet.</string>
+    <string name="sentence_no_moves">Ingen træk fra %1$s.</string>
+    <string name="sentence_selected">%1$s %2$s er valgt. Træk: %3$s.</string>
+    <string name="sentence_hint">Hint: %1$s %2$s til %3$s.</string>
+    <string name="sentence_wrong">Du spillede %1$s. Ikke det bedste træk, prøv igen.</string>
+    <string name="sentence_correct">Rigtigt. Du spillede %1$s. %2$s spillede %3$s.</string>
+    <string name="sentence_reset">Opgaven er startet forfra. %1$s.</string>
+    <string name="sentence_solved">Løst. Du spillede %1$s.</string>
+    <string name="sentence_puzzle_shown">Opgave %1$d af %2$d, rating %3$d. %4$s spillede %5$s. %6$s.</string>
+
+    <!-- Sentences a screen reader says on the openings screens. -->
+    <string name="sentence_start_position">Udgangsstilling.</string>
+    <string name="sentence_opened">%1$s. Lær. %2$s</string>
+    <string name="sentence_learn_chosen">Lær. %1$s</string>
+    <string name="sentence_learn_move">Træk %1$d, %2$s: %3$s.</string>
+    <string name="sentence_line_chosen">Linje: %1$s. %2$s</string>
+    <string name="sentence_practise">Øv. %1$s</string>
+    <string name="sentence_played_by">%1$s spillede %2$s.</string>
+    <string name="sentence_book_move">Rigtigt åbningstræk. Du spillede %1$s.</string>
+    <string name="sentence_not_book">Du spillede %1$s. Det er ikke det træk, åbningen lærer dig. Spil %2$s.</string>
+    <string name="sentence_line_complete">Linjen er færdig.</string>
+    <string name="sentence_line_complete_unclean">Linjen er færdig. Prøv igen uden fejl.</string>
+    <string name="spoken_line_name">Træk %1$d, %2$s: %3$s</string>
+    <string name="spoken_move_list_entry">%1$d. %2$s.</string>
+    <!-- An opening's code (its catalogue number), then how many runs without mistakes, meaning lines played from memory with no wrong move, it has had. -->
+    <plurals name="opening_code_runs">
+        <item quantity="one">Åbningskode %1$s, %2$d gennemspilning uden fejl</item>
+        <item quantity="other">Åbningskode %1$s, %2$d gennemspilninger uden fejl</item>
+    </plurals>
+
+    <!-- The About screen: the section titles follow the cocode-apps standard, in this order. -->
+    <string name="about">Om</string>
+    <string name="about_back">Tilbage</string>
+    <string name="about_version">Version %1$s</string>
+    <string name="about_check_updates">Se den nyeste version</string>
+    <string name="about_check_updates_note">Åbner appens side, hvor den nyeste version ligger. Appen søger aldrig selv efter opdateringer.</string>
+    <string name="about_section_what">Hvad appen gør</string>
+    <string name="about_what">Chess Puzzles hjælper dig med at øve skaktaktik. Hver opgave kommer fra Lichess-opgavedatabasen, fortæller dig, hvad du skal finde (for eksempel mat i 2 træk), og har en rating, der viser, hvor svær den er. Du kan også lære almindelige åbninger træk for træk og derefter spille dem fra hukommelsen. Alt er gemt på din telefon, så appen virker uden internet.</string>
+    <string name="about_section_privacy">Privatliv</string>
+    <string name="about_privacy_no_data">Chess Puzzles indsamler, sender og deler ingen personoplysninger.</string>
+    <string name="about_privacy_no_permissions">Den beder dig aldrig om en tilladelse, og den kan ikke bruge internettet.</string>
+    <string name="about_privacy_no_tracking">Ingen konto, ingen reklamer, ingen analyseværktøjer og ingen fejlrapportering.</string>
+    <string name="about_privacy_on_device">Din fremgang gemmes på din telefon. Appen sender den aldrig nogen steder hen.</string>
+    <string name="about_privacy_link">Læs privatlivspolitikken</string>
+    <string name="about_section_links">Links</string>
+    <string name="about_website">Åbn hjemmesiden</string>
+    <string name="about_source">Se kildekoden på GitHub</string>
+    <string name="about_report">Meld en fejl på GitHub</string>
+    <string name="about_credits">Tak og licenser</string>
+    <string name="about_credits_body">Skabt af Babak Bandpey.\nOpgaver: Lichess Open Database (CC0 1.0).\nSkakregler: chesslib (Apache-2.0).</string>
+    <string name="about_license">Udgivet under Apache License 2.0. © 2026 Cocode.</string>
+    <string name="about_section_made_by">Lavet af Cocode</string>
+    <string name="about_made_by">Lavet af Cocode (cocode.dk)</string>
+    <string name="about_linkedin">Babak Bandpey på LinkedIn</string>
+
+    <!-- The spoken names of the promotion choices, for TalkBack. -->
+    <string name="piece_queen">Dronning</string>
+    <string name="piece_rook">Tårn</string>
+    <string name="piece_bishop">Løber</string>
+    <string name="piece_knight">Springer</string>
+</resources>
