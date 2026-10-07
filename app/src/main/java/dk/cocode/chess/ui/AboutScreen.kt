@@ -23,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -41,12 +42,13 @@ import dk.cocode.chess.R
 fun AboutScreen(onBack: () -> Unit) {
     BackHandler(onBack = onBack)
     val context = LocalContext.current
+    val language = LocalConfiguration.current.locales[0].language
     val version = remember {
         runCatching { context.packageManager.getPackageInfo(context.packageName, 0).versionName }
             .getOrNull().orEmpty()
     }
     val open: (AboutLink) -> Unit = { link ->
-        runCatching { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(aboutUrl(link)))) }
+        runCatching { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(aboutUrl(link, language)))) }
     }
     Scaffold { padding ->
         Column(
