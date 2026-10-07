@@ -79,8 +79,8 @@
     <string name="spoken_rook">tårn</string>
     <string name="spoken_queen">dronning</string>
     <string name="spoken_king">konge</string>
-    <string name="spoken_white_piece">%1$s hvid</string>
-    <string name="spoken_black_piece">%1$s sort</string>
+    <string name="spoken_white_piece">%1$s i hvid</string>
+    <string name="spoken_black_piece">%1$s i sort</string>
 
     <!-- A board square, read as the square, its contents, then any of these states. -->
     <string name="spoken_empty">tomt felt</string>

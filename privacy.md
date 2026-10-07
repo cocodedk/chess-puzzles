@@ -24,8 +24,8 @@ the copy on your phone; a device backup (see below) may keep a separate copy.
 ## No internet, no tracking
 
 - The app **never asks you for a permission** and has **no internet permission**, so it cannot send your
-  data anywhere. It does declare one permission of its own, added by an Android library, that only this
-  app can hold. It gives no access to your data, your phone or the internet, and you are never asked to
+  data anywhere. It does declare one permission of its own, added by an Android library, that Android grants
+  only to apps signed with the same key as this one. It gives no access to your data, your phone or the internet, and you are never asked to
   approve it.
 - We use **no analytics, no crash reporting, and no advertising**.
 - There are **no third-party tracking SDKs, no cookies, and no advertising identifiers**.
