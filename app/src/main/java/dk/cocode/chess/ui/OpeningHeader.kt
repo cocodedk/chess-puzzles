@@ -20,7 +20,7 @@ import dk.cocode.chess.core.model.Opening
 import dk.cocode.chess.viewmodel.OpeningMode
 import dk.cocode.chess.viewmodel.OpeningUiState
 import dk.cocode.chess.viewmodel.Texts
-import dk.cocode.chess.viewmodel.ecoLine
+import dk.cocode.chess.viewmodel.openingCodeLine
 
 /** Back arrow, the opening's name/ECO/clean count, and the Learn | Practise switch. */
 @Composable
@@ -40,7 +40,7 @@ internal fun OpeningHeader(
         Text(opening.name, Modifier.semantics { heading() }, style = MaterialTheme.typography.titleLarge)
     }
     val clean = state.cleanRuns[opening.id] ?: 0
-    Text(texts.ecoLine(opening.eco, clean), style = MaterialTheme.typography.labelMedium)
+    Text(texts.openingCodeLine(opening.eco, clean), style = MaterialTheme.typography.labelMedium)
     Spacer(Modifier.height(8.dp))
     ChipRow(
         stacked, OpeningMode.entries, selected = { it == state.mode }, onSelect = onMode,

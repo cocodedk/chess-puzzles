@@ -23,7 +23,7 @@ class PromptTextTest : EnglishTexts() {
     }
 
     @Test fun materialAndDefenseGoalsComeFromTags() {
-        assertEquals(Goal.MATERIAL, goalOf(false, puzzle("crushing")))
+        assertEquals(Goal.WINNING, goalOf(false, puzzle("crushing")))
         assertEquals(Goal.UPPER_HAND, goalOf(false, puzzle("advantage", "endgame")))
         assertEquals(Goal.DEFENSE, goalOf(false, puzzle("defensiveMove")))
         assertEquals(Goal.SAVE, goalOf(false, puzzle("equality")))
@@ -42,7 +42,7 @@ class PromptTextTest : EnglishTexts() {
         assertEquals("White to move — checkmate in 3", said(Goal.MATE, movesLeft = 3))
         assertEquals("White to move — find the best defense", said(Goal.DEFENSE))
         assertEquals("White to move — save the game", said(Goal.SAVE))
-        assertEquals("White to move — win material", said(Goal.MATERIAL))
+        assertEquals("White to move — gain a winning advantage", said(Goal.WINNING))
         assertEquals("White to move — gain the upper hand", said(Goal.UPPER_HAND))
         assertEquals("White to move — find the best move", said(Goal.BEST_MOVE))
     }

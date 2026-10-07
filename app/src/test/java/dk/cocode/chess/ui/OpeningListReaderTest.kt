@@ -67,23 +67,23 @@ class OpeningListReaderTest {
 
     @Test fun eachRowIsOneItemWithItsCodeAndCleanRuns() {
         showList(mapOf("italian" to 3, "e4" to 1))
-        composeRule.onNodeWithContentDescription("Italian Game, C50, 3 clean runs").assertExists()
-        composeRule.onNodeWithContentDescription("E4 One, T01, 1 clean run").assertExists()
-        composeRule.onNodeWithContentDescription("D4 One, T02").assertExists()
-        listOf("3 clean runs", "1 clean run", "Italian Game", "C50").forEach { composeRule.onAllNodesWithText(it).assertCountEquals(0) }
+        composeRule.onNodeWithContentDescription("Italian Game, Opening code C50, 3 runs without mistakes").assertExists()
+        composeRule.onNodeWithContentDescription("E4 One, Opening code T01, 1 run without mistakes").assertExists()
+        composeRule.onNodeWithContentDescription("D4 One, Opening code T02").assertExists()
+        listOf("3 runs without mistakes", "1 run without mistakes", "Italian Game", "Opening code C50").forEach { composeRule.onAllNodesWithText(it).assertCountEquals(0) }
     }
 
     @Test fun rowsReadWithoutACountWhenThereAreNoCounts() {
         showList(emptyMap())
-        composeRule.onNodeWithContentDescription("Italian Game, C50").assertExists()
-        composeRule.onAllNodesWithText("3 clean runs", useUnmergedTree = true).assertCountEquals(0)
+        composeRule.onNodeWithContentDescription("Italian Game, Opening code C50").assertExists()
+        composeRule.onAllNodesWithText("3 runs without mistakes", useUnmergedTree = true).assertCountEquals(0)
     }
 
     @Test fun clickingARowOpensItByTouchAndByAccessibilityAction() {
         val opened = mutableListOf<String>()
         showList(emptyMap(), opened::add)
-        composeRule.onNodeWithContentDescription("Italian Game, C50").performClick()
-        composeRule.onNodeWithContentDescription("D4 One, T02").performSemanticsAction(SemanticsActions.OnClick)
+        composeRule.onNodeWithContentDescription("Italian Game, Opening code C50").performClick()
+        composeRule.onNodeWithContentDescription("D4 One, Opening code T02").performSemanticsAction(SemanticsActions.OnClick)
         assertEquals(listOf("italian", "d4"), opened)
     }
 
@@ -96,16 +96,16 @@ class OpeningListReaderTest {
 
     @Test fun theCleanRunLineSaysHowManyCleanRuns() {
         showHeader(mapOf("italian" to 3))
-        composeRule.onNodeWithText("C50, 3 clean runs").assertExists()
+        composeRule.onNodeWithText("Opening code C50, 3 runs without mistakes").assertExists()
     }
 
     @Test fun oneCleanRunIsSingular() {
         showHeader(mapOf("italian" to 1))
-        composeRule.onNodeWithText("C50, 1 clean run").assertExists()
+        composeRule.onNodeWithText("Opening code C50, 1 run without mistakes").assertExists()
     }
 
     @Test fun theCodeReadsAloneWithoutCleanRuns() {
         showHeader()
-        composeRule.onNodeWithText("C50").assertTextEquals("C50")
+        composeRule.onNodeWithText("Opening code C50").assertTextEquals("Opening code C50")
     }
 }

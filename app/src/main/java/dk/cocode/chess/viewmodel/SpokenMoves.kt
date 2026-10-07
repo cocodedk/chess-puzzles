@@ -27,8 +27,8 @@ internal fun Texts.side(color: PieceColor): String =
 fun Texts.spokenMove(san: String): String {
     val bare = san.trimEnd('+', '#')
     val words = when {
-        bare.startsWith("O-O-O") -> string(R.string.spoken_castles_queenside)
-        bare.startsWith("O-O") -> string(R.string.spoken_castles_kingside)
+        bare.startsWith("O-O-O") -> string(R.string.spoken_castling_queenside)
+        bare.startsWith("O-O") -> string(R.string.spoken_castling_kingside)
         else -> spokenPlay(bare.substringBefore('='), bare.substringAfter('=', ""))
     }
     return when {

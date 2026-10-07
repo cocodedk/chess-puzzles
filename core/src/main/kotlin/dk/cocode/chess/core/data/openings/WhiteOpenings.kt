@@ -66,7 +66,7 @@ internal val WhiteOpenings = listOf(
         name = "English Opening",
         eco = "A10",
         group = WHITE,
-        idea = "Start with c4 to hold d5 from the side, fianchetto the bishop on g2 and play on the queenside.",
+        idea = "Start with c4 to hold d5 from the side, play g3 and put the bishop on g2, then play on the queenside.",
         lines = listOf(
             "c4 e5 Nc3 Nf6 Nf3 Nc6 g3 d5 cxd5 Nxd5 Bg2 Nb6 O-O Be7 d3 O-O",
             "c4 c5 Nc3 Nc6 g3 g6 Bg2 Bg7 Nf3 e6 O-O Nge7 d3 O-O",
@@ -77,7 +77,7 @@ internal val WhiteOpenings = listOf(
         name = "Catalan Opening",
         eco = "E00",
         group = WHITE,
-        idea = "Fianchetto the bishop on g2 to bear down the long diagonal, even if the c-pawn is lost for a while.",
+        idea = "Play g3 and put the bishop on g2 so it bears down the long diagonal, even if the c-pawn is lost for a while.",
         lines = listOf(
             "d4 Nf6 c4 e6 g3 d5 Bg2 dxc4 Nf3 Be7 O-O O-O Qc2 a6 Qxc4 b5 Qc2 Bb7",
             "d4 Nf6 c4 e6 g3 d5 Bg2 Be7 Nf3 O-O O-O Nbd7 Qc2 c6 Nbd2 b6 e4",

@@ -34,7 +34,7 @@ internal val VsD4Openings = listOf(
         name = "King's Indian Defense",
         eco = "E61",
         group = BLACK_VS_D4,
-        idea = "Let White build the centre, fianchetto to g7 and castle, then hit back with ...e5 and a kingside attack.",
+        idea = "Let White build the centre, play ...g6, put the bishop on g7 and castle, then strike with ...e5 and attack the kingside.",
         lines = listOf(
             "d4 Nf6 c4 g6 Nc3 Bg7 e4 d6 Nf3 O-O Be2 e5 O-O Nc6 d5 Ne7",
             "d4 Nf6 c4 g6 Nc3 Bg7 e4 d6 f3 O-O Be3 e5 d5 Nh5",

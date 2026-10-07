@@ -40,9 +40,9 @@ class OpeningSpeechTest : EnglishTexts() {
         assertEquals("Main line", spokenLineName("Main line"))
     }
 
-    @Test fun theEcoCodeIsShownAndReadWithItsCleanRuns() {
-        assertEquals("C50", ecoLine("C50", 0))
-        assertEquals("C50, 1 clean run", ecoLine("C50", 1))
-        assertEquals("C50, 3 clean runs", ecoLine("C50", 3))
+    @Test fun theOpeningCodeIsShownAndReadWithItsRunsWithoutMistakes() {
+        assertEquals("Opening code C50", openingCodeLine("C50", 0))
+        assertEquals("Opening code C50, 1 run without mistakes", openingCodeLine("C50", 1))
+        assertEquals("Opening code C50, 3 runs without mistakes", openingCodeLine("C50", 3))
     }
 }

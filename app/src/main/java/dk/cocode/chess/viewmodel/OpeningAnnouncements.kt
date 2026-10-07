@@ -17,9 +17,11 @@ private fun plySide(ply: Int) = if (ply % 2 == 1) PieceColor.WHITE else PieceCol
 internal fun Texts.learnMoveSentence(ply: Int, san: String) =
     string(R.string.sentence_learn_move, (ply - 1) / 2 + 1, side(plySide(ply)), spokenMove(san))
 
-/** An opening's ECO code as it is shown and read: "C50", or "C50, 3 clean runs" (and "1 clean run"). */
-internal fun Texts.ecoLine(eco: String, cleanRuns: Int): String =
-    if (cleanRuns <= 0) eco else plural(R.plurals.eco_clean_runs, cleanRuns, eco, cleanRuns)
+/** An opening's code as shown and read: "Opening code C50", then ", 3 runs without mistakes" (or "1 run"). */
+internal fun Texts.openingCodeLine(eco: String, runs: Int): String =
+    if (runs <= 0) openingCode(eco) else plural(R.plurals.opening_code_runs, runs, eco, runs)
+
+internal fun Texts.openingCode(eco: String): String = string(R.string.opening_code, eco)
 
 internal fun Texts.openedSentence(name: String) = string(R.string.sentence_opened, name, startPosition())
 

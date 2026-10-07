@@ -28,6 +28,10 @@
     <string name="theme_auto">Theme: Match phone</string>
     <string name="theme_light">Theme: Light</string>
     <string name="theme_dark">Theme: Dark</string>
+    <!-- What a screen reader offers for the theme button, saying which theme a tap switches to. -->
+    <string name="theme_to_light">Switch to the light theme</string>
+    <string name="theme_to_dark">Switch to the dark theme</string>
+    <string name="theme_to_auto">Match the phone\'s theme</string>
     <string name="feedback_correct">Correct — keep going</string>
     <string name="feedback_solved">Solved ✓</string>
     <string name="feedback_wrong">Not the best move — try again</string>
@@ -39,7 +43,7 @@
     <string name="goal_mate">checkmate in %1$d</string>
     <string name="goal_defense">find the best defense</string>
     <string name="goal_save">save the game</string>
-    <string name="goal_material">win material</string>
+    <string name="goal_winning">gain a winning advantage</string>
     <string name="goal_upper_hand">gain the upper hand</string>
     <string name="goal_best_move">find the best move</string>
     <string name="side_white">White</string>
@@ -47,9 +51,10 @@
 
     <!-- The openings screens. -->
     <string name="opening_back">Back</string>
-    <plurals name="opening_clean_count">
-        <item quantity="one">%1$d clean run</item>
-        <item quantity="other">%1$d clean runs</item>
+    <string name="opening_code">Opening code %1$s</string>
+    <plurals name="opening_runs">
+        <item quantity="one">%1$d run without mistakes</item>
+        <item quantity="other">%1$d runs without mistakes</item>
     </plurals>
     <string name="opening_row_description">%1$s, %2$s</string>
     <string name="mode_learn">Learn</string>
@@ -61,11 +66,11 @@
     <string name="group_black_d4">As Black against 1.d4</string>
     <string name="practise_prompt">Play %1$s\'s moves from memory.</string>
     <string name="practise_again">Start again</string>
-    <string name="practise_book_move">Book move ✓</string>
-    <string name="practise_not_book">Not the book move — the book plays %1$s</string>
-    <string name="practise_not_book_fallback">Not the book move — play the highlighted one</string>
+    <string name="practise_book_move">Correct opening move ✓</string>
+    <string name="practise_not_book">Not the move this opening teaches. Play %1$s.</string>
+    <string name="practise_not_book_fallback">Not the move this opening teaches. Play the highlighted move.</string>
     <string name="practise_complete_clean">Line complete ✓</string>
-    <string name="practise_complete">Line complete. Try again with no mistakes for a clean run.</string>
+    <string name="practise_complete">Line complete. Try again without mistakes.</string>
 
     <!-- What a screen reader says for a piece: each one by name, and its colour. -->
     <string name="spoken_pawn">pawn</string>
@@ -85,8 +90,8 @@
     <string name="spoken_hint">hint</string>
 
     <!-- A move in words. The target and any disambiguation are squares and files as they are written. -->
-    <string name="spoken_castles_kingside">castles kingside</string>
-    <string name="spoken_castles_queenside">castles queenside</string>
+    <string name="spoken_castling_kingside">kingside castling</string>
+    <string name="spoken_castling_queenside">queenside castling</string>
     <string name="spoken_pawn_move">pawn %1$s</string>
     <string name="spoken_pawn_takes">%1$s pawn takes %2$s</string>
     <string name="spoken_piece_move">%1$s %2$s</string>
@@ -116,16 +121,16 @@
     <string name="sentence_line_chosen">Line: %1$s. %2$s</string>
     <string name="sentence_practise">Practise. %1$s</string>
     <string name="sentence_played_by">%1$s played %2$s.</string>
-    <string name="sentence_book_move">Book move. You played %1$s.</string>
-    <string name="sentence_not_book">You played %1$s. Not the book move — the book plays %2$s.</string>
+    <string name="sentence_book_move">Correct opening move. You played %1$s.</string>
+    <string name="sentence_not_book">You played %1$s. Not the move this opening teaches. Play %2$s.</string>
     <string name="sentence_line_complete">Line complete.</string>
-    <string name="sentence_line_complete_unclean">Line complete. Try again with no mistakes for a clean run.</string>
+    <string name="sentence_line_complete_unclean">Line complete. Try again without mistakes.</string>
     <string name="spoken_line_name">Move %1$d, %2$s: %3$s</string>
     <string name="spoken_move_list_entry">%1$d. %2$s.</string>
-    <!-- An opening's ECO code (its catalogue number), then how many clean runs, meaning lines played with no mistakes, it has had. -->
-    <plurals name="eco_clean_runs">
-        <item quantity="one">%1$s, %2$d clean run</item>
-        <item quantity="other">%1$s, %2$d clean runs</item>
+    <!-- An opening's code (its catalogue number), then how many runs without mistakes, meaning lines played from memory with no wrong move, it has had. -->
+    <plurals name="opening_code_runs">
+        <item quantity="one">Opening code %1$s, %2$d run without mistakes</item>
+        <item quantity="other">Opening code %1$s, %2$d runs without mistakes</item>
     </plurals>
 
     <!-- The About screen: the section titles follow the cocode-apps standard, in this order. -->
@@ -138,7 +143,7 @@
     <string name="about_what">Chess Puzzles helps you practise chess tactics. Each puzzle comes from the Lichess puzzle database, tells you what to find (for example, checkmate in 2) and has a rating that shows how hard it is. You can also learn common openings move by move, then play them from memory. Everything is stored on your phone, so the app works without internet.</string>
     <string name="about_section_privacy">Privacy</string>
     <string name="about_privacy_no_data">Chess Puzzles does not collect, send or share any personal data.</string>
-    <string name="about_privacy_no_permissions">It does not ask for any permissions, not even internet access.</string>
+    <string name="about_privacy_no_permissions">It never asks you for a permission, and it cannot use the internet.</string>
     <string name="about_privacy_no_tracking">No account, no ads, no analytics and no crash reporting.</string>
     <string name="about_privacy_on_device">Your progress is saved on your phone. The app itself never sends it anywhere.</string>
     <string name="about_privacy_link">Read the privacy policy</string>

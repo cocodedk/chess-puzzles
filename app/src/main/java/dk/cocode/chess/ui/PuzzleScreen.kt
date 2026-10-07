@@ -109,6 +109,15 @@ internal fun Texts.themeLabel(mode: ThemeMode): String = string(
     },
 )
 
+/** What a screen reader offers the theme button's tap, which switches to the mode after [mode]. */
+internal fun Texts.themeSwitchLabel(mode: ThemeMode): String = string(
+    when (mode.next()) {
+        ThemeMode.SYSTEM -> R.string.theme_to_auto
+        ThemeMode.LIGHT -> R.string.theme_to_light
+        ThemeMode.DARK -> R.string.theme_to_dark
+    },
+)
+
 internal fun Texts.feedbackMessage(feedback: Feedback): String = when (feedback) {
     Feedback.NONE -> ""
     Feedback.CORRECT -> string(R.string.feedback_correct)

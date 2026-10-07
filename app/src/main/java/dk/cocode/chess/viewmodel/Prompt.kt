@@ -6,7 +6,7 @@ import dk.cocode.chess.core.model.Puzzle
 import dk.cocode.chess.core.model.PuzzleStatus
 
 /** What a puzzle announces as its goal. Motif tags (fork, pin, …) never are: they would spoil the solution. */
-enum class Goal { MATE, DEFENSE, SAVE, MATERIAL, UPPER_HAND, BEST_MOVE }
+enum class Goal { MATE, DEFENSE, SAVE, WINNING, UPPER_HAND, BEST_MOVE }
 
 /**
  * What a puzzle asks of the player: who moves, and the [goal] — with [movesLeft] for a mate. It is kept
@@ -23,7 +23,7 @@ internal fun goalOf(endsInMate: Boolean, puzzle: Puzzle): Goal = when {
     endsInMate -> Goal.MATE
     puzzle.hasTheme("defensiveMove") -> Goal.DEFENSE
     puzzle.hasTheme("equality") -> Goal.SAVE
-    puzzle.hasTheme("crushing") -> Goal.MATERIAL
+    puzzle.hasTheme("crushing") -> Goal.WINNING
     puzzle.hasTheme("advantage") -> Goal.UPPER_HAND
     else -> Goal.BEST_MOVE
 }
@@ -35,7 +35,7 @@ private fun Texts.goalText(prompt: Prompt): String = when (prompt.goal) {
     Goal.MATE -> string(R.string.goal_mate, prompt.movesLeft)
     Goal.DEFENSE -> string(R.string.goal_defense)
     Goal.SAVE -> string(R.string.goal_save)
-    Goal.MATERIAL -> string(R.string.goal_material)
+    Goal.WINNING -> string(R.string.goal_winning)
     Goal.UPPER_HAND -> string(R.string.goal_upper_hand)
     Goal.BEST_MOVE -> string(R.string.goal_best_move)
 }

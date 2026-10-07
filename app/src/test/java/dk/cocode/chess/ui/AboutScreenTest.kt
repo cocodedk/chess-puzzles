@@ -39,6 +39,16 @@ class AboutScreenTest {
         composeRule.renderToBitmap() // draws the branded mark and the whole page headlessly without crashing
     }
 
+    @Test fun theFourPrivacyPromisesAreShown() {
+        show()
+        listOf(
+            "Chess Puzzles does not collect, send or share any personal data.",
+            "It never asks you for a permission, and it cannot use the internet.",
+            "No account, no ads, no analytics and no crash reporting.",
+            "Your progress is saved on your phone. The app itself never sends it anywhere.",
+        ).forEach { composeRule.onNodeWithText(it).assertExists() }
+    }
+
     @Test fun sectionTitlesAreHeadingsInTheStandardsOrder() {
         show()
         val headings = composeRule.onAllNodes(SemanticsMatcher.keyIsDefined(SemanticsProperties.Heading))

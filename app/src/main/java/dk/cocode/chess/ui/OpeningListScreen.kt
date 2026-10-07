@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
@@ -25,13 +26,15 @@ import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.onClick
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import dk.cocode.chess.R
 import dk.cocode.chess.core.model.Opening
 import dk.cocode.chess.core.model.OpeningGroup
 import dk.cocode.chess.data.ThemeMode
 import dk.cocode.chess.viewmodel.Texts
-import dk.cocode.chess.viewmodel.ecoLine
+import dk.cocode.chess.viewmodel.openingCode
+import dk.cocode.chess.viewmodel.openingCodeLine
 
 /** The openings catalogue grouped by side, each row showing its clean-run count. */
 @Composable
@@ -70,7 +73,7 @@ private fun GroupTitle(title: String) = Text(
         .semantics { heading() },
 )
 
-/** One item for a screen reader — "Italian Game, C50, 3 clean runs" — in place of its name, code and clean-run count. */
+/** One item for a screen reader — "Italian Game, C50, 3 clean runs" — in place of its name, code and run count. */
 @Composable
 private fun OpeningRow(opening: Opening, cleanCount: Int, texts: Texts, onOpen: (String) -> Unit) {
     Row(
@@ -85,14 +88,19 @@ private fun OpeningRow(opening: Opening, cleanCount: Int, texts: Texts, onOpen: 
     ) {
         Column(Modifier.weight(1f)) {
             Text(opening.name, style = MaterialTheme.typography.titleMedium)
-            Text(opening.eco, style = MaterialTheme.typography.labelMedium)
+            Text(texts.openingCode(opening.eco), style = MaterialTheme.typography.labelMedium)
         }
-        if (cleanCount > 0) Text(pluralStringResource(R.plurals.opening_clean_count, cleanCount, cleanCount))
+        if (cleanCount > 0) {
+            Text(
+                pluralStringResource(R.plurals.opening_runs, cleanCount, cleanCount),
+                Modifier.widthIn(max = 128.dp), textAlign = TextAlign.End, style = MaterialTheme.typography.labelMedium,
+            )
+        }
     }
 }
 
 internal fun Texts.openingRowDescription(opening: Opening, cleanCount: Int): String =
-    string(R.string.opening_row_description, opening.name, ecoLine(opening.eco, cleanCount))
+    string(R.string.opening_row_description, opening.name, openingCodeLine(opening.eco, cleanCount))
 
 internal fun Texts.groupTitle(group: OpeningGroup): String = string(
     when (group) {

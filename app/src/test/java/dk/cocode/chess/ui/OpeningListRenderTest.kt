@@ -43,7 +43,7 @@ class OpeningListRenderTest {
         composeRule.onNodeWithText("As Black against 1.e4").assertExists()
         composeRule.onNodeWithText("As Black against 1.d4").assertExists()
         // A row is one item for a screen reader, so its texts are only in the unmerged tree.
-        composeRule.onNodeWithText("3 clean runs", useUnmergedTree = true).assertExists()
+        composeRule.onNodeWithText("3 runs without mistakes", useUnmergedTree = true).assertExists()
         composeRule.onNodeWithText("White One", useUnmergedTree = true).performClick()
         assertEquals("w", opened)
     }
