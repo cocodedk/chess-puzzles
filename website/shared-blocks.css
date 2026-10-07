@@ -1,0 +1,40 @@
+/* The shared cocode-apps blocks (navigation, install, footer) in this site's own look.
+   Used by index.html and privacy/index.html; both define the colour variables below. */
+.frame { width: 100%; max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+main:focus { outline: none; }
+
+/* Skip link: shown only when focused (cocode-nav.css hides it off-screen). */
+.skip:focus { background: var(--gold); color: #1a1205; border-radius: 0 0 8px 0; }
+
+/* Navigation */
+.site-head { border-bottom: 1px solid var(--border); background: rgba(14, 16, 20, 0.85); }
+.site-head .cocode-nav { padding: 6px 0; column-gap: 18px; }
+.site-head .cocode-nav a { color: var(--text); font-size: 0.98rem; }
+.site-head .cocode-nav a:hover { color: var(--gold); text-decoration: none; }
+.site-head .cocode-nav .brand { font-weight: 700; font-size: 1.05rem; }
+.site-head .cocode-nav .brand img { border-radius: 8px; }
+.site-head .cocode-nav a[aria-current="page"] { color: var(--gold); }
+
+/* Install block */
+.install { list-style: none; margin: 0 auto; padding: 0; display: flex; flex-wrap: wrap;
+  gap: 14px 18px; justify-content: center; align-items: center; }
+.install li { margin: 0; }
+.install a:not(.fdroid), .install .fdroid-soon {
+  display: inline-flex; align-items: center; justify-content: center; min-height: 52px; margin: 0;
+  padding: 0 22px; border-radius: 12px; font-weight: 700; text-align: center;
+  border: 1px solid var(--border); background: var(--surface); color: var(--text);
+}
+.install a:not(.fdroid):hover { text-decoration: none; border-color: var(--gold); }
+.install li:nth-child(2) a { background: linear-gradient(180deg, var(--gold), var(--gold-2)); color: #1a1205; border: 0; }
+.install li:nth-child(2) a:hover { filter: brightness(1.05); }
+.install .fdroid { display: block; }
+.install .fdroid img { width: 240px; max-width: 100%; height: auto; }
+
+/* Footer */
+.site-foot { border-top: 1px solid var(--border); padding: 30px 0 48px; text-align: center;
+  color: var(--muted); font-size: 0.92rem; }
+.site-foot p { margin: 0 0 10px; }
+.site-foot a { color: var(--text); }
+.site-foot .cocode-footer { border: 0; padding: 0; }
+.site-foot .cocode-footer a { color: var(--text); }
+.site-foot .more-links a { display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; justify-content: center; }
