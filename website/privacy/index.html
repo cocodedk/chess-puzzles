@@ -38,8 +38,8 @@
       background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
       padding: clamp(24px, 5vw, 44px);
     }
-    h1 { font-size: clamp(1.9rem, 5vw, 2.6rem); letter-spacing: -0.01em; margin: 0 0 6px; }
-    h1 .accent { color: var(--gold); }
+    h1, h2.page-title { font-size: clamp(1.9rem, 5vw, 2.6rem); letter-spacing: -0.01em; margin: 0 0 6px; color: var(--text); }
+    h1 .accent, h2.page-title .accent { color: var(--gold); }
     h2 { font-size: 1.25rem; letter-spacing: -0.01em; margin: 30px 0 8px; color: var(--gold); }
     .meta { color: var(--muted); font-size: 0.9rem; margin: 0 0 6px; }
     .meta code { color: var(--green); }
@@ -49,12 +49,23 @@
     strong { color: var(--gold); }
     .divider { height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent); margin: 44px 0; }
     section[dir="rtl"] { font-family: "Vazirmatn", var(--font); text-align: right; }
-    /* The header and footer share the card's column (this page has no styles.css). */
+    /* This page has no styles.css and no fixed side padding on .container (it uses
+       min(760px, 92vw)); these values reproduce that same left edge at both the
+       phone and desktop widths the frame is checked at. */
+    cocode-head, cocode-foot { --cocode-max: calc(760px + 8vw); --cocode-gutter: 4vw; }
+    /* The app's own menu and footer share the card's column. */
     .frame { width: min(760px, 92vw); padding: 0; }
     main:focus { outline: none; }
   </style>
+  <link rel="stylesheet" href="https://brand.cocode.dk/v1.css">
+  <script type="module" src="https://brand.cocode.dk/v1.js"></script>
 </head>
 <body>
+
+<!-- The cocode.dk family frame. Without JavaScript its child shows instead: a way home. -->
+<cocode-head project="Chess Puzzles" accent="#f0b95c" on-accent="#1a1205" dark>
+  <a href="https://cocode.dk">cocode.dk</a>
+</cocode-head>
 
 <header class="site-head">
   <div class="frame">
@@ -136,7 +147,7 @@
 
       <!-- ==================== PERSIAN (فارسی) ==================== -->
       <section lang="fa" dir="rtl">
-        <h1>سیاست <span class="accent">حریم خصوصی</span></h1>
+        <h2 class="page-title">سیاست <span class="accent">حریم خصوصی</span></h2>
         <p class="meta">معمای شطرنج &middot; <code>dk.cocode.chess</code></p>
         <p class="meta">آخرین به‌روزرسانی: ۱۴ ژوئیه ۲۰۲۶</p>
 
@@ -204,5 +215,9 @@
 <!-- cocode-apps:footer:end -->
     </div>
   </div>
+
+<cocode-foot repo="cocodedk/chess-puzzles" dark>
+  <a href="https://cocode.dk">cocode.dk</a>
+</cocode-foot>
 </body>
 </html>

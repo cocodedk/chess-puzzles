@@ -37,6 +37,8 @@
   <meta name="twitter:image:alt" content="Chess Puzzles app — a tactics position with the solution square highlighted in gold">
 
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://brand.cocode.dk/v1.css">
+  <script type="module" src="https://brand.cocode.dk/v1.js"></script>
   <link rel="stylesheet" href="/shared-blocks.css">
 
   <script type="application/ld+json">
@@ -62,6 +64,14 @@
   </script>
 </head>
 <body>
+
+<!-- The cocode.dk family frame. Without JavaScript its children show instead: a way
+     home, the About link and the language link. -->
+<cocode-head project="Chess Puzzles" accent="#f0b95c" on-accent="#1a1205" dark links="About:about/">
+  <a href="https://cocode.dk">cocode.dk</a>
+  <a href="about/">About</a>
+  <a href="fa/" hreflang="fa">فارسی</a>
+</cocode-head>
 
 <header class="site-head">
   <div class="frame">
@@ -168,7 +178,6 @@
   <div class="site-foot">
     <div class="frame">
       <p>Puzzles from the <a href="https://database.lichess.org" target="_blank" rel="noreferrer">Lichess Open Database</a> (CC0 1.0).</p>
-      <p class="more-links"><a href="about/">About</a> · <a href="fa/" hreflang="fa" lang="fa">فارسی</a></p>
 <!-- cocode-apps:footer:start -->
 <footer class="cocode-footer">
   <a href="https://github.com/cocodedk/chess-puzzles">Source code</a> ·
@@ -179,5 +188,9 @@
 <!-- cocode-apps:footer:end -->
     </div>
   </div>
+
+<cocode-foot repo="cocodedk/chess-puzzles" dark>
+  <a href="https://cocode.dk">cocode.dk</a>
+</cocode-foot>
 </body>
 </html>
