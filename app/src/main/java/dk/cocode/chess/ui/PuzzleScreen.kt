@@ -101,6 +101,7 @@ fun PuzzleScreenContent(
     }
 }
 
+/** The theme in use now, "Theme: Light": what a screen reader says as the theme button's state. */
 internal fun Texts.themeLabel(mode: ThemeMode): String = string(
     when (mode) {
         ThemeMode.SYSTEM -> R.string.theme_auto
@@ -109,7 +110,7 @@ internal fun Texts.themeLabel(mode: ThemeMode): String = string(
     },
 )
 
-/** What a screen reader offers the theme button's tap, which switches to the mode after [mode]. */
+/** The theme button's text: what a tap does, which is to switch to the mode after [mode]. */
 internal fun Texts.themeSwitchLabel(mode: ThemeMode): String = string(
     when (mode.next()) {
         ThemeMode.SYSTEM -> R.string.theme_to_auto

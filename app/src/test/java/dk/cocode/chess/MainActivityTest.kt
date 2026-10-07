@@ -44,16 +44,16 @@ class MainActivityTest {
 
     @Test
     fun themeToggleCyclesThroughTheRealStack() {
-        awaitText("Theme: Match phone")
-        composeRule.onNodeWithText("Theme: Match phone").performClick()
-        awaitText("Theme: Light")
-        composeRule.onNodeWithText("Theme: Light").performClick()
-        awaitText("Theme: Dark")
+        awaitText("Use light theme")
+        composeRule.onNodeWithText("Use light theme").performClick()
+        awaitText("Use dark theme")
+        composeRule.onNodeWithText("Use dark theme").performClick()
+        awaitText("Match phone theme")
         val bitmap = composeRule.renderToBitmap()
         assertTrue(bitmap.showsWood(NightBoardPalette.darkSquare, DayBoardPalette.darkSquare)) // night board really drawn
         // Cycle back to SYSTEM: the DataStore singleton outlives this test in the Robolectric JVM.
-        composeRule.onNodeWithText("Theme: Dark").performClick()
-        awaitText("Theme: Match phone")
+        composeRule.onNodeWithText("Match phone theme").performClick()
+        awaitText("Use light theme")
     }
 
     @Test

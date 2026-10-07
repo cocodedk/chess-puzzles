@@ -25,13 +25,13 @@
     <string name="band_easy">Easy</string>
     <string name="band_medium">Medium</string>
     <string name="band_hard">Hard</string>
+    <!-- The theme button says what a tap does; a screen reader also hears the theme in use now. -->
     <string name="theme_auto">Theme: Match phone</string>
     <string name="theme_light">Theme: Light</string>
     <string name="theme_dark">Theme: Dark</string>
-    <!-- What a screen reader offers for the theme button, saying which theme a tap switches to. -->
-    <string name="theme_to_light">Switch to the light theme</string>
-    <string name="theme_to_dark">Switch to the dark theme</string>
-    <string name="theme_to_auto">Match the phone\'s theme</string>
+    <string name="theme_to_light">Use light theme</string>
+    <string name="theme_to_dark">Use dark theme</string>
+    <string name="theme_to_auto">Match phone theme</string>
     <string name="feedback_correct">Correct — keep going</string>
     <string name="feedback_solved">Solved ✓</string>
     <string name="feedback_wrong">Not the best move — try again</string>

@@ -145,7 +145,7 @@ class UiRenderTest {
         val bitmap = composeRule.renderToBitmap()
         assertEquals(DarkColors.background.toArgb(), bitmap.getPixel(1, 1)) // dark scheme applied
         assertTrue(bitmap.showsWood(NightBoardPalette.darkSquare, DayBoardPalette.darkSquare)) // the night board, not the day
-        composeRule.onNodeWithText("Theme: Dark").performClick()
+        composeRule.onNodeWithText("Match phone theme").performClick()
         assertTrue(toggled)
     }
 

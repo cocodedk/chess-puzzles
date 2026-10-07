@@ -29,8 +29,8 @@ import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.liveRegion
-import androidx.compose.ui.semantics.onClick
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import dk.cocode.chess.R
@@ -142,9 +142,9 @@ internal fun PuzzleControls(
 internal fun PuzzleSettings(themeMode: ThemeMode, onThemeToggle: () -> Unit, onAbout: () -> Unit) {
     FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally)) {
         val texts = rememberTexts()
-        val switchTo = texts.themeSwitchLabel(themeMode)
-        TextButton(onClick = onThemeToggle, modifier = Modifier.semantics { onClick(label = switchTo, action = null) }) {
-            Text(texts.themeLabel(themeMode))
+        val inUse = texts.themeLabel(themeMode)
+        TextButton(onClick = onThemeToggle, modifier = Modifier.semantics { stateDescription = inUse }) {
+            Text(texts.themeSwitchLabel(themeMode))
         }
         TextButton(onClick = onAbout) { Text(stringResource(R.string.about)) }
     }

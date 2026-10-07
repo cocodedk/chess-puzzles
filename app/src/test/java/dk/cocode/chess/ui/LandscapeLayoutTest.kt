@@ -1,6 +1,9 @@
 package dk.cocode.chess.ui
 
 import androidx.activity.ComponentActivity
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.getUnclippedBoundsInRoot
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
@@ -11,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.height
 import androidx.compose.ui.unit.width
 import dk.cocode.chess.core.model.PieceColor
+import dk.cocode.chess.data.ThemeMode
 import dk.cocode.chess.ui.board.BOARD_TEST_TAG
 import dk.cocode.chess.ui.theme.ChessTheme
 import dk.cocode.chess.viewmodel.Goal
@@ -75,7 +79,30 @@ class LandscapeLayoutTest {
             assertEquals("$number on one line", oneLine, stat.height.value, 0f)
             assertTrue("$number beside, not under, the board", stat.right <= board.left)
         }
-        assertEquals(bounds("Theme: Match phone").height.value, bounds("About").height.value, 0f) // About on one line
+        assertEquals(bounds("Use light theme").height.value, bounds("About").height.value, 0f) // About on one line
+    }
+
+    /** Each theme button text, the longest ("Match phone theme") included, stays on one line in that same panel. */
+    @Test @Config(qualifiers = "w720dp-h356dp-land", fontScale = 1.3f)
+    fun everyThemeButtonTextFitsOneLineAtALargeFont() {
+        var mode by mutableStateOf(ThemeMode.SYSTEM)
+        composeRule.setContent {
+            ChessTheme(darkTheme = false) {
+                PuzzleScreenContent(
+                    state = empty, themeMode = mode,
+                    onSquareTap = {}, onDragStart = {}, onDragEnd = {},
+                    onHint = {}, onReset = {}, onNext = {},
+                    onPromotion = {}, onPromotionCancel = {},
+                )
+            }
+        }
+        mapOf(
+            ThemeMode.SYSTEM to "Use light theme", ThemeMode.LIGHT to "Use dark theme", ThemeMode.DARK to "Match phone theme",
+        ).forEach { (themeMode, text) ->
+            mode = themeMode
+            composeRule.waitForIdle()
+            assertEquals(text, bounds("About").height.value, bounds(text).height.value, 0f)
+        }
     }
 
     @Test @Config(qualifiers = "w1000dp-h600dp-land")

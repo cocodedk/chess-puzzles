@@ -119,12 +119,11 @@ class ScreenReaderTest {
         ).forEach { composeRule.onAllNodesWithContentDescription(it).assertCountEquals(1) }
     }
 
-    @Test fun theThemeButtonOffersTheThemeATapSwitchesTo() {
+    @Test fun theThemeButtonSaysWhatATapDoesAndReadsTheThemeInUse() {
         show(PuzzleUiState())
-        val label = composeRule.onNodeWithText("Theme: Match phone").fetchSemanticsNode()
-            .config[SemanticsActions.OnClick].label
-        assertEquals("Switch to the light theme", label)
-        composeRule.onNodeWithText("Theme: Match phone").assert(SemanticsMatcher.keyIsDefined(SemanticsActions.OnClick))
+        val button = composeRule.onNodeWithText("Use light theme")
+        assertEquals("Theme: Match phone", button.fetchSemanticsNode().config[SemanticsProperties.StateDescription])
+        button.assert(SemanticsMatcher.keyIsDefined(SemanticsActions.OnClick))
     }
 
     @Test fun previousAndNextButtonsExposeNoArrows() {
