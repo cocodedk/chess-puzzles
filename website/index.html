@@ -27,7 +27,7 @@
   <meta property="og:image" content="https://chess.cocode.dk/og.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Chess Puzzles app — a tactics position with the solution square highlighted in gold">
+  <meta property="og:image:alt" content="Chess Puzzles showing an unsolved mate-in-one puzzle with the opponent&#39;s previous move highlighted">
   <meta property="og:locale" content="en_US">
   <meta property="og:locale:alternate" content="da_DK">
   <meta property="og:locale:alternate" content="fa_IR">
@@ -36,7 +36,7 @@
   <meta name="twitter:title" content="Chess Puzzles — train tactics on Android">
   <meta name="twitter:description" content="Real Lichess puzzles and opening practice on Android, with goal announcements, light & dark mode, streak tracking, offline play.">
   <meta name="twitter:image" content="https://chess.cocode.dk/og.png">
-  <meta name="twitter:image:alt" content="Chess Puzzles app — a tactics position with the solution square highlighted in gold">
+  <meta name="twitter:image:alt" content="Chess Puzzles showing an unsolved mate-in-one puzzle with the opponent&#39;s previous move highlighted">
 
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="https://brand.cocode.dk/v1.css">
@@ -72,6 +72,7 @@
 <cocode-head project="Chess Puzzles" accent="#f0b95c" on-accent="#1a1205" dark links="About:about/">
   <a href="https://cocode.dk">cocode.dk</a>
   <a href="about/">About</a>
+  <a href="da/" hreflang="da" lang="da">Dansk</a>
   <a href="fa/" hreflang="fa">فارسی</a>
 </cocode-head>
 
@@ -96,7 +97,7 @@
       <div class="wrap">
         <img class="mark-lg" src="favicon.svg" alt="Chess Puzzles logo: a board with the winning move highlighted" width="76" height="76" fetchpriority="high">
         <h1>Sharpen your <span class="accent">chess tactics</span>, one move at a time</h1>
-        <p class="lede">Solve thousands of real puzzles from the Lichess database on your Android phone. Find the best move — the rest plays itself.</p>
+        <p class="lede">Solve thousands of real puzzles from the Lichess database on your Android phone. Find each move of the solution while the opponent replies automatically.</p>
         <div class="cta-row">
           <a class="btn btn-primary" href="#install">Get the app</a>
           <a class="btn btn-ghost" href="https://github.com/cocodedk/chess-puzzles">View on GitHub</a>
@@ -111,14 +112,14 @@
         <p class="intro">No menus to wade through, no sign-up. Open the app and you are already solving.</p>
         <div class="grid">
           <article class="card"><div class="ico">🧩</div><h3>Real Lichess puzzles</h3><p>Thousands of tactics sampled from the Lichess Open Database (CC0).</p></article>
-          <article class="card"><div class="ico">🎯</div><h3>One move to find</h3><p>Each puzzle announces its goal — "checkmate in 2" or "win material". Spot the best move, then watch the opponent reply.</p></article>
+          <article class="card"><div class="ico">🎯</div><h3>Find the solution</h3><p>Each puzzle announces its goal, such as "checkmate in 2" or "gain a winning advantage". Find each move of the solution; the opponent replies after each one.</p></article>
           <article class="card"><div class="ico">🎚️</div><h3>Pick your level</h3><p>Easy, Medium or Hard — jump between rating bands with one tap.</p></article>
-          <article class="card"><div class="ico">♞</div><h3>Opening practice</h3><p>Learn twenty common openings move by move, then play them back from memory against the most common replies.</p></article>
-          <article class="card"><div class="ico">🔥</div><h3>Streaks &amp; progress</h3><p>Your solved count and streak are saved on-device, so you pick up where you left off.</p></article>
+          <article class="card"><div class="ico">♞</div><h3>Opening practice</h3><p>Learn twenty openings move by move, then practise them from memory against selected replies.</p></article>
+          <article class="card"><div class="ico">🔥</div><h3>Streaks &amp; progress</h3><p>Your solved count, puzzle streaks and day streak are saved on your phone, so you pick up where you left off.</p></article>
           <article class="card"><div class="ico">📴</div><h3>Fully offline</h3><p>No account, no network. Every puzzle ships inside the app.</p></article>
-          <article class="card"><div class="ico">🌗</div><h3>Day &amp; night theme</h3><p>Follows your system dark mode, or pick Auto/Light/Dark in the app. Night mode dims the board for comfortable play.</p></article>
-          <article class="card"><div class="ico">👆</div><h3>Tap or drag</h3><p>Move pieces by tapping squares or dragging — a smooth custom Compose board.</p></article>
-          <article class="card"><div class="ico">⭐</div><h3>Free &amp; open-source</h3><p>Apache-2.0 licensed. No ads, no tracking, ever.</p></article>
+          <article class="card"><div class="ico">🌗</div><h3>Light &amp; dark themes</h3><p>Matches your phone&#39;s light or dark setting, or switch to Light or Dark with the theme button. The dark theme dims the board for comfortable play.</p></article>
+          <article class="card"><div class="ico">👆</div><h3>Tap or drag</h3><p>Move pieces by tapping their starting and destination squares, or by dragging them.</p></article>
+          <article class="card"><div class="ico">⭐</div><h3>Free &amp; open-source</h3><p>Apache-2.0 licensed. No ads and no tracking.</p></article>
         </div>
       </div>
     </section>
@@ -127,10 +128,10 @@
       <div class="wrap">
         <h2>How it works</h2>
         <div class="steps">
-          <div class="step"><div class="n"></div><div><h3>Open a puzzle</h3><p>A real game position appears with its goal — checkmate in 2, win material, or save the game. One side is to move.</p></div></div>
-          <div class="step"><div class="n"></div><div><h3>Find the best move</h3><p>Tap or drag the piece. A wrong move just lets you try again.</p></div></div>
-          <div class="step"><div class="n"></div><div><h3>Watch it play out</h3><p>The opponent answers automatically until the puzzle is solved.</p></div></div>
-          <div class="step"><div class="n"></div><div><h3>Keep your streak</h3><p>Solve the next one. Your progress is saved on-device.</p></div></div>
+          <div class="step"><div class="n"></div><div><h3>Open a puzzle</h3><p>A position from a real game appears with its goal, for example checkmate in 2, gain a winning advantage or save the game. You play the side that is to move.</p></div></div>
+          <div class="step"><div class="n"></div><div><h3>Find the best move</h3><p>Tap a piece, then tap its destination, or drag the piece there. If your move is not the best one, try again.</p></div></div>
+          <div class="step"><div class="n"></div><div><h3>See the reply</h3><p>After each correct move, the opponent answers automatically. Keep playing your side until the puzzle is solved.</p></div></div>
+          <div class="step"><div class="n"></div><div><h3>Keep your streak</h3><p>Solve the next one. Your progress is saved on your phone.</p></div></div>
         </div>
       </div>
     </section>
@@ -138,12 +139,12 @@
     <section id="install">
       <div class="wrap">
         <h2>Get the app</h2>
-        <p class="intro">Free and open-source, for Android 7.0 and newer. Install it from F-Droid or download the APK from GitHub.</p>
+        <p class="intro">Free and open-source, for Android 7.0 and newer. Install it from F-Droid, or download the Android installation file (APK) from GitHub.</p>
         <!-- cocode-apps:install:start -->
 <ul class="install" role="list">
   <li><a class="fdroid" href="https://f-droid.org/packages/dk.cocode.chess/"><img src="/img/get-it-on-fdroid-en.png" alt="Get it on F-Droid" width="240" height="93"></a></li>
-  <li><a href="https://github.com/cocodedk/chess-puzzles/releases/latest/download/ChessPuzzles.apk">Download the APK from GitHub</a></li>
-  <li><a href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/cocodedk/chess-puzzles">Auto-update the GitHub APK with Obtainium</a></li>
+  <li><a href="https://github.com/cocodedk/chess-puzzles/releases/latest/download/ChessPuzzles.apk">Download the Android installation file (APK) from GitHub</a></li>
+  <li><a href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/cocodedk/chess-puzzles">Add the app to Obtainium, an app that keeps it up to date</a></li>
 </ul>
 <!-- cocode-apps:install:end -->
       </div>
@@ -154,23 +155,23 @@
         <h2>See it in action</h2>
         <div class="shots">
           <figure class="phone"><img src="screenshot-puzzle.png" alt="A chess puzzle: white to find the winning move" width="1080" height="2400" loading="lazy"><figcaption>A puzzle to solve</figcaption></figure>
-          <figure class="phone"><img src="screenshot-night.png" alt="Night mode: a chess puzzle with dimmed board and readable pieces" width="1080" height="2400" loading="lazy"><figcaption>Night mode — easy on the eyes</figcaption></figure>
-          <figure class="phone"><img src="screenshot-solved.png" alt="A solved chess puzzle with the streak counter updated" width="1080" height="2400" loading="lazy"><figcaption>Solved — streak saved</figcaption></figure>
-          <figure class="phone"><img src="screenshot-openings.png" alt="Learning the Italian Game move by move in the Openings tab" width="1080" height="2400" loading="lazy"><figcaption>Openings — learn, then play back</figcaption></figure>
+          <figure class="phone"><img src="screenshot-night.png" alt="Dark theme: a chess puzzle with dimmed board and readable pieces" width="1080" height="2400" loading="lazy"><figcaption>Dark theme, easy on the eyes</figcaption></figure>
+          <figure class="phone"><img src="screenshot-solved.png" alt="A solved chess puzzle with the streak counter updated" width="1080" height="2400" loading="lazy"><figcaption>Solved, and your streak is saved</figcaption></figure>
+          <figure class="phone"><img src="screenshot-openings.png" alt="Learning the Italian Game move by move in the Openings tab" width="1080" height="2400" loading="lazy"><figcaption>Openings: learn, then practise from memory</figcaption></figure>
         </div>
       </div>
     </section>
 
     <section id="tech">
       <div class="wrap">
-        <h2>Open source, built from the command line</h2>
-        <p class="intro">A multi-module Kotlin project — a pure-JVM chess engine and a Jetpack Compose UI — with 100% line coverage of its logic (Kover, with the screen-drawing functions excluded and covered by Compose render tests). <a href="https://github.com/cocodedk/chess-puzzles">Read the source and build it yourself.</a></p>
+        <h2>Open source</h2>
+        <p class="intro">The source code is public, so you can inspect it and build the app yourself. Automated tests run every line of the code except the functions that draw the screens, and separate tests check those screens. <a href="https://github.com/cocodedk/chess-puzzles">Read the source code.</a></p>
         <div class="tech">
           <span class="tag">Kotlin</span>
           <span class="tag">Jetpack Compose</span>
           <span class="tag">Android 7.0+</span>
           <span class="tag">chesslib</span>
-          <span class="tag">100% line coverage</span>
+          <span class="tag">100% line coverage, excluding screen drawing</span>
           <span class="tag">Apache-2.0</span>
         </div>
       </div>

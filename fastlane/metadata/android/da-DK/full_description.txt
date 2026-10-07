@@ -2,12 +2,12 @@
 
 <ul>
 <li><b>Tydelige mål.</b> Hver opgave fortæller, hvad du skal finde, for eksempel mat i to træk.</li>
-<li><b>Tre sværhedsgrader.</b> Vælg lette, mellemsvære eller svære opgaver.</li>
+<li><b>Tre sværhedsgrader.</b> Vælg Let, Middel eller Svær.</li>
 <li><b>Nyttige hints.</b> Få vist det træk, du skal spille, når du har brug for et puf.</li>
-<li><b>Åbningstræning.</b> Lær tyve almindelige åbninger træk for træk, og spil dem derefter fra hukommelsen mod de mest almindelige svar.</li>
-<li><b>Gemt fremgang.</b> Følg dine løste opgaver, opgaver løst uden hint og serier på din enhed.</li>
+<li><b>Åbningstræning.</b> Lær tyve åbninger træk for træk, og øv dem derefter fra hukommelsen mod udvalgte svar.</li>
+<li><b>Gemt fremgang.</b> Følg dine løste opgaver, opgaver løst uden hint og serier på din telefon.</li>
 <li><b>Lyst og mørkt tema.</b> Brug det bræt, der passer til din skærm.</li>
 <li><b>Helt uden internet.</b> Alle opgaver følger med i appen.</li>
 </ul>
 
-<p>Appen kræver ingen konto og beder ikke om nogen tilladelser. Den indeholder ingen reklamer, analyseværktøjer eller sporing. Opgaverne kommer fra Lichess Open Database under CC0 1.0, og åbningernes navne fra Lichess' åbningsliste, også under CC0 1.0.</p>
+<p>Appen kræver ingen konto. Den beder dig aldrig om en tilladelse og kan ikke bruge internettet. Den indeholder ingen reklamer, analyseværktøjer eller sporing. Opgaverne kommer fra Lichess Open Database under CC0 1.0, og åbningernes navne fra Lichess' åbningsliste, også under CC0 1.0.</p>

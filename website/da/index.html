@@ -27,7 +27,7 @@
   <meta property="og:image" content="https://chess.cocode.dk/og.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Chess Puzzles-appen: en taktisk stilling med løsningsfeltet markeret i guld">
+  <meta property="og:image:alt" content="Chess Puzzles viser en uløst opgave med mat i 1 træk, hvor modstanderens seneste træk er markeret">
   <meta property="og:locale" content="da_DK">
   <meta property="og:locale:alternate" content="en_US">
   <meta property="og:locale:alternate" content="fa_IR">
@@ -36,7 +36,7 @@
   <meta name="twitter:title" content="Chess Puzzles: træn taktik på Android">
   <meta name="twitter:description" content="Rigtige Lichess-opgaver og åbningstræning på Android med mål i hver opgave, lyst og mørkt tema, serier og spil uden internet.">
   <meta name="twitter:image" content="https://chess.cocode.dk/og.png">
-  <meta name="twitter:image:alt" content="Chess Puzzles-appen: en taktisk stilling med løsningsfeltet markeret i guld">
+  <meta name="twitter:image:alt" content="Chess Puzzles viser en uløst opgave med mat i 1 træk, hvor modstanderens seneste træk er markeret">
 
   <link rel="stylesheet" href="../styles.css">
   <link rel="stylesheet" href="https://brand.cocode.dk/v1.css">
@@ -70,9 +70,9 @@
 
 <!-- The cocode.dk family frame. Without JavaScript its children show instead: a way
      home, the About link and the language links. -->
-<cocode-head project="Chess Puzzles" accent="#f0b95c" on-accent="#1a1205" dark links="Om:../about/">
+<cocode-head project="Chess Puzzles" accent="#f0b95c" on-accent="#1a1205" dark links="Om:about/">
   <a href="https://cocode.dk">cocode.dk</a>
-  <a href="../about/">Om</a>
+  <a href="about/">Om</a>
   <a href="../" hreflang="en" lang="en">English</a>
   <a href="../fa/" hreflang="fa" lang="fa">فارسی</a>
 </cocode-head>
@@ -98,7 +98,7 @@
       <div class="wrap">
         <img class="mark-lg" src="../favicon.svg" alt="Logo for Chess Puzzles: et bræt med det vindende træk markeret" width="76" height="76" fetchpriority="high">
         <h1>Skærp din <span class="accent">skaktaktik</span>, ét træk ad gangen</h1>
-        <p class="lede">Løs tusindvis af rigtige opgaver fra Lichess-databasen på din Android-telefon. Find det bedste træk. Resten spiller sig selv.</p>
+        <p class="lede">Løs tusindvis af rigtige opgaver fra Lichess-databasen på din Android-telefon. Find hvert træk i løsningen, mens modstanderen svarer automatisk.</p>
         <div class="cta-row">
           <a class="btn btn-primary" href="#install">Hent appen</a>
           <a class="btn btn-ghost" href="https://github.com/cocodedk/chess-puzzles">Se på GitHub</a>
@@ -113,14 +113,14 @@
         <p class="intro">Ingen menuer at kæmpe sig igennem og ingen tilmelding. Åbn appen, og du er allerede i gang med at løse opgaver.</p>
         <div class="grid">
           <article class="card"><div class="ico">🧩</div><h3>Rigtige Lichess-opgaver</h3><p>Tusindvis af taktikopgaver udvalgt fra Lichess Open Database (CC0).</p></article>
-          <article class="card"><div class="ico">🎯</div><h3>Ét træk at finde</h3><p>Hver opgave oplyser sit mål, for eksempel "mat i 2 træk" eller "vind materiale". Find det bedste træk, og se derefter modstanderen svare.</p></article>
-          <article class="card"><div class="ico">🎚️</div><h3>Vælg dit niveau</h3><p>Let, Mellem eller Svær. Skift mellem ratingintervaller med ét tryk.</p></article>
-          <article class="card"><div class="ico">♞</div><h3>Åbningstræning</h3><p>Lær tyve almindelige åbninger træk for træk, og spil dem derefter fra hukommelsen mod de mest almindelige svar.</p></article>
-          <article class="card"><div class="ico">🔥</div><h3>Serier og fremgang</h3><p>Dit antal løste opgaver og din serie gemmes på enheden, så du kan fortsætte, hvor du slap.</p></article>
+          <article class="card"><div class="ico">🎯</div><h3>Find løsningen</h3><p>Hver opgave oplyser sit mål, for eksempel "mat i 2 træk" eller "få en vindende fordel". Find hvert træk i løsningen. Modstanderen svarer efter hvert af dem.</p></article>
+          <article class="card"><div class="ico">🎚️</div><h3>Vælg dit niveau</h3><p>Let, Middel eller Svær. Skift mellem ratingintervaller med ét tryk.</p></article>
+          <article class="card"><div class="ico">♞</div><h3>Åbningstræning</h3><p>Lær tyve åbninger træk for træk, og øv dem derefter fra hukommelsen mod udvalgte svar.</p></article>
+          <article class="card"><div class="ico">🔥</div><h3>Serier og fremgang</h3><p>Dit antal løste opgaver, dine serier og dine dage i træk gemmes på din telefon, så du kan fortsætte, hvor du slap.</p></article>
           <article class="card"><div class="ico">📴</div><h3>Helt uden internet</h3><p>Ingen konto og intet netværk. Alle opgaver følger med i appen.</p></article>
-          <article class="card"><div class="ico">🌗</div><h3>Dag- og nattema</h3><p>Følger telefonens mørke tilstand, eller vælg Auto, Lys eller Mørk i appen. Nattilstand dæmper brættet, så det er behageligt at spille.</p></article>
-          <article class="card"><div class="ico">👆</div><h3>Tryk eller træk</h3><p>Flyt brikker ved at trykke på felter eller trække dem. Et smidigt, specialbygget bræt lavet med Compose.</p></article>
-          <article class="card"><div class="ico">⭐</div><h3>Gratis og open source</h3><p>Under Apache-2.0-licens. Ingen reklamer og ingen sporing, aldrig.</p></article>
+          <article class="card"><div class="ico">🌗</div><h3>Lyst og mørkt tema</h3><p>Følger telefonens lyse eller mørke indstilling, eller du skifter selv til Lyst eller Mørkt med tema-knappen. Det mørke tema dæmper brættet, så det er behageligt at spille.</p></article>
+          <article class="card"><div class="ico">👆</div><h3>Tryk eller træk</h3><p>Flyt brikker ved først at trykke på feltet, de står på, og derefter på feltet, de skal hen til, eller ved at trække dem.</p></article>
+          <article class="card"><div class="ico">⭐</div><h3>Gratis og open source</h3><p>Under Apache-2.0-licens. Ingen reklamer og ingen sporing.</p></article>
         </div>
       </div>
     </section>
@@ -129,10 +129,10 @@
       <div class="wrap">
         <h2>Sådan virker det</h2>
         <div class="steps">
-          <div class="step"><div class="n"></div><div><h3>Åbn en opgave</h3><p>En stilling fra et rigtigt parti dukker op sammen med sit mål: mat i 2 træk, vind materiale eller red partiet. Den ene side er i trækket.</p></div></div>
-          <div class="step"><div class="n"></div><div><h3>Find det bedste træk</h3><p>Tryk på brikken, eller træk den. Et forkert træk betyder bare, at du kan prøve igen.</p></div></div>
-          <div class="step"><div class="n"></div><div><h3>Se det udspille sig</h3><p>Modstanderen svarer automatisk, indtil opgaven er løst.</p></div></div>
-          <div class="step"><div class="n"></div><div><h3>Hold din serie i live</h3><p>Løs den næste. Din fremgang gemmes på enheden.</p></div></div>
+          <div class="step"><div class="n"></div><div><h3>Åbn en opgave</h3><p>En stilling fra et rigtigt parti dukker op sammen med sit mål, for eksempel mat i 2 træk, få en vindende fordel eller red partiet. Du spiller den side, der er i trækket.</p></div></div>
+          <div class="step"><div class="n"></div><div><h3>Find det bedste træk</h3><p>Tryk på en brik og derefter på feltet, den skal hen til, eller træk brikken derhen. Hvis dit træk ikke er det bedste, kan du prøve igen.</p></div></div>
+          <div class="step"><div class="n"></div><div><h3>Se svaret</h3><p>Efter hvert rigtigt træk svarer modstanderen automatisk. Bliv ved med at spille din side, til opgaven er løst.</p></div></div>
+          <div class="step"><div class="n"></div><div><h3>Hold din serie i live</h3><p>Løs den næste. Din fremgang gemmes på din telefon.</p></div></div>
         </div>
       </div>
     </section>
@@ -140,12 +140,12 @@
     <section id="install">
       <div class="wrap">
         <h2>Hent appen</h2>
-        <p class="intro">Gratis og open source, til Android 7.0 og nyere. Installér den fra F-Droid, eller hent APK-filen fra GitHub.</p>
+        <p class="intro">Gratis og open source, til Android 7.0 og nyere. Installér den fra F-Droid, eller hent installationsfilen til Android (APK) fra GitHub.</p>
         <!-- cocode-apps:install:start -->
 <ul class="install" role="list">
   <li><a class="fdroid" href="https://f-droid.org/packages/dk.cocode.chess/"><img src="/img/get-it-on-fdroid-da.png" alt="Hent den på F-Droid" width="240" height="93"></a></li>
-  <li><a href="https://github.com/cocodedk/chess-puzzles/releases/latest/download/ChessPuzzles.apk">Hent APK-filen fra GitHub</a></li>
-  <li><a href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/cocodedk/chess-puzzles">Opdatér GitHub-APK&#x27;en automatisk med Obtainium</a></li>
+  <li><a href="https://github.com/cocodedk/chess-puzzles/releases/latest/download/ChessPuzzles.apk">Hent installationsfilen til Android (APK) fra GitHub</a></li>
+  <li><a href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/cocodedk/chess-puzzles">Tilføj appen i Obtainium, som holder den opdateret</a></li>
 </ul>
 <!-- cocode-apps:install:end -->
       </div>
@@ -156,23 +156,23 @@
         <h2>Se appen i brug</h2>
         <div class="shots">
           <figure class="phone"><img src="../screenshot-puzzle.png" alt="En skakopgave: hvid skal finde det vindende træk" width="1080" height="2400" loading="lazy"><figcaption>En opgave at løse</figcaption></figure>
-          <figure class="phone"><img src="../screenshot-night.png" alt="Nattilstand: en skakopgave med dæmpet bræt og letlæselige brikker" width="1080" height="2400" loading="lazy"><figcaption>Nattilstand, skånsom for øjnene</figcaption></figure>
-          <figure class="phone"><img src="../screenshot-solved.png" alt="En løst skakopgave, hvor tælleren for serien er opdateret" width="1080" height="2400" loading="lazy"><figcaption>Løst, og serien er gemt</figcaption></figure>
-          <figure class="phone"><img src="../screenshot-openings.png" alt="Italiensk åbning lært træk for træk i fanen Åbninger" width="1080" height="2400" loading="lazy"><figcaption>Åbninger: lær dem, og spil dem derefter fra hukommelsen</figcaption></figure>
+          <figure class="phone"><img src="../screenshot-night.png" alt="Mørkt tema: en skakopgave med dæmpet bræt og letlæselige brikker" width="1080" height="2400" loading="lazy"><figcaption>Mørkt tema, skånsomt for øjnene</figcaption></figure>
+          <figure class="phone"><img src="../screenshot-solved.png" alt="En løst skakopgave, hvor tælleren for serien er opdateret" width="1080" height="2400" loading="lazy"><figcaption>Løst, og din fremgang er gemt</figcaption></figure>
+          <figure class="phone"><img src="../screenshot-openings.png" alt="Åbningen Italian Game lært træk for træk i fanen Åbninger" width="1080" height="2400" loading="lazy"><figcaption>Åbninger: lær dem, og øv dem derefter fra hukommelsen</figcaption></figure>
         </div>
       </div>
     </section>
 
     <section id="tech">
       <div class="wrap">
-        <h2>Open source, bygget fra kommandolinjen</h2>
-        <p class="intro">Et Kotlin-projekt i flere moduler, med en skakmotor i ren JVM og en brugerflade i Jetpack Compose. Logikken har 100 % linjedækning (målt med Kover, hvor de funktioner, der tegner skærmen, er undtaget og dækkes af Compose-rendertests). <a href="https://github.com/cocodedk/chess-puzzles">Læs kildekoden, og byg den selv.</a></p>
+        <h2>Open source</h2>
+        <p class="intro">Kildekoden er offentlig, så du kan læse den og selv bygge appen. Automatiske tests kører hver linje kode undtagen de funktioner, der tegner skærmbillederne, og særskilte tests tjekker de skærmbilleder. <a href="https://github.com/cocodedk/chess-puzzles">Læs kildekoden.</a></p>
         <div class="tech">
           <span class="tag">Kotlin</span>
           <span class="tag">Jetpack Compose</span>
           <span class="tag">Android 7.0+</span>
           <span class="tag">chesslib</span>
-          <span class="tag">100 % linjedækning</span>
+          <span class="tag">100 % linjedækning, undtagen skærmtegning</span>
           <span class="tag">Apache-2.0</span>
         </div>
       </div>

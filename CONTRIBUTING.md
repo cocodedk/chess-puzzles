@@ -8,7 +8,7 @@ logic + `:app` Android UI), built and run entirely from the CLI.
 1. Install **JDK 17** (Temurin) and the **Android SDK** command-line tools — no Android Studio
    required. [`docs/SETUP.md`](docs/SETUP.md) has the exact toolchain and pinned versions.
 2. Record `JAVA_HOME`, `ANDROID_HOME`, and `PATH` in `~/.chess-env.sh` and `source` it.
-3. The Gradle wrapper (8.9) is committed — `./gradlew` bootstraps everything else.
+3. The Gradle wrapper (8.14.5) is committed — `./gradlew` bootstraps everything else.
 
 ## Install Git Hooks
 
@@ -28,7 +28,7 @@ This points `core.hooksPath` at `.githooks` (per-clone config, not committed), e
 ## Build, Test, Lint
 
 ```
-./gradlew :core:test                 # pure chess/puzzle engine (JUnit5)
+./gradlew :core:test                 # pure chess/puzzle engine (JUnit Jupiter 6)
 ./gradlew :app:testDebugUnitTest     # ViewModel + Robolectric Compose UI tests
 ./gradlew koverVerify                # 100% line-coverage gate
 ./gradlew lintDebug                  # Android lint
