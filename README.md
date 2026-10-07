@@ -33,7 +33,7 @@ _Light mode with goal line and difficulty chips (left), night mode (center), sol
   opponent's replies play out on their own.
 - **Three difficulty bands.** Easy, Medium or Hard, with hints when you want a nudge.
 - **Opening practice.** Twenty common openings, learned move by move and then played back from memory.
-- **Saved progress.** Solved count, hint-free solves and streaks stay on your device.
+- **Saved progress.** Solved count, hint-free solves and streaks are saved on your device.
 - **Day and night themes.** Follows the system dark mode, or pick Auto, Light or Dark in the app.
 - **Tap or drag.** Move pieces by tapping squares or dragging them on a custom Compose board.
 - **Fully offline and free.** No account, no ads, no tracking. Apache-2.0.
@@ -41,8 +41,10 @@ _Light mode with goal line and difficulty chips (left), night mode (center), sol
 ## Privacy
 
 Chess Puzzles collects, sends and shares no personal data. It requests no permissions (not even
-internet access), and has no account, ads, analytics or tracking. Your progress is saved only on your
-device. Read the full [privacy policy](https://chess.cocode.dk/privacy/).
+internet access), and has no account, ads, analytics or tracking. Your progress stays on your device,
+apart from Android's own backup: if you have Auto Backup or Google account backup turned on, the system
+may include the app's local data in your own Google backup, which we have no access to. Read the full
+[privacy policy](https://chess.cocode.dk/privacy/).
 
 ## Build
 
