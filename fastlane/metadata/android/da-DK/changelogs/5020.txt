@@ -1,0 +1,1 @@
+Skærmlæsere som TalkBack kan nu bruge fanen Åbninger. Åbninger, linjer og træk bliver læst op, og det samme gælder hvert trin, hvert svar fra åbningsbogen og hvert resultat.

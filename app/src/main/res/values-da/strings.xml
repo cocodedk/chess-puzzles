@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Chess Puzzles</string>
+
+    <string name="stat_day">Dage i træk</string>
+    <string name="stat_solved">Løst</string>
+    <string name="stat_hint_free">Løst uden hint</string>
+    <string name="stat_streak">Nuværende serie</string>
+    <string name="stat_best">Bedste serie</string>
+
+    <string name="about">Om</string>
+    <string name="about_back">Tilbage</string>
+    <string name="about_tagline">Løs rigtige taktikopgaver fra Lichess-databasen. Find det bedste træk, helt uden internet.</string>
+    <string name="about_version">Version %1$s</string>
+    <string name="about_download">Hent den nyeste APK-fil</string>
+    <string name="about_source">Kildekode på GitHub</string>
+    <string name="about_website">cocode.dk</string>
+    <string name="about_linkedin">Babak Bandpey på LinkedIn</string>
+    <string name="about_credits">Skabt af Babak Bandpey · Bygget af Cocode.\nOpgaver: Lichess Open Database (CC0 1.0). Skakmotor: chesslib (Apache-2.0).</string>
+    <string name="about_license">Apache-2.0 · © 2026 Cocode</string>
+
+    <!-- The spoken names of the promotion choices, for TalkBack. -->
+    <string name="piece_queen">Dronning</string>
+    <string name="piece_rook">Tårn</string>
+    <string name="piece_bishop">Løber</string>
+    <string name="piece_knight">Springer</string>
+</resources>
