@@ -22,7 +22,7 @@ internal val VsE4Openings = listOf(
         name = "Sicilian Defense: Dragon Variation",
         eco = "B70",
         group = BLACK_VS_E4,
-        idea = "Fianchetto the bishop to g7 to rake the long diagonal, castle short and counterattack on the queenside.",
+        idea = "Play ...g6 and put the bishop on g7 to cover the long diagonal, castle kingside and counterattack on the queenside.",
         lines = listOf(
             "e4 c5 Nf3 d6 d4 cxd4 Nxd4 Nf6 Nc3 g6 Be3 Bg7 f3 O-O Qd2 Nc6 O-O-O d5",
             "e4 c5 Nf3 d6 d4 cxd4 Nxd4 Nf6 Nc3 g6 Be3 Bg7 f3 O-O Qd2 Nc6 Bc4 Bd7 O-O-O Rc8",

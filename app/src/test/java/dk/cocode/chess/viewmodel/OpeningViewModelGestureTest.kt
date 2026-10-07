@@ -1,5 +1,6 @@
 package dk.cocode.chess.viewmodel
 
+import dk.cocode.chess.EnglishTexts
 import dk.cocode.chess.FakeOpeningProgressRepository
 import dk.cocode.chess.ZERO_RANDOM
 import dk.cocode.chess.core.model.Square
@@ -19,7 +20,7 @@ import org.junit.Test
 
 /** Board-tap and drag resolution in Practise mode: select, reselect, clear, move. */
 @OptIn(ExperimentalCoroutinesApi::class)
-class OpeningViewModelGestureTest {
+class OpeningViewModelGestureTest : EnglishTexts() {
     private val dispatcher = StandardTestDispatcher()
 
     @Before fun setUp() = Dispatchers.setMain(dispatcher)
@@ -30,7 +31,7 @@ class OpeningViewModelGestureTest {
     private fun sq(name: String) = Square.of(name)
 
     private fun practising(): OpeningViewModel {
-        val viewModel = OpeningViewModel(listOf(whiteOpening), FakeOpeningProgressRepository(), ZERO_RANDOM)
+        val viewModel = OpeningViewModel(listOf(whiteOpening), FakeOpeningProgressRepository(), this, ZERO_RANDOM)
         viewModel.onOpen(whiteOpening.id)
         viewModel.onMode(OpeningMode.PRACTISE)
         return viewModel
@@ -71,7 +72,7 @@ class OpeningViewModelGestureTest {
 
     @Test fun dragAfterCompletionChangesNothingAndRecordsNoExtraCleanRun() = runTest(dispatcher) {
         val progress = FakeOpeningProgressRepository()
-        val viewModel = OpeningViewModel(listOf(whiteOpening), progress, ZERO_RANDOM)
+        val viewModel = OpeningViewModel(listOf(whiteOpening), progress, this@OpeningViewModelGestureTest, ZERO_RANDOM)
         viewModel.onOpen(whiteOpening.id)
         viewModel.onMode(OpeningMode.PRACTISE)
         viewModel.onDragStart(sq("e2")); viewModel.onDragEnd(sq("e4"))

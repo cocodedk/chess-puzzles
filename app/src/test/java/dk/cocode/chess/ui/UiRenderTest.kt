@@ -11,6 +11,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.width
 import dk.cocode.chess.PHONE_QUALIFIERS
 import dk.cocode.chess.containsColor
+import dk.cocode.chess.core.model.PieceColor
 import dk.cocode.chess.core.model.PieceType
 import dk.cocode.chess.core.model.PuzzleStatus
 import dk.cocode.chess.core.model.Square
@@ -24,8 +25,10 @@ import dk.cocode.chess.ui.board.NightBoardPalette
 import dk.cocode.chess.ui.theme.ChessTheme
 import dk.cocode.chess.ui.theme.DarkColors
 import dk.cocode.chess.viewmodel.Feedback
+import dk.cocode.chess.viewmodel.Goal
 import dk.cocode.chess.viewmodel.Highlight
 import dk.cocode.chess.viewmodel.PendingPromotion
+import dk.cocode.chess.viewmodel.Prompt
 import dk.cocode.chess.viewmodel.PuzzleUiState
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -75,7 +78,7 @@ class UiRenderTest {
         hint = Highlight(Square.of("g1"), Square.of("f3")),
         status = PuzzleStatus.IN_PROGRESS, feedback = Feedback.CORRECT,
         rating = 1500, solvedCount = 3, hintFreeCount = 2, currentStreak = 6, bestStreak = 5, dayStreak = 4,
-        promptText = "White to move",
+        prompt = Prompt(PieceColor.WHITE, Goal.BEST_MOVE, 1),
     )
 
     @Test fun rendersRichBoard() {
@@ -142,7 +145,7 @@ class UiRenderTest {
         val bitmap = composeRule.renderToBitmap()
         assertEquals(DarkColors.background.toArgb(), bitmap.getPixel(1, 1)) // dark scheme applied
         assertTrue(bitmap.showsWood(NightBoardPalette.darkSquare, DayBoardPalette.darkSquare)) // the night board, not the day
-        composeRule.onNodeWithText("Theme: Dark").performClick()
+        composeRule.onNodeWithText("Match phone theme").performClick()
         assertTrue(toggled)
     }
 
@@ -156,7 +159,7 @@ class UiRenderTest {
         // The dialog has its own window: draw that too, so its drawn pieces really paint.
         val chooser = ShadowDialog.getLatestDialog().window!!.decorView.toBitmap()
         assertTrue(chooser.containsColor(IVORY.shading[2].second.toArgb(), tolerance = 6)) // a shade only the ivory pieces paint
-        composeRule.onNodeWithText("Promote to").assertExists()
+        composeRule.onNodeWithText("Promote your pawn to").assertExists()
         composeRule.onNodeWithContentDescription("Rook").performClick() // drawn rook, named for talkback
         assertEquals(PieceType.ROOK, chosen)
     }

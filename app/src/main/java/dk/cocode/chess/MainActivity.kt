@@ -18,6 +18,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.res.stringResource
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.createSavedStateHandle
@@ -34,6 +35,7 @@ import dk.cocode.chess.ui.PuzzleScreen
 import dk.cocode.chess.ui.theme.ChessTheme
 import dk.cocode.chess.viewmodel.OpeningViewModel
 import dk.cocode.chess.viewmodel.PuzzleViewModel
+import dk.cocode.chess.viewmodel.ResourceTexts
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -87,14 +89,19 @@ private fun AppContent(app: ChessApp, themeMode: ThemeMode, onThemeToggle: () ->
         when (tab) {
             AppTab.PUZZLES -> {
                 val viewModel: PuzzleViewModel = viewModel(
-                    factory = viewModelFactory { initializer { PuzzleViewModel(app.puzzles, app.progress) } },
+                    factory = viewModelFactory { initializer { PuzzleViewModel(app.puzzles, app.progress, ResourceTexts(app.resources)) } },
                 )
                 PuzzleScreen(viewModel = viewModel, themeMode = themeMode, onThemeToggle = onThemeToggle, tabs = tabs)
             }
             AppTab.OPENINGS -> {
                 val viewModel: OpeningViewModel = viewModel(
                     factory = viewModelFactory {
-                        initializer { OpeningViewModel(Openings.all, app.openingProgress, savedStateHandle = createSavedStateHandle()) }
+                        initializer {
+                            OpeningViewModel(
+                                Openings.all, app.openingProgress, ResourceTexts(app.resources),
+                                savedStateHandle = createSavedStateHandle(),
+                            )
+                        }
                     },
                 )
                 OpeningScreen(
@@ -109,6 +116,6 @@ private fun AppContent(app: ChessApp, themeMode: ThemeMode, onThemeToggle: () ->
 @Composable
 private fun EmptyState() {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text("No puzzles available")
+        Text(stringResource(R.string.no_puzzles))
     }
 }

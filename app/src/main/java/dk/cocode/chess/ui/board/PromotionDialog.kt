@@ -40,7 +40,7 @@ fun PromotionDialog(onSelect: (PieceType) -> Unit, onDismiss: () -> Unit) {
     AlertDialog(
         onDismissRequest = onDismiss,
         confirmButton = {},
-        title = { Text("Promote to") },
+        title = { Text(stringResource(R.string.promote_to)) },
         text = {
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
                 PROMOTION_CHOICES.forEach { (type, name) ->

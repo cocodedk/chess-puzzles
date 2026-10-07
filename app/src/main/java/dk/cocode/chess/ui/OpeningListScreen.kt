@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
@@ -17,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
@@ -24,11 +26,15 @@ import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.onClick
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import dk.cocode.chess.R
 import dk.cocode.chess.core.model.Opening
 import dk.cocode.chess.core.model.OpeningGroup
 import dk.cocode.chess.data.ThemeMode
-import dk.cocode.chess.viewmodel.spokenEco
+import dk.cocode.chess.viewmodel.Texts
+import dk.cocode.chess.viewmodel.openingCode
+import dk.cocode.chess.viewmodel.openingCodeLine
 
 /** The openings catalogue grouped by side, each row showing its clean-run count. */
 @Composable
@@ -42,13 +48,14 @@ fun OpeningListScreen(
     onAbout: () -> Unit = {},
 ) {
     val grouped = remember(openings) { openings.groupBy { it.group } }
+    val texts = rememberTexts()
     Scaffold(contentWindowInsets = WindowInsets.safeDrawing) { padding ->
         Column(Modifier.padding(padding).fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
             tabs()
             LazyColumn(Modifier.weight(1f, fill = true)) {
                 grouped.forEach { (group, rows) ->
-                    item { GroupTitle(groupTitle(group)) }
-                    items(rows) { opening -> OpeningRow(opening, cleanRuns[opening.id] ?: 0, onOpen) }
+                    item { GroupTitle(texts.groupTitle(group)) }
+                    items(rows) { opening -> OpeningRow(opening, cleanRuns[opening.id] ?: 0, texts, onOpen) }
                 }
             }
             PuzzleSettings(themeMode, onThemeToggle, onAbout)
@@ -66,14 +73,14 @@ private fun GroupTitle(title: String) = Text(
         .semantics { heading() },
 )
 
-/** One item for a screen reader — "Italian Game, C50, 3 clean runs" — in place of its name, code and "×3". */
+/** One item for a screen reader — "Italian Game, C50, 3 clean runs" — in place of its name, code and run count. */
 @Composable
-private fun OpeningRow(opening: Opening, cleanCount: Int, onOpen: (String) -> Unit) {
+private fun OpeningRow(opening: Opening, cleanCount: Int, texts: Texts, onOpen: (String) -> Unit) {
     Row(
         modifier = Modifier.fillMaxWidth()
             .clickable { onOpen(opening.id) }
             .clearAndSetSemantics {
-                contentDescription = openingRowDescription(opening, cleanCount)
+                contentDescription = texts.openingRowDescription(opening, cleanCount)
                 role = Role.Button
                 onClick { onOpen(opening.id); true }
             }
@@ -81,17 +88,24 @@ private fun OpeningRow(opening: Opening, cleanCount: Int, onOpen: (String) -> Un
     ) {
         Column(Modifier.weight(1f)) {
             Text(opening.name, style = MaterialTheme.typography.titleMedium)
-            Text(opening.eco, style = MaterialTheme.typography.labelMedium)
+            Text(texts.openingCode(opening.eco), style = MaterialTheme.typography.labelMedium)
         }
-        if (cleanCount > 0) Text("×$cleanCount")
+        if (cleanCount > 0) {
+            Text(
+                pluralStringResource(R.plurals.opening_runs, cleanCount, cleanCount),
+                Modifier.widthIn(max = 128.dp), textAlign = TextAlign.End, style = MaterialTheme.typography.labelMedium,
+            )
+        }
     }
 }
 
-internal fun openingRowDescription(opening: Opening, cleanCount: Int): String =
-    "${opening.name}, ${spokenEco(opening.eco, cleanCount)}"
+internal fun Texts.openingRowDescription(opening: Opening, cleanCount: Int): String =
+    string(R.string.opening_row_description, opening.name, openingCodeLine(opening.eco, cleanCount))
 
-internal fun groupTitle(group: OpeningGroup): String = when (group) {
-    OpeningGroup.WHITE -> "As White"
-    OpeningGroup.BLACK_VS_E4 -> "As Black against 1.e4"
-    OpeningGroup.BLACK_VS_D4 -> "As Black against 1.d4"
-}
+internal fun Texts.groupTitle(group: OpeningGroup): String = string(
+    when (group) {
+        OpeningGroup.WHITE -> R.string.group_white
+        OpeningGroup.BLACK_VS_E4 -> R.string.group_black_e4
+        OpeningGroup.BLACK_VS_D4 -> R.string.group_black_d4
+    },
+)

@@ -1,5 +1,6 @@
 package dk.cocode.chess.viewmodel
 
+import dk.cocode.chess.EnglishTexts
 import androidx.lifecycle.SavedStateHandle
 import dk.cocode.chess.FakeOpeningProgressRepository
 import dk.cocode.chess.ZERO_RANDOM
@@ -19,7 +20,7 @@ import org.junit.Test
 /** Survives process death: the open opening and its mode are recorded in a [SavedStateHandle], and
  * a fresh [OpeningViewModel] built with a handle that still holds them reopens straight into place. */
 @OptIn(ExperimentalCoroutinesApi::class)
-class OpeningViewModelSavedStateTest {
+class OpeningViewModelSavedStateTest : EnglishTexts() {
     private val dispatcher = StandardTestDispatcher()
 
     @Before fun setUp() = Dispatchers.setMain(dispatcher)
@@ -28,7 +29,7 @@ class OpeningViewModelSavedStateTest {
     private val whiteOpening = testWhiteOpening()
 
     private fun vm(handle: SavedStateHandle) =
-        OpeningViewModel(listOf(whiteOpening), FakeOpeningProgressRepository(), ZERO_RANDOM, handle)
+        OpeningViewModel(listOf(whiteOpening), FakeOpeningProgressRepository(), this, ZERO_RANDOM, handle)
 
     @Test fun aSavedOpeningAndModeReopenStraightIntoThatPractise() = runTest(dispatcher) {
         val handle = SavedStateHandle(

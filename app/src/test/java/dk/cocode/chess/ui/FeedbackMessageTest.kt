@@ -1,11 +1,12 @@
 package dk.cocode.chess.ui
 
+import dk.cocode.chess.EnglishTexts
 import dk.cocode.chess.viewmodel.Feedback
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
-class FeedbackMessageTest {
+class FeedbackMessageTest : EnglishTexts() {
     @Test fun allFeedbackValues() {
         assertEquals("", feedbackMessage(Feedback.NONE))
         assertTrue(feedbackMessage(Feedback.CORRECT).isNotEmpty())

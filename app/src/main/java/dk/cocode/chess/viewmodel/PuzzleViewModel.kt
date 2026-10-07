@@ -26,6 +26,7 @@ import kotlinx.coroutines.launch
 class PuzzleViewModel(
     private val puzzles: PuzzleRepository,
     private val progress: ProgressRepository,
+    private val texts: Texts,
     private val today: () -> Long = { localEpochDay() },
 ) : ViewModel() {
 
@@ -95,14 +96,14 @@ class PuzzleViewModel(
         _state.update {
             it.copy(
                 selected = hint.from, legalTargets = session.legalDestinations(hint.from).toSet(),
-                hint = highlight, announcement = hintSentence(it, highlight),
+                hint = highlight, announcement = texts.hintSentence(it, highlight),
             )
         }
     }
 
     fun onReset() {
         session.reset() // accounting keeps its counted flags, so re-solving today never re-earns
-        _state.value = render().copy(announcement = resetSentence(session.prompt()))
+        _state.value = render().copy(announcement = texts.resetSentence(texts.promptText(session.prompt())))
     }
 
     fun onNext() = stepBand(1)
@@ -125,7 +126,7 @@ class PuzzleViewModel(
 
     private fun announceShown() = _state.update { it.withShownAnnouncement() }
 
-    private fun PuzzleUiState.withShownAnnouncement() = copy(announcement = session.shownSentence(position, bandSize))
+    private fun PuzzleUiState.withShownAnnouncement() = copy(announcement = texts.shownSentence(session, position, bandSize))
 
     /** The full render recipe — the single place the clock is sampled for display. */
     private fun render() = band().let { session.toUiState(base, today(), it.indexOf(index) + 1, it.size) }
@@ -143,11 +144,11 @@ class PuzzleViewModel(
 
     private fun select(square: Square) {
         val targets = session.legalDestinations(square).toSet()
-        if (targets.isEmpty()) clearSelection(noMovesSentence(square))
-        else _state.update { it.withSelection(square, targets) }
+        if (targets.isEmpty()) clearSelection(texts.noMovesSentence(square))
+        else _state.update { it.withSelection(texts, square, targets) }
     }
 
-    private fun clearSelection(said: String = SELECTION_CLEARED) = _state.update { it.withoutSelection(said) }
+    private fun clearSelection(said: String = texts.selectionCleared()) = _state.update { it.withoutSelection(said) }
 
     private fun submit(from: Square, to: Square, promotion: PieceType?) {
         when (val result = session.submitMove(MoveIntent(from, to, promotion))) {
@@ -166,18 +167,18 @@ class PuzzleViewModel(
         attempt.failed = true // mistakes alone never break the streak — see jumpTo
         session.retry() // un-lock so the player can try again (the move was never applied)
         _state.update {
-            it.withoutSelection(wrongSentence(san))
-                .copy(status = PuzzleStatus.IN_PROGRESS, feedback = Feedback.WRONG, promptText = session.prompt())
+            it.withoutSelection(texts.wrongSentence(san))
+                .copy(status = PuzzleStatus.IN_PROGRESS, feedback = Feedback.WRONG, prompt = session.prompt())
         }
     }
 
     private fun onContinues(result: SubmitResult.Continues) {
         val reply = session.applyOpponentReply()
-        val said = correctSentence(result.san, session.playerColor.opposite(), result.replySan)
+        val said = texts.correctSentence(result.san, session.playerColor.opposite(), result.replySan)
         _state.update {
             it.withoutSelection(said).copy(
                 board = session.state.board.toRows(), lastMove = Highlight(reply.from, reply.to),
-                feedback = Feedback.CORRECT, promptText = session.prompt(),
+                feedback = Feedback.CORRECT, prompt = session.prompt(),
             )
         }
     }
@@ -188,9 +189,9 @@ class PuzzleViewModel(
         val hintFree = !attempt.hintUsed // read now: loading a puzzle swaps `attempt` before the write runs
         if (accounting.countSolve(day, index)) viewModelScope.launch { progress.recordSolved(day, hintFree) }
         _state.update {
-            it.withoutSelection(solvedSentence(result.san)).copy(
+            it.withoutSelection(texts.solvedSentence(result.san)).copy(
                 board = session.state.board.toRows(), lastMove = Highlight(result.playerMove.from, result.playerMove.to),
-                status = PuzzleStatus.SOLVED, feedback = Feedback.SOLVED, promptText = "Solved!",
+                status = PuzzleStatus.SOLVED, feedback = Feedback.SOLVED,
             )
         }
     }

@@ -31,6 +31,7 @@ import dk.cocode.chess.viewmodel.OpeningFeedback
 import dk.cocode.chess.viewmodel.OpeningMode
 import dk.cocode.chess.viewmodel.OpeningUiState
 import dk.cocode.chess.viewmodel.OpeningViewModel
+import dk.cocode.chess.viewmodel.ResourceTexts
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -113,16 +114,16 @@ class OpeningScreenReaderTest {
     }
 
     @Test fun theVerdictLineIsAPoliteLiveRegionExposingTheAnnouncement() {
-        practise(said = "Book move. You played pawn e4. Black played pawn e5.")
+        practise(said = "Correct opening move. You played pawn e4. Black played pawn e5.")
         val verdict = composeRule.onNode(polite)
-        verdict.assertContentDescriptionEquals("Book move. You played pawn e4. Black played pawn e5.")
-        verdict.assertTextEquals("Book move ✓")
+        verdict.assertContentDescriptionEquals("Correct opening move. You played pawn e4. Black played pawn e5.")
+        verdict.assertTextEquals("Correct opening move ✓")
     }
 
     @Test fun theVerdictLineReadsAsItsTextWithoutAnAnnouncement() {
         practise()
         val verdict = composeRule.onNode(polite)
-        verdict.assertTextEquals("Book move ✓")
+        verdict.assertTextEquals("Correct opening move ✓")
         verdict.assert(SemanticsMatcher.keyNotDefined(SemanticsProperties.ContentDescription))
     }
 
@@ -146,7 +147,7 @@ class OpeningScreenReaderTest {
     }
 
     @Test fun leavingTheOpeningsScreenForgetsTheLastAnnouncement() {
-        val viewModel = OpeningViewModel(listOf(opening), FakeOpeningProgressRepository())
+        val viewModel = OpeningViewModel(listOf(opening), FakeOpeningProgressRepository(), ResourceTexts(composeRule.activity.resources))
         var visible by mutableStateOf(true)
         composeRule.setContent {
             ChessTheme(darkTheme = false) {

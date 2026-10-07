@@ -1,6 +1,7 @@
 package dk.cocode.chess.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
+import dk.cocode.chess.EnglishTexts
 import dk.cocode.chess.FakeOpeningProgressRepository
 import dk.cocode.chess.ZERO_RANDOM
 import dk.cocode.chess.core.model.Opening
@@ -18,7 +19,7 @@ import org.junit.Before
 
 /** The openings and helpers the announcement tests share, for a White opening and a Black one. */
 @OptIn(ExperimentalCoroutinesApi::class)
-abstract class OpeningAnnouncementFixture {
+abstract class OpeningAnnouncementFixture : EnglishTexts() {
     protected val dispatcher = StandardTestDispatcher()
 
     @Before fun setUp() = Dispatchers.setMain(dispatcher)
@@ -36,7 +37,7 @@ abstract class OpeningAnnouncementFixture {
     )
 
     protected fun vm(handle: SavedStateHandle = SavedStateHandle()) = OpeningViewModel(
-        listOf(white, black, short, whiteBranching, blackBranching), FakeOpeningProgressRepository(), ZERO_RANDOM, handle,
+        listOf(white, black, short, whiteBranching, blackBranching), FakeOpeningProgressRepository(), this, ZERO_RANDOM, handle,
     )
 
     protected fun OpeningViewModel.said() = state.value.announcement

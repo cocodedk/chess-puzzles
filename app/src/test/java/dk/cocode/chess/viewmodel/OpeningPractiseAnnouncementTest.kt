@@ -37,35 +37,35 @@ class OpeningPractiseAnnouncementTest : OpeningAnnouncementFixture() {
         val viewModel = vm()
         viewModel.practise(white)
         viewModel.tap("e2", "e4")
-        assertEquals("Book move. You played pawn e4. Black played pawn e5.", viewModel.said())
+        assertEquals("Correct opening move. You played pawn e4. Black played pawn e5.", viewModel.said())
     }
 
     @Test fun aBookMoveThatTheBookAnswersAsBlack() = runTest(dispatcher) {
         val viewModel = vm()
         viewModel.practise(black)
         viewModel.tap("e7", "e5")
-        assertEquals("Book move. You played pawn e5. White played knight f3.", viewModel.said())
+        assertEquals("Correct opening move. You played pawn e5. White played knight f3.", viewModel.said())
     }
 
     @Test fun aMoveThatIsNotTheBooksAsWhite() = runTest(dispatcher) {
         val viewModel = vm()
         viewModel.practise(white)
         viewModel.tap("d2", "d4")
-        assertEquals("You played pawn d4. Not the book move — the book plays pawn e4.", viewModel.said())
+        assertEquals("You played pawn d4. Not the move this opening teaches. Play pawn e4.", viewModel.said())
     }
 
     @Test fun aMoveThatIsNotTheBooksAsBlack() = runTest(dispatcher) {
         val viewModel = vm()
         viewModel.practise(black)
         viewModel.tap("d7", "d5")
-        assertEquals("You played pawn d5. Not the book move — the book plays pawn e5.", viewModel.said())
+        assertEquals("You played pawn d5. Not the move this opening teaches. Play pawn e5.", viewModel.said())
     }
 
     @Test fun theMoveThatEndsTheLineAfterTheBooksReplyAsWhite() = runTest(dispatcher) {
         val viewModel = vm()
         viewModel.practise(white)
         viewModel.tap("e2", "e4", "g1", "f3")
-        assertEquals("Book move. You played knight f3. Black played knight c6. Line complete.", viewModel.said())
+        assertEquals("Correct opening move. You played knight f3. Black played knight c6. Line complete.", viewModel.said())
     }
 
     @Test fun theMoveThatEndsTheLineAfterAMistake() = runTest(dispatcher) {
@@ -73,7 +73,7 @@ class OpeningPractiseAnnouncementTest : OpeningAnnouncementFixture() {
         viewModel.practise(white)
         viewModel.tap("d2", "d4", "e2", "e4", "g1", "f3")
         assertEquals(
-            "Book move. You played knight f3. Black played knight c6. Line complete — try it clean.",
+            "Correct opening move. You played knight f3. Black played knight c6. Line complete. Try again without mistakes.",
             viewModel.said(),
         )
     }
@@ -82,17 +82,17 @@ class OpeningPractiseAnnouncementTest : OpeningAnnouncementFixture() {
         val viewModel = vm()
         viewModel.practise(short)
         viewModel.tap("e2", "e4", "g1", "f3")
-        assertEquals("Book move. You played knight f3. Line complete.", viewModel.said())
+        assertEquals("Correct opening move. You played knight f3. Line complete.", viewModel.said())
         viewModel.onAgain()
         viewModel.tap("d2", "d4", "e2", "e4", "g1", "f3")
-        assertEquals("Book move. You played knight f3. Line complete — try it clean.", viewModel.said())
+        assertEquals("Correct opening move. You played knight f3. Line complete. Try again without mistakes.", viewModel.said())
     }
 
     @Test fun theMoveThatEndsTheLineAsBlack() = runTest(dispatcher) {
         val viewModel = vm()
         viewModel.practise(black)
         viewModel.tap("e7", "e5", "b8", "c6")
-        assertEquals("Book move. You played knight c6. Line complete.", viewModel.said())
+        assertEquals("Correct opening move. You played knight c6. Line complete.", viewModel.said())
     }
 
     @Test fun selectingAPieceListsItsMoves() = runTest(dispatcher) {
@@ -133,6 +133,6 @@ class OpeningPractiseAnnouncementTest : OpeningAnnouncementFixture() {
         viewModel.practise(white)
         viewModel.onDragStart(Square.of("e2"))
         viewModel.onDragEnd(Square.of("e4"))
-        assertEquals("Book move. You played pawn e4. Black played pawn e5.", viewModel.said())
+        assertEquals("Correct opening move. You played pawn e4. Black played pawn e5.", viewModel.said())
     }
 }

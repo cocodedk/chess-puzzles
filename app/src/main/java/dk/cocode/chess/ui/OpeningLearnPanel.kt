@@ -8,6 +8,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -17,6 +18,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import dk.cocode.chess.R
 import dk.cocode.chess.core.model.Opening
 import dk.cocode.chess.viewmodel.OpeningUiState
 import dk.cocode.chess.viewmodel.spokenLineName
@@ -34,28 +36,31 @@ internal fun OpeningLearnPanel(
     onStep: (Int) -> Unit,
     stacked: Boolean,
 ) {
+    val texts = rememberTexts()
+    val previous = stringResource(R.string.learn_previous)
+    val next = stringResource(R.string.learn_next)
     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         IconButton(
             onClick = { onStep(-1) }, enabled = state.ply > 0,
-            modifier = Modifier.semantics { contentDescription = "Previous move" },
+            modifier = Modifier.semantics { contentDescription = previous },
         ) { Text("◀", Modifier.clearAndSetSemantics {}) }
         IconButton(
             onClick = { onStep(1) }, enabled = state.ply < state.moveSan.size,
-            modifier = Modifier.semantics { contentDescription = "Next move" },
+            modifier = Modifier.semantics { contentDescription = next },
         ) { Text("▶", Modifier.clearAndSetSemantics {}) }
     }
     if (state.lineNames.size > 1) {
         ChipRow(
             stacked, state.lineNames.indices.toList(),
             selected = { it == state.line }, onSelect = onLine, label = { state.lineNames[it] },
-            spoken = { spokenLineName(state.lineNames[it]) },
+            spoken = { texts.spokenLineName(state.lineNames[it]) },
         )
     }
     Spacer(Modifier.height(8.dp))
     // Read aloud as the announcement when there is one, else in words; both are said again when they change.
     Text(
         moveListText(state.moveSan, state.ply),
-        modifier = TextInset.announces(state.announcement.ifEmpty { spokenMoveList(state.moveSan) }),
+        modifier = TextInset.announces(state.announcement.ifEmpty { texts.spokenMoveList(state.moveSan) }),
         textAlign = TextAlign.Center,
     )
     Spacer(Modifier.height(12.dp))

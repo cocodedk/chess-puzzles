@@ -1,8 +1,8 @@
 package dk.cocode.chess.viewmodel
 
+import dk.cocode.chess.R
 import dk.cocode.chess.core.engine.PuzzleSession
 import dk.cocode.chess.core.model.PieceColor
-import dk.cocode.chess.core.model.Puzzle
 import dk.cocode.chess.data.Progress
 import dk.cocode.chess.data.dayStreakAsOf
 
@@ -17,7 +17,7 @@ internal fun PuzzleSession.toUiState(base: Progress, today: Long, position: Int,
         rating = puzzle.rating,
         position = position,
         bandSize = bandSize,
-        promptText = prompt(),
+        prompt = prompt(),
     ).withProgress(base, today)
 }
 
@@ -30,28 +30,12 @@ internal fun PuzzleUiState.withProgress(base: Progress, today: Long): PuzzleUiSt
     dayStreak = base.dayStreakAsOf(today),
 )
 
-/** E.g. "White to move — checkmate in 2", counting down as the solution progresses. */
-internal fun PuzzleSession.prompt(): String {
-    val remaining = state.totalPlayerMoves - state.playerMovesDone
-    return "${playerColor.label()} to move — ${goalText(endsInMate, remaining, puzzle)}"
-}
+/** Who moves and the goal, the mate's count going down as the solution progresses. */
+internal fun PuzzleSession.prompt(): Prompt =
+    Prompt(playerColor, goalOf(endsInMate, puzzle), state.totalPlayerMoves - state.playerMovesDone)
 
 /** What is said when a puzzle is shown: its place, rating, the opponent's first move, then the prompt. */
-internal fun PuzzleSession.shownSentence(position: Int, bandSize: Int): String =
-    "Puzzle $position of $bandSize, rating ${puzzle.rating}. " +
-        "${playerColor.opposite().label()} played ${spokenMove(setupSan)}. ${prompt()}."
-
-/**
- * The puzzle's announced goal. Mate is detected from the actual solution (more reliable than tags);
- * other goals come from the Lichess goal-class tags, defense before attack because defensiveMove
- * can co-occur with crushing/advantage. Motif tags (fork, pin, …) are never announced — they would
- * spoil the solution.
- */
-internal fun goalText(endsInMate: Boolean, remainingMoves: Int, puzzle: Puzzle): String = when {
-    endsInMate -> "checkmate in $remainingMoves"
-    puzzle.hasTheme("defensiveMove") -> "find the best defense"
-    puzzle.hasTheme("equality") -> "save the game"
-    puzzle.hasTheme("crushing") -> "win material"
-    puzzle.hasTheme("advantage") -> "gain the upper hand"
-    else -> "find the best move"
-}
+internal fun Texts.shownSentence(session: PuzzleSession, position: Int, bandSize: Int): String = string(
+    R.string.sentence_puzzle_shown, position, bandSize, session.puzzle.rating,
+    side(session.playerColor.opposite()), spokenMove(session.setupSan), promptText(session.prompt()),
+)

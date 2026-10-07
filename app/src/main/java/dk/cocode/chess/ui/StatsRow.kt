@@ -50,9 +50,10 @@ fun StatsRow(dayStreak: Int, solved: Int, hintFree: Int, streak: Int, best: Int)
 @Composable
 private fun Stat(@DrawableRes icon: Int, @StringRes label: Int, value: Int) {
     val name = stringResource(label)
+    val described = stringResource(R.string.stat_description, name, value)
     Row(
         // One item for a screen reader: "Day streak, 4".
-        Modifier.clearAndSetSemantics { contentDescription = "$name, $value" },
+        Modifier.clearAndSetSemantics { contentDescription = described },
         horizontalArrangement = Arrangement.spacedBy(4.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
