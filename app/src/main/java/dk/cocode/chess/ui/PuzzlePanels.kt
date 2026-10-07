@@ -38,6 +38,7 @@ import dk.cocode.chess.data.ThemeMode
 import dk.cocode.chess.viewmodel.Difficulty
 import dk.cocode.chess.viewmodel.PuzzleUiState
 import dk.cocode.chess.viewmodel.difficultyOf
+import dk.cocode.chess.viewmodel.promptLine
 
 /** Keeps the text rows off the screen edge, which the board is allowed to touch. Reused by the openings panels. */
 internal val TextInset = Modifier.padding(horizontal = 16.dp)
@@ -68,27 +69,34 @@ internal fun PuzzleStats(
     stacked: Boolean,
 ) {
     Text(
-        "Puzzle ${state.position} of ${state.bandSize}",
+        stringResource(R.string.puzzle_title, state.position, state.bandSize),
         Modifier.semantics { heading() },
         style = MaterialTheme.typography.titleLarge,
     )
-    Text("Rating ${state.rating}", style = MaterialTheme.typography.labelMedium)
+    Text(stringResource(R.string.puzzle_rating, state.rating), style = MaterialTheme.typography.labelMedium)
     StatsRow(
         dayStreak = state.dayStreak, solved = state.solvedCount, hintFree = state.hintFreeCount,
         streak = state.currentStreak, best = state.bestStreak,
     )
     Spacer(Modifier.height(8.dp))
     val current = difficultyOf(state.rating)
-    ChipRow(stacked, difficulties, selected = { it == current }, onSelect = onDifficulty, label = ::bandLabel)
+    val texts = rememberTexts()
+    ChipRow(
+        stacked, difficulties, selected = { it == current }, onSelect = onDifficulty,
+        label = { texts.bandLabel(it) },
+    )
 }
 
 /** What the puzzle asks of the player. */
 @Composable
 internal fun PuzzlePrompt(state: PuzzleUiState) {
-    Text(state.promptText, modifier = TextInset, textAlign = TextAlign.Center, style = MaterialTheme.typography.titleMedium)
+    Text(
+        rememberTexts().promptLine(state),
+        modifier = TextInset, textAlign = TextAlign.Center, style = MaterialTheme.typography.titleMedium,
+    )
 }
 
-/** The verdict on the last move and the Hint, Reset, Previous and Next buttons; [stacked] lines them up in a column. */
+/** The verdict on the last move and the Hint, Restart, Previous and Next buttons; [stacked] lines them up in a column. */
 @Composable
 internal fun PuzzleControls(
     state: PuzzleUiState,
@@ -98,21 +106,30 @@ internal fun PuzzleControls(
     onNext: () -> Unit,
     stacked: Boolean,
 ) {
-    Text(feedbackMessage(state.feedback), modifier = TextInset.announces(state.announcement), textAlign = TextAlign.Center)
+    Text(
+        rememberTexts().feedbackMessage(state.feedback),
+        modifier = TextInset.announces(state.announcement), textAlign = TextAlign.Center,
+    )
     Spacer(Modifier.height(12.dp))
     Lineup(stacked) { item ->
         val inProgress = state.status == PuzzleStatus.IN_PROGRESS
-        OutlinedButton(onHint, item.then(CompactButton), enabled = inProgress, contentPadding = CompactPadding) { Text("Hint") }
-        OutlinedButton(onReset, item.then(CompactButton), contentPadding = CompactPadding) { Text("Reset") }
+        OutlinedButton(onHint, item.then(CompactButton), enabled = inProgress, contentPadding = CompactPadding) {
+            Text(stringResource(R.string.puzzle_hint))
+        }
+        OutlinedButton(onReset, item.then(CompactButton), contentPadding = CompactPadding) {
+            Text(stringResource(R.string.puzzle_reset))
+        }
         // Arrows, not words, so four buttons still fit one row on a small phone at a large font.
+        val previous = stringResource(R.string.puzzle_previous)
+        val next = stringResource(R.string.puzzle_next)
         OutlinedButton(
             onPrevious,
-            item.then(CompactButton).semantics { contentDescription = "Previous puzzle" },
+            item.then(CompactButton).semantics { contentDescription = previous },
             contentPadding = CompactPadding,
         ) { Text("◀", Modifier.clearAndSetSemantics {}) }
         Button(
             onNext,
-            item.then(CompactButton).semantics { contentDescription = "Next puzzle" },
+            item.then(CompactButton).semantics { contentDescription = next },
             contentPadding = CompactPadding,
         ) { Text("▶", Modifier.clearAndSetSemantics {}) }
     }
@@ -123,7 +140,7 @@ internal fun PuzzleControls(
 @Composable
 internal fun PuzzleSettings(themeMode: ThemeMode, onThemeToggle: () -> Unit, onAbout: () -> Unit) {
     FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally)) {
-        TextButton(onClick = onThemeToggle) { Text(themeLabel(themeMode)) }
+        TextButton(onClick = onThemeToggle) { Text(rememberTexts().themeLabel(themeMode)) }
         TextButton(onClick = onAbout) { Text(stringResource(R.string.about)) }
     }
 }
@@ -172,10 +189,4 @@ internal fun <T> ChipRow(
             )
         }
     }
-}
-
-internal fun bandLabel(band: Difficulty): String = when (band) {
-    Difficulty.EASY -> "Easy"
-    Difficulty.MEDIUM -> "Medium"
-    Difficulty.HARD -> "Hard"
 }

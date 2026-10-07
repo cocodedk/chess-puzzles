@@ -11,6 +11,7 @@ import androidx.compose.ui.semantics.onClick
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Constraints
 import dk.cocode.chess.core.model.Square
+import dk.cocode.chess.ui.rememberTexts
 import dk.cocode.chess.viewmodel.BoardState
 import dk.cocode.chess.viewmodel.squareDescription
 
@@ -24,6 +25,7 @@ const val BOARD_SQUARES_TAG = "chessBoardSquares"
  */
 @Composable
 internal fun BoardSquares(state: BoardState, onSquareTap: (Square) -> Unit, modifier: Modifier = Modifier) {
+    val texts = rememberTexts()
     val flipped = state.flipped
     val tappable = state.tappable
     val order = remember(flipped) { BoardGeometry.squaresInReadingOrder(flipped) }
@@ -32,7 +34,7 @@ internal fun BoardSquares(state: BoardState, onSquareTap: (Square) -> Unit, modi
             order.forEach { square ->
                 Box(
                     Modifier.semantics {
-                        contentDescription = squareDescription(state, square)
+                        contentDescription = texts.squareDescription(state, square)
                         if (tappable) onClick { onSquareTap(square); true }
                     },
                 )

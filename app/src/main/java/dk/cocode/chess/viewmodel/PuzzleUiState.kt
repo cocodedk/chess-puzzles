@@ -30,7 +30,8 @@ data class PuzzleUiState(
     val currentStreak: Int = 0,
     val bestStreak: Int = 0,
     val dayStreak: Int = 0,
-    val promptText: String = "",
+    /** What the puzzle asks of the player; null before the first puzzle is shown. */
+    val prompt: Prompt? = null,
     /** What a screen reader says about the last event; empty until there is one. */
     val announcement: String = "",
 ) : BoardState {

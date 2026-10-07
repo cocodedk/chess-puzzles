@@ -37,15 +37,15 @@ class MainActivityTest {
         composeRule.onNodeWithText("Hint").performClick() // enabled while in progress
         composeRule.onNodeWithTag(BOARD_TEST_TAG).performTouchInput { click(center) }
         composeRule.onNodeWithTag(BOARD_TEST_TAG).performTouchInput { swipeRight() }
-        composeRule.onNodeWithText("Reset").performClick()
+        composeRule.onNodeWithText("Restart").performClick()
         composeRule.onNodeWithContentDescription("Next puzzle").performClick()
         composeRule.renderToBitmap()
     }
 
     @Test
     fun themeToggleCyclesThroughTheRealStack() {
-        awaitText("Theme: Auto")
-        composeRule.onNodeWithText("Theme: Auto").performClick()
+        awaitText("Theme: Match phone")
+        composeRule.onNodeWithText("Theme: Match phone").performClick()
         awaitText("Theme: Light")
         composeRule.onNodeWithText("Theme: Light").performClick()
         awaitText("Theme: Dark")
@@ -53,7 +53,7 @@ class MainActivityTest {
         assertTrue(bitmap.showsWood(NightBoardPalette.darkSquare, DayBoardPalette.darkSquare)) // night board really drawn
         // Cycle back to SYSTEM: the DataStore singleton outlives this test in the Robolectric JVM.
         composeRule.onNodeWithText("Theme: Dark").performClick()
-        awaitText("Theme: Auto")
+        awaitText("Theme: Match phone")
     }
 
     @Test

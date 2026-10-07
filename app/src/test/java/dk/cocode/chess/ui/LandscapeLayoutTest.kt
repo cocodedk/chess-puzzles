@@ -10,8 +10,11 @@ import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.height
 import androidx.compose.ui.unit.width
+import dk.cocode.chess.core.model.PieceColor
 import dk.cocode.chess.ui.board.BOARD_TEST_TAG
 import dk.cocode.chess.ui.theme.ChessTheme
+import dk.cocode.chess.viewmodel.Goal
+import dk.cocode.chess.viewmodel.Prompt
 import dk.cocode.chess.viewmodel.PuzzleUiState
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -27,7 +30,7 @@ class LandscapeLayoutTest {
     @get:Rule
     val composeRule = createAndroidComposeRule<ComponentActivity>()
 
-    private val empty = PuzzleUiState(board = List(8) { "        " }, promptText = "White to move")
+    private val empty = PuzzleUiState(board = List(8) { "        " }, prompt = Prompt(PieceColor.WHITE, Goal.BEST_MOVE, 1))
 
     private fun show(state: PuzzleUiState = empty) = composeRule.setContent {
         ChessTheme(darkTheme = false) {
@@ -72,7 +75,7 @@ class LandscapeLayoutTest {
             assertEquals("$number on one line", oneLine, stat.height.value, 0f)
             assertTrue("$number beside, not under, the board", stat.right <= board.left)
         }
-        assertEquals(bounds("Theme: Auto").height.value, bounds("About").height.value, 0f) // About on one line
+        assertEquals(bounds("Theme: Match phone").height.value, bounds("About").height.value, 0f) // About on one line
     }
 
     @Test @Config(qualifiers = "w1000dp-h600dp-land")

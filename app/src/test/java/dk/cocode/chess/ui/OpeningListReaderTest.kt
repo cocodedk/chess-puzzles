@@ -70,13 +70,13 @@ class OpeningListReaderTest {
         composeRule.onNodeWithContentDescription("Italian Game, C50, 3 clean runs").assertExists()
         composeRule.onNodeWithContentDescription("E4 One, T01, 1 clean run").assertExists()
         composeRule.onNodeWithContentDescription("D4 One, T02").assertExists()
-        listOf("×3", "×1", "Italian Game", "C50").forEach { composeRule.onAllNodesWithText(it).assertCountEquals(0) }
+        listOf("3 clean runs", "1 clean run", "Italian Game", "C50").forEach { composeRule.onAllNodesWithText(it).assertCountEquals(0) }
     }
 
     @Test fun rowsReadWithoutACountWhenThereAreNoCounts() {
         showList(emptyMap())
         composeRule.onNodeWithContentDescription("Italian Game, C50").assertExists()
-        composeRule.onAllNodesWithText("×3", useUnmergedTree = true).assertCountEquals(0)
+        composeRule.onAllNodesWithText("3 clean runs", useUnmergedTree = true).assertCountEquals(0)
     }
 
     @Test fun clickingARowOpensItByTouchAndByAccessibilityAction() {
@@ -94,18 +94,18 @@ class OpeningListReaderTest {
         composeRule.onNodeWithText("Italian Game").assert(SemanticsMatcher.keyIsDefined(SemanticsProperties.Heading))
     }
 
-    @Test fun theCleanRunLineIsReadInWords() {
+    @Test fun theCleanRunLineSaysHowManyCleanRuns() {
         showHeader(mapOf("italian" to 3))
-        composeRule.onNodeWithContentDescription("C50, 3 clean runs").assertTextEquals("C50  ×3 clean")
+        composeRule.onNodeWithText("C50, 3 clean runs").assertExists()
     }
 
     @Test fun oneCleanRunIsSingular() {
         showHeader(mapOf("italian" to 1))
-        composeRule.onNodeWithContentDescription("C50, 1 clean run").assertExists()
+        composeRule.onNodeWithText("C50, 1 clean run").assertExists()
     }
 
     @Test fun theCodeReadsAloneWithoutCleanRuns() {
         showHeader()
-        composeRule.onNodeWithContentDescription("C50").assertTextEquals("C50")
+        composeRule.onNodeWithText("C50").assertTextEquals("C50")
     }
 }

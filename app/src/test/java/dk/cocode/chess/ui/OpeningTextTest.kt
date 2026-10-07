@@ -1,5 +1,6 @@
 package dk.cocode.chess.ui
 
+import dk.cocode.chess.EnglishTexts
 import dk.cocode.chess.core.model.OpeningGroup
 import dk.cocode.chess.viewmodel.OpeningFeedback
 import dk.cocode.chess.viewmodel.OpeningMode
@@ -8,16 +9,16 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 /** The pure text helpers behind the openings screens: group headings, move list, feedback. */
-class OpeningTextTest {
+class OpeningTextTest : EnglishTexts() {
     @Test fun everyGroupHasATitle() {
         assertEquals(
             listOf("As White", "As Black against 1.e4", "As Black against 1.d4"),
-            OpeningGroup.entries.map(::groupTitle),
+            OpeningGroup.entries.map { groupTitle(it) },
         )
     }
 
     @Test fun everyModeHasALabel() {
-        assertEquals(listOf("Learn", "Practise"), OpeningMode.entries.map(::modeLabel))
+        assertEquals(listOf("Learn", "Practise"), OpeningMode.entries.map { modeLabel(it) })
     }
 
     @Test fun moveListNumbersOnlyWhiteAndBoldsTheCurrentPly() {
@@ -41,7 +42,7 @@ class OpeningTextTest {
         )
         assertEquals("Line complete ✓", practiseFeedback(OpeningFeedback.COMPLETE, clean = true, bookSan = null))
         assertEquals(
-            "Line complete — try it clean",
+            "Line complete. Try again with no mistakes for a clean run.",
             practiseFeedback(OpeningFeedback.COMPLETE, clean = false, bookSan = null),
         )
     }

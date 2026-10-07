@@ -67,7 +67,7 @@ class OpeningScreenRenderTest {
         )
         composeRule.renderToBitmap()
         composeRule.onNodeWithText("Play White's moves from memory.").assertExists()
-        composeRule.onNodeWithText("Again").assertExists()
+        composeRule.onNodeWithText("Start again").assertExists()
     }
 
     @Test fun backButtonFires() {

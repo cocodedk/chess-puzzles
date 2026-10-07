@@ -73,7 +73,7 @@ class OpeningPractiseAnnouncementTest : OpeningAnnouncementFixture() {
         viewModel.practise(white)
         viewModel.tap("d2", "d4", "e2", "e4", "g1", "f3")
         assertEquals(
-            "Book move. You played knight f3. Black played knight c6. Line complete — try it clean.",
+            "Book move. You played knight f3. Black played knight c6. Line complete. Try again with no mistakes for a clean run.",
             viewModel.said(),
         )
     }
@@ -85,7 +85,7 @@ class OpeningPractiseAnnouncementTest : OpeningAnnouncementFixture() {
         assertEquals("Book move. You played knight f3. Line complete.", viewModel.said())
         viewModel.onAgain()
         viewModel.tap("d2", "d4", "e2", "e4", "g1", "f3")
-        assertEquals("Book move. You played knight f3. Line complete — try it clean.", viewModel.said())
+        assertEquals("Book move. You played knight f3. Line complete. Try again with no mistakes for a clean run.", viewModel.said())
     }
 
     @Test fun theMoveThatEndsTheLineAsBlack() = runTest(dispatcher) {

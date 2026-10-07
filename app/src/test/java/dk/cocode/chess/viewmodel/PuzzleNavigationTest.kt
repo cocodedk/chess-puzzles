@@ -1,5 +1,6 @@
 package dk.cocode.chess.viewmodel
 
+import dk.cocode.chess.EnglishTexts
 import dk.cocode.chess.FakeProgressRepository
 import dk.cocode.chess.core.model.Square
 import dk.cocode.chess.data.Progress
@@ -18,7 +19,7 @@ import org.junit.Test
 
 /** Difficulty-band navigation: jumping between bands and advancing within the current band. */
 @OptIn(ExperimentalCoroutinesApi::class)
-class PuzzleNavigationTest {
+class PuzzleNavigationTest : EnglishTexts() {
     private val dispatcher = StandardTestDispatcher()
 
     @Before fun setUp() = Dispatchers.setMain(dispatcher)
@@ -26,7 +27,7 @@ class PuzzleNavigationTest {
     @After fun tearDown() = Dispatchers.resetMain()
 
     private fun vm(progress: FakeProgressRepository = FakeProgressRepository()) =
-        PuzzleViewModel(testPuzzleRepository(), progress)
+        PuzzleViewModel(testPuzzleRepository(), progress, this)
 
     @Test fun nextStaysWithinDifficultyAndWraps() = runTest(dispatcher) {
         val progress = FakeProgressRepository(Progress(index = 3)) // BK, last in the easy band [0,2,3]

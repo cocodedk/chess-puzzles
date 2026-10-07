@@ -10,6 +10,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import dk.cocode.chess.R
 import dk.cocode.chess.core.model.PieceType
 import dk.cocode.chess.core.model.Square
 import dk.cocode.chess.data.ThemeMode
@@ -18,6 +19,7 @@ import dk.cocode.chess.viewmodel.Difficulty
 import dk.cocode.chess.viewmodel.Feedback
 import dk.cocode.chess.viewmodel.PuzzleUiState
 import dk.cocode.chess.viewmodel.PuzzleViewModel
+import dk.cocode.chess.viewmodel.Texts
 
 @Composable
 fun PuzzleScreen(
@@ -99,15 +101,25 @@ fun PuzzleScreenContent(
     }
 }
 
-internal fun themeLabel(mode: ThemeMode): String = when (mode) {
-    ThemeMode.SYSTEM -> "Theme: Auto"
-    ThemeMode.LIGHT -> "Theme: Light"
-    ThemeMode.DARK -> "Theme: Dark"
+internal fun Texts.themeLabel(mode: ThemeMode): String = string(
+    when (mode) {
+        ThemeMode.SYSTEM -> R.string.theme_auto
+        ThemeMode.LIGHT -> R.string.theme_light
+        ThemeMode.DARK -> R.string.theme_dark
+    },
+)
+
+internal fun Texts.feedbackMessage(feedback: Feedback): String = when (feedback) {
+    Feedback.NONE -> ""
+    Feedback.CORRECT -> string(R.string.feedback_correct)
+    Feedback.SOLVED -> string(R.string.feedback_solved)
+    Feedback.WRONG -> string(R.string.feedback_wrong)
 }
 
-internal fun feedbackMessage(feedback: Feedback): String = when (feedback) {
-    Feedback.NONE -> ""
-    Feedback.CORRECT -> "Correct — keep going"
-    Feedback.SOLVED -> "Solved ✓"
-    Feedback.WRONG -> "Not the best move — try again"
-}
+internal fun Texts.bandLabel(band: Difficulty): String = string(
+    when (band) {
+        Difficulty.EASY -> R.string.band_easy
+        Difficulty.MEDIUM -> R.string.band_medium
+        Difficulty.HARD -> R.string.band_hard
+    },
+)

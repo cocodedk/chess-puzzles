@@ -1,9 +1,10 @@
 package dk.cocode.chess.viewmodel
 
+import dk.cocode.chess.EnglishTexts
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-class SpokenMovesTest {
+class SpokenMovesTest : EnglishTexts() {
     @Test fun everyRowOfTheTable() {
         mapOf(
             "e4" to "pawn e4",

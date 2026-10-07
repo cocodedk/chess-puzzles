@@ -1,5 +1,6 @@
 package dk.cocode.chess.viewmodel
 
+import dk.cocode.chess.EnglishTexts
 import dk.cocode.chess.FakeOpeningProgressRepository
 import dk.cocode.chess.ZERO_RANDOM
 import dk.cocode.chess.core.model.Square
@@ -20,7 +21,7 @@ import org.junit.Test
 
 /** The list, opening/closing an opening, and Learn's line/ply navigation. */
 @OptIn(ExperimentalCoroutinesApi::class)
-class OpeningViewModelLearnTest {
+class OpeningViewModelLearnTest : EnglishTexts() {
     private val dispatcher = StandardTestDispatcher()
 
     @Before fun setUp() = Dispatchers.setMain(dispatcher)
@@ -29,7 +30,7 @@ class OpeningViewModelLearnTest {
     private val whiteOpening = testWhiteOpening()
 
     private fun vm(progress: FakeOpeningProgressRepository = FakeOpeningProgressRepository()) =
-        OpeningViewModel(listOf(whiteOpening), progress, ZERO_RANDOM)
+        OpeningViewModel(listOf(whiteOpening), progress, this, ZERO_RANDOM)
 
     @Test fun openEntersLearnModeAtTheStart() = runTest(dispatcher) {
         val viewModel = vm()
@@ -61,7 +62,7 @@ class OpeningViewModelLearnTest {
 
     @Test fun lineSwitchResetsPly() = runTest(dispatcher) {
         val branching = whiteOpening.copy(lines = listOf("e4 e5 Nf3 Nc6", "e4 c5 Nf3 d6"))
-        val viewModel = OpeningViewModel(listOf(branching), FakeOpeningProgressRepository(), ZERO_RANDOM)
+        val viewModel = OpeningViewModel(listOf(branching), FakeOpeningProgressRepository(), this@OpeningViewModelLearnTest, ZERO_RANDOM)
         viewModel.onOpen(branching.id)
         viewModel.onStep(1)
         viewModel.onLine(1)

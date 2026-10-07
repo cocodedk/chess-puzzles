@@ -31,6 +31,7 @@ import dk.cocode.chess.viewmodel.OpeningFeedback
 import dk.cocode.chess.viewmodel.OpeningMode
 import dk.cocode.chess.viewmodel.OpeningUiState
 import dk.cocode.chess.viewmodel.OpeningViewModel
+import dk.cocode.chess.viewmodel.ResourceTexts
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -146,7 +147,7 @@ class OpeningScreenReaderTest {
     }
 
     @Test fun leavingTheOpeningsScreenForgetsTheLastAnnouncement() {
-        val viewModel = OpeningViewModel(listOf(opening), FakeOpeningProgressRepository())
+        val viewModel = OpeningViewModel(listOf(opening), FakeOpeningProgressRepository(), ResourceTexts(composeRule.activity.resources))
         var visible by mutableStateOf(true)
         composeRule.setContent {
             ChessTheme(darkTheme = false) {

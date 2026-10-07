@@ -1,28 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Chess Puzzles</string>
+    <string name="no_puzzles">No puzzles available</string>
+
+    <!-- The two tabs on every screen. -->
+    <string name="tab_puzzles">Puzzles</string>
+    <string name="tab_openings">Openings</string>
 
     <string name="stat_day">Day streak</string>
     <string name="stat_solved">Solved</string>
     <string name="stat_hint_free">Solved without a hint</string>
     <string name="stat_streak">Current streak</string>
     <string name="stat_best">Best streak</string>
+    <!-- What a screen reader says for one stat: its label, then its number. -->
+    <string name="stat_description">%1$s, %2$d</string>
 
+    <!-- The puzzle screen. -->
+    <string name="puzzle_title">Puzzle %1$d of %2$d</string>
+    <string name="puzzle_rating">Rating %1$d</string>
+    <string name="puzzle_hint">Hint</string>
+    <string name="puzzle_reset">Restart</string>
+    <string name="puzzle_previous">Previous puzzle</string>
+    <string name="puzzle_next">Next puzzle</string>
+    <string name="band_easy">Easy</string>
+    <string name="band_medium">Medium</string>
+    <string name="band_hard">Hard</string>
+    <string name="theme_auto">Theme: Match phone</string>
+    <string name="theme_light">Theme: Light</string>
+    <string name="theme_dark">Theme: Dark</string>
+    <string name="feedback_correct">Correct — keep going</string>
+    <string name="feedback_solved">Solved ✓</string>
+    <string name="feedback_wrong">Not the best move — try again</string>
+    <string name="promote_to">Promote your pawn to</string>
+
+    <!-- What a puzzle asks: the side to move, then the goal. -->
+    <string name="prompt_to_move">%1$s to move — %2$s</string>
+    <string name="prompt_solved">Solved!</string>
+    <string name="goal_mate">checkmate in %1$d</string>
+    <string name="goal_defense">find the best defense</string>
+    <string name="goal_save">save the game</string>
+    <string name="goal_material">win material</string>
+    <string name="goal_upper_hand">gain the upper hand</string>
+    <string name="goal_best_move">find the best move</string>
+    <string name="side_white">White</string>
+    <string name="side_black">Black</string>
+
+    <!-- The openings screens. -->
+    <string name="opening_back">Back</string>
+    <plurals name="opening_clean_count">
+        <item quantity="one">%1$d clean run</item>
+        <item quantity="other">%1$d clean runs</item>
+    </plurals>
+    <string name="opening_row_description">%1$s, %2$s</string>
+    <string name="mode_learn">Learn</string>
+    <string name="mode_practise">Practise</string>
+    <string name="learn_previous">Previous move</string>
+    <string name="learn_next">Next move</string>
+    <string name="group_white">As White</string>
+    <string name="group_black_e4">As Black against 1.e4</string>
+    <string name="group_black_d4">As Black against 1.d4</string>
+    <string name="practise_prompt">Play %1$s\'s moves from memory.</string>
+    <string name="practise_again">Start again</string>
+    <string name="practise_book_move">Book move ✓</string>
+    <string name="practise_not_book">Not the book move — the book plays %1$s</string>
+    <string name="practise_not_book_fallback">Not the book move — play the highlighted one</string>
+    <string name="practise_complete_clean">Line complete ✓</string>
+    <string name="practise_complete">Line complete. Try again with no mistakes for a clean run.</string>
+
+    <!-- What a screen reader says for a piece: each one by name, and its colour. -->
+    <string name="spoken_pawn">pawn</string>
+    <string name="spoken_knight">knight</string>
+    <string name="spoken_bishop">bishop</string>
+    <string name="spoken_rook">rook</string>
+    <string name="spoken_queen">queen</string>
+    <string name="spoken_king">king</string>
+    <string name="spoken_white_piece">white %1$s</string>
+    <string name="spoken_black_piece">black %1$s</string>
+
+    <!-- A board square, read as the square, its contents, then any of these states. -->
+    <string name="spoken_empty">empty</string>
+    <string name="spoken_selected">selected</string>
+    <string name="spoken_legal_move">legal move</string>
+    <string name="spoken_last_move">last move</string>
+    <string name="spoken_hint">hint</string>
+
+    <!-- A move in words. The target and any disambiguation are squares and files as they are written. -->
+    <string name="spoken_castles_kingside">castles kingside</string>
+    <string name="spoken_castles_queenside">castles queenside</string>
+    <string name="spoken_pawn_move">pawn %1$s</string>
+    <string name="spoken_pawn_takes">%1$s pawn takes %2$s</string>
+    <string name="spoken_piece_move">%1$s %2$s</string>
+    <string name="spoken_piece_move_from">%1$s %2$s %3$s</string>
+    <string name="spoken_piece_takes">%1$s takes %2$s</string>
+    <string name="spoken_piece_takes_from">%1$s %2$s takes %3$s</string>
+    <string name="spoken_promotes">%1$s, promotes to %2$s</string>
+    <string name="spoken_check">%1$s, check</string>
+    <string name="spoken_checkmate">%1$s, checkmate</string>
+
+    <!-- Sentences a screen reader says after an event on the puzzle screen. -->
+    <string name="sentence_selection_cleared">Selection cleared.</string>
+    <string name="sentence_no_moves">No moves from %1$s.</string>
+    <string name="sentence_selected">%1$s %2$s selected. Moves: %3$s.</string>
+    <string name="sentence_hint">Hint: %1$s %2$s to %3$s.</string>
+    <string name="sentence_wrong">You played %1$s. Not the best move — try again.</string>
+    <string name="sentence_correct">Correct. You played %1$s. %2$s played %3$s.</string>
+    <string name="sentence_reset">Puzzle restarted. %1$s.</string>
+    <string name="sentence_solved">Solved. You played %1$s.</string>
+    <string name="sentence_puzzle_shown">Puzzle %1$d of %2$d, rating %3$d. %4$s played %5$s. %6$s.</string>
+
+    <!-- Sentences a screen reader says on the openings screens. -->
+    <string name="sentence_start_position">Start position.</string>
+    <string name="sentence_opened">%1$s. Learn. %2$s</string>
+    <string name="sentence_learn_chosen">Learn. %1$s</string>
+    <string name="sentence_learn_move">Move %1$d, %2$s: %3$s.</string>
+    <string name="sentence_line_chosen">Line: %1$s. %2$s</string>
+    <string name="sentence_practise">Practise. %1$s</string>
+    <string name="sentence_played_by">%1$s played %2$s.</string>
+    <string name="sentence_book_move">Book move. You played %1$s.</string>
+    <string name="sentence_not_book">You played %1$s. Not the book move — the book plays %2$s.</string>
+    <string name="sentence_line_complete">Line complete.</string>
+    <string name="sentence_line_complete_unclean">Line complete. Try again with no mistakes for a clean run.</string>
+    <string name="spoken_line_name">Move %1$d, %2$s: %3$s</string>
+    <string name="spoken_move_list_entry">%1$d. %2$s.</string>
+    <!-- An opening's ECO code (its catalogue number), then how many clean runs, meaning lines played with no mistakes, it has had. -->
+    <plurals name="eco_clean_runs">
+        <item quantity="one">%1$s, %2$d clean run</item>
+        <item quantity="other">%1$s, %2$d clean runs</item>
+    </plurals>
+
+    <!-- The About screen: the section titles follow the cocode-apps standard, in this order. -->
     <string name="about">About</string>
     <string name="about_back">Back</string>
-    <string name="about_tagline">Solve real tactical puzzles from the Lichess database — find the best move, fully offline.</string>
     <string name="about_version">Version %1$s</string>
-    <string name="about_download">Download the latest APK</string>
-    <string name="about_source">Source on GitHub</string>
-    <string name="about_website">cocode.dk</string>
+    <string name="about_check_updates">See the latest version</string>
+    <string name="about_check_updates_note">Opens this app\'s page, where the newest version is published. The app never checks for updates itself.</string>
+    <string name="about_section_what">What the app does</string>
+    <string name="about_what">Chess Puzzles helps you practise chess tactics. Each puzzle comes from the Lichess puzzle database, tells you what to find (for example, checkmate in 2) and has a rating that shows how hard it is. You can also learn common openings move by move, then play them from memory. Everything is stored on your phone, so the app works without internet.</string>
+    <string name="about_section_privacy">Privacy</string>
+    <string name="about_privacy_no_data">Chess Puzzles does not collect, send or share any personal data.</string>
+    <string name="about_privacy_no_permissions">It does not ask for any permissions, not even internet access.</string>
+    <string name="about_privacy_no_tracking">No account, no ads, no analytics and no crash reporting.</string>
+    <string name="about_privacy_on_device">Your progress is saved on your phone. The app itself never sends it anywhere.</string>
+    <string name="about_privacy_link">Read the privacy policy</string>
+    <string name="about_section_links">Links</string>
+    <string name="about_website">Open the website</string>
+    <string name="about_source">See the source code on GitHub</string>
+    <string name="about_report">Report a problem on GitHub</string>
+    <string name="about_credits">Credits and licenses</string>
+    <string name="about_credits_body">Created by Babak Bandpey.\nPuzzles: Lichess Open Database (CC0 1.0).\nChess rules: chesslib (Apache-2.0).</string>
+    <string name="about_license">Licensed under the Apache License 2.0. © 2026 Cocode.</string>
+    <string name="about_section_made_by">Made by Cocode</string>
+    <string name="about_made_by">Made by Cocode (cocode.dk)</string>
     <string name="about_linkedin">Babak Bandpey on LinkedIn</string>
-    <string name="about_credits">Created by Babak Bandpey · Built by Cocode.\nPuzzles: Lichess Open Database (CC0 1.0). Engine: chesslib (Apache-2.0).</string>
-    <string name="about_license">Apache-2.0 · © 2026 Cocode</string>
 
-    <string name="url_cocode" translatable="false">https://cocode.dk</string>
-    <string name="url_github" translatable="false">https://github.com/cocodedk/chess-puzzles</string>
-    <string name="url_linkedin" translatable="false">https://linkedin.com/in/babakbandpey</string>
-    <string name="url_apk" translatable="false">https://github.com/cocodedk/chess-puzzles/releases/latest/download/ChessPuzzles.apk</string>
     <!-- The spoken names of the promotion choices, for TalkBack. -->
     <string name="piece_queen">Queen</string>
     <string name="piece_rook">Rook</string>
