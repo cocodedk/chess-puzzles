@@ -24,16 +24,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import dk.cocode.chess.R
 import dk.cocode.chess.core.model.PuzzleStatus
-import dk.cocode.chess.viewmodel.Difficulty
 import dk.cocode.chess.viewmodel.PuzzleUiState
-import dk.cocode.chess.viewmodel.difficultyOf
 import dk.cocode.chess.viewmodel.promptLine
 
 /** Keeps the text rows off the screen edge, which the board is allowed to touch. Reused by the openings panels. */
@@ -55,33 +52,6 @@ internal fun selectedChipColors() = FilterChipDefaults.filterChipColors(
     selectedContainerColor = MaterialTheme.colorScheme.primary,
     selectedLabelColor = MaterialTheme.colorScheme.onPrimary,
 )
-
-/** The puzzle's number and rating, the stats and the bands; [stacked] lines the bands up in a column. */
-@Composable
-internal fun PuzzleStats(
-    state: PuzzleUiState,
-    difficulties: List<Difficulty>,
-    onDifficulty: (Difficulty) -> Unit,
-    stacked: Boolean,
-) {
-    Text(
-        stringResource(R.string.puzzle_title, state.position, state.bandSize),
-        Modifier.semantics { heading() },
-        style = MaterialTheme.typography.titleLarge,
-    )
-    Text(stringResource(R.string.puzzle_rating, state.rating), style = MaterialTheme.typography.labelMedium)
-    StatsRow(
-        dayStreak = state.dayStreak, solved = state.solvedCount, hintFree = state.hintFreeCount,
-        streak = state.currentStreak, best = state.bestStreak,
-    )
-    Spacer(Modifier.height(8.dp))
-    val current = difficultyOf(state.rating)
-    val texts = rememberTexts()
-    ChipRow(
-        stacked, difficulties, selected = { it == current }, onSelect = onDifficulty,
-        label = { texts.bandLabel(it) },
-    )
-}
 
 /** What the puzzle asks of the player. */
 @Composable

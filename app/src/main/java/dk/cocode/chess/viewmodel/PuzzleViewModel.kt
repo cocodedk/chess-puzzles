@@ -36,11 +36,12 @@ class PuzzleViewModel(
     private var attempt = PuzzleAttempt() // what the current puzzle has cost so far
     private var resumed = false
     private var base = Progress()
-    private val bands: Map<Difficulty, List<Int>> =
-        puzzles.all().withIndex().groupBy({ difficultyOf(it.value.rating) }, { it.index })
+    private val lists = PuzzleLists(puzzles.all())
+    private var theme: PuzzleTheme? = null // session only: every start shows All
+    private val solved = mutableSetOf<Int>() // puzzles solved since the app started, where a theme starts you
 
-    /** Only the bands that actually contain puzzles, so the UI never offers a dead difficulty. */
-    val availableDifficulties: List<Difficulty> = Difficulty.entries.filter { bands[it]?.isNotEmpty() == true }
+    val availableDifficulties: List<Difficulty> = lists.difficulties
+    val availableThemes: List<PuzzleTheme> = lists.themes
 
     private val _state = MutableStateFlow(render())
     val state: StateFlow<PuzzleUiState> = _state.asStateFlow()
@@ -92,13 +93,7 @@ class PuzzleViewModel(
         if (_state.value.status != PuzzleStatus.IN_PROGRESS) return
         attempt.hintUsed = true
         val hint = session.hint()
-        val highlight = Highlight(hint.from, hint.to)
-        _state.update {
-            it.copy(
-                selected = hint.from, legalTargets = session.legalDestinations(hint.from).toSet(),
-                hint = highlight, announcement = texts.hintSentence(it, highlight),
-            )
-        }
+        _state.update { it.withHint(texts, hint, session.legalDestinations(hint.from).toSet()) }
     }
 
     fun onReset() {
@@ -112,10 +107,28 @@ class PuzzleViewModel(
 
     private fun stepBand(by: Int) = band().let { if (it.size > 1) jumpTo(it.stepFrom(index, by)) }
 
-    /** Jump to the first puzzle of the chosen band, unless that band is already showing. */
+    /** Jump to the first puzzle of the chosen band (within the theme, the first unsolved), unless that band is already showing. */
     fun onDifficultySelected(difficulty: Difficulty) {
         if (difficulty == difficultyOf(session.puzzle.rating)) return
-        bands[difficulty]?.firstOrNull()?.let { jumpTo(it) }
+        lists.start(difficulty, theme, solved)?.let { jumpTo(it) }
+    }
+
+    /**
+     * Show only the puzzles carrying [choice], or all of them for null. A theme starts at its first puzzle not
+     * solved yet; All stays on the puzzle on screen. Browsing a theme never writes the saved place (see [jumpTo]).
+     */
+    fun onThemeSelected(choice: PuzzleTheme?) {
+        if (choice == theme || (choice != null && choice !in availableThemes)) return
+        val target = if (choice == null) index else lists.start(difficultyOf(session.puzzle.rating), choice, solved) ?: return
+        theme = choice
+        if (target == index) relist() else jumpTo(target)
+        _state.update { it.copy(announcement = "${texts.themeChosenSentence(choice, it.bandSize)} ${it.announcement}") }
+    }
+
+    /** The puzzle on screen stays; only its place in the list changes. */
+    private fun relist() = band().let { list ->
+        resumed = true
+        _state.update { it.copy(theme = theme, position = list.indexOf(index) + 1, bandSize = list.size).withShownAnnouncement() }
     }
 
     private fun loadPuzzleAt(target: Int) {
@@ -130,9 +143,10 @@ class PuzzleViewModel(
     private fun PuzzleUiState.withShownAnnouncement() = copy(announcement = texts.shownSentence(session, position, bandSize))
 
     /** The full render recipe — the single place the clock is sampled for display. */
-    private fun render() = band().let { session.toUiState(base, today(), it.indexOf(index) + 1, it.size) }
+    private fun render() =
+        band().let { session.toUiState(base, today(), it.indexOf(index) + 1, it.size).copy(theme = theme) }
 
-    private fun band() = bands.getValue(difficultyOf(session.puzzle.rating)) // indices, bundle order
+    private fun band() = lists.of(difficultyOf(session.puzzle.rating), theme) // indices, bundle order
 
     private fun jumpTo(target: Int) {
         resumed = true // a deliberate jump cancels the one-time resume to the saved index
@@ -140,7 +154,7 @@ class PuzzleViewModel(
         // the fail belongs to the puzzle being left; setIndex below persists the destination).
         if (attempt.failed && accounting.countFail(today(), index)) viewModelScope.launch { progress.recordFailed() }
         loadPuzzleAt(target)
-        viewModelScope.launch { progress.setIndex(index) }
+        if (theme == null) viewModelScope.launch { progress.setIndex(index) } // a theme never moves the saved place
     }
 
     private fun select(square: Square) {
@@ -167,33 +181,20 @@ class PuzzleViewModel(
     private fun onWrong(san: String) {
         attempt.failed = true // mistakes alone never break the streak — see jumpTo
         session.retry() // un-lock so the player can try again (the move was never applied)
-        _state.update {
-            it.withoutSelection(texts.wrongSentence(san))
-                .copy(status = PuzzleStatus.IN_PROGRESS, feedback = Feedback.WRONG, prompt = session.prompt())
-        }
+        _state.update { it.afterWrong(texts, san, session.prompt()) }
     }
 
     private fun onContinues(result: SubmitResult.Continues) {
         val reply = session.applyOpponentReply()
-        val said = texts.correctSentence(result.san, session.playerColor.opposite(), result.replySan)
-        _state.update {
-            it.withoutSelection(said).copy(
-                board = session.state.board.toRows(), lastMove = Highlight(reply.from, reply.to),
-                feedback = Feedback.CORRECT, prompt = session.prompt(),
-            )
-        }
+        _state.update { it.afterReply(texts, session, result, reply) }
     }
 
     private fun onSolved(result: SubmitResult.Solved) {
         attempt.failed = false // solved after all — the earlier mistakes are forgiven
         val day = today() // sampled at the solve, not when the write coroutine runs
         val hintFree = !attempt.hintUsed // read now: loading a puzzle swaps `attempt` before the write runs
+        solved += index
         if (accounting.countSolve(day, index)) viewModelScope.launch { progress.recordSolved(day, hintFree) }
-        _state.update {
-            it.withoutSelection(texts.solvedSentence(result.san)).copy(
-                board = session.state.board.toRows(), lastMove = Highlight(result.playerMove.from, result.playerMove.to),
-                status = PuzzleStatus.SOLVED, feedback = Feedback.SOLVED,
-            )
-        }
+        _state.update { it.afterSolved(texts, session, result) }
     }
 }

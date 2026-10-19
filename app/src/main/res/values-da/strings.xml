@@ -164,4 +164,23 @@
     <string name="piece_rook">Tårn</string>
     <string name="piece_bishop">Løber</string>
     <string name="piece_knight">Springer</string>
+    <string name="puzzle_theme_button">Motiv: %1$s</string>
+    <string name="puzzle_theme_button_description">Motiv, %1$s</string>
+    <string name="puzzle_theme_all">Alle</string>
+    <string name="puzzle_theme_fork">Gaffel</string>
+    <string name="puzzle_theme_pin">Binding</string>
+    <string name="puzzle_theme_skewer">Spidning</string>
+    <string name="puzzle_theme_discovered_attack">Afdækket angreb</string>
+    <string name="puzzle_theme_hanging_piece">Ubeskyttet brik</string>
+    <string name="puzzle_theme_sacrifice">Ofring</string>
+    <string name="puzzle_theme_deflection">Afledning</string>
+    <string name="puzzle_theme_mate_in_2">Mat i 2</string>
+    <string name="puzzle_theme_mate_in_3">Mat i 3</string>
+    <string name="puzzle_theme_opening">Åbning</string>
+    <string name="puzzle_theme_middlegame">Midtspil</string>
+    <string name="puzzle_theme_endgame">Slutspil</string>
+    <plurals name="sentence_theme_chosen">
+        <item quantity="one">Motiv: %1$s. %2$d opgave.</item>
+        <item quantity="other">Motiv: %1$s. %2$d opgaver.</item>
+    </plurals>
 </resources>
