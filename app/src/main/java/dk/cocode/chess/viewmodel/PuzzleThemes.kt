@@ -8,21 +8,23 @@ import dk.cocode.chess.R
  * order they are offered. The list is curated: every theme here has at least 15 puzzles in EACH of the
  * Easy, Medium and Hard bands of the bundled set, so a theme never leaves a band thin or empty (a test
  * checks it). The counts are Easy/Medium/Hard. Left out for having fewer than 15 in some band: double check
- * (2 Easy), back-rank mate and mate in 1 (none Hard), promotion (7 Easy), attraction (8 Easy).
+ * (8 Easy), trapped piece (9 Easy), back-rank mate (8 Hard), mate in 1 (2 Hard).
  */
 enum class PuzzleTheme(val tag: String, @StringRes val label: Int) {
-    FORK("fork", R.string.puzzle_theme_fork), // 95/221/244
-    PIN("pin", R.string.puzzle_theme_pin), // 30/114/223
-    SKEWER("skewer", R.string.puzzle_theme_skewer), // 24/31/38
-    DISCOVERED_ATTACK("discoveredAttack", R.string.puzzle_theme_discovered_attack), // 40/93/124
-    HANGING_PIECE("hangingPiece", R.string.puzzle_theme_hanging_piece), // 31/52/73
-    SACRIFICE("sacrifice", R.string.puzzle_theme_sacrifice), // 36/140/319
-    DEFLECTION("deflection", R.string.puzzle_theme_deflection), // 21/100/109
-    MATE_IN_2("mateIn2", R.string.puzzle_theme_mate_in_2), // 168/114/20
-    MATE_IN_3("mateIn3", R.string.puzzle_theme_mate_in_3), // 26/60/36
-    OPENING("opening", R.string.puzzle_theme_opening), // 44/43/28
-    MIDDLEGAME("middlegame", R.string.puzzle_theme_middlegame), // 278/428/586
-    ENDGAME("endgame", R.string.puzzle_theme_endgame), // 324/325/344
+    FORK("fork", R.string.puzzle_theme_fork), // 404/756/781
+    PIN("pin", R.string.puzzle_theme_pin), // 89/426/779
+    SKEWER("skewer", R.string.puzzle_theme_skewer), // 73/122/128
+    DISCOVERED_ATTACK("discoveredAttack", R.string.puzzle_theme_discovered_attack), // 127/323/418
+    HANGING_PIECE("hangingPiece", R.string.puzzle_theme_hanging_piece), // 104/185/250
+    SACRIFICE("sacrifice", R.string.puzzle_theme_sacrifice), // 120/582/1132
+    DEFLECTION("deflection", R.string.puzzle_theme_deflection), // 86/320/474
+    ATTRACTION("attraction", R.string.puzzle_theme_attraction), // 41/316/471
+    PROMOTION("promotion", R.string.puzzle_theme_promotion), // 67/123/321
+    MATE_IN_2("mateIn2", R.string.puzzle_theme_mate_in_2), // 645/519/42
+    MATE_IN_3("mateIn3", R.string.puzzle_theme_mate_in_3), // 108/231/94
+    OPENING("opening", R.string.puzzle_theme_opening), // 135/159/107
+    MIDDLEGAME("middlegame", R.string.puzzle_theme_middlegame), // 1011/1605/2085
+    ENDGAME("endgame", R.string.puzzle_theme_endgame), // 1264/1246/1388
 }
 
 /** A theme's name as the player reads and hears it; no theme (null) is "All". */

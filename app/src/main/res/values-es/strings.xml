@@ -176,6 +176,8 @@
     <string name="puzzle_theme_hanging_piece">Pieza colgada</string>
     <string name="puzzle_theme_sacrifice">Sacrificio</string>
     <string name="puzzle_theme_deflection">Desviación</string>
+    <string name="puzzle_theme_attraction">Atracción</string>
+    <string name="puzzle_theme_promotion">Coronación</string>
     <string name="puzzle_theme_mate_in_2">Mate en 2</string>
     <string name="puzzle_theme_mate_in_3">Mate en 3</string>
     <string name="puzzle_theme_opening">Apertura</string>

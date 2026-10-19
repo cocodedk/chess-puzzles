@@ -319,7 +319,7 @@ auto-detect KVM → `-accel on` else `-no-accel`); `adb wait-for-device` + poll 
 - [x] Phase 1 — Toolchain bootstrap (JDK 17, Android SDK, Gradle 8.9 wrapper)
 - [x] Phase 2 — Gradle scaffold (modules, version catalog, Kover gate, git + pre-push hook)
 - [x] Phase 3 — `:core` logic + tests (100% coverage)
-- [x] Phase 4 — Puzzle data asset (2,400 Lichess puzzles, ~330 KB)
+- [x] Phase 4 — Puzzle data asset (2,400 Lichess puzzles, ~330 KB; since #87, 9,000 and ~1.2 MB)
 - [x] Phase 5 — `:app` UI + ViewModel + tests (100% coverage of non-`@Composable` code)
 - [x] Phase 6 — APK build + lint
 - [x] Phase 7 — Emulator boot + screenshot (boots, renders, solves on a headless AVD)
