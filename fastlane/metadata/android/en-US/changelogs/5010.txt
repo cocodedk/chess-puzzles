@@ -1,1 +1,1 @@
-Smaller download: release builds are now shrunk with R8.
+Smaller download: unused code is now removed from release builds.

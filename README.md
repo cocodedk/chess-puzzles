@@ -11,38 +11,40 @@ difficulty bands (Easy/Medium/Hard), day/night themes, and saved progress on-dev
 
 <!-- cocode-apps:install:start -->
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" alt="Get it on F-Droid" height="80">](https://f-droid.org/packages/dk.cocode.chess/)
-- [Download the APK from GitHub](https://github.com/cocodedk/chess-puzzles/releases/latest/download/ChessPuzzles.apk)
-- [Auto-update the GitHub APK with Obtainium](https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/cocodedk/chess-puzzles)
+- [Download the Android installation file (APK) from GitHub](https://github.com/cocodedk/chess-puzzles/releases/latest/download/ChessPuzzles.apk)
+- [Add the app to Obtainium, an app that keeps it up to date](https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/cocodedk/chess-puzzles)
 <!-- cocode-apps:install:end -->
 
 Android 7.0+, signed release.
 
 <img src="docs/screenshot.png" alt="Chess Puzzles in light mode" width="250" /> <img src="docs/screenshot-night.png" alt="Chess Puzzles in night mode" width="250" /> <img src="docs/screenshot-solved.png" alt="A solved puzzle" width="250" /> <img src="docs/screenshot-openings.png" alt="Learning the Italian Game in the Openings tab" width="250" />
 
-_Light mode with goal line and difficulty chips (left), night mode (center), solved puzzle (right)._
+_From left to right: light mode, night mode, a solved puzzle, and opening practice._
 
 ## Website
 
 - [English](https://chess.cocode.dk/)
+- [Dansk (Danish)](https://chess.cocode.dk/da/)
 - [فارسی (Persian)](https://chess.cocode.dk/fa/)
 
 ## Features
 
 - **Real Lichess puzzles.** Tactics from the Lichess Open Database (CC0 1.0), bundled with the app.
-- **Announced goals.** Each puzzle says what to find, such as "checkmate in 2" or "win material"; the
-  opponent's replies play out on their own.
+- **Announced goals.** Each puzzle says what to find, such as "checkmate in 2" or "gain a winning
+  advantage". Find each move of the solution; the opponent replies automatically after each one.
 - **Three difficulty bands.** Easy, Medium or Hard, with hints when you want a nudge.
-- **Opening practice.** Twenty common openings, learned move by move and then played back from memory.
-- **Saved progress.** Solved count, hint-free solves and streaks are saved on your device.
-- **Day and night themes.** Follows the system dark mode, or pick Auto, Light or Dark in the app.
-- **Tap or drag.** Move pieces by tapping squares or dragging them on a custom Compose board.
+- **Opening practice.** Twenty openings, learned move by move and then practised from memory.
+- **Saved progress.** Your solved count, puzzles solved without a hint, streaks and day streak are saved on your device.
+- **Light and dark themes.** Matches your phone's setting, or switch to Light or Dark with the theme button.
+- **Tap or drag.** Move pieces by tapping their starting and destination squares, or by dragging them.
 - **Fully offline and free.** No account, no ads, no tracking. Apache-2.0.
 
 ## Privacy
 
-Chess Puzzles collects, sends and shares no personal data. It requests no permissions (not even
-internet access), and has no account, ads, analytics or tracking. Your progress stays on your device,
-apart from Android's own backup: if you have Auto Backup or Google account backup turned on, the system
+Chess Puzzles collects, sends and shares no personal data. It never asks you for a permission and has no
+internet permission, so the app itself cannot connect to anything. It has no account, ads, analytics or
+tracking. The About screen's buttons open web pages in your browser, and only when you tap them. Your
+progress stays on your device, apart from Android's own backup: if you have Auto Backup or Google account backup turned on, the system
 may include the app's local data in your own Google backup, which we have no access to. Read the full
 [privacy policy](https://chess.cocode.dk/privacy/).
 
@@ -80,7 +82,7 @@ excluded as their compiler-generated recomposition branches are unreachable by t
 
 ## Credits
 
-Puzzles: [Lichess Open Database](https://database.lichess.org) (CC0 1.0). Chess engine:
+Puzzles: [Lichess Open Database](https://database.lichess.org) (CC0 1.0). Chess rules:
 chesslib (Apache-2.0).
 
 ## Author

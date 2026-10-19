@@ -106,7 +106,7 @@ Design principles:
 
 ### Unified `:core` contract (reconciles the two app-side designs)
 
-This is the single API `:core` exposes and `:app` compiles against. It blends the validated state
+This is the original proposed API; consult the current `:core` model and engine source files (under `core/src/main/kotlin/dk/cocode/chess/core/`) for the implemented contract. It blends the validated state
 machine (mate-in-1 multi-solution rule, setup-move handling) with a **two-phase apply** so the UI can
 show the player's move, pause, then animate the opponent reply.
 
@@ -289,9 +289,9 @@ auto-detect KVM → `-accel on` else `-no-accel`); `adb wait-for-device` + poll 
 2. `./gradlew :core:test` — pure chess/puzzle logic (the correctness core).
 3. `./gradlew :app:testDebugUnitTest` — ViewModel state machine, board geometry, Robolectric Compose
    UI + Roborazzi screenshots, entry points.
-4. `./gradlew koverVerify` — **100%** coverage gate across both modules (UI included).
+4. `./gradlew koverVerify` — **100%** line-coverage gate across both modules, excluding `@Composable` functions.
 5. `./gradlew assembleDebug lint` — APK builds and packages; lint clean.
-5. `bash scripts/emu.sh` — boots the app on the emulator and writes `screen.png`; read the PNG to
+6. `bash scripts/emu.sh` — boots the app on the emulator and writes `docs/screenshot.png`; read the PNG to
    confirm the board renders the first puzzle. (Optional: tap via `adb shell input tap` to sanity-check
    a move, re-screenshot.)
 

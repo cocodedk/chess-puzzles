@@ -24,7 +24,7 @@ Two Gradle modules so the chess/puzzle logic is pure-JVM and fully unit-testable
   one book move per node. `start` is the initial `BoardView`; `plies(line)` gives one line's plies for
   Learn; `lineNames` labels each line by the move where it first diverges from the others.
 - `engine/OpeningDrill` — the Practise state machine over an `OpeningTree` with a `Random` (picks the
-  opponent's branch, and Black's opening move too). `submit(MoveIntent)` returns `Correct`/`Wrong`/
+  opponent's branch, including White's first move when the player practises Black). `submit(MoveIntent)` returns `Correct`/`Wrong`/
   `Complete(clean)`/`Illegal`; `bookMove()`, `legalDestinations`, `restart()`.
 - `data/` — `PuzzleCsvParser` (10-column Lichess export or 5-column trimmed asset) and
   `CsvPuzzleRepository.load { inputStream }` (the seam that keeps `:core` Android-free).
@@ -70,7 +70,7 @@ Two Gradle modules so the chess/puzzle logic is pure-JVM and fully unit-testable
 
 ## Testing & coverage (100%, headless)
 
-- `:core` — JUnit 5 with hand-verified puzzle fixtures.
+- `:core` — JUnit Jupiter 6 with hand-verified puzzle fixtures.
 - `:app` — pure JUnit for `BoardGeometry`/`feedbackMessage`/openings text helpers; `PuzzleViewModel`
   and `OpeningViewModel`/`OpeningPractise` via `kotlinx-coroutines-test`; Robolectric for DataStore,
   asset loading, `MainActivity`, and the Compose UI (incl. the openings list/screen renders in both

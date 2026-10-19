@@ -22,8 +22,8 @@ writes a trimmed 5-column CSV sorted easy → hard:
 PuzzleId,FEN,Moves,Rating,Themes
 ```
 
-Result: **2,400 puzzles, ~330 KB**, ratings ≈ 400–3100. Re-running reproduces the same set
-(`random.seed(20260628)`).
+Result: **2,400 puzzles, ~330 KB**, ratings ≈ 400–3100. The fixed seed (`random.seed(20260628)`) reproduces the same selection when run against the same
+database snapshot in the same record order. The download is not versioned, so a newer database can give a different set.
 
 ## Move convention
 
