@@ -12,7 +12,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.rememberTextMeasurer
@@ -73,17 +72,6 @@ private fun BoardCanvas(
                 )
             },
     ) {
-        val frame = BoardGeometry.frameDepth(size.width)
-        val squarePx = BoardGeometry.squareSize(size.width)
-        drawFrame(frame, squarePx)
-        translate(frame, frame) {
-            drawSquares(palette, squarePx, flipped)
-            state.lastMove?.let { highlightMove(it.from, it.to, palette.lastMoveTint, squarePx, flipped) }
-            state.hint?.let { highlightMove(it.from, it.to, palette.hintTint, squarePx, flipped, palette.hintRing) }
-            state.selected?.let { tintSquare(it, palette.selectedTint, squarePx, flipped, palette.selectedRing) }
-            drawCoordinates(squarePx, flipped, textMeasurer)
-            drawPieces(state, palette, squarePx, flipped)
-            drawTargets(state, palette.marker, squarePx, flipped)
-        }
+        drawBoard(state, palette, textMeasurer)
     }
 }
