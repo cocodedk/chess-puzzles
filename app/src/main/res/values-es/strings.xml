@@ -166,4 +166,24 @@
     <string name="piece_rook">Torre</string>
     <string name="piece_bishop">Alfil</string>
     <string name="piece_knight">Caballo</string>
+    <string name="puzzle_theme_button">Motivo: %1$s</string>
+    <string name="puzzle_theme_button_description">Motivo, %1$s</string>
+    <string name="puzzle_theme_all">Todos</string>
+    <string name="puzzle_theme_fork">Horquilla</string>
+    <string name="puzzle_theme_pin">Clavada</string>
+    <string name="puzzle_theme_skewer">Ensartada</string>
+    <string name="puzzle_theme_discovered_attack">Ataque descubierto</string>
+    <string name="puzzle_theme_hanging_piece">Pieza colgada</string>
+    <string name="puzzle_theme_sacrifice">Sacrificio</string>
+    <string name="puzzle_theme_deflection">Desviación</string>
+    <string name="puzzle_theme_mate_in_2">Mate en 2</string>
+    <string name="puzzle_theme_mate_in_3">Mate en 3</string>
+    <string name="puzzle_theme_opening">Apertura</string>
+    <string name="puzzle_theme_middlegame">Medio juego</string>
+    <string name="puzzle_theme_endgame">Final</string>
+    <plurals name="sentence_theme_chosen">
+        <item quantity="one">Motivo: %1$s. %2$d puzle.</item>
+        <item quantity="many">Motivo: %1$s. %2$d de puzles.</item>
+        <item quantity="other">Motivo: %1$s. %2$d puzles.</item>
+    </plurals>
 </resources>

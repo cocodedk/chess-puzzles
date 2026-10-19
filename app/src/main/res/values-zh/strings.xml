@@ -162,4 +162,22 @@
     <string name="piece_rook">车</string>
     <string name="piece_bishop">象</string>
     <string name="piece_knight">马</string>
+    <string name="puzzle_theme_button">战术：%1$s</string>
+    <string name="puzzle_theme_button_description">战术，%1$s</string>
+    <string name="puzzle_theme_all">全部</string>
+    <string name="puzzle_theme_fork">捉双</string>
+    <string name="puzzle_theme_pin">牵制</string>
+    <string name="puzzle_theme_skewer">串击</string>
+    <string name="puzzle_theme_discovered_attack">闪击</string>
+    <string name="puzzle_theme_hanging_piece">无保护的子</string>
+    <string name="puzzle_theme_sacrifice">弃子</string>
+    <string name="puzzle_theme_deflection">引离</string>
+    <string name="puzzle_theme_mate_in_2">两步杀</string>
+    <string name="puzzle_theme_mate_in_3">三步杀</string>
+    <string name="puzzle_theme_opening">开局</string>
+    <string name="puzzle_theme_middlegame">中局</string>
+    <string name="puzzle_theme_endgame">残局</string>
+    <plurals name="sentence_theme_chosen">
+        <item quantity="other">战术：%1$s。共 %2$d 个谜题。</item>
+    </plurals>
 </resources>
