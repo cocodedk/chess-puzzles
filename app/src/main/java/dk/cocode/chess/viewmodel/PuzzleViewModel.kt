@@ -108,6 +108,7 @@ class PuzzleViewModel(
 
     fun onNext() = stepBand(1)
     fun onPrevious() = stepBand(-1)
+    fun onSharePosition(sharer: PositionSharer) = sharer.share(session.currentFen()) // the board now, FEN only
 
     private fun stepBand(by: Int) = band().let { if (it.size > 1) jumpTo(it.stepFrom(index, by)) }
 

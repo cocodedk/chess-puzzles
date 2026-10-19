@@ -22,6 +22,8 @@
     <string name="puzzle_reset">Restart</string>
     <string name="puzzle_previous">Previous puzzle</string>
     <string name="puzzle_next">Next puzzle</string>
+    <!-- Opens the share sheet with the position on the board as text (FEN); the sheet is also its title. -->
+    <string name="position_share">Share position</string>
     <string name="band_easy">Easy</string>
     <string name="band_medium">Medium</string>
     <string name="band_hard">Hard</string>
