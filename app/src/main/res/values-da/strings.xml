@@ -22,6 +22,7 @@
     <string name="puzzle_reset">Start forfra</string>
     <string name="puzzle_previous">Forrige opgave</string>
     <string name="puzzle_next">Næste opgave</string>
+    <string name="position_share">Del stilling</string>
     <string name="band_easy">Let</string>
     <string name="band_medium">Middel</string>
     <string name="band_hard">Svær</string>

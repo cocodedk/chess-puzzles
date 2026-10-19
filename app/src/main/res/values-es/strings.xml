@@ -22,6 +22,7 @@
     <string name="puzzle_reset">Reiniciar</string>
     <string name="puzzle_previous">Puzle anterior</string>
     <string name="puzzle_next">Puzle siguiente</string>
+    <string name="position_share">Compartir posición</string>
     <string name="band_easy">Fácil</string>
     <string name="band_medium">Medio</string>
     <string name="band_hard">Difícil</string>

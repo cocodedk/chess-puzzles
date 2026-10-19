@@ -2,8 +2,6 @@ package dk.cocode.chess.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -19,7 +17,6 @@ import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,12 +27,10 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import dk.cocode.chess.R
 import dk.cocode.chess.core.model.PuzzleStatus
-import dk.cocode.chess.data.ThemeMode
 import dk.cocode.chess.viewmodel.Difficulty
 import dk.cocode.chess.viewmodel.PuzzleUiState
 import dk.cocode.chess.viewmodel.difficultyOf
@@ -133,20 +128,6 @@ internal fun PuzzleControls(
             item.then(CompactButton).semantics { contentDescription = next },
             contentPadding = CompactPadding,
         ) { Text("▶", Modifier.clearAndSetSemantics {}) }
-    }
-}
-
-/** The theme toggle and the About link; in a narrow panel About moves under the theme whole, never split. */
-@OptIn(ExperimentalLayoutApi::class) // FlowRow is still marked experimental (checked up to foundation 1.11)
-@Composable
-internal fun PuzzleSettings(themeMode: ThemeMode, onThemeToggle: () -> Unit, onAbout: () -> Unit) {
-    FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally)) {
-        val texts = rememberTexts()
-        val inUse = texts.themeLabel(themeMode)
-        TextButton(onClick = onThemeToggle, modifier = Modifier.semantics { stateDescription = inUse }) {
-            Text(texts.themeSwitchLabel(themeMode))
-        }
-        TextButton(onClick = onAbout) { Text(stringResource(R.string.about)) }
     }
 }
 

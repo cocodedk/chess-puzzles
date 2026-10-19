@@ -5,9 +5,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dk.cocode.chess.R
@@ -15,6 +17,7 @@ import dk.cocode.chess.core.model.PieceType
 import dk.cocode.chess.core.model.Square
 import dk.cocode.chess.data.ThemeMode
 import dk.cocode.chess.ui.board.PromotionDialog
+import dk.cocode.chess.util.AndroidPositionSharer
 import dk.cocode.chess.viewmodel.Difficulty
 import dk.cocode.chess.viewmodel.Feedback
 import dk.cocode.chess.viewmodel.PuzzleUiState
@@ -30,6 +33,8 @@ fun PuzzleScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     var showAbout by rememberSaveable { mutableStateOf(false) }
+    val context = LocalContext.current
+    val sharer = remember(context) { AndroidPositionSharer(context) }
     if (showAbout) {
         AboutScreen(onBack = { showAbout = false })
     } else {
@@ -47,6 +52,7 @@ fun PuzzleScreen(
             onPromotion = viewModel::onPromotionChosen,
             onPromotionCancel = viewModel::onPromotionCancelled,
             onAbout = { showAbout = true },
+            onSharePosition = { viewModel.onSharePosition(sharer) },
             onDifficulty = viewModel::onDifficultySelected,
             difficulties = viewModel.availableDifficulties,
             tabs = tabs,
@@ -67,6 +73,7 @@ fun PuzzleScreenContent(
     onPromotionCancel: () -> Unit,
     onPrevious: () -> Unit = {},
     onAbout: () -> Unit = {},
+    onSharePosition: () -> Unit = {},
     onDifficulty: (Difficulty) -> Unit = {},
     difficulties: List<Difficulty> = Difficulty.entries,
     themeMode: ThemeMode = ThemeMode.SYSTEM,
@@ -75,7 +82,7 @@ fun PuzzleScreenContent(
 ) {
     // `stacked` is true only when each slot has a side panel to itself. Then the settings sit under the
     // stats and the prompt above the buttons, balancing the two panels; when both slots share one
-    // column the rows read top to bottom: stats, prompt, (board), buttons, settings.
+    // column the rows read top to bottom: stats, prompt, (board), buttons, settings (Share among them).
     BoardScaffold(
         state = state,
         onSquareTap = onSquareTap, onDragStart = onDragStart, onDragEnd = onDragEnd,
@@ -90,9 +97,10 @@ fun PuzzleScreenContent(
                 PuzzlePrompt(state)
                 Spacer(Modifier.height(16.dp))
                 PuzzleControls(state, onHint, onReset, onPrevious, onNext, stacked)
+                SharePositionButton(onSharePosition) // not with Theme and About: that panel is already full
             } else {
                 PuzzleControls(state, onHint, onReset, onPrevious, onNext, stacked)
-                PuzzleSettings(themeMode, onThemeToggle, onAbout)
+                PuzzleSettings(themeMode, onThemeToggle, onAbout, onSharePosition)
             }
         },
     )
