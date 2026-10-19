@@ -23,8 +23,9 @@ data class PuzzleUiState(
     val status: PuzzleStatus = PuzzleStatus.IN_PROGRESS,
     val feedback: Feedback = Feedback.NONE,
     val rating: Int = 0,
-    val position: Int = 0, // 1-based place in the difficulty band; the title's number
-    val bandSize: Int = 0,
+    val position: Int = 0, // 1-based place in the difficulty band, within the theme if one is chosen; the title's number
+    val bandSize: Int = 0, // how many puzzles that list holds
+    val theme: PuzzleTheme? = null, // the theme filter in use; null is All
     val solvedCount: Int = 0,
     val hintFreeCount: Int = 0,
     val currentStreak: Int = 0,

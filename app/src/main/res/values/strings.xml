@@ -27,6 +27,22 @@
     <string name="band_easy">Easy</string>
     <string name="band_medium">Medium</string>
     <string name="band_hard">Hard</string>
+    <!-- The puzzle theme filter (fork, pin, ...), not the light/dark look. The button shows the one in use, and a screen reader says it as the description. -->
+    <string name="puzzle_theme_button">Theme: %1$s</string>
+    <string name="puzzle_theme_button_description">Theme, %1$s</string>
+    <string name="puzzle_theme_all">All</string>
+    <string name="puzzle_theme_fork">Fork</string>
+    <string name="puzzle_theme_pin">Pin</string>
+    <string name="puzzle_theme_skewer">Skewer</string>
+    <string name="puzzle_theme_discovered_attack">Discovered attack</string>
+    <string name="puzzle_theme_hanging_piece">Hanging piece</string>
+    <string name="puzzle_theme_sacrifice">Sacrifice</string>
+    <string name="puzzle_theme_deflection">Deflection</string>
+    <string name="puzzle_theme_mate_in_2">Mate in 2</string>
+    <string name="puzzle_theme_mate_in_3">Mate in 3</string>
+    <string name="puzzle_theme_opening">Opening</string>
+    <string name="puzzle_theme_middlegame">Middlegame</string>
+    <string name="puzzle_theme_endgame">Endgame</string>
     <!-- The theme button says what a tap does; a screen reader also hears the theme in use now. -->
     <string name="theme_auto">Theme: Match phone</string>
     <string name="theme_light">Theme: Light</string>
@@ -114,6 +130,12 @@
     <string name="sentence_reset">Puzzle restarted. %1$s.</string>
     <string name="sentence_solved">Solved. You played %1$s.</string>
     <string name="sentence_puzzle_shown">Puzzle %1$d of %2$d, rating %3$d. %4$s played %5$s. %6$s.</string>
+
+    <!-- A puzzle theme is chosen: its name, then how many puzzles the difficulty band now has. -->
+    <plurals name="sentence_theme_chosen">
+        <item quantity="one">Theme: %1$s. %2$d puzzle.</item>
+        <item quantity="other">Theme: %1$s. %2$d puzzles.</item>
+    </plurals>
 
     <!-- Sentences a screen reader says on the openings screens. -->
     <string name="sentence_start_position">Start position.</string>

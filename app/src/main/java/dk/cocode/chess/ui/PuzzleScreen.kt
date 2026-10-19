@@ -20,6 +20,7 @@ import dk.cocode.chess.ui.board.PromotionDialog
 import dk.cocode.chess.util.AndroidPositionSharer
 import dk.cocode.chess.viewmodel.Difficulty
 import dk.cocode.chess.viewmodel.Feedback
+import dk.cocode.chess.viewmodel.PuzzleTheme
 import dk.cocode.chess.viewmodel.PuzzleUiState
 import dk.cocode.chess.viewmodel.PuzzleViewModel
 import dk.cocode.chess.viewmodel.Texts
@@ -55,6 +56,8 @@ fun PuzzleScreen(
             onSharePosition = { viewModel.onSharePosition(sharer) },
             onDifficulty = viewModel::onDifficultySelected,
             difficulties = viewModel.availableDifficulties,
+            onTheme = viewModel::onThemeSelected,
+            themes = viewModel.availableThemes,
             tabs = tabs,
         )
     }
@@ -76,6 +79,8 @@ fun PuzzleScreenContent(
     onSharePosition: () -> Unit = {},
     onDifficulty: (Difficulty) -> Unit = {},
     difficulties: List<Difficulty> = Difficulty.entries,
+    onTheme: (PuzzleTheme?) -> Unit = {},
+    themes: List<PuzzleTheme> = emptyList(),
     themeMode: ThemeMode = ThemeMode.SYSTEM,
     onThemeToggle: () -> Unit = {},
     tabs: @Composable () -> Unit = {},
@@ -88,7 +93,7 @@ fun PuzzleScreenContent(
         onSquareTap = onSquareTap, onDragStart = onDragStart, onDragEnd = onDragEnd,
         tabs = tabs,
         header = { stacked ->
-            PuzzleStats(state, difficulties, onDifficulty, stacked)
+            PuzzleStats(state, difficulties, onDifficulty, themes, onTheme, stacked)
             Spacer(Modifier.height(8.dp))
             if (stacked) PuzzleSettings(themeMode, onThemeToggle, onAbout) else PuzzlePrompt(state)
         },

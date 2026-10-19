@@ -111,6 +111,27 @@ fun testPuzzleRepository(): PuzzleRepository {
     return CsvPuzzleRepository.load { csv.byteInputStream() }
 }
 
+/**
+ * Nine puzzles for the theme filter: Easy 0-3 (800, 900, 1000, 1100), Medium 4-6 (1500, 1600, 1700) and Hard 7-8
+ * (2100, 2200). Fork is on 0, 2, 3 | 4, 6 | 7 and endgame on 0, 1 | 5 | 8 (Easy | Medium | Hard), so those two are the
+ * themes every band has. 0, 2 and 3 are the mate in 1 of "M1" (b7 to g7), 1 is "BK" (b2 to g2); the rest are "M2".
+ */
+fun themedPuzzleRepository(): PuzzleRepository {
+    val m1 = "6k1/1Q6/6K1/8/8/8/8/8 b - - 0 1,g8h8 b7g7"
+    val bk = "8/8/8/8/8/6k1/1q6/6K1 w - - 0 1,g1h1 b2g2"
+    val m2 = "q3k1nr/1pp1nQpp/3p4/1P2p3/4P3/B1PP1b2/B5PP/5K2 b k - 0 17,e8d7 a2e6 d7d8 f7f8"
+    val rows = listOf(
+        Triple(m1, 800, "fork endgame"), Triple(bk, 900, "endgame"), Triple(m1, 1000, "fork"), Triple(m1, 1100, "fork"),
+        Triple(m2, 1500, "fork"), Triple(m2, 1600, "endgame"), Triple(m2, 1700, "fork"),
+        Triple(m2, 2100, "fork"), Triple(m2, 2200, "endgame"),
+    )
+    val csv = rows.withIndex().joinToString("\n", prefix = "PuzzleId,FEN,Moves,Rating,Themes\n") { (i, row) ->
+        val (position, rating, themes) = row // a position is "fen,moves"
+        "T$i,$position,$rating,$themes"
+    }
+    return CsvPuzzleRepository.load { csv.byteInputStream() }
+}
+
 /** In-memory [OpeningProgressRepository] for [dk.cocode.chess.viewmodel.OpeningViewModel] tests. */
 class FakeOpeningProgressRepository : OpeningProgressRepository {
     private val state = MutableStateFlow<Map<String, Int>>(emptyMap())
