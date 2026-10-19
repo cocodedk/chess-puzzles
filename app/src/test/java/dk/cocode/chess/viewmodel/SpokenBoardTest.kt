@@ -1,10 +1,11 @@
 package dk.cocode.chess.viewmodel
 
+import dk.cocode.chess.EnglishTexts
 import dk.cocode.chess.core.model.Square
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-class SpokenBoardTest {
+class SpokenBoardTest : EnglishTexts() {
     private fun sq(name: String) = Square.of(name)
 
     // Row 0 is rank 1: a white knight on e4 and g1, a black pawn on d5, a white king on e1, a black queen on d8.

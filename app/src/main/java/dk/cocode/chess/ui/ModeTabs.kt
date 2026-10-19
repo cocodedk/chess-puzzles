@@ -4,6 +4,8 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
+import dk.cocode.chess.R
 
 /** Which top-level mode is showing — switched by the [ModeTabs] row atop every screen. */
 enum class AppTab { PUZZLES, OPENINGS }
@@ -15,12 +17,12 @@ fun ModeTabs(selected: AppTab, onSelect: (AppTab) -> Unit) {
         Tab(
             selected = selected == AppTab.PUZZLES,
             onClick = { onSelect(AppTab.PUZZLES) },
-            text = { Text("Puzzles") },
+            text = { Text(stringResource(R.string.tab_puzzles)) },
         )
         Tab(
             selected = selected == AppTab.OPENINGS,
             onClick = { onSelect(AppTab.OPENINGS) },
-            text = { Text("Openings") },
+            text = { Text(stringResource(R.string.tab_openings)) },
         )
     }
 }

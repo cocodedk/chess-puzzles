@@ -1,5 +1,6 @@
 package dk.cocode.chess.viewmodel
 
+import dk.cocode.chess.EnglishTexts
 import dk.cocode.chess.FakeProgressRepository
 import dk.cocode.chess.core.model.PieceType
 import dk.cocode.chess.core.model.Square
@@ -19,7 +20,7 @@ import org.junit.Test
 
 /** The exact sentences a screen reader hears, one per event. Test puzzles: M1, PR, BK (easy), M2 (medium). */
 @OptIn(ExperimentalCoroutinesApi::class)
-class PuzzleAnnouncementTest {
+class PuzzleAnnouncementTest : EnglishTexts() {
     private val dispatcher = StandardTestDispatcher()
 
     @Before fun setUp() = Dispatchers.setMain(dispatcher)
@@ -27,7 +28,7 @@ class PuzzleAnnouncementTest {
     @After fun tearDown() = Dispatchers.resetMain()
 
     private fun vm(progress: Progress = Progress()) =
-        PuzzleViewModel(testPuzzleRepository(), FakeProgressRepository(progress)) { 100 }
+        PuzzleViewModel(testPuzzleRepository(), FakeProgressRepository(progress), this) { 100 }
 
     private fun PuzzleViewModel.said() = state.value.announcement
 
@@ -131,7 +132,7 @@ class PuzzleAnnouncementTest {
         val viewModel = vm()
         viewModel.tap("b7", "g7")
         viewModel.onReset()
-        assertEquals("Puzzle reset. White to move — checkmate in 1.", viewModel.said())
+        assertEquals("Puzzle restarted. White to move — checkmate in 1.", viewModel.said())
     }
 
     @Test fun aPromotionIsAnnouncedWhenThePieceIsChosen() = runTest(dispatcher) {
