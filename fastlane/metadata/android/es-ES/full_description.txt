@@ -1,0 +1,13 @@
+<p>Chess Puzzles es un entrenador de tácticas sin conexión, creado a partir de posiciones reales de la base de datos de puzles de Lichess. Encuentra la mejor jugada, sigue la línea táctica y mejora a tu propio ritmo.</p>
+
+<ul>
+<li><b>Objetivos claros.</b> Cada puzle te dice qué debes encontrar, por ejemplo, jaque mate en dos.</li>
+<li><b>Tres niveles de dificultad.</b> Elige puzles Fáciles, Medios o Difíciles.</li>
+<li><b>Pistas útiles.</b> Descubre la jugada que debes hacer cuando necesites un empujón.</li>
+<li><b>Práctica de aperturas.</b> Aprende veinte aperturas jugada a jugada y luego practícalas de memoria frente a respuestas seleccionadas.</li>
+<li><b>Progreso guardado.</b> Sigue en tu dispositivo los puzles resueltos, los resueltos sin pista y tus rachas.</li>
+<li><b>Temas claro y oscuro.</b> Usa el tablero que mejor se adapte a tu pantalla.</li>
+<li><b>Totalmente sin conexión.</b> Todos los puzles vienen incluidos en la app.</li>
+</ul>
+
+<p>La app no necesita cuenta. Nunca te pide ningún permiso y no puede usar internet. No contiene anuncios, analíticas ni rastreo. Los puzles proceden de la Lichess Open Database bajo CC0 1.0, y los nombres de las aperturas, de la lista de aperturas de Lichess, también bajo CC0 1.0.</p>
