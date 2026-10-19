@@ -1,0 +1,1 @@
+Mange flere opgaver: 9.000 i stedet for 2.400. Vælg, hvilken slags opgave du vil øve, for eksempel gaffel, binding eller forvandling, i den nye menu Motiv. Del stillingen på brættet med den nye knap Del stilling. Appen findes nu også på dansk, spansk og kinesisk, og bogstaverne og tallene på brættet kan stadig læses på markerede felter.
