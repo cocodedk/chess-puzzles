@@ -9,12 +9,15 @@ internal enum class AboutLink { Updates, Privacy, Website, Source, Issues, MadeB
 private const val REPO = "https://github.com/cocodedk/chess-puzzles"
 private const val SITE = "https://chess.cocode.dk/"
 
-/** Languages the site has a home page and a privacy page for, at `<site><code>/` and `<site><code>/privacy/`. */
-private val SITE_LANGUAGES = setOf("da", "es", "zh")
+/** Languages the site has a home page for, at `<site><code>/`. */
+private val HOME_LANGUAGES = setOf("da", "es", "fa", "zh")
 
-/** A site page in the app's language, or the English page when the site has no pages in that language. */
-private fun sitePage(language: String, path: String = ""): String =
-    if (language in SITE_LANGUAGES) "$SITE$language/$path" else "$SITE$path"
+/** Languages the site has a privacy page for, at `<site><code>/privacy/`; Persian has none. */
+private val PRIVACY_LANGUAGES = setOf("da", "es", "zh")
+
+/** A site page in the app's language, or the English page when the site has no page in that language. */
+private fun sitePage(languages: Set<String>, language: String, path: String = ""): String =
+    if (language in languages) "$SITE$language/$path" else "$SITE$path"
 
 /**
  * The web address behind each About button. [Updates][AboutLink.Updates] is the F-Droid page when the app
@@ -28,8 +31,8 @@ internal fun aboutUrl(
 ): String = when (link) {
     AboutLink.Updates ->
         if (liveOnFdroid) "https://f-droid.org/packages/dk.cocode.chess/" else "$REPO/releases/latest"
-    AboutLink.Privacy -> sitePage(language, "privacy/")
-    AboutLink.Website -> sitePage(language)
+    AboutLink.Privacy -> sitePage(PRIVACY_LANGUAGES, language, "privacy/")
+    AboutLink.Website -> sitePage(HOME_LANGUAGES, language)
     AboutLink.Source -> REPO
     AboutLink.Issues -> "$REPO/issues"
     AboutLink.MadeBy -> "https://cocode.dk"

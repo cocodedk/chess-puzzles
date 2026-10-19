@@ -51,8 +51,12 @@ class AboutLinksTest {
         assertEquals("https://chess.cocode.dk/zh/privacy/", aboutUrl(AboutLink.Privacy, "zh"))
     }
 
+    @Test fun persianGetsItsOwnWebsite() {
+        assertEquals("https://chess.cocode.dk/fa/", aboutUrl(AboutLink.Website, "fa"))
+    }
+
     @Test fun aLanguageTheSiteLacksGetsTheEnglishWebsite() {
-        assertEquals("https://chess.cocode.dk/", aboutUrl(AboutLink.Website, "fa"))
+        assertEquals("https://chess.cocode.dk/", aboutUrl(AboutLink.Website, "fr"))
     }
 
     @Test fun sourceAndIssuesPointAtTheAppsOwnPagesInEveryLanguage() {
