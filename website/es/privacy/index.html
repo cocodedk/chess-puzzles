@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Política de privacidad | Chess Puzzles</title>
+  <meta name="description" content="Política de privacidad de Chess Puzzles (dk.cocode.chess): la app no recoge datos personales, nunca te pide un permiso, no puede usar internet y guarda tu progreso en tu dispositivo." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://chess.cocode.dk/es/privacy/" />
+  <link rel="alternate" hreflang="en" href="https://chess.cocode.dk/privacy/" />
+  <link rel="alternate" hreflang="da" href="https://chess.cocode.dk/da/privacy/" />
+  <link rel="alternate" hreflang="es" href="https://chess.cocode.dk/es/privacy/" />
+  <link rel="alternate" hreflang="zh-Hans" href="https://chess.cocode.dk/zh/privacy/" />
+  <link rel="alternate" hreflang="x-default" href="https://chess.cocode.dk/privacy/" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="stylesheet" href="/shared-blocks.css">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0e1014; --bg-2: #161922; --surface: #1d212c; --border: #2a2f3c;
+      --text: #eceef2; --muted: #98a0ad; --gold: #f0b95c; --gold-2: #d99b3a;
+      --green: #6db58c; --radius: 14px;
+      --font: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; font-family: var(--font); color: var(--text); font-size: 17px; line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      background:
+        radial-gradient(1100px 600px at 80% -10%, rgba(240,185,92,0.10), transparent 60%),
+        radial-gradient(900px 500px at -10% 10%, rgba(109,181,140,0.08), transparent 55%),
+        var(--bg);
+    }
+    a { color: var(--gold); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .container { width: min(760px, 92vw); margin: 0 auto; padding: 40px 0 64px; }
+    .back { display: inline-block; margin-bottom: 22px; color: var(--muted); font-size: 0.95rem; }
+    .back:hover { color: var(--gold); }
+    .card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: clamp(24px, 5vw, 44px);
+    }
+    h1 { font-size: clamp(1.9rem, 5vw, 2.6rem); letter-spacing: -0.01em; margin: 0 0 6px; color: var(--text); }
+    h1 .accent { color: var(--gold); }
+    h2 { font-size: 1.25rem; letter-spacing: -0.01em; margin: 30px 0 8px; color: var(--gold); }
+    .meta { color: var(--muted); font-size: 0.9rem; margin: 0 0 6px; }
+    .meta code { color: var(--green); }
+    p, li { color: var(--text); }
+    ul { padding-inline-start: 1.25em; }
+    li { margin: 5px 0; }
+    strong { color: var(--gold); }
+    /* Same left edge and column as the English page, so the frame lines up at phone and desktop widths. */
+    cocode-head, cocode-foot { --cocode-max: calc(760px + 8vw); --cocode-gutter: 4vw; }
+    .frame { width: min(760px, 92vw); padding: 0; }
+    main:focus { outline: none; }
+  </style>
+  <link rel="stylesheet" href="https://brand.cocode.dk/v1.css">
+  <script type="module" src="https://brand.cocode.dk/v1.js"></script>
+</head>
+<body>
+
+<!-- The cocode.dk family frame. Without JavaScript its child shows instead: a way home. -->
+<cocode-head project="Chess Puzzles" accent="#f0b95c" on-accent="#1a1205" dark>
+  <a href="https://cocode.dk">cocode.dk</a>
+</cocode-head>
+
+<header class="site-head">
+  <div class="frame">
+<!-- cocode-apps:nav:start -->
+<link rel="stylesheet" href="/css/cocode-nav.css">
+<a class="skip" href="#main">Saltar al contenido</a>
+<nav class="cocode-nav" aria-label="Chess Puzzles">
+  <a class="brand" href="/es/" data-nav="home"><img src="/img/icon.png" alt="" width="32" height="32">Chess Puzzles</a>
+  <a href="/es/#how" data-nav="how">Cómo funciona</a>
+  <a href="/es/#install" data-nav="install">Instalar</a>
+  <a href="/es/privacy/" data-nav="privacy" aria-current="page">Privacidad</a>
+  <a href="/privacy/" hreflang="en" lang="en" data-nav="lang">English</a>
+  <a href="https://cocode.dk/" data-nav="more">Más apps</a>
+</nav>
+<!-- cocode-apps:nav:end -->
+  </div>
+</header>
+
+  <main class="container" id="main" tabindex="-1">
+    <a class="back" href="/es/">&larr; Chess Puzzles</a>
+    <div class="card">
+      <section lang="es">
+        <h1>Política de <span class="accent">privacidad</span></h1>
+        <p class="meta">Chess Puzzles &middot; <code>dk.cocode.chess</code></p>
+        <p class="meta">Última actualización: 7 de octubre de 2026</p>
+
+        <p><strong>Chess Puzzles no recoge, transmite ni comparte ningún dato personal.</strong>
+        Es un entrenador de tácticas de ajedrez que funciona por completo en tu dispositivo. No necesita
+        cuenta ni registro, y la propia app no tiene acceso a internet.</p>
+
+        <h2>Tu progreso se queda en tu dispositivo</h2>
+        <p>Para que puedas retomar donde lo dejaste, la app guarda una pequeña cantidad de datos en tu dispositivo:
+        el número de puzles que has resuelto, cuántos de ellos resolviste sin pista, tu racha actual y tu
+        mejor racha de puzles seguidos, tu racha de días (cuántos días seguidos has resuelto un puzle) y la
+        fecha en que resolviste el último, en qué puzle estás, cuántas veces has jugado cada apertura de
+        memoria sin cometer ningún error, y tu elección de tema (Sistema, Claro u Oscuro). Todo esto se guarda en un almacén de datos privado en tu propio teléfono.
+        La app nunca lo envía a nosotros ni a terceros. Al eliminar la app o borrar sus datos se elimina
+        la copia de tu teléfono; una copia de seguridad del dispositivo (consulta más abajo) puede conservar una copia aparte.</p>
+
+        <h2>Sin internet, sin rastreo</h2>
+        <ul>
+          <li>La app <strong>nunca te pide un permiso</strong> y <strong>no tiene permiso de internet</strong>, así que no puede enviar tus datos a ningún sitio. Sí declara un permiso propio, añadido por una biblioteca de Android, que Android concede solo a las apps firmadas con la misma clave que esta. No da acceso a tus datos, a tu teléfono ni a internet, y nunca se te pide que lo apruebes.</li>
+          <li>No usamos <strong>ninguna analítica, ningún informe de fallos ni ninguna publicidad</strong>.</li>
+          <li>No hay <strong>SDK de rastreo de terceros, ni cookies, ni identificadores publicitarios</strong>.</li>
+          <li>No hay <strong>cuenta ni registro</strong>; nunca nos facilitas ninguna información.</li>
+        </ul>
+
+        <h2>Los puzles</h2>
+        <p>Todos los puzles vienen incluidos en la app y están seleccionados de la
+        <a href="https://database.lichess.org" rel="noopener" target="_blank">Lichess Open Database</a> (CC0 1.0).
+        Resolver puzles ocurre por completo sin conexión y no crea ningún registro en ningún sitio, salvo el progreso
+        guardado en tu propio dispositivo.</p>
+
+        <h2>Copia de seguridad del dispositivo</h2>
+        <p>Si tienes activada la copia de seguridad automática de Android o la copia de seguridad de la cuenta de Google en tu dispositivo, el sistema
+        operativo puede incluir los datos locales de esta app (tu progreso y tu elección de tema) en tu propia
+        copia de seguridad personal de Google, y puede restaurarlos si reinstalas la app o configuras un teléfono nuevo. Esa copia es
+        independiente de la que hay en tu teléfono, así que eliminar la app no la elimina. Que se haga o no una copia de seguridad depende del ajuste de copia de seguridad de la app y de los ajustes de tu dispositivo y de tu cuenta. No tenemos acceso a la copia de seguridad. Consulta la
+        <a href="https://policies.google.com/privacy" rel="noopener" target="_blank">Política de privacidad de Google</a> para más información.</p>
+
+        <h2>Enlaces externos</h2>
+        <p>La pantalla «Acerca de» de la app tiene botones que llevan a páginas web: el sitio web de la app y esta política de privacidad
+        (chess.cocode.dk), la página de la app en F-Droid, el código fuente y el sistema de seguimiento de incidencias en
+        <a href="https://github.com/cocodedk/chess-puzzles" rel="noopener" target="_blank">GitHub</a>, el sitio web del desarrollador
+        (<a href="https://cocode.dk" rel="noopener" target="_blank">cocode.dk</a>) y el perfil de LinkedIn del desarrollador.
+        Una página solo se abre cuando tocas su botón. La app entrega la dirección a Android, que la abre en tu
+        navegador o en otra app que gestione ese tipo de enlaces. La propia app nunca se conecta a esos sitios,
+        no les envía nada y no recibe nada de ellos. Una vez abierta una página, pertenece a ese sitio y se aplica la
+        política de privacidad propia de ese sitio.</p>
+
+        <h2>Niños</h2>
+        <p>La app no recoge datos a sabiendas de nadie, incluidos los niños.</p>
+
+        <h2>Cambios</h2>
+        <p>Si esta política cambia, la versión actualizada se publicará en esta página con una nueva fecha de «última actualización».</p>
+
+        <h2>Contacto</h2>
+        <p>Las preguntas sobre esta política pueden enviarse a
+        <a href="mailto:bb@cocode.dk">bb@cocode.dk</a> (CoCode.dk, desarrollador: Babak Bandpey).</p>
+      </section>
+    </div>
+  </main>
+
+  <div class="site-foot">
+    <div class="frame">
+<!-- cocode-apps:footer:start -->
+<footer class="cocode-footer">
+  <a href="https://github.com/cocodedk/chess-puzzles">Código fuente</a> ·
+  <a href="/es/privacy/">Privacidad</a> ·
+  Licencia: Apache-2.0 ·
+  <a href="https://cocode.dk/">Hecho por Cocode (cocode.dk)</a>
+</footer>
+<!-- cocode-apps:footer:end -->
+    </div>
+  </div>
+
+<cocode-foot repo="cocodedk/chess-puzzles" dark>
+  <a href="https://cocode.dk">cocode.dk</a>
+</cocode-foot>
+</body>
+</html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- SEO keywords:
+       primary:   国际象棋谜题 安卓
+       secondary: 国际象棋战术训练, lichess谜题, 离线国际象棋应用, 国际象棋开局训练
+       intent:    transactional (download) + informational
+  -->
+  <title>Chess Puzzles：Android国际象棋战术训练器 · Cocode</title>
+  <meta name="description" content="在Android上解答来自Lichess的真实国际象棋谜题，并练习20种开局。每道谜题都会报出目标，支持浅色或深色模式，进度离线保存，免费开源。">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://chess.cocode.dk/zh/">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+
+  <link rel="alternate" hreflang="en" href="https://chess.cocode.dk/">
+  <link rel="alternate" hreflang="da" href="https://chess.cocode.dk/da/">
+  <link rel="alternate" hreflang="fa" href="https://chess.cocode.dk/fa/">
+  <link rel="alternate" hreflang="es" href="https://chess.cocode.dk/es/">
+  <link rel="alternate" hreflang="zh-Hans" href="https://chess.cocode.dk/zh/">
+  <link rel="alternate" hreflang="x-default" href="https://chess.cocode.dk/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Chess Puzzles">
+  <meta property="og:title" content="Chess Puzzles：在Android上训练战术">
+  <meta property="og:description" content="Android上的真实Lichess谜题和开局练习，每道谜题都会报出目标。浅色或深色模式，保持连续解题纪录，离线记录进度。免费开源。">
+  <meta property="og:url" content="https://chess.cocode.dk/zh/">
+  <meta property="og:image" content="https://chess.cocode.dk/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Chess Puzzles显示一道尚未解开的一步将死谜题，对手的上一步棋已高亮标出">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:locale:alternate" content="en_US">
+  <meta property="og:locale:alternate" content="da_DK">
+  <meta property="og:locale:alternate" content="fa_IR">
+  <meta property="og:locale:alternate" content="es_ES">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Chess Puzzles：在Android上训练战术">
+  <meta name="twitter:description" content="Android上的真实Lichess谜题和开局练习，每道谜题都会报出目标，支持浅色与深色模式、连续解题纪录和离线游玩。">
+  <meta name="twitter:image" content="https://chess.cocode.dk/og.png">
+  <meta name="twitter:image:alt" content="Chess Puzzles显示一道尚未解开的一步将死谜题，对手的上一步棋已高亮标出">
+
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="https://brand.cocode.dk/v1.css">
+  <script type="module" src="https://brand.cocode.dk/v1.js"></script>
+  <link rel="stylesheet" href="/shared-blocks.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "MobileApplication",
+    "name": "Chess Puzzles",
+    "description": "在Android上解答真实的Lichess谜题，练习20种常见开局。每道谜题都会报出目标，支持浅色或深色模式，连续解题纪录和进度离线保存。",
+    "url": "https://chess.cocode.dk/zh/",
+    "operatingSystem": "Android 7.0+",
+    "applicationCategory": "GameApplication",
+    "inLanguage": "zh-Hans",
+    "downloadUrl": "https://github.com/cocodedk/chess-puzzles/releases/latest/download/ChessPuzzles.apk",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "author": {
+      "@type": "Person",
+      "name": "Babak Bandpey",
+      "url": "https://cocode.dk",
+      "sameAs": ["https://linkedin.com/in/babakbandpey", "https://github.com/cocodedk"]
+    },
+    "codeRepository": "https://github.com/cocodedk/chess-puzzles",
+    "license": "https://www.apache.org/licenses/LICENSE-2.0"
+  }
+  </script>
+</head>
+<body>
+
+<!-- The cocode.dk family frame. Without JavaScript its children show instead: a way
+     home, the About link and the language links. -->
+<cocode-head project="Chess Puzzles" accent="#f0b95c" on-accent="#1a1205" dark links="关于:about/">
+  <a href="https://cocode.dk">cocode.dk</a>
+  <a href="about/">关于</a>
+  <a href="../" hreflang="en" lang="en">English</a>
+  <a href="../da/" hreflang="da" lang="da">Dansk</a>
+  <a href="../fa/" hreflang="fa" lang="fa">فارسی</a>
+  <a href="../es/" hreflang="es" lang="es">Español</a>
+</cocode-head>
+
+<header class="site-head">
+  <div class="frame">
+<!-- cocode-apps:nav:start -->
+<link rel="stylesheet" href="/css/cocode-nav.css">
+<a class="skip" href="#main">跳到正文</a>
+<nav class="cocode-nav" aria-label="Chess Puzzles">
+  <a class="brand" href="/zh/" data-nav="home" aria-current="page"><img src="/img/icon.png" alt="" width="32" height="32">Chess Puzzles</a>
+  <a href="/zh/#how" data-nav="how">玩法说明</a>
+  <a href="/zh/#install" data-nav="install">安装</a>
+  <a href="/zh/privacy/" data-nav="privacy">隐私</a>
+  <a href="/" hreflang="en" lang="en" data-nav="lang">English</a>
+  <a href="https://cocode.dk/" data-nav="more">更多应用</a>
+</nav>
+<!-- cocode-apps:nav:end -->
+  </div>
+</header>
+
+  <main id="main" tabindex="-1">
+    <section class="hero">
+      <div class="wrap">
+        <img class="mark-lg" src="../favicon.svg" alt="Chess Puzzles标志：一块棋盘，致胜的一步被高亮标出" width="76" height="76" fetchpriority="high">
+        <h1>一步一步，磨练你的<span class="accent">国际象棋战术</span></h1>
+        <p class="lede">在你的Android手机上解答来自Lichess数据库的数千道真实谜题。找出解法的每一步棋，对手会自动应对。</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#install">获取应用</a>
+          <a class="btn btn-ghost" href="https://github.com/cocodedk/chess-puzzles">在GitHub上查看</a>
+        </div>
+        <p class="sub">免费开源 · Android 7.0+ · 无需账号，完全离线</p>
+      </div>
+    </section>
+
+    <section id="features">
+      <div class="wrap">
+        <h2>为专注练习而生</h2>
+        <p class="intro">没有繁琐的菜单，也无需注册。打开应用，你就已经在解题了。</p>
+        <div class="grid">
+          <article class="card"><div class="ico">🧩</div><h3>真实的Lichess谜题</h3><p>数千道战术题，选自Lichess开放数据库（CC0）。</p></article>
+          <article class="card"><div class="ico">🎯</div><h3>找出解法</h3><p>每道谜题都会报出目标，例如“两步将死”或“取得胜势”。找出解法的每一步棋，每走一步，对手都会应对。</p></article>
+          <article class="card"><div class="ico">🎚️</div><h3>选择你的难度</h3><p>简单、中等或困难，轻点一下即可在不同等级分区间之间切换。</p></article>
+          <article class="card"><div class="ico">♞</div><h3>开局练习</h3><p>逐步学习二十种开局，然后面对选定的应对，凭记忆练习。</p></article>
+          <article class="card"><div class="ico">🔥</div><h3>连续纪录与进度</h3><p>你的已解题数、连续解题纪录和连续天数都保存在手机里，下次打开就能接着上次继续。</p></article>
+          <article class="card"><div class="ico">📴</div><h3>完全离线</h3><p>无需账号，无需网络。所有谜题都内置在应用中。</p></article>
+          <article class="card"><div class="ico">🌗</div><h3>浅色与深色主题</h3><p>跟随手机的浅色或深色设置，也可以用主题按钮手动切换为浅色或深色。深色主题会调暗棋盘，让对弈更舒适。</p></article>
+          <article class="card"><div class="ico">👆</div><h3>点按或拖动</h3><p>依次点按棋子的起始格和目标格即可走棋，也可以直接拖动棋子。</p></article>
+          <article class="card"><div class="ico">⭐</div><h3>免费开源</h3><p>采用Apache-2.0许可证。无广告，无追踪。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="how">
+      <div class="wrap">
+        <h2>玩法说明</h2>
+        <div class="steps">
+          <div class="step"><div class="n"></div><div><h3>打开一道谜题</h3><p>屏幕上会出现一局真实对局中的局面，并显示它的目标，例如两步将死、取得胜势或挽救棋局。你执行轮到走棋的一方。</p></div></div>
+          <div class="step"><div class="n"></div><div><h3>找出最佳着法</h3><p>点按一枚棋子，再点按它的目标格，或者把棋子拖过去。如果你的走法不是最佳，可以再试一次。</p></div></div>
+          <div class="step"><div class="n"></div><div><h3>查看对手的应对</h3><p>每走对一步，对手就会自动应对。继续走你这一方，直到谜题解开。</p></div></div>
+          <div class="step"><div class="n"></div><div><h3>保持你的连续纪录</h3><p>接着解下一道。你的进度保存在手机上。</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="install">
+      <div class="wrap">
+        <h2>获取应用</h2>
+        <p class="intro">免费开源，适用于Android 7.0及更高版本。可从F-Droid安装，也可以从GitHub下载Android安装文件（APK）。</p>
+        <!-- cocode-apps:install:start -->
+<ul class="install" role="list">
+  <li><a class="fdroid" href="https://f-droid.org/packages/dk.cocode.chess/"><img src="/img/get-it-on-fdroid-en.png" alt="在F-Droid上获取" width="240" height="93"></a></li>
+  <li><a href="https://github.com/cocodedk/chess-puzzles/releases/latest/download/ChessPuzzles.apk">从GitHub下载Android安装文件（APK）</a></li>
+  <li><a href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/cocodedk/chess-puzzles">将应用添加到Obtainium，它能让应用保持最新</a></li>
+</ul>
+<!-- cocode-apps:install:end -->
+      </div>
+    </section>
+
+    <section id="screens">
+      <div class="wrap">
+        <h2>实际效果</h2>
+        <div class="shots">
+          <figure class="phone"><img src="../screenshot-puzzle.png" alt="一道国际象棋谜题：白方要找出致胜的一步" width="1080" height="2400" loading="lazy"><figcaption>待解的谜题</figcaption></figure>
+          <figure class="phone"><img src="../screenshot-night.png" alt="深色主题：棋盘调暗、棋子清晰易辨的国际象棋谜题" width="1080" height="2400" loading="lazy"><figcaption>深色主题，呵护双眼</figcaption></figure>
+          <figure class="phone"><img src="../screenshot-solved.png" alt="一道已解开的国际象棋谜题，连续纪录计数已更新" width="1080" height="2400" loading="lazy"><figcaption>已解开，你的连续纪录也已保存</figcaption></figure>
+          <figure class="phone"><img src="../screenshot-openings.png" alt="在“开局”标签页中逐步学习Italian Game" width="1080" height="2400" loading="lazy"><figcaption>开局：先学习，再凭记忆练习</figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <section id="tech">
+      <div class="wrap">
+        <h2>开源</h2>
+        <p class="intro">源代码是公开的，你可以查阅，也可以自己构建这个应用。自动化测试会运行除屏幕绘制函数之外的每一行代码，另有专门的测试检查这些屏幕。<a href="https://github.com/cocodedk/chess-puzzles">阅读源代码。</a></p>
+        <div class="tech">
+          <span class="tag">Kotlin</span>
+          <span class="tag">Jetpack Compose</span>
+          <span class="tag">Android 7.0+</span>
+          <span class="tag">chesslib</span>
+          <span class="tag">行覆盖率100%（不含屏幕绘制）</span>
+          <span class="tag">Apache-2.0</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="site-foot">
+    <div class="frame">
+      <p>谜题来自<a href="https://database.lichess.org" target="_blank" rel="noreferrer">Lichess开放数据库</a>（CC0 1.0）。</p>
+<!-- cocode-apps:footer:start -->
+<footer class="cocode-footer">
+  <a href="https://github.com/cocodedk/chess-puzzles">源代码</a> ·
+  <a href="/zh/privacy/">隐私</a> ·
+  许可证：Apache-2.0 ·
+  <a href="https://cocode.dk/">由Cocode（cocode.dk）制作</a>
+</footer>
+<!-- cocode-apps:footer:end -->
+    </div>
+  </div>
+
+<cocode-foot repo="cocodedk/chess-puzzles" dark>
+  <a href="https://cocode.dk">cocode.dk</a>
+</cocode-foot>
+</body>
+</html>

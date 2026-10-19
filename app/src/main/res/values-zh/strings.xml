@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Chess Puzzles</string>
+    <string name="no_puzzles">没有可用的谜题</string>
+
+    <!-- The two tabs on every screen. -->
+    <string name="tab_puzzles">谜题</string>
+    <string name="tab_openings">开局</string>
+
+    <string name="stat_day">连续天数</string>
+    <string name="stat_solved">已解决</string>
+    <string name="stat_hint_free">未用提示解决</string>
+    <string name="stat_streak">当前连胜</string>
+    <string name="stat_best">最佳连胜</string>
+    <!-- What a screen reader says for one stat: its label, then its number. -->
+    <string name="stat_description">%1$s，%2$d</string>
+
+    <!-- The puzzle screen. -->
+    <string name="puzzle_title">第%1$d个谜题，共%2$d个</string>
+    <string name="puzzle_rating">难度分 %1$d</string>
+    <string name="puzzle_hint">提示</string>
+    <string name="puzzle_reset">重新开始</string>
+    <string name="puzzle_previous">上一个谜题</string>
+    <string name="puzzle_next">下一个谜题</string>
+    <string name="band_easy">简单</string>
+    <string name="band_medium">中等</string>
+    <string name="band_hard">困难</string>
+    <!-- The theme button says what a tap does; a screen reader also hears the theme in use now. -->
+    <string name="theme_auto">主题：跟随系统</string>
+    <string name="theme_light">主题：浅色</string>
+    <string name="theme_dark">主题：深色</string>
+    <string name="theme_to_light">使用浅色主题</string>
+    <string name="theme_to_dark">使用深色主题</string>
+    <string name="theme_to_auto">跟随系统主题</string>
+    <string name="feedback_correct">正确，继续</string>
+    <string name="feedback_solved">已解决 ✓</string>
+    <string name="feedback_wrong">不是最佳走法，再试一次</string>
+    <string name="promote_to">把兵升变为</string>
+
+    <!-- What a puzzle asks: the side to move, then the goal. -->
+    <string name="prompt_to_move">%1$s走棋：%2$s</string>
+    <string name="prompt_solved">已解决！</string>
+    <string name="goal_mate">%1$d步将死</string>
+    <string name="goal_defense">找出最佳防守</string>
+    <string name="goal_save">挽救这盘棋</string>
+    <string name="goal_winning">取得胜势</string>
+    <string name="goal_upper_hand">占据上风</string>
+    <string name="goal_best_move">找出最佳走法</string>
+    <string name="side_white">白方</string>
+    <string name="side_black">黑方</string>
+
+    <!-- The openings screens. -->
+    <string name="opening_back">返回</string>
+    <string name="opening_code">开局代码 %1$s</string>
+    <plurals name="opening_runs">
+        <item quantity="other">%1$d次无失误完成</item>
+    </plurals>
+    <string name="opening_row_description">%1$s，%2$s</string>
+    <string name="mode_learn">学习</string>
+    <string name="mode_practise">练习</string>
+    <string name="learn_previous">上一步</string>
+    <string name="learn_next">下一步</string>
+    <string name="group_white">执白</string>
+    <string name="group_black_e4">执黑，对阵 1.e4</string>
+    <string name="group_black_d4">执黑，对阵 1.d4</string>
+    <string name="practise_prompt">凭记忆走出 %1$s 的走法。</string>
+    <string name="practise_again">重新开始</string>
+    <string name="practise_book_move">正确的开局走法 ✓</string>
+    <string name="practise_not_book">这不是该开局要学的走法。请走 %1$s。</string>
+    <string name="practise_not_book_fallback">这不是该开局要学的走法。请走高亮的走法。</string>
+    <string name="practise_complete_clean">变例已完成 ✓</string>
+    <string name="practise_complete">变例已完成。请再试一次，争取不出错。</string>
+
+    <!-- What a screen reader says for a piece: each one by name, and its colour. -->
+    <string name="spoken_pawn">兵</string>
+    <string name="spoken_knight">马</string>
+    <string name="spoken_bishop">象</string>
+    <string name="spoken_rook">车</string>
+    <string name="spoken_queen">后</string>
+    <string name="spoken_king">王</string>
+    <string name="spoken_white_piece">白%1$s</string>
+    <string name="spoken_black_piece">黑%1$s</string>
+
+    <!-- A board square, read as the square, its contents, then any of these states. -->
+    <string name="spoken_empty">空格</string>
+    <string name="spoken_selected">已选中</string>
+    <string name="spoken_legal_move">合法走法</string>
+    <string name="spoken_last_move">上一步走法</string>
+    <string name="spoken_hint">提示</string>
+
+    <!-- A move in words. The target and any disambiguation are squares and files as they are written. -->
+    <string name="spoken_castling_kingside">王翼王车易位</string>
+    <string name="spoken_castling_queenside">后翼王车易位</string>
+    <string name="spoken_pawn_move">兵到%1$s</string>
+    <string name="spoken_pawn_takes">%1$s线兵吃%2$s</string>
+    <string name="spoken_piece_move">%1$s到%2$s</string>
+    <string name="spoken_piece_move_from">%1$s%2$s到%3$s</string>
+    <string name="spoken_piece_takes">%1$s吃%2$s</string>
+    <string name="spoken_piece_takes_from">%1$s%2$s吃%3$s</string>
+    <string name="spoken_promotes">%1$s，升变为%2$s</string>
+    <string name="spoken_check">%1$s，将军</string>
+    <string name="spoken_checkmate">%1$s，将死</string>
+
+    <!-- Sentences a screen reader says after an event on the puzzle screen. -->
+    <string name="sentence_selection_cleared">已取消选择。</string>
+    <string name="sentence_no_moves">%1$s的棋子无法移动。</string>
+    <string name="sentence_selected">已选中%1$s%2$s。可走：%3$s。</string>
+    <string name="sentence_hint">提示：%1$s%2$s走到%3$s。</string>
+    <string name="sentence_wrong">你走了%1$s。不是最佳走法，再试一次。</string>
+    <string name="sentence_correct">正确。你走了%1$s。%2$s走了%3$s。</string>
+    <string name="sentence_reset">谜题已重新开始。%1$s。</string>
+    <string name="sentence_solved">已解决。你走了%1$s。</string>
+    <string name="sentence_puzzle_shown">第%1$d个谜题，共%2$d个，难度分%3$d。%4$s走了%5$s。%6$s。</string>
+
+    <!-- Sentences a screen reader says on the openings screens. -->
+    <string name="sentence_start_position">起始局面。</string>
+    <string name="sentence_opened">%1$s。学习。%2$s</string>
+    <string name="sentence_learn_chosen">学习。%1$s</string>
+    <string name="sentence_learn_move">第%1$d步，%2$s：%3$s。</string>
+    <string name="sentence_line_chosen">变例：%1$s。%2$s</string>
+    <string name="sentence_practise">练习。%1$s</string>
+    <string name="sentence_played_by">%1$s走了%2$s。</string>
+    <string name="sentence_book_move">正确的开局走法。你走了%1$s。</string>
+    <string name="sentence_not_book">你走了%1$s。这不是该开局要学的走法。请走%2$s。</string>
+    <string name="sentence_line_complete">变例已完成。</string>
+    <string name="sentence_line_complete_unclean">变例已完成。请再试一次，争取不出错。</string>
+    <string name="spoken_line_name">第%1$d步，%2$s：%3$s</string>
+    <string name="spoken_move_list_entry">%1$d. %2$s.</string>
+    <!-- An opening's code (its catalogue number), then how many runs without mistakes, meaning lines played from memory with no wrong move, it has had. -->
+    <plurals name="opening_code_runs">
+        <item quantity="other">开局代码 %1$s，%2$d次无失误完成</item>
+    </plurals>
+
+    <!-- The About screen: the section titles follow the cocode-apps standard, in this order. -->
+    <string name="about">关于</string>
+    <string name="about_back">返回</string>
+    <string name="about_version">版本 %1$s</string>
+    <string name="about_check_updates">查看最新版本</string>
+    <string name="about_check_updates_note">打开本应用的页面，最新版本发布在那里。应用本身从不检查更新。</string>
+    <string name="about_section_what">应用功能</string>
+    <string name="about_what">Chess Puzzles 帮助你练习国际象棋战术。每道谜题都来自 Lichess 谜题数据库，会告诉你要找什么（例如 2 步将死），并附有显示难易程度的难度分。你还可以逐步学习常见开局，再凭记忆走出来。所有内容都保存在你的手机上，所以应用无需联网也能使用。</string>
+    <string name="about_section_privacy">隐私</string>
+    <string name="about_privacy_no_data">Chess Puzzles 不会收集、发送或分享任何个人数据。</string>
+    <string name="about_privacy_no_permissions">它从不向你申请任何权限，也无法使用互联网。</string>
+    <string name="about_privacy_no_tracking">没有账号，没有广告，没有数据分析，也没有崩溃报告。</string>
+    <string name="about_privacy_on_device">你的进度保存在你的手机上。应用本身绝不会把它发送到任何地方。</string>
+    <string name="about_privacy_link">阅读隐私政策</string>
+    <string name="about_section_links">链接</string>
+    <string name="about_website">打开网站</string>
+    <string name="about_source">在 GitHub 上查看源代码</string>
+    <string name="about_report">在 GitHub 上报告问题</string>
+    <string name="about_credits">致谢与许可证</string>
+    <string name="about_credits_body">作者：Babak Bandpey。\n谜题：Lichess Open Database（CC0 1.0）。\n国际象棋规则：chesslib（Apache-2.0）。</string>
+    <string name="about_license">基于 Apache License 2.0 发布。© 2026 Cocode。</string>
+    <string name="about_section_made_by">Cocode 出品</string>
+    <string name="about_made_by">Cocode 出品（cocode.dk）</string>
+    <string name="about_linkedin">Babak Bandpey 的 LinkedIn</string>
+
+    <!-- The spoken names of the promotion choices, for TalkBack. -->
+    <string name="piece_queen">后</string>
+    <string name="piece_rook">车</string>
+    <string name="piece_bishop">象</string>
+    <string name="piece_knight">马</string>
+</resources>

@@ -25,6 +25,8 @@ _From left to right: light mode, night mode, a solved puzzle, and opening practi
 
 - [English](https://chess.cocode.dk/)
 - [Dansk (Danish)](https://chess.cocode.dk/da/)
+- [Español (Spanish)](https://chess.cocode.dk/es/)
+- [中文 (Chinese)](https://chess.cocode.dk/zh/)
 - [فارسی (Persian)](https://chess.cocode.dk/fa/)
 
 ## Features

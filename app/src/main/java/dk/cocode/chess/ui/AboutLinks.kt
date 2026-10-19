@@ -10,7 +10,7 @@ private const val REPO = "https://github.com/cocodedk/chess-puzzles"
 private const val SITE = "https://chess.cocode.dk/"
 
 /** Languages the site has a home page and a privacy page for, at `<site><code>/` and `<site><code>/privacy/`. */
-private val SITE_LANGUAGES = setOf("da")
+private val SITE_LANGUAGES = setOf("da", "es", "zh")
 
 /** A site page in the app's language, or the English page when the site has no pages in that language. */
 private fun sitePage(language: String, path: String = ""): String =

@@ -44,12 +44,19 @@ class AboutLinksTest {
         assertEquals("https://chess.cocode.dk/da/", aboutUrl(AboutLink.Website, "da"))
     }
 
+    @Test fun spanishAndChineseGetTheirOwnWebsiteAndPrivacyPages() {
+        assertEquals("https://chess.cocode.dk/es/", aboutUrl(AboutLink.Website, "es"))
+        assertEquals("https://chess.cocode.dk/es/privacy/", aboutUrl(AboutLink.Privacy, "es"))
+        assertEquals("https://chess.cocode.dk/zh/", aboutUrl(AboutLink.Website, "zh"))
+        assertEquals("https://chess.cocode.dk/zh/privacy/", aboutUrl(AboutLink.Privacy, "zh"))
+    }
+
     @Test fun aLanguageTheSiteLacksGetsTheEnglishWebsite() {
         assertEquals("https://chess.cocode.dk/", aboutUrl(AboutLink.Website, "fa"))
     }
 
     @Test fun sourceAndIssuesPointAtTheAppsOwnPagesInEveryLanguage() {
-        for (language in listOf("en", "da", "fa")) {
+        for (language in listOf("en", "da", "es", "zh", "fa")) {
             assertEquals("https://github.com/cocodedk/chess-puzzles", aboutUrl(AboutLink.Source, language))
             assertEquals("https://github.com/cocodedk/chess-puzzles/issues", aboutUrl(AboutLink.Issues, language))
         }
@@ -62,7 +69,7 @@ class AboutLinksTest {
 
     @Test fun everyLinkIsSecure() {
         for (live in listOf(true, false)) {
-            for (language in listOf("en", "da", "fa")) {
+            for (language in listOf("en", "da", "es", "zh", "fa")) {
                 AboutLink.entries.forEach { assertTrue(aboutUrl(it, language, live).startsWith("https://")) }
             }
         }

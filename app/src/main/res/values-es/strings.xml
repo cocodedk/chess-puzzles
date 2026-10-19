@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Chess Puzzles</string>
+    <string name="no_puzzles">No hay puzles disponibles</string>
+
+    <!-- The two tabs on every screen. -->
+    <string name="tab_puzzles">Puzles</string>
+    <string name="tab_openings">Aperturas</string>
+
+    <string name="stat_day">Días seguidos</string>
+    <string name="stat_solved">Resueltos</string>
+    <string name="stat_hint_free">Resueltos sin pista</string>
+    <string name="stat_streak">Racha actual</string>
+    <string name="stat_best">Mejor racha</string>
+    <!-- What a screen reader says for one stat: its label, then its number. -->
+    <string name="stat_description">%1$s, %2$d</string>
+
+    <!-- The puzzle screen. -->
+    <string name="puzzle_title">Puzle %1$d de %2$d</string>
+    <string name="puzzle_rating">Rating %1$d</string>
+    <string name="puzzle_hint">Pista</string>
+    <string name="puzzle_reset">Reiniciar</string>
+    <string name="puzzle_previous">Puzle anterior</string>
+    <string name="puzzle_next">Puzle siguiente</string>
+    <string name="band_easy">Fácil</string>
+    <string name="band_medium">Medio</string>
+    <string name="band_hard">Difícil</string>
+    <!-- The theme button says what a tap does; a screen reader also hears the theme in use now. -->
+    <string name="theme_auto">Tema: Sistema</string>
+    <string name="theme_light">Tema: Claro</string>
+    <string name="theme_dark">Tema: Oscuro</string>
+    <string name="theme_to_light">Usar tema claro</string>
+    <string name="theme_to_dark">Usar tema oscuro</string>
+    <string name="theme_to_auto">Seguir el tema del sistema</string>
+    <string name="feedback_correct">Correcto, sigue así</string>
+    <string name="feedback_solved">Resuelto ✓</string>
+    <string name="feedback_wrong">No es la mejor jugada, inténtalo de nuevo</string>
+    <string name="promote_to">Corona tu peón en</string>
+
+    <!-- What a puzzle asks: the side to move, then the goal. The side is lower case: it follows "de las". -->
+    <string name="prompt_to_move">Turno de las %1$s: %2$s</string>
+    <string name="prompt_solved">¡Resuelto!</string>
+    <string name="goal_mate">jaque mate en %1$d</string>
+    <string name="goal_defense">encuentra la mejor defensa</string>
+    <string name="goal_save">salva la partida</string>
+    <string name="goal_winning">consigue una ventaja decisiva</string>
+    <string name="goal_upper_hand">consigue ventaja</string>
+    <string name="goal_best_move">encuentra la mejor jugada</string>
+    <string name="side_white">blancas</string>
+    <string name="side_black">negras</string>
+
+    <!-- The openings screens. -->
+    <string name="opening_back">Atrás</string>
+    <string name="opening_code">Código de apertura %1$s</string>
+    <plurals name="opening_runs">
+        <item quantity="one">%1$d línea completada sin errores</item>
+        <item quantity="many">%1$d de líneas completadas sin errores</item>
+        <item quantity="other">%1$d líneas completadas sin errores</item>
+    </plurals>
+    <string name="opening_row_description">%1$s, %2$s</string>
+    <string name="mode_learn">Aprender</string>
+    <string name="mode_practise">Practicar</string>
+    <string name="learn_previous">Jugada anterior</string>
+    <string name="learn_next">Jugada siguiente</string>
+    <string name="group_white">Con blancas</string>
+    <string name="group_black_e4">Con negras contra 1.e4</string>
+    <string name="group_black_d4">Con negras contra 1.d4</string>
+    <string name="practise_prompt">Juega de memoria las jugadas de las %1$s.</string>
+    <string name="practise_again">Empezar de nuevo</string>
+    <string name="practise_book_move">Jugada de apertura correcta ✓</string>
+    <string name="practise_not_book">No es la jugada que enseña esta apertura. Juega %1$s.</string>
+    <string name="practise_not_book_fallback">No es la jugada que enseña esta apertura. Juega la jugada marcada.</string>
+    <string name="practise_complete_clean">Línea completa ✓</string>
+    <string name="practise_complete">Línea completa. Inténtalo de nuevo sin errores.</string>
+
+    <!-- What a screen reader says for a piece: each one by name, and its colour. -->
+    <string name="spoken_pawn">peón</string>
+    <string name="spoken_knight">caballo</string>
+    <string name="spoken_bishop">alfil</string>
+    <string name="spoken_rook">torre</string>
+    <string name="spoken_queen">dama</string>
+    <string name="spoken_king">rey</string>
+    <string name="spoken_white_piece">%1$s de las blancas</string>
+    <string name="spoken_black_piece">%1$s de las negras</string>
+
+    <!-- A board square, read as the square, its contents, then any of these states. -->
+    <string name="spoken_empty">vacía</string>
+    <string name="spoken_selected">seleccionada</string>
+    <string name="spoken_legal_move">jugada legal</string>
+    <string name="spoken_last_move">última jugada</string>
+    <string name="spoken_hint">pista</string>
+
+    <!-- A move in words. The target and any disambiguation are squares and files as they are written. -->
+    <string name="spoken_castling_kingside">enroque corto</string>
+    <string name="spoken_castling_queenside">enroque largo</string>
+    <string name="spoken_pawn_move">peón %1$s</string>
+    <string name="spoken_pawn_takes">peón %1$s captura %2$s</string>
+    <string name="spoken_piece_move">%1$s %2$s</string>
+    <string name="spoken_piece_move_from">%1$s %2$s %3$s</string>
+    <string name="spoken_piece_takes">%1$s captura %2$s</string>
+    <string name="spoken_piece_takes_from">%1$s %2$s captura %3$s</string>
+    <string name="spoken_promotes">%1$s, corona en %2$s</string>
+    <string name="spoken_check">%1$s, jaque</string>
+    <string name="spoken_checkmate">%1$s, jaque mate</string>
+
+    <!-- Sentences a screen reader says after an event on the puzzle screen. -->
+    <string name="sentence_selection_cleared">Selección cancelada.</string>
+    <string name="sentence_no_moves">Sin jugadas desde %1$s.</string>
+    <string name="sentence_selected">Seleccionado: %1$s %2$s. Jugadas: %3$s.</string>
+    <string name="sentence_hint">Pista: %1$s %2$s a %3$s.</string>
+    <string name="sentence_wrong">Jugaste %1$s. No es la mejor jugada, inténtalo de nuevo.</string>
+    <string name="sentence_correct">Correcto. Jugaste %1$s. Respuesta de las %2$s: %3$s.</string>
+    <string name="sentence_reset">Puzle reiniciado. %1$s.</string>
+    <string name="sentence_solved">Resuelto. Jugaste %1$s.</string>
+    <string name="sentence_puzzle_shown">Puzle %1$d de %2$d, rating %3$d. Jugada de las %4$s: %5$s. %6$s.</string>
+
+    <!-- Sentences a screen reader says on the openings screens. -->
+    <string name="sentence_start_position">Posición inicial.</string>
+    <string name="sentence_opened">%1$s. Aprender. %2$s</string>
+    <string name="sentence_learn_chosen">Aprender. %1$s</string>
+    <string name="sentence_learn_move">Jugada %1$d, %2$s: %3$s.</string>
+    <string name="sentence_line_chosen">Línea: %1$s. %2$s</string>
+    <string name="sentence_practise">Practicar. %1$s</string>
+    <string name="sentence_played_by">Jugada de las %1$s: %2$s.</string>
+    <string name="sentence_book_move">Jugada de apertura correcta. Jugaste %1$s.</string>
+    <string name="sentence_not_book">Jugaste %1$s. No es la jugada que enseña esta apertura. Juega %2$s.</string>
+    <string name="sentence_line_complete">Línea completa.</string>
+    <string name="sentence_line_complete_unclean">Línea completa. Inténtalo de nuevo sin errores.</string>
+    <string name="spoken_line_name">Jugada %1$d, %2$s: %3$s</string>
+    <string name="spoken_move_list_entry">%1$d. %2$s.</string>
+    <!-- An opening's code (its catalogue number), then how many runs without mistakes, meaning lines played from memory with no wrong move, it has had. -->
+    <plurals name="opening_code_runs">
+        <item quantity="one">Código de apertura %1$s, %2$d línea completada sin errores</item>
+        <item quantity="many">Código de apertura %1$s, %2$d de líneas completadas sin errores</item>
+        <item quantity="other">Código de apertura %1$s, %2$d líneas completadas sin errores</item>
+    </plurals>
+
+    <!-- The About screen: the section titles follow the cocode-apps standard, in this order. -->
+    <string name="about">Acerca de</string>
+    <string name="about_back">Atrás</string>
+    <string name="about_version">Versión %1$s</string>
+    <string name="about_check_updates">Ver la última versión</string>
+    <string name="about_check_updates_note">Abre la página de la app, donde se publica la versión más reciente. La app nunca busca actualizaciones por sí sola.</string>
+    <string name="about_section_what">Qué hace la app</string>
+    <string name="about_what">Chess Puzzles te ayuda a practicar tácticas de ajedrez. Cada puzle procede de la base de datos de puzles de Lichess, te dice qué debes encontrar (por ejemplo, jaque mate en 2) y tiene un rating que indica lo difícil que es. También puedes aprender las aperturas más habituales jugada a jugada y luego jugarlas de memoria. Todo se guarda en tu teléfono, así que la app funciona sin internet.</string>
+    <string name="about_section_privacy">Privacidad</string>
+    <string name="about_privacy_no_data">Chess Puzzles no recoge, envía ni comparte ningún dato personal.</string>
+    <string name="about_privacy_no_permissions">Nunca te pide ningún permiso y no puede usar internet.</string>
+    <string name="about_privacy_no_tracking">Sin cuenta, sin anuncios, sin analíticas y sin informes de fallos.</string>
+    <string name="about_privacy_on_device">Tu progreso se guarda en tu teléfono. La app nunca lo envía a ningún sitio.</string>
+    <string name="about_privacy_link">Leer la política de privacidad</string>
+    <string name="about_section_links">Enlaces</string>
+    <string name="about_website">Abrir el sitio web</string>
+    <string name="about_source">Ver el código fuente en GitHub</string>
+    <string name="about_report">Informar de un problema en GitHub</string>
+    <string name="about_credits">Créditos y licencias</string>
+    <string name="about_credits_body">Creado por Babak Bandpey.\nPuzles: Lichess Open Database (CC0 1.0).\nReglas del ajedrez: chesslib (Apache-2.0).</string>
+    <string name="about_license">Con licencia Apache License 2.0. © 2026 Cocode.</string>
+    <string name="about_section_made_by">Hecho por Cocode</string>
+    <string name="about_made_by">Hecho por Cocode (cocode.dk)</string>
+    <string name="about_linkedin">Babak Bandpey en LinkedIn</string>
+
+    <!-- The spoken names of the promotion choices, for TalkBack. -->
+    <string name="piece_queen">Dama</string>
+    <string name="piece_rook">Torre</string>
+    <string name="piece_bishop">Alfil</string>
+    <string name="piece_knight">Caballo</string>
+</resources>
