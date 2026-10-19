@@ -15,13 +15,13 @@ import random
 random.seed(20260628)
 
 BANDS = [(0, 1000), (1000, 1400), (1400, 1800), (1800, 2200), (2200, 2600), (2600, 10000)]
-PER_BAND = 400
+PER_BAND = 1500
 MIN_POPULARITY = 85
 MIN_PLAYS = 60
 WANTED_THEMES = {
     "mate", "mateIn1", "mateIn2", "mateIn3", "fork", "pin", "skewer",
     "discoveredAttack", "doubleCheck", "sacrifice", "hangingPiece",
-    "backRankMate", "deflection", "trappedPiece",
+    "backRankMate", "deflection", "trappedPiece", "promotion", "attraction",
 }
 
 

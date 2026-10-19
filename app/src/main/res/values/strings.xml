@@ -38,6 +38,8 @@
     <string name="puzzle_theme_hanging_piece">Hanging piece</string>
     <string name="puzzle_theme_sacrifice">Sacrifice</string>
     <string name="puzzle_theme_deflection">Deflection</string>
+    <string name="puzzle_theme_attraction">Attraction</string>
+    <string name="puzzle_theme_promotion">Promotion</string>
     <string name="puzzle_theme_mate_in_2">Mate in 2</string>
     <string name="puzzle_theme_mate_in_3">Mate in 3</string>
     <string name="puzzle_theme_opening">Opening</string>

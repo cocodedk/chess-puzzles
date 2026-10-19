@@ -15,14 +15,14 @@ zstdcat lichess_db_puzzle.csv.zst | python3 scripts/sample_puzzles.py - app/src/
 ```
 
 It keeps community-approved puzzles (popularity ≥ 85, plays ≥ 60) carrying common tactical themes
-(mate/fork/pin/skewer/…), **stratified-samples up to 400 per rating band** across six bands, and
+(mate/fork/pin/skewer/promotion/…), **stratified-samples up to 1,500 per rating band** across six bands, and
 writes a trimmed 5-column CSV sorted easy → hard:
 
 ```
 PuzzleId,FEN,Moves,Rating,Themes
 ```
 
-Result: **2,400 puzzles, ~330 KB**, ratings ≈ 400–3100. The fixed seed (`random.seed(20260628)`) reproduces the same selection when run against the same
+Result: **9,000 puzzles, ~1.2 MB**, ratings ≈ 400–3300. The fixed seed (`random.seed(20260628)`) reproduces the same selection when run against the same
 database snapshot in the same record order. The download is not versioned, so a newer database can give a different set.
 
 ## Move convention

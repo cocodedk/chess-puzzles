@@ -172,6 +172,8 @@
     <string name="puzzle_theme_hanging_piece">无保护的子</string>
     <string name="puzzle_theme_sacrifice">弃子</string>
     <string name="puzzle_theme_deflection">引离</string>
+    <string name="puzzle_theme_attraction">引入</string>
+    <string name="puzzle_theme_promotion">升变</string>
     <string name="puzzle_theme_mate_in_2">两步杀</string>
     <string name="puzzle_theme_mate_in_3">三步杀</string>
     <string name="puzzle_theme_opening">开局</string>
