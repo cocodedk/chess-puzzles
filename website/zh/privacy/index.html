@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>隐私政策 | Chess Puzzles</title>
+  <meta name="description" content="Chess Puzzles（dk.cocode.chess）的隐私政策：应用不收集任何个人数据，从不向你请求任何权限，无法使用互联网，并把你的谜题进度保存在你的设备上。" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://chess.cocode.dk/zh/privacy/" />
+  <link rel="alternate" hreflang="en" href="https://chess.cocode.dk/privacy/" />
+  <link rel="alternate" hreflang="da" href="https://chess.cocode.dk/da/privacy/" />
+  <link rel="alternate" hreflang="es" href="https://chess.cocode.dk/es/privacy/" />
+  <link rel="alternate" hreflang="zh-Hans" href="https://chess.cocode.dk/zh/privacy/" />
+  <link rel="alternate" hreflang="x-default" href="https://chess.cocode.dk/privacy/" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="stylesheet" href="/shared-blocks.css">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0e1014; --bg-2: #161922; --surface: #1d212c; --border: #2a2f3c;
+      --text: #eceef2; --muted: #98a0ad; --gold: #f0b95c; --gold-2: #d99b3a;
+      --green: #6db58c; --radius: 14px;
+      --font: system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", Helvetica, Arial, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; font-family: var(--font); color: var(--text); font-size: 17px; line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      background:
+        radial-gradient(1100px 600px at 80% -10%, rgba(240,185,92,0.10), transparent 60%),
+        radial-gradient(900px 500px at -10% 10%, rgba(109,181,140,0.08), transparent 55%),
+        var(--bg);
+    }
+    a { color: var(--gold); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .container { width: min(760px, 92vw); margin: 0 auto; padding: 40px 0 64px; }
+    .back { display: inline-block; margin-bottom: 22px; color: var(--muted); font-size: 0.95rem; }
+    .back:hover { color: var(--gold); }
+    .card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: clamp(24px, 5vw, 44px);
+    }
+    h1 { font-size: clamp(1.9rem, 5vw, 2.6rem); letter-spacing: -0.01em; margin: 0 0 6px; color: var(--text); }
+    h1 .accent { color: var(--gold); }
+    h2 { font-size: 1.25rem; letter-spacing: -0.01em; margin: 30px 0 8px; color: var(--gold); }
+    .meta { color: var(--muted); font-size: 0.9rem; margin: 0 0 6px; }
+    .meta code { color: var(--green); }
+    p, li { color: var(--text); }
+    ul { padding-inline-start: 1.25em; }
+    li { margin: 5px 0; }
+    strong { color: var(--gold); }
+    /* Same left edge and column as the English page, so the frame lines up at phone and desktop widths. */
+    cocode-head, cocode-foot { --cocode-max: calc(760px + 8vw); --cocode-gutter: 4vw; }
+    .frame { width: min(760px, 92vw); padding: 0; }
+    main:focus { outline: none; }
+  </style>
+  <link rel="stylesheet" href="https://brand.cocode.dk/v1.css">
+  <script type="module" src="https://brand.cocode.dk/v1.js"></script>
+</head>
+<body>
+
+<!-- The cocode.dk family frame. Without JavaScript its child shows instead: a way home. -->
+<cocode-head project="Chess Puzzles" accent="#f0b95c" on-accent="#1a1205" dark>
+  <a href="https://cocode.dk">cocode.dk</a>
+</cocode-head>
+
+<header class="site-head">
+  <div class="frame">
+<!-- cocode-apps:nav:start -->
+<link rel="stylesheet" href="/css/cocode-nav.css">
+<a class="skip" href="#main">跳到正文</a>
+<nav class="cocode-nav" aria-label="Chess Puzzles">
+  <a class="brand" href="/zh/" data-nav="home"><img src="/img/icon.png" alt="" width="32" height="32">Chess Puzzles</a>
+  <a href="/zh/#how" data-nav="how">玩法说明</a>
+  <a href="/zh/#install" data-nav="install">安装</a>
+  <a href="/zh/privacy/" data-nav="privacy" aria-current="page">隐私</a>
+  <a href="/privacy/" hreflang="en" lang="en" data-nav="lang">English</a>
+  <a href="https://cocode.dk/" data-nav="more">更多应用</a>
+</nav>
+<!-- cocode-apps:nav:end -->
+  </div>
+</header>
+
+  <main class="container" id="main" tabindex="-1">
+    <a class="back" href="/zh/">&larr; Chess Puzzles</a>
+    <div class="card">
+      <section lang="zh-Hans">
+        <h1>隐私<span class="accent">政策</span></h1>
+        <p class="meta">Chess Puzzles &middot; <code>dk.cocode.chess</code></p>
+        <p class="meta">最后更新：2026年10月7日</p>
+
+        <p><strong>Chess Puzzles不会收集、传输或共享任何个人数据。</strong>
+        这是一款完全在你的设备上运行的国际象棋战术训练器。它无需账号，无需注册，
+        应用本身也无法访问互联网。</p>
+
+        <h2>你的进度保存在你的设备上</h2>
+        <p>为了让你能从上次停下的地方继续，应用会在你的设备上保存少量数据：
+        你已解开的谜题数量、其中没有借助提示就解开的数量、你当前和最佳的连续解题纪录、
+        你的连续天数（你连续多少天解过谜题）以及你上次解题的日期、你正在做哪一道谜题、
+        你凭记忆无差错地走完每种开局的次数，以及你选择的主题（跟随系统、浅色或深色）。
+        这些数据保存在你自己手机上的私有数据存储中。应用绝不会把它发送给我们或任何第三方。
+        删除应用或清除其数据，会移除手机上的这份副本；设备备份（见下文）可能会另外保留一份副本。</p>
+
+        <h2>无网络，无追踪</h2>
+        <ul>
+          <li>应用<strong>从不向你请求任何权限</strong>，并且<strong>没有互联网权限</strong>，因此无法把你的数据发送到任何地方。它确实声明了一项自己的权限，由一个Android库添加，Android只会把这项权限授予与本应用使用相同密钥签名的应用。这项权限不提供对你的数据、你的手机或互联网的任何访问，你也从不需要批准它。</li>
+          <li>我们<strong>不使用任何数据分析、崩溃报告或广告</strong>。</li>
+          <li><strong>没有第三方追踪SDK，没有Cookie，也没有广告标识符</strong>。</li>
+          <li><strong>没有账号，也无需注册</strong>；你从不向我们提供任何信息。</li>
+        </ul>
+
+        <h2>谜题</h2>
+        <p>所有谜题都内置在应用中，选自
+        <a href="https://database.lichess.org" rel="noopener" target="_blank">Lichess开放数据库</a>（CC0 1.0）。
+        解题全程离线进行，除了保存在你自己设备上的进度之外，不会在任何地方留下记录。</p>
+
+        <h2>设备备份</h2>
+        <p>如果你在设备上启用了Android自动备份或Google账号备份，操作系统可能会把本应用的本地数据
+        （你的进度和主题选择）纳入你个人的Google备份，并在你重新安装应用或设置新手机时恢复这些数据。
+        该副本与你手机上的那份相互独立，因此删除应用并不会删除它。是否进行备份，取决于应用的备份设置
+        以及你的设备和账号设置。我们无法访问该备份。详情请参阅
+        <a href="https://policies.google.com/privacy" rel="noopener" target="_blank">Google隐私权政策</a>。</p>
+
+        <h2>外部链接</h2>
+        <p>应用的“关于”界面有若干按钮，会通向网页：应用的网站和本隐私政策（chess.cocode.dk）、
+        应用在F-Droid上的页面、<a href="https://github.com/cocodedk/chess-puzzles" rel="noopener" target="_blank">GitHub</a>上的源代码和问题跟踪器、
+        开发者的网站（<a href="https://cocode.dk" rel="noopener" target="_blank">cocode.dk</a>）以及开发者的LinkedIn个人主页。
+        只有当你点按某个按钮时，对应的页面才会打开。应用会把网址交给Android，由Android在你的浏览器
+        或其他能处理这类链接的应用中打开。应用本身从不连接这些网站，不向它们发送任何内容，
+        也不从它们接收任何内容。页面一旦打开，就属于该网站，适用该网站自己的隐私政策。</p>
+
+        <h2>儿童</h2>
+        <p>本应用不会在知情的情况下收集任何人的数据，包括儿童。</p>
+
+        <h2>变更</h2>
+        <p>如果本政策有变更，更新后的版本将发布在本页面，并附上新的“最后更新”日期。</p>
+
+        <h2>联系方式</h2>
+        <p>有关本政策的问题可发送至
+        <a href="mailto:bb@cocode.dk">bb@cocode.dk</a>（CoCode.dk，开发者：Babak Bandpey）。</p>
+      </section>
+    </div>
+  </main>
+
+  <div class="site-foot">
+    <div class="frame">
+<!-- cocode-apps:footer:start -->
+<footer class="cocode-footer">
+  <a href="https://github.com/cocodedk/chess-puzzles">源代码</a> ·
+  <a href="/zh/privacy/">隐私</a> ·
+  许可证：Apache-2.0 ·
+  <a href="https://cocode.dk/">由Cocode（cocode.dk）制作</a>
+</footer>
+<!-- cocode-apps:footer:end -->
+    </div>
+  </div>
+
+<cocode-foot repo="cocodedk/chess-puzzles" dark>
+  <a href="https://cocode.dk">cocode.dk</a>
+</cocode-foot>
+</body>
+</html>

@@ -1,0 +1,1 @@
+Los lectores de pantalla como TalkBack ya pueden usar la pestaña Aperturas. Se leen en voz alta las aperturas, las líneas y las jugadas, además de cada paso, la respuesta del rival y el resultado.
