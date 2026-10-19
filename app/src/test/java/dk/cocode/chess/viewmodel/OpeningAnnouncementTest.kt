@@ -122,7 +122,7 @@ class OpeningAnnouncementTest : OpeningAnnouncementFixture() {
 
     @Test fun cleanRunsArriveWithoutDisturbingTheAnnouncement() = runTest(dispatcher) {
         val progress = FakeOpeningProgressRepository()
-        val viewModel = OpeningViewModel(listOf(white), progress, ZERO_RANDOM)
+        val viewModel = OpeningViewModel(listOf(white), progress, this@OpeningAnnouncementTest, ZERO_RANDOM)
         viewModel.onOpen(white.id)
         progress.recordCleanRun(white.id)
         dispatcher.scheduler.advanceUntilIdle()

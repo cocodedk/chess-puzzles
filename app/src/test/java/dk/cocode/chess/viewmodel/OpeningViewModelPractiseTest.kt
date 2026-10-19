@@ -1,5 +1,6 @@
 package dk.cocode.chess.viewmodel
 
+import dk.cocode.chess.EnglishTexts
 import dk.cocode.chess.FakeOpeningProgressRepository
 import dk.cocode.chess.ZERO_RANDOM
 import dk.cocode.chess.core.model.Square
@@ -22,7 +23,7 @@ import org.junit.Test
 
 /** Practise mode: correct/wrong/complete moves, clean-run recording, again, and a Black opening. */
 @OptIn(ExperimentalCoroutinesApi::class)
-class OpeningViewModelPractiseTest {
+class OpeningViewModelPractiseTest : EnglishTexts() {
     private val dispatcher = StandardTestDispatcher()
 
     @Before fun setUp() = Dispatchers.setMain(dispatcher)
@@ -34,7 +35,7 @@ class OpeningViewModelPractiseTest {
     private fun sq(name: String) = Square.of(name)
 
     private fun vm(progress: FakeOpeningProgressRepository = FakeOpeningProgressRepository()) =
-        OpeningViewModel(listOf(whiteOpening, blackOpening), progress, ZERO_RANDOM)
+        OpeningViewModel(listOf(whiteOpening, blackOpening), progress, this, ZERO_RANDOM)
 
     @Test fun correctMoveAppliesTheReplyAndStaysClean() = runTest(dispatcher) {
         val viewModel = vm()
