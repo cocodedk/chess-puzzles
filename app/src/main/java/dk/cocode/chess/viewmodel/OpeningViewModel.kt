@@ -31,6 +31,7 @@ internal const val OPENING_MODE_KEY = "opening_mode"
 class OpeningViewModel(
     private val openings: List<Opening>,
     private val progress: OpeningProgressRepository,
+    private val texts: Texts,
     private val random: Random = Random.Default,
     private val savedStateHandle: SavedStateHandle = SavedStateHandle(),
 ) : ViewModel() {
@@ -64,7 +65,7 @@ class OpeningViewModel(
         publish() // reopened where it was left: the screen is read as it stands, nothing is announced
     }
 
-    fun onOpen(id: String) = publish(openedSentence(open(id).name))
+    fun onOpen(id: String) = publish(texts.openedSentence(open(id).name))
 
     private fun open(id: String): Opening {
         val opening = openings.first { it.id == id }
@@ -102,13 +103,13 @@ class OpeningViewModel(
 
     private fun startDrill(): OpeningPractise? {
         val s = session ?: return null
-        return OpeningPractise(OpeningDrill(s.tree, s.opening.side, random))
+        return OpeningPractise(OpeningDrill(s.tree, s.opening.side, random), texts)
     }
 
     fun onLine(index: Int) {
         learnLine = index
         learnPly = 0
-        publish(session?.tree?.lineNames?.getOrNull(index)?.let(::lineChosenSentence).orEmpty())
+        publish(session?.tree?.lineNames?.getOrNull(index)?.let(texts::lineChosenSentence).orEmpty())
     }
 
     fun onStep(delta: Int) {
@@ -122,7 +123,7 @@ class OpeningViewModel(
         if (p.complete) return
         when (val tap = resolveTap(p.selected, p.legalTargets, square)) {
             is Tap.Select -> select(p, square)
-            is Tap.Clear -> { p.clear(); publish(SELECTION_CLEARED) }
+            is Tap.Clear -> { p.clear(); publish(texts.selectionCleared()) }
             is Tap.Move -> submit(p, tap.from, tap.to)
         }
     }
@@ -141,20 +142,20 @@ class OpeningViewModel(
             submit(p, from, target)
         } else {
             p.clear()
-            publish(SELECTION_CLEARED)
+            publish(texts.selectionCleared())
         }
     }
 
     fun onAgain() {
         val p = practise ?: return publish()
         p.restart()
-        publish(practiseSentence(p.side, p.openingSan))
+        publish(texts.practiseSentence(p.side, p.openingSan))
     }
 
     private fun select(p: OpeningPractise, square: Square) {
         p.select(square)
         val shown = render()
-        val said = if (p.selected == null) noMovesSentence(square) else selectionSentence(shown, square, p.legalTargets)
+        val said = if (p.selected == null) texts.noMovesSentence(square) else texts.selectionSentence(shown, square, p.legalTargets)
         _state.value = shown.copy(announcement = said)
     }
 
@@ -165,13 +166,13 @@ class OpeningViewModel(
 
     /** What is said on choosing the current mode: Learn where it was left, or a fresh Practise drill. */
     private fun modeSentence(): String {
-        return practise?.let { practiseSentence(it.side, it.openingSan) } ?: learnChosenSentence(learnSentence())
+        return practise?.let { texts.practiseSentence(it.side, it.openingSan) } ?: texts.learnChosenSentence(learnSentence())
     }
 
     /** The move Learn shows now, or the start position. */
     private fun learnSentence(): String {
-        val san = session?.tree?.plies(learnLine)?.getOrNull(learnPly - 1)?.san ?: return START_POSITION
-        return learnMoveSentence(learnPly, san)
+        val san = session?.tree?.plies(learnLine)?.getOrNull(learnPly - 1)?.san ?: return texts.startPosition()
+        return texts.learnMoveSentence(learnPly, san)
     }
 
     private fun recordIfClean(shouldRecord: Boolean) {

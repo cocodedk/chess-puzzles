@@ -1,5 +1,6 @@
 package dk.cocode.chess.viewmodel
 
+import dk.cocode.chess.EnglishTexts
 import dk.cocode.chess.FakeProgressRepository
 import dk.cocode.chess.core.model.PieceType
 import dk.cocode.chess.core.model.Square
@@ -19,7 +20,7 @@ import org.junit.Test
 
 /** One-time solve/fail accounting: each puzzle earns one solve and one streak-break at most. */
 @OptIn(ExperimentalCoroutinesApi::class)
-class PuzzleCountingTest {
+class PuzzleCountingTest : EnglishTexts() {
     private val dispatcher = StandardTestDispatcher()
 
     @Before fun setUp() = Dispatchers.setMain(dispatcher)
@@ -27,7 +28,7 @@ class PuzzleCountingTest {
     @After fun tearDown() = Dispatchers.resetMain()
 
     private fun vm(progress: FakeProgressRepository, today: () -> Long = { 100 }) =
-        PuzzleViewModel(testPuzzleRepository(), progress, today)
+        PuzzleViewModel(testPuzzleRepository(), progress, this, today)
 
     @Test fun skippingAFailedPuzzleBreaksTheStreakOnlyOncePerDay() = runTest(dispatcher) {
         val progress = FakeProgressRepository(Progress(0, 5, 5, 3)) // resume on BK with a streak of 5

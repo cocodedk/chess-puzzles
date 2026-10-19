@@ -1,5 +1,6 @@
 package dk.cocode.chess.viewmodel
 
+import dk.cocode.chess.EnglishTexts
 import dk.cocode.chess.FakeProgressRepository
 import dk.cocode.chess.core.model.PieceType
 import dk.cocode.chess.core.model.PuzzleStatus
@@ -23,7 +24,7 @@ import org.junit.Before
 import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class PuzzleViewModelTest {
+class PuzzleViewModelTest : EnglishTexts() {
     private val dispatcher = StandardTestDispatcher()
 
     @Before fun setUp() = Dispatchers.setMain(dispatcher)
@@ -31,7 +32,7 @@ class PuzzleViewModelTest {
     @After fun tearDown() = Dispatchers.resetMain()
 
     private fun vm(progress: FakeProgressRepository = FakeProgressRepository()) =
-        PuzzleViewModel(testPuzzleRepository(), progress) { 100 } // fixed clock: epoch day 100
+        PuzzleViewModel(testPuzzleRepository(), progress, this) { 100 } // fixed clock: epoch day 100
 
     private fun sq(name: String) = Square.of(name)
 
@@ -39,7 +40,7 @@ class PuzzleViewModelTest {
         val state = vm().state.value
         assertEquals(800, state.rating)
         assertFalse(state.flipped)
-        assertTrue(state.promptText.startsWith("White"))
+        assertTrue(promptLine(state).startsWith("White"))
         assertEquals(PuzzleStatus.IN_PROGRESS, state.status)
     }
 
@@ -175,6 +176,6 @@ class PuzzleViewModelTest {
         val viewModel = vm(FakeProgressRepository(Progress(index = 3)))
         advanceUntilIdle()
         assertTrue(viewModel.state.value.flipped)
-        assertTrue(viewModel.state.value.promptText.startsWith("Black"))
+        assertTrue(promptLine(viewModel.state.value).startsWith("Black"))
     }
 }

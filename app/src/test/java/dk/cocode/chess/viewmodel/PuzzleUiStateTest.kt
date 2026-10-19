@@ -24,6 +24,6 @@ class PuzzleUiStateTest {
         assertEquals(0, state.hintFreeCount)
         assertEquals(0, state.currentStreak)
         assertEquals(0, state.bestStreak)
-        assertEquals("", state.promptText)
+        assertNull(state.prompt)
     }
 }

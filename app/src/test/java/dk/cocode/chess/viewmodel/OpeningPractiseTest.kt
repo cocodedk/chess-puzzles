@@ -1,5 +1,6 @@
 package dk.cocode.chess.viewmodel
 
+import dk.cocode.chess.EnglishTexts
 import dk.cocode.chess.core.engine.OpeningDrill
 import dk.cocode.chess.core.engine.OpeningTree
 import dk.cocode.chess.core.model.PieceColor
@@ -12,9 +13,9 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import kotlin.random.Random
 
-class OpeningPractiseTest {
+class OpeningPractiseTest : EnglishTexts() {
     private fun practise() =
-        OpeningPractise(OpeningDrill(OpeningTree(testWhiteOpening()), PieceColor.WHITE, Random(0)))
+        OpeningPractise(OpeningDrill(OpeningTree(testWhiteOpening()), PieceColor.WHITE, Random(0)), this)
 
     private fun sq(name: String) = Square.of(name)
 

@@ -18,9 +18,13 @@ import dk.cocode.chess.data.OpeningProgressRepository
 import dk.cocode.chess.data.Progress
 import dk.cocode.chess.data.ProgressRepository
 import dk.cocode.chess.data.solvedOn
+import dk.cocode.chess.viewmodel.ResourceTexts
+import dk.cocode.chess.viewmodel.Texts
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import java.io.File
 import kotlin.random.Random
@@ -133,4 +137,17 @@ fun testBlackOpening(id: String = "black-test") = testOpening(id, OpeningGroup.B
 /** Always picks the first candidate, so a drill's random opponent choices are deterministic in tests. */
 val ZERO_RANDOM: Random = object : Random() {
     override fun nextBits(bitCount: Int) = 0
+}
+
+/**
+ * A test base class that speaks English: the class is a [Texts] reading the app's own resources, so a test of
+ * the text functions calls them as it would from inside the view models, and pass `this` where one is needed.
+ */
+@RunWith(RobolectricTestRunner::class)
+abstract class EnglishTexts : Texts {
+    private val texts by lazy { ResourceTexts(RuntimeEnvironment.getApplication().resources) }
+
+    override fun string(id: Int, vararg args: Any): String = texts.string(id, *args)
+
+    override fun plural(id: Int, quantity: Int, vararg args: Any): String = texts.plural(id, quantity, *args)
 }

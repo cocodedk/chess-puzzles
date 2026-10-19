@@ -1,5 +1,6 @@
 package dk.cocode.chess.viewmodel
 
+import dk.cocode.chess.EnglishTexts
 import dk.cocode.chess.FakeProgressRepository
 import dk.cocode.chess.core.model.PuzzleStatus
 import dk.cocode.chess.core.model.Square
@@ -18,14 +19,14 @@ import org.junit.Before
 import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class PuzzleViewModelGestureTest {
+class PuzzleViewModelGestureTest : EnglishTexts() {
     private val dispatcher = StandardTestDispatcher()
 
     @Before fun setUp() = Dispatchers.setMain(dispatcher)
 
     @After fun tearDown() = Dispatchers.resetMain()
 
-    private fun vm() = PuzzleViewModel(testPuzzleRepository(), FakeProgressRepository())
+    private fun vm() = PuzzleViewModel(testPuzzleRepository(), FakeProgressRepository(), this)
 
     private fun sq(name: String) = Square.of(name)
 

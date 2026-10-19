@@ -1,5 +1,6 @@
 package dk.cocode.chess.viewmodel
 
+import dk.cocode.chess.EnglishTexts
 import dk.cocode.chess.FakeProgressRepository
 import dk.cocode.chess.core.model.Square
 import dk.cocode.chess.data.Progress
@@ -18,7 +19,7 @@ import org.junit.Test
 
 /** The goal line at the ViewModel layer: countdown on progress, stable count across retries. */
 @OptIn(ExperimentalCoroutinesApi::class)
-class PuzzleViewModelPromptTest {
+class PuzzleViewModelPromptTest : EnglishTexts() {
     private val dispatcher = StandardTestDispatcher()
 
     @Before fun setUp() = Dispatchers.setMain(dispatcher)
@@ -26,15 +27,15 @@ class PuzzleViewModelPromptTest {
     @After fun tearDown() = Dispatchers.resetMain()
 
     private fun mateInTwoVm() =
-        PuzzleViewModel(testPuzzleRepository(), FakeProgressRepository(Progress(index = 1)))
+        PuzzleViewModel(testPuzzleRepository(), FakeProgressRepository(Progress(index = 1)), this)
 
     @Test fun promptCountsDownAfterTheOpponentReplies() = runTest(dispatcher) {
         val viewModel = mateInTwoVm()
         advanceUntilIdle()
-        assertEquals("White to move — checkmate in 2", viewModel.state.value.promptText)
+        assertEquals("White to move — checkmate in 2", promptLine(viewModel.state.value))
         viewModel.onSquareTapped(Square.of("a2"))
         viewModel.onSquareTapped(Square.of("e6"))
-        assertEquals("White to move — checkmate in 1", viewModel.state.value.promptText)
+        assertEquals("White to move — checkmate in 1", promptLine(viewModel.state.value))
     }
 
     @Test fun wrongMoveMidPuzzleKeepsTheRemainingCount() = runTest(dispatcher) {
@@ -46,7 +47,7 @@ class PuzzleViewModelPromptTest {
         viewModel.onSquareTapped(Square.of("h3")) // legal but not the mating move
         with(viewModel.state.value) {
             assertEquals(Feedback.WRONG, feedback)
-            assertEquals("White to move — checkmate in 1", promptText)
+            assertEquals("White to move — checkmate in 1", promptLine(this))
         }
     }
 }

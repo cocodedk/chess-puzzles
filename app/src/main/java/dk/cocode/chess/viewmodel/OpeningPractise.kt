@@ -11,7 +11,7 @@ import dk.cocode.chess.core.model.Square
  * completed the line cleanly for the very first time — [OpeningDrill] refuses any further submit once
  * [complete], so that can only ever be true once per drill (until [restart]).
  */
-internal class OpeningPractise(private val drill: OpeningDrill) {
+internal class OpeningPractise(private val drill: OpeningDrill, private val texts: Texts) {
     var selected: Square? = null; private set
     var legalTargets: Set<Square> = emptySet(); private set
     var hint: Highlight? = null; private set
@@ -54,24 +54,24 @@ internal class OpeningPractise(private val drill: OpeningDrill) {
             is DrillResult.Correct -> {
                 feedback = OpeningFeedback.CORRECT
                 bookSan = null
-                said = bookMoveSentence(result.san, opponent, result.replySan)
+                said = texts.bookMoveSentence(result.san, opponent, result.replySan)
                 false
             }
             is DrillResult.Wrong -> {
                 hint = Highlight(result.book.from, result.book.to)
                 feedback = OpeningFeedback.WRONG
                 bookSan = result.san
-                said = notBookSentence(result.playedSan, result.san)
+                said = texts.notBookSentence(result.playedSan, result.san)
                 false
             }
             is DrillResult.Complete -> {
                 feedback = OpeningFeedback.COMPLETE
                 bookSan = null
-                said = lineCompleteSentence(bookMoveSentence(result.san, opponent, result.replySan), result.clean)
+                said = texts.lineCompleteSentence(texts.bookMoveSentence(result.san, opponent, result.replySan), result.clean)
                 result.clean
             }
             DrillResult.Illegal -> {
-                said = SELECTION_CLEARED // the selection was dropped, and nothing else changed
+                said = texts.selectionCleared() // the selection was dropped, and nothing else changed
                 false
             }
         }
