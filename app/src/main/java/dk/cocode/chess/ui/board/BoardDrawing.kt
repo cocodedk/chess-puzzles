@@ -5,9 +5,28 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.graphics.isSpecified
+import androidx.compose.ui.text.TextMeasurer
 import dk.cocode.chess.core.model.Square
 import dk.cocode.chess.viewmodel.BoardState
+
+/** The whole board, back to front: frame, wood, the highlights washed over it, then what is written and placed on it. */
+internal fun DrawScope.drawBoard(state: BoardState, palette: BoardPalette, textMeasurer: TextMeasurer) {
+    val frame = BoardGeometry.frameDepth(size.width)
+    val squarePx = BoardGeometry.squareSize(size.width)
+    val flipped = state.flipped
+    drawFrame(frame, squarePx)
+    translate(frame, frame) {
+        drawSquares(palette, squarePx, flipped)
+        state.lastMove?.let { highlightMove(it.from, it.to, palette.lastMoveTint, squarePx, flipped) }
+        state.hint?.let { highlightMove(it.from, it.to, palette.hintTint, squarePx, flipped, palette.hintRing) }
+        state.selected?.let { tintSquare(it, palette.selectedTint, squarePx, flipped, palette.selectedRing) }
+        drawCoordinates(squarePx, flipped, textMeasurer)
+        drawPieces(state, palette, squarePx, flipped)
+        drawTargets(state, palette.marker, squarePx, flipped)
+    }
+}
 
 /** Washes [square] in [color], with an inset [ring] round its edge unless it is unspecified. */
 internal fun DrawScope.tintSquare(square: Square, color: Color, squarePx: Float, flipped: Boolean, ring: Color) {
