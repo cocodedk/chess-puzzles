@@ -1,0 +1,1 @@
+Nuevo botón Escribir una jugada: escribe una jugada como e2e4 o Nf3, o dicta con el dictado por voz del teclado, en lugar de tocar las casillas. El campo admite letras inglesas y números en cualquier sistema de escritura, y el botón Cerrar el campo de jugadas lo oculta de nuevo.
