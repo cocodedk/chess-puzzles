@@ -1,0 +1,1 @@
+Ny knap Skriv et træk: skriv et træk som e2e4 eller Nf3, eller dikter det med tastaturets stemmeindtastning, i stedet for at trykke på felterne. Feltet tager engelske bogstaver og tal i ethvert skriftsystem, og knappen Luk trækfeltet skjuler det igen.
