@@ -12,5 +12,6 @@ class FeedbackMessageTest : EnglishTexts() {
         assertTrue(feedbackMessage(Feedback.CORRECT).isNotEmpty())
         assertTrue(feedbackMessage(Feedback.SOLVED).contains("Solved"))
         assertTrue(feedbackMessage(Feedback.WRONG).isNotEmpty())
+        assertEquals("Not a legal move here", feedbackMessage(Feedback.ILLEGAL))
     }
 }

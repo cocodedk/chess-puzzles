@@ -23,6 +23,9 @@
     <string name="puzzle_previous">上一个谜题</string>
     <string name="puzzle_next">下一个谜题</string>
     <string name="position_share">分享局面</string>
+    <string name="puzzle_type_move">输入走法</string>
+    <string name="puzzle_type_move_label">你的走法，例如 e2e4 或 Nf3</string>
+    <string name="puzzle_type_move_play">走棋</string>
     <string name="band_easy">简单</string>
     <string name="band_medium">中等</string>
     <string name="band_hard">困难</string>
@@ -36,6 +39,7 @@
     <string name="feedback_correct">正确，继续</string>
     <string name="feedback_solved">已解决 ✓</string>
     <string name="feedback_wrong">不是最佳走法，再试一次</string>
+    <string name="feedback_illegal">这里不能这样走</string>
     <string name="promote_to">把兵升变为</string>
 
     <!-- What a puzzle asks: the side to move, then the goal. -->
@@ -105,6 +109,7 @@
     <!-- Sentences a screen reader says after an event on the puzzle screen. -->
     <string name="sentence_selection_cleared">已取消选择。</string>
     <string name="sentence_no_moves">%1$s的棋子无法移动。</string>
+    <string name="sentence_typed_move_illegal">%1$s在这里不是合法走法。</string>
     <string name="sentence_selected">已选中%1$s%2$s。可走：%3$s。</string>
     <string name="sentence_hint">提示：%1$s%2$s走到%3$s。</string>
     <string name="sentence_wrong">你走了%1$s。不是最佳走法，再试一次。</string>

@@ -3,7 +3,7 @@ package dk.cocode.chess.viewmodel
 import dk.cocode.chess.core.model.PuzzleStatus
 import dk.cocode.chess.core.model.Square
 
-enum class Feedback { NONE, CORRECT, SOLVED, WRONG }
+enum class Feedback { NONE, CORRECT, SOLVED, WRONG, ILLEGAL }
 
 /** A from -> to pair used for last-move and hint highlighting. */
 data class Highlight(val from: Square, val to: Square)

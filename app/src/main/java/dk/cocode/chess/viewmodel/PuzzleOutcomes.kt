@@ -15,6 +15,14 @@ internal fun PuzzleUiState.withHint(texts: Texts, hint: Hint, targets: Set<Squar
     return copy(selected = hint.from, legalTargets = targets, hint = highlight, announcement = texts.hintSentence(this, highlight))
 }
 
+/** A pawn reached the last rank with no piece named, so the screen asks which one. */
+internal fun PuzzleUiState.askingPromotion(from: Square, to: Square) =
+    copy(pendingPromotion = PendingPromotion(from, to), selected = null, legalTargets = emptySet())
+
+/** Typed text that names no legal move changes nothing on the board; [text] is echoed so a screen reader can say it. */
+internal fun PuzzleUiState.afterIllegalText(texts: Texts, text: String) =
+    withoutSelection(texts.typedMoveIllegalSentence(text)).copy(feedback = Feedback.ILLEGAL)
+
 /** A wrong move was never applied, so the puzzle stays in progress and asks [prompt] again. */
 internal fun PuzzleUiState.afterWrong(texts: Texts, san: String, prompt: Prompt) =
     withoutSelection(texts.wrongSentence(san))
