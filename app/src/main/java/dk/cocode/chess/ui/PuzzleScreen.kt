@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dk.cocode.chess.R
 import dk.cocode.chess.core.model.PieceType
+import dk.cocode.chess.core.model.PuzzleStatus
 import dk.cocode.chess.core.model.Square
 import dk.cocode.chess.data.ThemeMode
 import dk.cocode.chess.ui.board.PromotionDialog
@@ -54,6 +55,7 @@ fun PuzzleScreen(
             onPromotionCancel = viewModel::onPromotionCancelled,
             onAbout = { showAbout = true },
             onSharePosition = { viewModel.onSharePosition(sharer) },
+            onMoveTyped = viewModel::onMoveTyped,
             onDifficulty = viewModel::onDifficultySelected,
             difficulties = viewModel.availableDifficulties,
             onTheme = viewModel::onThemeSelected,
@@ -77,6 +79,7 @@ fun PuzzleScreenContent(
     onPrevious: () -> Unit = {},
     onAbout: () -> Unit = {},
     onSharePosition: () -> Unit = {},
+    onMoveTyped: (String) -> Unit = {},
     onDifficulty: (Difficulty) -> Unit = {},
     difficulties: List<Difficulty> = Difficulty.entries,
     onTheme: (PuzzleTheme?) -> Unit = {},
@@ -103,8 +106,10 @@ fun PuzzleScreenContent(
                 Spacer(Modifier.height(16.dp))
                 PuzzleControls(state, onHint, onReset, onPrevious, onNext, stacked)
                 SharePositionButton(onSharePosition) // not with Theme and About: that panel is already full
+                TypeMove(state.status == PuzzleStatus.IN_PROGRESS, onMoveTyped) // last: on a short screen it takes a scroll
             } else {
                 PuzzleControls(state, onHint, onReset, onPrevious, onNext, stacked)
+                TypeMove(state.status == PuzzleStatus.IN_PROGRESS, onMoveTyped)
                 PuzzleSettings(themeMode, onThemeToggle, onAbout, onSharePosition)
             }
         },
@@ -137,6 +142,7 @@ internal fun Texts.feedbackMessage(feedback: Feedback): String = when (feedback)
     Feedback.CORRECT -> string(R.string.feedback_correct)
     Feedback.SOLVED -> string(R.string.feedback_solved)
     Feedback.WRONG -> string(R.string.feedback_wrong)
+    Feedback.ILLEGAL -> string(R.string.feedback_illegal)
 }
 
 internal fun Texts.bandLabel(band: Difficulty): String = string(

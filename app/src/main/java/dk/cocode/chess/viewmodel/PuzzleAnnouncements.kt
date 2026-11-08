@@ -11,6 +11,8 @@ internal fun Texts.selectionCleared() = string(R.string.sentence_selection_clear
 
 internal fun Texts.noMovesSentence(square: Square) = string(R.string.sentence_no_moves, square.toAlgebraic())
 
+internal fun Texts.typedMoveIllegalSentence(text: String) = string(R.string.sentence_typed_move_illegal, text.trim())
+
 internal fun Texts.wrongSentence(san: String) = string(R.string.sentence_wrong, spokenMove(san))
 
 internal fun Texts.correctSentence(san: String, replySide: PieceColor, replySan: String) =

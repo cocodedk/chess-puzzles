@@ -52,7 +52,7 @@ class PuzzleViewModel(
                 base = saved
                 if (!resumed) {
                     resumed = true
-                    if (saved.index in 1 until puzzles.count()) loadPuzzleAt(saved.index) else announceShown()
+                    if (saved.index in 1 until puzzles.count()) loadPuzzleAt(saved.index) else _state.update { it.withShownAnnouncement() }
                 }
                 _state.update { it.withProgress(saved, today()) }
             }
@@ -69,9 +69,7 @@ class PuzzleViewModel(
         }
     }
 
-    fun onDragStart(square: Square) {
-        if (_state.value.status == PuzzleStatus.IN_PROGRESS) select(square)
-    }
+    fun onDragStart(square: Square) { if (_state.value.status == PuzzleStatus.IN_PROGRESS) select(square) }
 
     fun onDragEnd(target: Square) {
         val from = _state.value.selected ?: return
@@ -99,6 +97,13 @@ class PuzzleViewModel(
     fun onReset() {
         session.reset() // accounting keeps its counted flags, so re-solving today never re-earns
         _state.value = render().copy(announcement = texts.resetSentence(texts.promptText(session.prompt())))
+    }
+
+    /** A move written as text, say "e2e4" or "Nf3": played as a tap would play it, or refused out loud. */
+    fun onMoveTyped(text: String) {
+        if (_state.value.status != PuzzleStatus.IN_PROGRESS) return
+        session.moveFromText(text)?.let { submit(it.from, it.to, it.promotion) }
+            ?: _state.update { it.afterIllegalText(texts, text) }
     }
 
     fun onNext() = stepBand(1)
@@ -138,8 +143,6 @@ class PuzzleViewModel(
         _state.value = render().withShownAnnouncement()
     }
 
-    private fun announceShown() = _state.update { it.withShownAnnouncement() }
-
     private fun PuzzleUiState.withShownAnnouncement() = copy(announcement = texts.shownSentence(session, position, bandSize))
 
     /** The full render recipe — the single place the clock is sampled for display. */
@@ -167,11 +170,8 @@ class PuzzleViewModel(
 
     private fun submit(from: Square, to: Square, promotion: PieceType?) {
         when (val result = session.submitMove(MoveIntent(from, to, promotion))) {
-            // The only illegal move the UI can submit is a pawn reaching the last rank without a
-            // promotion piece chosen yet, so surface the promotion picker.
-            is SubmitResult.Illegal -> _state.update {
-                it.copy(pendingPromotion = PendingPromotion(from, to), selected = null, legalTargets = emptySet())
-            }
+            // The only illegal move the UI can submit is a pawn on the last rank with no piece chosen: ask which.
+            is SubmitResult.Illegal -> _state.update { it.askingPromotion(from, to) }
             is SubmitResult.Wrong -> onWrong(result.san)
             is SubmitResult.Continues -> onContinues(result)
             is SubmitResult.Solved -> onSolved(result)

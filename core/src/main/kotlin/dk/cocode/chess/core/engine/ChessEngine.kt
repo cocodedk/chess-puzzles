@@ -51,10 +51,35 @@ internal class ChessEngine {
     fun applyUci(uci: String): Boolean = board.doMove(CbMove(uci, board.sideToMove))
 
     /** SAN of the legal move [uci] in the current position (with `+`/`#`), without playing it. */
-    fun san(uci: String): String {
+    fun san(uci: String): String = san(CbMove(uci, board.sideToMove))
+
+    private fun san(move: CbMove): String {
         val moves = MoveList(board.fen)
-        moves.add(CbMove(uci, board.sideToMove))
+        moves.add(move)
         return moves.toSanArray().single()
+    }
+
+    /**
+     * The legal move [text] writes, in coordinates ("e2e4", "e2-e4", "e7e8q") or SAN ("Nf3", "exd5", "O-O",
+     * "e8=Q"); null when it names no move or more than one. Spaces, `x`, `-`, `=`, `+`, `#`, `!`, `?`, `.` and `,`
+     * (voice typing adds them) do not matter, `0-0` is `O-O`, and case is ignored unless it is needed to tell Bc3
+     * from bxc3. A promotion with no piece named comes back without one, so the caller can ask which.
+     */
+    fun moveFromText(text: String): MoveIntent? {
+        val key = spelled(text)
+        val moves = board.legalMoves()
+        val exact = moves.filter { spelled(san(it)) == key }
+        val hits = exact.ifEmpty { moves.filter { move -> forms(move).any { it.equals(key, ignoreCase = true) } } }
+        val first = hits.firstOrNull() ?: return null
+        if (hits.any { it.from != first.from || it.to != first.to }) return null
+        val promotion = promotionType(first).takeIf { hits.size == 1 }
+        return MoveIntent(BoardMapper.fromCbSquare(first.from), BoardMapper.fromCbSquare(first.to), promotion)
+    }
+
+    /** The ways [move] can be written: SAN and UCI, and either without its promotion piece. */
+    private fun forms(move: CbMove): List<String> {
+        val full = listOf(spelled(san(move)), move.toUciString())
+        return if (move.promotion == CbPiece.NONE) full else full + full.map { it.dropLast(1) }
     }
 
     /** Side-effect-free: would the legal move [uci] deliver checkmate? */
@@ -68,6 +93,10 @@ internal class ChessEngine {
     companion object {
         // chesslib reports an illegal/unparseable move as "... [<san token>] on <fen>".
         private val BAD_MOVE_TOKEN = Regex("\\[(.*?)]")
+
+        /** [text] with what a move does not depend on dropped: spaces, x - = + # ! ? . and a comma, and 0 read as O. */
+        private fun spelled(text: String): String =
+            text.filterNot { it.isWhitespace() || it.lowercaseChar() in "x-=+#!?.," }.replace('0', 'O')
 
         private fun promotionType(move: CbMove): PieceType? =
             if (move.promotion == CbPiece.NONE) null else BoardMapper.type(move.promotion.pieceType)

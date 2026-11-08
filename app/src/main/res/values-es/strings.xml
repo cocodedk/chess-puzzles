@@ -23,6 +23,11 @@
     <string name="puzzle_previous">Puzle anterior</string>
     <string name="puzzle_next">Puzle siguiente</string>
     <string name="position_share">Compartir posición</string>
+    <string name="puzzle_type_move">Escribir una jugada</string>
+    <string name="puzzle_type_move_label">Tu jugada</string>
+    <string name="puzzle_type_move_play">Jugar</string>
+    <string name="puzzle_type_move_help">Letras inglesas y números en cualquier sistema de escritura, por ejemplo e2e4 o Nf3 (K, Q, R, B, N para las piezas, sin letra para el peón).</string>
+    <string name="puzzle_type_move_close">Cerrar el campo de jugadas</string>
     <string name="band_easy">Fácil</string>
     <string name="band_medium">Medio</string>
     <string name="band_hard">Difícil</string>
@@ -36,6 +41,7 @@
     <string name="feedback_correct">Correcto, sigue así</string>
     <string name="feedback_solved">Resuelto ✓</string>
     <string name="feedback_wrong">No es la mejor jugada, inténtalo de nuevo</string>
+    <string name="feedback_illegal">No es una jugada legal aquí</string>
     <string name="promote_to">Corona tu peón en</string>
 
     <!-- What a puzzle asks: the side to move, then the goal. The side is lower case: it follows "de las". -->
@@ -107,6 +113,7 @@
     <!-- Sentences a screen reader says after an event on the puzzle screen. -->
     <string name="sentence_selection_cleared">Selección cancelada.</string>
     <string name="sentence_no_moves">Sin jugadas desde %1$s.</string>
+    <string name="sentence_typed_move_illegal">%1$s no es una jugada legal aquí.</string>
     <string name="sentence_selected">Seleccionado: %1$s %2$s. Jugadas: %3$s.</string>
     <string name="sentence_hint">Pista: %1$s %2$s a %3$s.</string>
     <string name="sentence_wrong">Jugaste %1$s. No es la mejor jugada, inténtalo de nuevo.</string>

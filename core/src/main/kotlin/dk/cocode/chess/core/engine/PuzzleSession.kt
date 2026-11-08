@@ -39,6 +39,10 @@ class PuzzleSession private constructor(
 
     fun requiresPromotion(from: Square, to: Square): Boolean = engine.requiresPromotion(from, to)
 
+    /** The legal move [text] writes (see [ChessEngine.moveFromText]); none once the puzzle is no longer in progress. */
+    fun moveFromText(text: String): MoveIntent? =
+        if (status == PuzzleStatus.IN_PROGRESS) engine.moveFromText(text) else null
+
     fun currentFen(): String = engine.fen()
 
     fun hint(): Hint {
