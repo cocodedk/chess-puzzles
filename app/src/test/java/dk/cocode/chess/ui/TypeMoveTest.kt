@@ -32,6 +32,10 @@ class TypeMoveTest {
 
     private val typed = mutableListOf<String>()
 
+    private companion object {
+        const val HELP = "English letters and numbers only, like e2e4 or Nf3 (K, Q, R, B, N for the pieces)."
+    }
+
     private fun show(status: PuzzleStatus = PuzzleStatus.IN_PROGRESS) = composeRule.setContent {
         ChessTheme(darkTheme = false) {
             PuzzleScreenContent(
@@ -62,7 +66,26 @@ class TypeMoveTest {
         field().performTextInput("Nf3")
         composeRule.onNodeWithText("Play").assertIsEnabled().performClick()
         assertEquals(listOf("Nf3"), typed)
-        field().assertTextEquals("Your move, like e2e4 or Nf3", "")
+        field().assertTextEquals("Your move", HELP, "")
+    }
+
+    @Test fun takesEnglishLettersAndNumbersOnlyAndSaysSo() {
+        show()
+        open()
+        composeRule.onNodeWithText(HELP, substring = true).assertExists()
+        field().performTextInput("Sf3 ж中é-=+#.")
+        field().assertTextEquals("Your move", HELP, "Sf3 -=")
+        assertEquals("Nf3 e2-e4 O-O e8=Q 0-0", englishOnly("Nf3 e2-e4 O-O e8=Q 0-0"))
+    }
+
+    @Test fun theSameButtonClosesTheFieldAgain() {
+        show()
+        open()
+        composeRule.onNodeWithText("Type a move").assertDoesNotExist()
+        composeRule.onNodeWithText("Close move field").performClick()
+        composeRule.onNodeWithText("Close move field").assertDoesNotExist()
+        composeRule.onNodeWithText("Type a move").assertExists()
+        composeRule.onNode(hasSetTextAction()).assertDoesNotExist()
     }
 
     @Test fun theKeyboardsActionKeyPlaysToo() {
@@ -85,7 +108,7 @@ class TypeMoveTest {
     @Test fun isOffOnceThePuzzleIsSolved() {
         show(PuzzleStatus.SOLVED)
         open()
-        composeRule.onNodeWithText("Your move, like e2e4 or Nf3").assertIsNotEnabled() // a disabled field takes no text
+        composeRule.onNodeWithText("Your move").assertIsNotEnabled() // a disabled field takes no text
         composeRule.onNodeWithText("Play").assertIsNotEnabled()
     }
 
