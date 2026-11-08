@@ -33,7 +33,7 @@ class TypeMoveTest {
     private val typed = mutableListOf<String>()
 
     private companion object {
-        const val HELP = "English letters and numbers only, like e2e4 or Nf3 (K, Q, R, B, N for the pieces)."
+        const val HELP = "English letters and numbers in any writing system, like e2e4 or Nf3 (K, Q, R, B, N for the pieces, no letter for a pawn)."
     }
 
     private fun show(status: PuzzleStatus = PuzzleStatus.IN_PROGRESS) = composeRule.setContent {
@@ -69,13 +69,22 @@ class TypeMoveTest {
         field().assertTextEquals("Your move", HELP, "")
     }
 
-    @Test fun takesEnglishLettersAndNumbersOnlyAndSaysSo() {
+    @Test fun takesEnglishLettersAndAnyScriptsNumbersAndSaysSo() {
         show()
         open()
         composeRule.onNodeWithText(HELP, substring = true).assertExists()
-        field().performTextInput("Sf3 ж中é-=+#.")
+        field().performTextInput("Sf3 \u0436\u4E2D\u00E9-=+#.") // Cyrillic, Chinese and accented letters, and marks, are dropped
         field().assertTextEquals("Your move", HELP, "Sf3 -=")
         assertEquals("Nf3 e2-e4 O-O e8=Q 0-0", englishOnly("Nf3 e2-e4 O-O e8=Q 0-0"))
+    }
+
+    @Test fun readsNumbersWrittenInOtherScripts() {
+        val persian = "e\u06F2e\u06F4" // ۲ ۴
+        val arabic = "e\u0662e\u0664" // ٢ ٤
+        val fullWidth = "\uFF45\uFF12\uFF45\uFF14" // ｅ２ｅ４
+        val chinese = "e\u4E8Ce\u56DB" // 二 四
+        listOf(persian, arabic, fullWidth, chinese).forEach { assertEquals(it, "e2e4", englishOnly(it)) }
+        assertEquals("a1 b2 c3 d4 e5 f6 g7 h8", englishOnly("a\u4E00 b\u4E8C c\u4E09 d\u56DB e\u4E94 f\u516D g\u4E03 h\u516B"))
     }
 
     @Test fun theSameButtonClosesTheFieldAgain() {

@@ -26,7 +26,7 @@
     <string name="puzzle_type_move">Skriv et træk</string>
     <string name="puzzle_type_move_label">Dit træk</string>
     <string name="puzzle_type_move_play">Spil</string>
-    <string name="puzzle_type_move_help">Kun engelske bogstaver og tal, fx e2e4 eller Nf3 (K, Q, R, B, N for brikkerne).</string>
+    <string name="puzzle_type_move_help">Engelske bogstaver og tal i ethvert skriftsystem, fx e2e4 eller Nf3 (K, Q, R, B, N for brikkerne, intet bogstav for en bonde).</string>
     <string name="puzzle_type_move_close">Luk trækfeltet</string>
     <string name="band_easy">Let</string>
     <string name="band_medium">Middel</string>

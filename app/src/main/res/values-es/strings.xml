@@ -26,7 +26,7 @@
     <string name="puzzle_type_move">Escribir una jugada</string>
     <string name="puzzle_type_move_label">Tu jugada</string>
     <string name="puzzle_type_move_play">Jugar</string>
-    <string name="puzzle_type_move_help">Solo letras inglesas y números, por ejemplo e2e4 o Nf3 (K, Q, R, B, N para las piezas).</string>
+    <string name="puzzle_type_move_help">Letras inglesas y números en cualquier sistema de escritura, por ejemplo e2e4 o Nf3 (K, Q, R, B, N para las piezas, sin letra para el peón).</string>
     <string name="puzzle_type_move_close">Cerrar el campo de jugadas</string>
     <string name="band_easy">Fácil</string>
     <string name="band_medium">Medio</string>

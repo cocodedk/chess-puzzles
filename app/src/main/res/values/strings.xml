@@ -24,11 +24,11 @@
     <string name="puzzle_next">Next puzzle</string>
     <!-- Opens the share sheet with the position on the board as text (FEN); the sheet is also its title. -->
     <string name="position_share">Share position</string>
-    <!-- Opens a field for typing, or dictating with the keyboard's voice typing, a move such as e2e4 or Nf3. Its help line says only English letters and numbers go in, and while it is open the same button reads "Close move field". -->
+    <!-- Opens a field for typing, or dictating with the keyboard's voice typing, a move such as e2e4 or Nf3. Its help line says English letters go in, and numbers in any script, and while it is open the same button reads "Close move field". -->
     <string name="puzzle_type_move">Type a move</string>
     <string name="puzzle_type_move_label">Your move</string>
     <string name="puzzle_type_move_play">Play</string>
-    <string name="puzzle_type_move_help">English letters and numbers only, like e2e4 or Nf3 (K, Q, R, B, N for the pieces).</string>
+    <string name="puzzle_type_move_help">English letters and numbers in any writing system, like e2e4 or Nf3 (K, Q, R, B, N for the pieces, no letter for a pawn).</string>
     <string name="puzzle_type_move_close">Close move field</string>
     <string name="band_easy">Easy</string>
     <string name="band_medium">Medium</string>
