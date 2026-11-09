@@ -31,6 +31,9 @@ class PieceListTest : EnglishTexts() {
     @Test @Config(qualifiers = "es")
     fun spanishNamesTheSideAsPieces() = assertEquals("Piezas blancas: Rey e1. Peón a2. Piezas negras: Rey e8.", list(*kingsAndAPawn))
 
+    @Test @Config(qualifiers = "fa")
+    fun persianReadsInPersianWithTheSquaresAsWritten() = assertEquals("سفید: شاه e1. سرباز a2. سیاه: شاه e8.", list(*kingsAndAPawn))
+
     @Test fun theFlippedBoardReadsTheSame() {
         val board = listOf("R     KR", "        ", "        ", "    N   ", "R       ", "        ", "        ", "   q  k ")
         assertEquals(pieceList(PuzzleUiState(board = board)), pieceList(PuzzleUiState(board = board, flipped = true)))

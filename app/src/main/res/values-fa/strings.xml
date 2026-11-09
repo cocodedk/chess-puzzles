@@ -132,6 +132,8 @@
     <string name="sentence_typed_move_illegal">حرکت %1$s اینجا مجاز نیست.</string>
     <string name="sentence_selected">%1$s %2$s انتخاب شد. حرکت‌ها: %3$s.</string>
     <string name="sentence_hint">راهنمایی: %1$s %2$s به %3$s.</string>
+    <string name="sentence_piece_list_side">%1$s: %2$s</string>
+    <string name="sentence_piece_list_kind">%1$s %2$s.</string>
     <string name="sentence_wrong">حرکت شما: %1$s. بهترین حرکت نبود، دوباره امتحان کنید.</string>
     <string name="sentence_correct">درست است. حرکت شما: %1$s. حرکت %2$s: %3$s.</string>
     <string name="sentence_reset">معما از اول شروع شد. %1$s.</string>
