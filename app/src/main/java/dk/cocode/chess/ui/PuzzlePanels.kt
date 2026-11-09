@@ -92,12 +92,12 @@ internal fun PuzzleControls(
             onPrevious,
             item.then(CompactButton).semantics { contentDescription = previous },
             contentPadding = CompactPadding,
-        ) { Text("◀", Modifier.clearAndSetSemantics {}) }
+        ) { Text(directional("◀"), Modifier.clearAndSetSemantics {}) }
         Button(
             onNext,
             item.then(CompactButton).semantics { contentDescription = next },
             contentPadding = CompactPadding,
-        ) { Text("▶", Modifier.clearAndSetSemantics {}) }
+        ) { Text(directional("▶"), Modifier.clearAndSetSemantics {}) }
     }
 }
 

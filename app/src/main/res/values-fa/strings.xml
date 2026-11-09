@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Chess Puzzles</string>
+    <string name="no_puzzles">هیچ معمایی موجود نیست</string>
+
+    <!-- The two tabs on every screen. -->
+    <string name="tab_puzzles">معماها</string>
+    <string name="tab_openings">گشایش‌ها</string>
+
+    <string name="stat_day">روزهای پیاپی</string>
+    <string name="stat_solved">حل‌شده</string>
+    <string name="stat_hint_free">حل‌شده بدون راهنمایی</string>
+    <string name="stat_streak">حل پیاپی فعلی</string>
+    <string name="stat_best">بهترین حل پیاپی</string>
+    <!-- What a screen reader says for one stat: its label, then its number. -->
+    <string name="stat_description">%1$s، %2$d</string>
+
+    <!-- The puzzle screen. -->
+    <string name="puzzle_title">معمای %1$d از %2$d</string>
+    <string name="puzzle_rating">ریتینگ %1$d</string>
+    <string name="puzzle_hint">راهنمایی</string>
+    <string name="puzzle_reset">شروع مجدد</string>
+    <string name="puzzle_previous">معمای قبلی</string>
+    <string name="puzzle_next">معمای بعدی</string>
+    <string name="position_share">اشتراک‌گذاری موقعیت</string>
+    <string name="puzzle_type_move">تایپ حرکت</string>
+    <string name="puzzle_type_move_label">حرکت شما</string>
+    <string name="puzzle_type_move_play">ثبت</string>
+    <string name="puzzle_type_move_help">حرف‌ها به انگلیسی و عددها با هر خطی، مثل e2e4 یا Nf3. مهره‌ها: K، Q، R، B، N. سرباز حرفی ندارد.</string>
+    <string name="puzzle_type_move_close">بستن کادر حرکت</string>
+    <string name="band_easy">آسان</string>
+    <string name="band_medium">متوسط</string>
+    <string name="band_hard">سخت</string>
+    <string name="puzzle_theme_button">موضوع: %1$s</string>
+    <string name="puzzle_theme_button_description">موضوع، %1$s</string>
+    <string name="puzzle_theme_all">همه</string>
+    <string name="puzzle_theme_fork">چنگال</string>
+    <string name="puzzle_theme_pin">آچمز</string>
+    <string name="puzzle_theme_skewer">سیخ</string>
+    <string name="puzzle_theme_discovered_attack">حمله‌ی کشفی</string>
+    <string name="puzzle_theme_hanging_piece">مهره‌ی بی‌دفاع</string>
+    <string name="puzzle_theme_sacrifice">قربانی</string>
+    <string name="puzzle_theme_deflection">انحراف</string>
+    <string name="puzzle_theme_attraction">جذب</string>
+    <string name="puzzle_theme_promotion">ارتقا</string>
+    <string name="puzzle_theme_mate_in_2">مات در ۲ حرکت</string>
+    <string name="puzzle_theme_mate_in_3">مات در ۳ حرکت</string>
+    <string name="puzzle_theme_opening">گشایش</string>
+    <string name="puzzle_theme_middlegame">میانه‌ی بازی</string>
+    <string name="puzzle_theme_endgame">پایان بازی</string>
+    <!-- The theme button says what a tap does; a screen reader also hears the theme in use now. -->
+    <string name="theme_auto">تم: مطابق گوشی</string>
+    <string name="theme_light">تم: روشن</string>
+    <string name="theme_dark">تم: تیره</string>
+    <string name="theme_to_light">استفاده از تم روشن</string>
+    <string name="theme_to_dark">استفاده از تم تیره</string>
+    <string name="theme_to_auto">هماهنگ با تم گوشی</string>
+    <string name="feedback_correct">درست است — ادامه دهید</string>
+    <string name="feedback_solved">حل شد ✓</string>
+    <string name="feedback_wrong">بهترین حرکت نبود — دوباره امتحان کنید</string>
+    <string name="feedback_illegal">این حرکت اینجا مجاز نیست</string>
+    <string name="promote_to">سرباز را به چه مهره‌ای ارتقا می‌دهید؟</string>
+
+    <!-- What a puzzle asks: the side to move, then the goal. -->
+    <string name="prompt_to_move">نوبت %1$s — %2$s</string>
+    <string name="prompt_solved">حل شد!</string>
+    <string name="goal_mate">مات در %1$d حرکت</string>
+    <string name="goal_defense">بهترین دفاع را پیدا کنید</string>
+    <string name="goal_save">بازی را نجات دهید</string>
+    <string name="goal_winning">برتری قاطع به دست بیاورید</string>
+    <string name="goal_upper_hand">دست بالا را بگیرید</string>
+    <string name="goal_best_move">بهترین حرکت را پیدا کنید</string>
+    <string name="side_white">سفید</string>
+    <string name="side_black">سیاه</string>
+
+    <!-- The openings screens. -->
+    <string name="opening_back">بازگشت</string>
+    <string name="opening_code">کد گشایش %1$s</string>
+    <plurals name="opening_runs">
+        <item quantity="one">%1$d بار بدون اشتباه</item>
+        <item quantity="other">%1$d بار بدون اشتباه</item>
+    </plurals>
+    <string name="opening_row_description">%1$s، %2$s</string>
+    <string name="mode_learn">یادگیری</string>
+    <string name="mode_practise">تمرین</string>
+    <string name="learn_previous">حرکت قبلی</string>
+    <string name="learn_next">حرکت بعدی</string>
+    <string name="group_white">با سفید</string>
+    <string name="group_black_e4">با سیاه در برابر ‎1.e4</string>
+    <string name="group_black_d4">با سیاه در برابر ‎1.d4</string>
+    <string name="practise_prompt">حرکت‌های %1$s را از حفظ بازی کنید.</string>
+    <string name="practise_again">شروع دوباره</string>
+    <string name="practise_book_move">حرکت درست گشایش ✓</string>
+    <string name="practise_not_book">این حرکت در این گشایش نیست. %1$s‎ را بازی کنید.</string>
+    <string name="practise_not_book_fallback">این حرکت در این گشایش نیست. حرکت مشخص‌شده را بازی کنید.</string>
+    <string name="practise_complete_clean">خط بازی تمام شد ✓</string>
+    <string name="practise_complete">خط بازی تمام شد. دوباره و بدون اشتباه امتحان کنید.</string>
+
+    <!-- What a screen reader says for a piece: each one by name, and its colour. -->
+    <string name="spoken_pawn">سرباز</string>
+    <string name="spoken_knight">اسب</string>
+    <string name="spoken_bishop">فیل</string>
+    <string name="spoken_rook">رخ</string>
+    <string name="spoken_queen">وزیر</string>
+    <string name="spoken_king">شاه</string>
+    <string name="spoken_white_piece">%1$s سفید</string>
+    <string name="spoken_black_piece">%1$s سیاه</string>
+
+    <!-- A board square, read as the square, its contents, then any of these states. -->
+    <string name="spoken_empty">خالی</string>
+    <string name="spoken_selected">انتخاب‌شده</string>
+    <string name="spoken_legal_move">حرکت مجاز</string>
+    <string name="spoken_last_move">آخرین حرکت</string>
+    <string name="spoken_hint">راهنمایی</string>
+
+    <!-- A move in words. The target and any disambiguation are squares and files as they are written. -->
+    <string name="spoken_castling_kingside">قلعه کوتاه</string>
+    <string name="spoken_castling_queenside">قلعه بلند</string>
+    <string name="spoken_pawn_move">سرباز %1$s</string>
+    <string name="spoken_pawn_takes">سرباز %1$s، %2$s را می‌زند</string>
+    <string name="spoken_piece_move">%1$s %2$s</string>
+    <string name="spoken_piece_move_from">%1$s %2$s %3$s</string>
+    <string name="spoken_piece_takes">%1$s %2$s را می‌زند</string>
+    <string name="spoken_piece_takes_from">%1$s %2$s، %3$s را می‌زند</string>
+    <string name="spoken_promotes">%1$s، ارتقا به %2$s</string>
+    <string name="spoken_check">%1$s، کیش</string>
+    <string name="spoken_checkmate">%1$s، مات</string>
+
+    <!-- Sentences a screen reader says after an event on the puzzle screen. -->
+    <string name="sentence_selection_cleared">انتخاب برداشته شد.</string>
+    <string name="sentence_no_moves">از %1$s حرکتی ممکن نیست.</string>
+    <string name="sentence_typed_move_illegal">حرکت %1$s اینجا مجاز نیست.</string>
+    <string name="sentence_selected">%1$s %2$s انتخاب شد. حرکت‌ها: %3$s.</string>
+    <string name="sentence_hint">راهنمایی: %1$s %2$s به %3$s.</string>
+    <string name="sentence_wrong">حرکت شما: %1$s. بهترین حرکت نبود، دوباره امتحان کنید.</string>
+    <string name="sentence_correct">درست است. حرکت شما: %1$s. حرکت %2$s: %3$s.</string>
+    <string name="sentence_reset">معما از اول شروع شد. %1$s.</string>
+    <string name="sentence_solved">حل شد. حرکت شما: %1$s.</string>
+    <string name="sentence_puzzle_shown">معمای %1$d از %2$d، ریتینگ %3$d. حرکت %4$s: %5$s. %6$s.</string>
+
+    <!-- A puzzle theme is chosen: its name, then how many puzzles the difficulty band now has. -->
+    <plurals name="sentence_theme_chosen">
+        <item quantity="one">موضوع: %1$s. %2$d معما.</item>
+        <item quantity="other">موضوع: %1$s. %2$d معما.</item>
+    </plurals>
+
+    <!-- Sentences a screen reader says on the openings screens. -->
+    <string name="sentence_start_position">موقعیت شروع.</string>
+    <string name="sentence_opened">%1$s. یادگیری. %2$s</string>
+    <string name="sentence_learn_chosen">یادگیری. %1$s</string>
+    <string name="sentence_learn_move">حرکت %1$d، %2$s: %3$s.</string>
+    <string name="sentence_line_chosen">خط بازی: %1$s. %2$s</string>
+    <string name="sentence_practise">تمرین. %1$s</string>
+    <string name="sentence_played_by">حرکت %1$s: %2$s.</string>
+    <string name="sentence_book_move">حرکت درست گشایش. حرکت شما: %1$s.</string>
+    <string name="sentence_not_book">حرکت شما: %1$s. این حرکت در این گشایش نیست. حرکت درست: %2$s.</string>
+    <string name="sentence_line_complete">خط بازی تمام شد.</string>
+    <string name="sentence_line_complete_unclean">خط بازی تمام شد. دوباره و بدون اشتباه امتحان کنید.</string>
+    <string name="spoken_line_name">حرکت %1$d، %2$s: %3$s</string>
+    <string name="spoken_move_list_entry">%1$d. %2$s.</string>
+    <!-- An opening's code (its catalogue number), then how many runs without mistakes, meaning lines played from memory with no wrong move, it has had. -->
+    <plurals name="opening_code_runs">
+        <item quantity="one">کد گشایش %1$s، %2$d بار بدون اشتباه</item>
+        <item quantity="other">کد گشایش %1$s، %2$d بار بدون اشتباه</item>
+    </plurals>
+
+    <!-- The About screen: the section titles follow the cocode-apps standard, in this order. -->
+    <string name="about">درباره</string>
+    <string name="about_back">بازگشت</string>
+    <string name="about_version">نسخه %1$s</string>
+    <string name="about_check_updates">دیدن آخرین نسخه</string>
+    <string name="about_check_updates_note">صفحه‌ی همین برنامه را باز می‌کند؛ آخرین نسخه همان‌جا منتشر می‌شود. خود برنامه هیچ‌وقت به‌روزرسانی را بررسی نمی‌کند.</string>
+    <string name="about_section_what">برنامه چه کار می‌کند</string>
+    <string name="about_what">برنامه‌ی Chess Puzzles به شما کمک می‌کند تاکتیک‌های شطرنج را تمرین کنید. هر معما از پایگاه‌داده‌ی معماهای Lichess می‌آید، می‌گوید چه چیزی را باید پیدا کنید (مثلاً مات در ۲ حرکت) و ریتینگی دارد که سختی‌اش را نشان می‌دهد. می‌توانید گشایش‌های رایج را هم حرکت‌به‌حرکت یاد بگیرید و بعد از حفظ بازی کنید. همه‌چیز روی گوشی شما ذخیره می‌شود، پس برنامه بدون اینترنت کار می‌کند.</string>
+    <string name="about_section_privacy">حریم خصوصی</string>
+    <string name="about_privacy_no_data">برنامه‌ی Chess Puzzles هیچ اطلاعات شخصی‌ای را جمع نمی‌کند، نمی‌فرستد و به اشتراک نمی‌گذارد.</string>
+    <string name="about_privacy_no_permissions">هیچ‌وقت از شما مجوزی نمی‌خواهد و نمی‌تواند از اینترنت استفاده کند.</string>
+    <string name="about_privacy_no_tracking">بدون حساب کاربری، بدون تبلیغات، بدون ابزار آمارگیری و بدون گزارش خرابی.</string>
+    <string name="about_privacy_on_device">پیشرفت شما روی گوشی ذخیره می‌شود. خود برنامه آن را هیچ‌جا نمی‌فرستد.</string>
+    <string name="about_privacy_link">خواندن سیاست حریم خصوصی</string>
+    <string name="about_section_links">پیوندها</string>
+    <string name="about_website">باز کردن وب‌سایت</string>
+    <string name="about_source">دیدن کد منبع در GitHub</string>
+    <string name="about_report">گزارش مشکل در GitHub</string>
+    <string name="about_credits">سپاس‌ها و مجوزها</string>
+    <string name="about_credits_body">ساخته‌ی بابک بندپی.\nمعماها: Lichess Open Database (CC0 1.0)‎.\nقوانین شطرنج: chesslib (Apache-2.0)‎.</string>
+    <string name="about_license">منتشر شده با مجوز Apache License 2.0. © 2026 Cocode.</string>
+    <string name="about_section_made_by">ساخته‌ی Cocode</string>
+    <string name="about_made_by">ساخته‌ی Cocode (cocode.dk)‎</string>
+    <string name="about_linkedin">بابک بندپی در LinkedIn</string>
+
+    <!-- The spoken names of the promotion choices, for TalkBack. -->
+    <string name="piece_queen">وزیر</string>
+    <string name="piece_rook">رخ</string>
+    <string name="piece_bishop">فیل</string>
+    <string name="piece_knight">اسب</string>
+</resources>

@@ -2,14 +2,17 @@ package dk.cocode.chess.ui.board
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.onClick
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.LayoutDirection
 import dk.cocode.chess.core.model.Square
 import dk.cocode.chess.ui.rememberTexts
 import dk.cocode.chess.viewmodel.BoardState
@@ -22,6 +25,9 @@ const val BOARD_SQUARES_TAG = "chessBoardSquares"
  * each covering the square it names and saying what [squareDescription] says. They draw nothing and
  * take no touches; a double-tap runs [onSquareTap], as a finger tap on the square does — unless the
  * state is not [BoardState.tappable], when the items are read but offer no click.
+ *
+ * They are laid out left to right in every language. A screen reader orders them by layout direction,
+ * so in a right-to-left language (Persian) it would otherwise read each rank from h to a.
  */
 @Composable
 internal fun BoardSquares(state: BoardState, onSquareTap: (Square) -> Unit, modifier: Modifier = Modifier) {
@@ -29,28 +35,30 @@ internal fun BoardSquares(state: BoardState, onSquareTap: (Square) -> Unit, modi
     val flipped = state.flipped
     val tappable = state.tappable
     val order = remember(flipped) { BoardGeometry.squaresInReadingOrder(flipped) }
-    Layout(
-        content = {
-            order.forEach { square ->
-                Box(
-                    Modifier.semantics {
-                        contentDescription = texts.squareDescription(state, square)
-                        if (tappable) onClick { onSquareTap(square); true }
-                    },
-                )
+    CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
+        Layout(
+            content = {
+                order.forEach { square ->
+                    Box(
+                        Modifier.semantics {
+                            contentDescription = texts.squareDescription(state, square)
+                            if (tappable) onClick { onSquareTap(square); true }
+                        },
+                    )
+                }
+            },
+            modifier = modifier.testTag(BOARD_SQUARES_TAG),
+        ) { measurables, constraints ->
+            // Reading order runs row by row from the top, so item i sits in column i % 8 and row i / 8.
+            val edges = BoardGeometry.squareEdgesPx(constraints.maxWidth.toFloat())
+            val placeables = measurables.mapIndexed { i, measurable ->
+                val col = i % 8
+                val row = i / 8
+                measurable.measure(Constraints.fixed(edges[col + 1] - edges[col], edges[row + 1] - edges[row]))
             }
-        },
-        modifier = modifier.testTag(BOARD_SQUARES_TAG),
-    ) { measurables, constraints ->
-        // Reading order runs row by row from the top, so item i sits in column i % 8 and row i / 8.
-        val edges = BoardGeometry.squareEdgesPx(constraints.maxWidth.toFloat())
-        val placeables = measurables.mapIndexed { i, measurable ->
-            val col = i % 8
-            val row = i / 8
-            measurable.measure(Constraints.fixed(edges[col + 1] - edges[col], edges[row + 1] - edges[row]))
-        }
-        layout(constraints.maxWidth, constraints.maxHeight) {
-            placeables.forEachIndexed { i, placeable -> placeable.place(edges[i % 8], edges[i / 8]) }
+            layout(constraints.maxWidth, constraints.maxHeight) {
+                placeables.forEachIndexed { i, placeable -> placeable.place(edges[i % 8], edges[i / 8]) }
+            }
         }
     }
 }

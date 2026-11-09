@@ -14,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
@@ -58,6 +59,7 @@ private fun Stat(@DrawableRes icon: Int, @StringRes label: Int, value: Int) {
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(painterResource(icon), contentDescription = name, Modifier.size(16.dp))
-        Text("$value", style = MaterialTheme.typography.bodyMedium)
+        // In the app's language's digits (Persian ۴), as the screen reader says it.
+        Text(String.format(LocalConfiguration.current.locales[0], "%d", value), style = MaterialTheme.typography.bodyMedium)
     }
 }
