@@ -60,6 +60,11 @@ android {
     buildFeatures {
         compose = true
     }
+    // Declares the app's languages (one per values-* folder) so Android 13+ offers them in Settings >
+    // Apps > Chess Puzzles > Language, even when the phone itself is set to another language.
+    androidResources {
+        generateLocaleConfig = true
+    }
     // AGP otherwise adds a "Dependency metadata" block to the APK signing block,
     // encrypted with a key only Google Play holds. F-Droid rejects release APKs
     // that carry it, and v0.5.6 did.
