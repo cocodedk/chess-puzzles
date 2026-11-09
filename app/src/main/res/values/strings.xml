@@ -135,6 +135,9 @@
     <string name="sentence_typed_move_illegal">%1$s is not a legal move here.</string>
     <string name="sentence_selected">%1$s %2$s selected. Moves: %3$s.</string>
     <string name="sentence_hint">Hint: %1$s %2$s to %3$s.</string>
+    <!-- The piece list a screen reader reads for the whole board: "White: King e1. Rook a1, h1. …" -->
+    <string name="sentence_piece_list_side">%1$s: %2$s</string>
+    <string name="sentence_piece_list_kind">%1$s %2$s.</string>
     <string name="sentence_wrong">You played %1$s. Not the best move — try again.</string>
     <string name="sentence_correct">Correct. You played %1$s. %2$s played %3$s.</string>
     <string name="sentence_reset">Puzzle restarted. %1$s.</string>

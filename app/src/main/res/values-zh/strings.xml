@@ -114,6 +114,8 @@
     <string name="sentence_typed_move_illegal">%1$s在这里不是合法走法。</string>
     <string name="sentence_selected">已选中%1$s%2$s。可走：%3$s。</string>
     <string name="sentence_hint">提示：%1$s%2$s走到%3$s。</string>
+    <string name="sentence_piece_list_side">%1$s：%2$s</string>
+    <string name="sentence_piece_list_kind">%1$s%2$s。</string>
     <string name="sentence_wrong">你走了%1$s。不是最佳走法，再试一次。</string>
     <string name="sentence_correct">正确。你走了%1$s。%2$s走了%3$s。</string>
     <string name="sentence_reset">谜题已重新开始。%1$s。</string>

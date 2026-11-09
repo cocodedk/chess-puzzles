@@ -115,6 +115,8 @@
     <string name="sentence_typed_move_illegal">%1$s er ikke et lovligt træk her.</string>
     <string name="sentence_selected">%1$s %2$s er valgt. Træk: %3$s.</string>
     <string name="sentence_hint">Hint: %1$s %2$s til %3$s.</string>
+    <string name="sentence_piece_list_side">%1$s: %2$s</string>
+    <string name="sentence_piece_list_kind">%1$s %2$s.</string>
     <string name="sentence_wrong">Du spillede %1$s. Ikke det bedste træk, prøv igen.</string>
     <string name="sentence_correct">Rigtigt. Du spillede %1$s. %2$s spillede %3$s.</string>
     <string name="sentence_reset">Opgaven er startet forfra. %1$s.</string>

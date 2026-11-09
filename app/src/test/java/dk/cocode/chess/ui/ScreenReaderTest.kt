@@ -86,6 +86,17 @@ class ScreenReaderTest {
         assertSquares(names, flipped = true)
     }
 
+    @Test fun theDrawingReadsEveryPieceInOneItemBeforeTheSquares() {
+        val tapped = mutableListOf<Square>()
+        show(PuzzleUiState(board = listOf("    K   ", "P       ", "        ", "        ", "        ", "        ", "        ", "    k   ")), tapped::add)
+        val drawing = composeRule.onNodeWithTag(BOARD_TEST_TAG)
+        drawing.assertContentDescriptionEquals("White: King e1. Pawn a2. Black: King e8.")
+        val a8 = composeRule.onNodeWithTag(BOARD_SQUARES_TAG).onChildren()[0].getUnclippedBoundsInRoot()
+        assertTrue("read first: it starts above the first square", drawing.getUnclippedBoundsInRoot().top < a8.top)
+        drawing.performSemanticsAction(SemanticsActions.OnClick) // a double-tap on the list taps no square
+        assertEquals(emptyList<Square>(), tapped)
+    }
+
     @Test fun accessibilityClickOnASquareTapsIt() {
         val tapped = mutableListOf<Square>()
         show(PuzzleUiState(board = listOf("RNBQKBNR", "PPPPPPPP") + List(6) { "        " }), tapped::add)

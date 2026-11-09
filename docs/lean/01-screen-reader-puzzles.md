@@ -59,8 +59,8 @@ the builder's choice, within the rule that chesslib stays confined to `ChessEngi
 
 ## The board
 
-The board keeps drawing and taking touches exactly as now. On top of that, TalkBack sees 64 square
-items and nothing else on the board (the frame and the coordinate letters are not read).
+The board keeps drawing and taking touches exactly as now. On top of that, TalkBack sees one piece
+list item and then 64 square items (the frame and the coordinate letters are not read).
 
 - **Order.** Squares are read in the order they are shown: the top row left to right, then the next
   row down. From White's side that is a8, b8 … h8, a7 … h1. From Black's side (the board flipped) it
@@ -78,7 +78,12 @@ items and nothing else on the board (the frame and the coordinate letters are no
     hint`; `d5, black pawn, legal move`.
 - **Double-tap** on a square does exactly what a finger tap on that square does now (select, clear,
   or move). TalkBack's own hint ("double-tap to activate") is enough; no custom action label.
-- The board as a whole has no other description.
+- **The piece list** (added later, asked for by a TalkBack user) is the board drawing's description,
+  read before the squares: every piece in one item, White then Black; within a side king, rook,
+  queen, bishop, knight, pawn; each kind's squares file by file (a1, a2 … h8). A kind with no piece
+  is left out. The start position: `White: King e1. Rook a1, h1. Queen d1. Bishop c1, f1. Knight b1,
+  g1. Pawn a2, b2, c2, d2, e2, f2, g2, h2. Black: King e8. Rook a8, h8. …`. Sighted players never
+  see it, so it has no setting.
 
 The square text is built by a pure function of the board state and the square, so it is tested
 without a screen.

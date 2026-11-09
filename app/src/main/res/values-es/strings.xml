@@ -116,6 +116,8 @@
     <string name="sentence_typed_move_illegal">%1$s no es una jugada legal aquí.</string>
     <string name="sentence_selected">Seleccionado: %1$s %2$s. Jugadas: %3$s.</string>
     <string name="sentence_hint">Pista: %1$s %2$s a %3$s.</string>
+    <string name="sentence_piece_list_side">Piezas %1$s: %2$s</string>
+    <string name="sentence_piece_list_kind">%1$s %2$s.</string>
     <string name="sentence_wrong">Jugaste %1$s. No es la mejor jugada, inténtalo de nuevo.</string>
     <string name="sentence_correct">Correcto. Jugaste %1$s. Respuesta de las %2$s: %3$s.</string>
     <string name="sentence_reset">Puzle reiniciado. %1$s.</string>
