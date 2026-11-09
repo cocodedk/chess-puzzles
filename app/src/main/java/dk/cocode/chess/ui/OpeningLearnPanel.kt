@@ -43,11 +43,11 @@ internal fun OpeningLearnPanel(
         IconButton(
             onClick = { onStep(-1) }, enabled = state.ply > 0,
             modifier = Modifier.semantics { contentDescription = previous },
-        ) { Text("◀", Modifier.clearAndSetSemantics {}) }
+        ) { Text(directional("◀"), Modifier.clearAndSetSemantics {}) }
         IconButton(
             onClick = { onStep(1) }, enabled = state.ply < state.moveSan.size,
             modifier = Modifier.semantics { contentDescription = next },
-        ) { Text("▶", Modifier.clearAndSetSemantics {}) }
+        ) { Text(directional("▶"), Modifier.clearAndSetSemantics {}) }
     }
     if (state.lineNames.size > 1) {
         ChipRow(
