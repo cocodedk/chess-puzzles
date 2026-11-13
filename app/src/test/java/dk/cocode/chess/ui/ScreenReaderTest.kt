@@ -118,9 +118,12 @@ class ScreenReaderTest {
         verdict.assert(SemanticsMatcher.keyNotDefined(SemanticsProperties.ContentDescription))
     }
 
-    @Test fun titleIsAHeading() {
-        show(PuzzleUiState(position = 4, bandSize = 812))
-        composeRule.onNodeWithText("Puzzle 4 of 812").assert(SemanticsMatcher.keyIsDefined(SemanticsProperties.Heading))
+    /** The title and the rating share one line, heard as one heading: the puzzle, then its rating. */
+    @Test fun titleIsAHeadingThatSaysTheRatingToo() {
+        show(PuzzleUiState(position = 4, bandSize = 812, rating = 1523))
+        composeRule.onNodeWithText("Puzzle 4 of 812 · Rating 1523")
+            .assert(SemanticsMatcher.keyIsDefined(SemanticsProperties.Heading))
+            .assertContentDescriptionEquals("Puzzle 4 of 812, Rating 1523")
     }
 
     @Test fun eachStatIsOneItemWithItsLabelAndNumber() {

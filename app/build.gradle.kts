@@ -42,6 +42,11 @@ android {
         }
     }
     buildTypes {
+        debug {
+            // Its own app id: a debug build installs beside the release-signed app instead of
+            // needing an uninstall (another key), which would wipe the owner's progress.
+            applicationIdSuffix = ".debug"
+        }
         release {
             // F-Droid's reviewer rejects release builds with minify off for no reason (fdroiddata !49432).
             isMinifyEnabled = true

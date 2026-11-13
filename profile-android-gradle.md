@@ -20,8 +20,9 @@ could never be reused and would only be left running after the check ends.
 
     app/build/outputs/apk/debug/app-debug.apk
 
-A debug build signs with a different key from the release on the owner's phone, so it cannot update
-that install; only the release workflow's APK can. Never uninstall the app there to make room for it.
+A debug build installs beside the release-signed app on the owner's phone as `dk.cocode.chess.debug`,
+with its own (empty) progress. It never touches the release app, which only the release workflow's APK
+can update in place. Never uninstall the release app there.
 
 ## proof_command
 
@@ -42,9 +43,10 @@ The failing test names and their exception types live here, not in the console.
     $ANDROID_USER_HOME     a writable directory holding a copy of the debug.keystore the owner's
                            own builds sign with (by default ~/.android/; match fingerprints with
                            `apksigner verify --print-certs`): without it the build signs with a
-                           throwaway key, and its APK cannot update the installed app. This hands
-                           the build's code that debug key; a dedicated per-project debug key
-                           avoids it, at the cost of one reinstall (which clears the app's data)
+                           throwaway key, and its APK cannot update an installed debug build. This
+                           hands the build's code that debug key; a dedicated per-project debug key
+                           avoids it, at the cost of one reinstall of the debug build (which clears
+                           only its own progress, never the release app's)
 
 A gate box that hides the user's home hides both. The SDK is read-only; the cache must be writable
 and should survive between gates, or every gate downloads the toolchain again.

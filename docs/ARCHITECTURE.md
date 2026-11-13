@@ -49,8 +49,11 @@ Two Gradle modules so the chess/puzzle logic is pure-JVM and fully unit-testable
   `BoardCoordinates` (files and ranks written on the edge squares),
   `PieceArt` and `PieceDrawing` (vector Staunton pieces, ivory and ebony), `BoardDrawing` (pure
   `DrawScope` helpers), `ChessBoard` (`Canvas` + tap/drag gestures), `PromotionDialog`.
-- `ui/BoardScaffold` — the three-way board layout (`boardLayout`: a board between two panels, beside
-  one, or stacked in a column) shared by the puzzle and openings screens, so the `when` lives once.
+- `ui/BoardScaffold` — the board layout (`boardLayout`: a board between two panels, beside one, or
+  between rows above and below it — on an upright phone as wide as the screen with the rows scrolling,
+  on a near-square screen the largest square the rows leave room for, unless `scrollWhenStacked` asks for
+  the upright arrangement there too, as Learn does) shared by the puzzle and openings screens, so the
+  `when` lives once.
   Takes a `tabs` slot (the `Puzzles | Openings` `ModeTabs` row, always first) plus `header`/`body`
   slots, each told whether it must lay its own rows out as a stacked column.
   `PuzzleScreen`/`PuzzleScreenContent` compose their existing panels through it unchanged.

@@ -16,11 +16,11 @@ import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.unit.dp
 import dk.cocode.chess.FakeProgressRepository
 import dk.cocode.chess.PHONE_QUALIFIERS
+import dk.cocode.chess.assertWithinScreenWidth
 import dk.cocode.chess.data.ThemeMode
 import dk.cocode.chess.themedPuzzleRepository
 import dk.cocode.chess.ui.board.BOARD_TEST_TAG
@@ -38,7 +38,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 
-/** The theme button under the bands: what a screen reader says of it, its size and place, and its list. */
+/** The Theme menu after the Level menu: what a screen reader says of it, its size and place, and its list. */
 @RunWith(RobolectricTestRunner::class)
 @Config(qualifiers = PHONE_QUALIFIERS)
 class ThemeMenuTest {
@@ -72,7 +72,7 @@ class ThemeMenuTest {
         composeRule.onNodeWithContentDescription("Theme, Discovered attack").assertTextEquals("Theme: Discovered attack ▾")
     }
 
-    /** The drawn button is slimmer (like Hint and Restart); what a finger can hit is Compose's 48dp minimum. */
+    /** The chip draws under 48dp tall; what a finger can hit is Compose's 48dp minimum touch target. */
     private fun touchTarget(description: String) = with(composeRule.density) {
         composeRule.onNodeWithContentDescription(description).fetchSemanticsNode().touchBoundsInRoot.let {
             it.width.toDp() to it.height.toDp()
@@ -122,10 +122,10 @@ class ThemeMenuTest {
         composeRule.setContent {
             ChessTheme(darkTheme = false) { PuzzleScreen(viewModel, themeMode = ThemeMode.SYSTEM, onThemeToggle = {}) }
         }
-        composeRule.onNodeWithText("Puzzle 1 of 4").assertExists()
+        composeRule.onNodeWithText("Puzzle 1 of 4", substring = true).assertExists()
         composeRule.onNodeWithContentDescription("Theme, All").performClick()
         composeRule.onNodeWithText("Fork").performClick()
-        composeRule.onNodeWithText("Puzzle 1 of 3").assertExists()
+        composeRule.onNodeWithText("Puzzle 1 of 3", substring = true).assertExists()
         composeRule.onNodeWithContentDescription("Theme, Fork").assertExists()
         val said = composeRule.onNode(SemanticsMatcher.expectValue(SemanticsProperties.LiveRegion, LiveRegionMode.Polite))
         assertTrue(said.fetchSemanticsNode().config[SemanticsProperties.ContentDescription].joinToString(" ").startsWith("Theme: Fork. 3 puzzles. "))
@@ -135,10 +135,9 @@ class ThemeMenuTest {
     @Test @Config(qualifiers = "w360dp-h800dp", fontScale = 1.3f)
     fun aLargeFontKeepsTheButtonOnScreenAboveTheBoard() {
         show(PuzzleUiState(theme = PuzzleTheme.DISCOVERED_ATTACK))
-        val screen = composeRule.onRoot().getUnclippedBoundsInRoot()
         val board = composeRule.onNodeWithTag(BOARD_TEST_TAG).getUnclippedBoundsInRoot()
         val button = composeRule.onNodeWithContentDescription("Theme, Discovered attack").getUnclippedBoundsInRoot()
-        assertTrue(button.left >= screen.left && button.right <= screen.right)
+        composeRule.assertWithinScreenWidth(button)
         assertTrue(button.bottom <= board.top)
         assertTrue(touchTarget("Theme, Discovered attack").second >= 48.dp)
     }

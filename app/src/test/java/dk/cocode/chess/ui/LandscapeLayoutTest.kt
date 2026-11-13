@@ -109,7 +109,7 @@ class LandscapeLayoutTest {
     fun panelsAreCentredBesideATallBoard() {
         show()
         val screen = composeRule.onRoot().getUnclippedBoundsInRoot()
-        val above = bounds("Puzzle 0 of 0").top - screen.top
+        val above = bounds("Puzzle 0 of 0 · Rating 0").top - screen.top
         val below = screen.bottom - bounds("About").bottom
         assertTrue("above $above", above > 50.dp)
         assertEquals("above $above, below $below", above.value, below.value, 8f)
@@ -123,13 +123,42 @@ class LandscapeLayoutTest {
         assertEquals(0f, board.left.value, 0f)
         assertEquals(screen.height.value, board.height.value, 1f)
         assertTrue(bounds("Hint").left >= board.right)
-        assertTrue(bounds("Hint").top >= bounds("Medium").bottom) // one panel: the bands above the buttons
+        val level = composeRule.onNodeWithContentDescription("Level, Easy").getUnclippedBoundsInRoot()
+        assertTrue(bounds("Hint").top >= level.bottom) // one panel: the Level menu above the buttons
     }
+
+    /** The whole board in view, unscrolled, and square. */
+    private fun assertTheWholeBoardFits() {
+        show()
+        val screen = composeRule.onRoot().getUnclippedBoundsInRoot()
+        val board = composeRule.onNodeWithTag(BOARD_TEST_TAG).getUnclippedBoundsInRoot()
+        assertTrue("board to ${board.bottom} of ${screen.right} x ${screen.bottom}", board.bottom <= screen.bottom)
+        assertEquals(board.width.value, board.height.value, 1f)
+    }
+
+    /** A near-square screen, wider than tall but with no room beside the board. */
+    @Test @Config(qualifiers = "w700dp-h650dp")
+    fun aNearSquareScreenFitsTheWholeBoard() = assertTheWholeBoardFits()
+
+    /** A foldable's inner screen held upright, 673 x 785dp: taller than wide, but not by a phone's margin. */
+    @Test @Config(qualifiers = "w673dp-h849dp")
+    fun aFoldablesInnerScreenUprightFitsTheWholeBoard() = assertTheWholeBoardFits()
 
     @Test fun theBoardGoesWhereTheRoomBesideItAllows() {
         assertEquals(BoardLayout.BETWEEN_PANELS, boardLayout(800.dp, 360.dp)) // a phone on its side
         assertEquals(BoardLayout.BESIDE_PANEL, boardLayout(640.dp, 360.dp)) // a 16:9 phone on its side
-        assertEquals(BoardLayout.STACKED, boardLayout(360.dp, 800.dp)) // a phone upright
+        assertEquals(BoardLayout.UPRIGHT, boardLayout(360.dp, 800.dp)) // a phone upright
         assertEquals(BoardLayout.STACKED, boardLayout(700.dp, 650.dp)) // near-square: no room beside it
+    }
+
+    /**
+     * Only a screen 1.3 times taller than wide, an upright phone, gives every board screen a full-width board
+     * with its rows scrolling; elsewhere only Learn asks for that.
+     */
+    @Test fun theUprightLayoutIsOnlyForAnUprightPhone() {
+        assertEquals(BoardLayout.STACKED, boardLayout(1000.dp, 1299.dp))
+        assertEquals(BoardLayout.UPRIGHT, boardLayout(1000.dp, 1300.dp))
+        assertEquals(BoardLayout.UPRIGHT, boardLayout(360.dp, 584.dp)) // a small 16:9 phone, less its system bars
+        assertEquals(BoardLayout.STACKED, boardLayout(673.dp, 785.dp)) // a foldable's inner screen held upright
     }
 }

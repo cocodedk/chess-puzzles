@@ -173,6 +173,8 @@
     <string name="piece_rook">Tårn</string>
     <string name="piece_bishop">Løber</string>
     <string name="piece_knight">Springer</string>
+    <string name="puzzle_level_button">Niveau: %1$s</string>
+    <string name="puzzle_level_button_description">Niveau, %1$s</string>
     <string name="puzzle_theme_button">Motiv: %1$s</string>
     <string name="puzzle_theme_button_description">Motiv, %1$s</string>
     <string name="puzzle_theme_all">Alle</string>
