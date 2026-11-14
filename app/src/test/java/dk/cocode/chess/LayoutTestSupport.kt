@@ -9,6 +9,7 @@ import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.SemanticsNodeInteractionsProvider
 import androidx.compose.ui.test.getUnclippedBoundsInRoot
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.text.TextLayoutResult
@@ -26,17 +27,32 @@ fun SemanticsNodeInteractionsProvider.assertWithinScreenWidth(rect: DpRect) {
     assertTrue("$rect on $screen", rect.left >= screen.left && rect.right <= screen.right)
 }
 
+/** Fails unless [rect], the bounds of what [name] says, lies wholly on the screen. */
+fun SemanticsNodeInteractionsProvider.assertOnScreen(name: String, rect: DpRect) {
+    val screen = onRoot().getUnclippedBoundsInRoot()
+    assertTrue("$name at $rect on $screen", rect.top >= screen.top && rect.bottom <= screen.bottom)
+    assertWithinScreenWidth(rect)
+}
+
+/** The board's bounds, frame included. */
+fun SemanticsNodeInteractionsProvider.board(): DpRect = onNodeWithTag(BOARD_TEST_TAG).getUnclippedBoundsInRoot()
+
+/** The bounds of the node showing [text], or only containing it with [substring]. */
+fun SemanticsNodeInteractionsProvider.bounds(text: String, substring: Boolean = false): DpRect =
+    onNodeWithText(text, substring = substring).getUnclippedBoundsInRoot()
+
 /** Fails unless the board is as wide as the screen, to within 1dp. */
 fun SemanticsNodeInteractionsProvider.assertBoardSpansTheScreen() {
     val screen = onRoot().getUnclippedBoundsInRoot()
-    val board = onNodeWithTag(BOARD_TEST_TAG).getUnclippedBoundsInRoot()
-    assertEquals(screen.width.value, board.width.value, 1f)
+    assertEquals(screen.width.value, board().width.value, 1f)
 }
+
+/** Matches a column that scrolls up and down. */
+fun scrollsUpAndDown() = SemanticsMatcher.keyIsDefined(SemanticsProperties.VerticalScrollAxisRange)
 
 /** The scroll range of the one column on screen that scrolls up and down. */
 fun SemanticsNodeInteractionsProvider.scrollRange(): ScrollAxisRange =
-    onNode(SemanticsMatcher.keyIsDefined(SemanticsProperties.VerticalScrollAxisRange))
-        .fetchSemanticsNode().config[SemanticsProperties.VerticalScrollAxisRange]
+    onNode(scrollsUpAndDown()).fetchSemanticsNode().config[SemanticsProperties.VerticalScrollAxisRange]
 
 /** How this node's text is laid out: its lines, and whether it is cut off. */
 fun SemanticsNodeInteraction.textLayout(): TextLayoutResult {
