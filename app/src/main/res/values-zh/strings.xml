@@ -171,6 +171,8 @@
     <string name="piece_rook">车</string>
     <string name="piece_bishop">象</string>
     <string name="piece_knight">马</string>
+    <string name="puzzle_level_button">难度：%1$s</string>
+    <string name="puzzle_level_button_description">难度，%1$s</string>
     <string name="puzzle_theme_button">战术：%1$s</string>
     <string name="puzzle_theme_button_description">战术，%1$s</string>
     <string name="puzzle_theme_all">全部</string>

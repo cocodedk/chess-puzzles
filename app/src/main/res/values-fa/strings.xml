@@ -31,6 +31,8 @@
     <string name="band_easy">آسان</string>
     <string name="band_medium">متوسط</string>
     <string name="band_hard">سخت</string>
+    <string name="puzzle_level_button">سطح: %1$s</string>
+    <string name="puzzle_level_button_description">سطح، %1$s</string>
     <string name="puzzle_theme_button">موضوع: %1$s</string>
     <string name="puzzle_theme_button_description">موضوع، %1$s</string>
     <string name="puzzle_theme_all">همه</string>

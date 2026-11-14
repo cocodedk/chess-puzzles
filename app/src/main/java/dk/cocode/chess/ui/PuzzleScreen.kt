@@ -97,7 +97,6 @@ fun PuzzleScreenContent(
         tabs = tabs,
         header = { stacked ->
             PuzzleStats(state, difficulties, onDifficulty, themes, onTheme, stacked)
-            Spacer(Modifier.height(8.dp))
             if (stacked) PuzzleSettings(themeMode, onThemeToggle, onAbout) else PuzzlePrompt(state)
         },
         body = { stacked ->

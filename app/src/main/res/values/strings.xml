@@ -33,6 +33,8 @@
     <string name="band_easy">Easy</string>
     <string name="band_medium">Medium</string>
     <string name="band_hard">Hard</string>
+    <string name="puzzle_level_button">Level: %1$s</string>
+    <string name="puzzle_level_button_description">Level, %1$s</string>
     <!-- The puzzle theme filter (fork, pin, ...), not the light/dark look. The button shows the one in use, and a screen reader says it as the description. -->
     <string name="puzzle_theme_button">Theme: %1$s</string>
     <string name="puzzle_theme_button_description">Theme, %1$s</string>

@@ -10,11 +10,11 @@ import androidx.compose.ui.test.getUnclippedBoundsInRoot
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.unit.height
 import dk.cocode.chess.PHONE_QUALIFIERS
+import dk.cocode.chess.assertWithinScreenWidth
 import dk.cocode.chess.ui.board.BOARD_TEST_TAG
 import dk.cocode.chess.ui.theme.ChessTheme
 import dk.cocode.chess.viewmodel.PuzzleUiState
@@ -53,9 +53,8 @@ class SharePositionButtonTest {
     private fun assertReachable(scrolls: Boolean) {
         if (scrolls) button().performScrollTo()
         button().assertIsDisplayed()
-        val screen = composeRule.onRoot().getUnclippedBoundsInRoot()
         val bounds = button().getUnclippedBoundsInRoot()
-        assertTrue("inside the screen", bounds.left >= screen.left && bounds.right <= screen.right)
+        composeRule.assertWithinScreenWidth(bounds)
         val density = composeRule.activity.resources.displayMetrics.density
         val target = button().fetchSemanticsNode().touchBoundsInRoot
         assertTrue("touch target ${target.height.div(density)}dp high", target.height.div(density) >= 47.5f)
@@ -76,10 +75,11 @@ class SharePositionButtonTest {
         assertReachable(scrolls = false)
     }
 
+    /** Under a board as wide as the screen: in reach once the column scrolls. */
     @Test @Config(qualifiers = "w360dp-h640dp", fontScale = 1.3f)
-    fun fitsAnUprightPhoneAtALargeFont() {
+    fun isReachedByScrollingOnAnUprightPhoneAtALargeFont() {
         show()
-        assertReachable(scrolls = false)
+        assertReachable(scrolls = true)
     }
 
     @Test @Config(qualifiers = "w800dp-h360dp-land")

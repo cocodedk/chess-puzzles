@@ -46,7 +46,7 @@ internal fun Modifier.announces(announcement: String): Modifier = semantics {
     if (announcement.isNotEmpty()) contentDescription = announcement
 }
 
-/** The selected-state colors shared by every filter chip in the puzzle and openings screens. */
+/** The selected-state colors of the openings screens' filter chips, every one drawn by [ChipRow]. */
 @Composable
 internal fun selectedChipColors() = FilterChipDefaults.filterChipColors(
     selectedContainerColor = MaterialTheme.colorScheme.primary,
@@ -76,7 +76,10 @@ internal fun PuzzleControls(
         rememberTexts().feedbackMessage(state.feedback),
         modifier = TextInset.announces(state.announcement), textAlign = TextAlign.Center,
     )
-    Spacer(Modifier.height(12.dp))
+    // Hint's clearance under an upright board, so a tap meant for the bottom rank never lands on it: BoardScaffold's
+    // 8dp spacer, the feedback line above (its height kept when empty), this spacer and the button's touch padding.
+    // PuzzlePortraitSizeTest holds it at 44dp or more.
+    Spacer(Modifier.height(10.dp))
     Lineup(stacked) { item ->
         val inProgress = state.status == PuzzleStatus.IN_PROGRESS
         OutlinedButton(onHint, item.then(CompactButton), enabled = inProgress, contentPadding = CompactPadding) {
@@ -121,9 +124,8 @@ internal fun Lineup(stacked: Boolean, content: @Composable (item: Modifier) -> U
 
 /**
  * One [Lineup] of [FilterChip]s, one per item in [items] — [selected] and [onSelect] key off the
- * item itself, [label] renders its text. Shared by the puzzle band chips and the openings' mode and
- * line chips, which otherwise repeated this exact chip wiring three times. A chip whose [spoken] is not
- * null is read as that, not as its label.
+ * item itself, [label] renders its text. Shared by the openings' mode and line chips, which otherwise
+ * repeated this exact chip wiring. A chip whose [spoken] is not null is read as that, not as its label.
  */
 @Composable
 internal fun <T> ChipRow(

@@ -175,6 +175,8 @@
     <string name="piece_rook">Torre</string>
     <string name="piece_bishop">Alfil</string>
     <string name="piece_knight">Caballo</string>
+    <string name="puzzle_level_button">Nivel: %1$s</string>
+    <string name="puzzle_level_button_description">Nivel, %1$s</string>
     <string name="puzzle_theme_button">Motivo: %1$s</string>
     <string name="puzzle_theme_button_description">Motivo, %1$s</string>
     <string name="puzzle_theme_all">Todos</string>
