@@ -5,24 +5,21 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.semantics.SemanticsActions
-import androidx.compose.ui.semantics.SemanticsProperties
-import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.getUnclippedBoundsInRoot
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
-import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipe
-import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.unit.dp
 import dk.cocode.chess.A52S_QUALIFIERS
 import dk.cocode.chess.assertBoardSpansTheScreen
 import dk.cocode.chess.assertWithinScreenWidth
 import dk.cocode.chess.centerOf
+import dk.cocode.chess.scrollRange
+import dk.cocode.chess.textLayout
 import dk.cocode.chess.core.model.PieceColor
 import dk.cocode.chess.core.model.Square
 import dk.cocode.chess.ui.board.BOARD_TEST_TAG
@@ -91,23 +88,16 @@ class PuzzlePortraitSizeTest {
         assertEquals("the screen's usable height", 758f, (screen.bottom - screen.top).value, 0f)
         val gap = composeRule.onNodeWithText("Hint").getUnclippedBoundsInRoot().top - boardBounds().bottom
         val about = composeRule.onNodeWithText("About").getUnclippedBoundsInRoot()
-        val overflow = with(composeRule.density) { scrollRange().maxValue().toDp() }
+        val overflow = with(composeRule.density) { composeRule.scrollRange().maxValue().toDp() }
         val said = "Hint $gap under the board, About at ${about.bottom} of ${screen.bottom}, overflow $overflow"
         assertTrue(said, gap >= 44.dp)
         assertTrue(said, about.bottom <= screen.bottom)
         assertEquals(said, 0f, overflow.value, 0f)
     }
 
-    private fun scrollRange() = composeRule.onNode(SemanticsMatcher.keyIsDefined(SemanticsProperties.VerticalScrollAxisRange))
-        .fetchSemanticsNode().config[SemanticsProperties.VerticalScrollAxisRange]
-
     private fun titleLine() = composeRule.onNodeWithText("Puzzle 412 of 1500 · Rating 1523")
 
-    private fun titleLayout(): TextLayoutResult {
-        val layouts = mutableListOf<TextLayoutResult>()
-        titleLine().performSemanticsAction(SemanticsActions.GetTextLayoutResult) { it(layouts) }
-        return layouts.single()
-    }
+    private fun titleLayout() = titleLine().textLayout()
 
     @Test @Config(qualifiers = A52S_QUALIFIERS)
     fun theTitleAndRatingShareOneLine() {
@@ -135,7 +125,8 @@ class PuzzlePortraitSizeTest {
     @Test @Config(qualifiers = "w360dp-h640dp")
     fun aDragUpTheBoardMovesThePieceNotTheColumn() {
         show()
-        assertTrue("the column overflows by ${scrollRange().maxValue()}", scrollRange().maxValue() > 0f)
+        val range = composeRule.scrollRange()
+        assertTrue("the column overflows by ${range.maxValue()}", range.maxValue() > 0f)
 
         val top = boardBounds().top
         val e4 = composeRule.centerOf(Square.of("e4"))

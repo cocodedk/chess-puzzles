@@ -1,10 +1,17 @@
 package dk.cocode.chess
 
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.semantics.ScrollAxisRange
+import androidx.compose.ui.semantics.SemanticsActions
+import androidx.compose.ui.semantics.SemanticsProperties
+import androidx.compose.ui.test.SemanticsMatcher
+import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.SemanticsNodeInteractionsProvider
 import androidx.compose.ui.test.getUnclippedBoundsInRoot
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onRoot
+import androidx.compose.ui.test.performSemanticsAction
+import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.unit.DpRect
 import androidx.compose.ui.unit.width
 import dk.cocode.chess.core.model.Square
@@ -24,6 +31,18 @@ fun SemanticsNodeInteractionsProvider.assertBoardSpansTheScreen() {
     val screen = onRoot().getUnclippedBoundsInRoot()
     val board = onNodeWithTag(BOARD_TEST_TAG).getUnclippedBoundsInRoot()
     assertEquals(screen.width.value, board.width.value, 1f)
+}
+
+/** The scroll range of the one column on screen that scrolls up and down. */
+fun SemanticsNodeInteractionsProvider.scrollRange(): ScrollAxisRange =
+    onNode(SemanticsMatcher.keyIsDefined(SemanticsProperties.VerticalScrollAxisRange))
+        .fetchSemanticsNode().config[SemanticsProperties.VerticalScrollAxisRange]
+
+/** How this node's text is laid out: its lines, and whether it is cut off. */
+fun SemanticsNodeInteraction.textLayout(): TextLayoutResult {
+    val layouts = mutableListOf<TextLayoutResult>()
+    performSemanticsAction(SemanticsActions.GetTextLayoutResult) { it(layouts) }
+    return layouts.single()
 }
 
 /** The board's width in pixels, frame included. */

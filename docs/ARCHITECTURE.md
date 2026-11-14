@@ -52,11 +52,15 @@ Two Gradle modules so the chess/puzzle logic is pure-JVM and fully unit-testable
 - `ui/BoardScaffold` — the board layout (`boardLayout`: a board between two panels, beside one, or
   between rows above and below it — on an upright phone as wide as the screen with the rows scrolling,
   on a near-square screen the largest square the rows leave room for, unless `scrollWhenStacked` asks for
-  the upright arrangement there too, as Learn does) shared by the puzzle and openings screens, so the
-  `when` lives once.
+  the upright arrangement there too, as Learn does; and while a move is typed with the keyboard up, the
+  largest board that fits above the verdict and the move field alone) shared by the puzzle and openings
+  screens, so the `when` lives once.
   Takes a `tabs` slot (the `Puzzles | Openings` `ModeTabs` row, always first) plus `header`/`body`
-  slots, each told whether it must lay its own rows out as a stacked column.
-  `PuzzleScreen`/`PuzzleScreenContent` compose their existing panels through it unchanged.
+  slots, each told whether it must lay its own rows out as a stacked column, and `body` whether a move
+  is being typed.
+  `PuzzleScreen`/`PuzzleScreenContent` compose their panels through it, `PuzzleScreen` handing down the
+  keyboard's height and `PuzzleScreenContent` whether the move field is open. The window draws edge to
+  edge on every Android version (`MainActivity`), and the keyboard resizes the content (`adjustResize`).
   `PuzzlePanels` also exposes its `Lineup` row/column helper and compact button style (`internal`) for
   the openings panels to reuse.
 - `ui/Opening*` — `OpeningScreen` routes list / one opening / About, mirroring `PuzzleScreen`;

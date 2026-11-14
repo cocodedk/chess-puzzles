@@ -62,7 +62,10 @@ internal fun PuzzlePrompt(state: PuzzleUiState) {
     )
 }
 
-/** The verdict on the last move and the Hint, Restart, Previous and Next buttons; [stacked] lines them up in a column. */
+/**
+ * The verdict on the last move and the Hint, Restart, Previous and Next buttons; [stacked] lines them up in a column.
+ * Without [showButtons], while a move is typed, the verdict stands alone, the same live region either way.
+ */
 @Composable
 internal fun PuzzleControls(
     state: PuzzleUiState,
@@ -71,11 +74,13 @@ internal fun PuzzleControls(
     onPrevious: () -> Unit,
     onNext: () -> Unit,
     stacked: Boolean,
+    showButtons: Boolean = true,
 ) {
     Text(
         rememberTexts().feedbackMessage(state.feedback),
         modifier = TextInset.announces(state.announcement), textAlign = TextAlign.Center,
     )
+    if (!showButtons) return
     // Hint's clearance under an upright board, so a tap meant for the bottom rank never lands on it: BoardScaffold's
     // 8dp spacer, the feedback line above (its height kept when empty), this spacer and the button's touch padding.
     // PuzzlePortraitSizeTest holds it at 44dp or more.

@@ -33,15 +33,16 @@ import java.text.Normalizer
  * "Type a move" opens a field for a move written as text, "e2e4" or "Nf3", which the keyboard's voice typing can
  * dictate as well as its keys; the same button reads "Close move field" while it is open. Play, or the keyboard's
  * action key, hands the text to [onMove] and empties the field. The field takes English letters, and numbers in any
- * script (see [englishOnly]), and says so. Nothing is saved: it starts shut, and is [enabled] only while the puzzle is in progress.
+ * script (see [englishOnly]), and says so. Nothing is stored: it starts shut whenever the puzzle screen is shown, and
+ * stays open across a rotation, since the screen keeps whether it is [open] (the layout around it changes while a move
+ * is typed). It is [enabled] only while the puzzle is in progress.
  */
 @Composable
-internal fun TypeMove(enabled: Boolean, onMove: (String) -> Unit) {
-    var open by rememberSaveable { mutableStateOf(false) }
+internal fun TypeMove(open: Boolean, onToggle: () -> Unit, enabled: Boolean, onMove: (String) -> Unit) {
     var text by rememberSaveable { mutableStateOf("") }
     val focus = remember { FocusRequester() }
     val play = { if (text.isNotBlank()) { onMove(text); text = "" } }
-    TextButton(onClick = { open = !open }) {
+    TextButton(onClick = onToggle) {
         Text(stringResource(if (open) R.string.puzzle_type_move_close else R.string.puzzle_type_move))
     }
     if (open) {
