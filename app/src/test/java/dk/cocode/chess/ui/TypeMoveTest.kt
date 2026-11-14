@@ -5,7 +5,6 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.assertTextEquals
-import androidx.compose.ui.test.hasSetTextAction
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -50,31 +49,29 @@ class TypeMoveTest {
 
     private fun open() = composeRule.onNodeWithText("Type a move").performClick()
 
-    private fun field() = composeRule.onNode(hasSetTextAction())
-
     @Test fun staysShutUntilAskedFor() {
         show()
         composeRule.onNodeWithText("Play").assertDoesNotExist()
         open()
-        field().assertIsEnabled()
+        composeRule.field().assertIsEnabled()
     }
 
     @Test fun playHandsTheTextOverAndEmptiesTheField() {
         show()
         open()
         composeRule.onNodeWithText("Play").assertIsNotEnabled() // nothing typed yet
-        field().performTextInput("Nf3")
+        composeRule.field().performTextInput("Nf3")
         composeRule.onNodeWithText("Play").assertIsEnabled().performClick()
         assertEquals(listOf("Nf3"), typed)
-        field().assertTextEquals("Your move", HELP, "")
+        composeRule.field().assertTextEquals("Your move", HELP, "")
     }
 
     @Test fun takesEnglishLettersAndAnyScriptsNumbersAndSaysSo() {
         show()
         open()
         composeRule.onNodeWithText(HELP, substring = true).assertExists()
-        field().performTextInput("Sf3 \u0436\u4E2D\u00E9-=+#.") // Cyrillic, Chinese and accented letters, and marks, are dropped
-        field().assertTextEquals("Your move", HELP, "Sf3 -=")
+        composeRule.field().performTextInput("Sf3 \u0436\u4E2D\u00E9-=+#.") // Cyrillic, Chinese and accented letters, and marks, are dropped
+        composeRule.field().assertTextEquals("Your move", HELP, "Sf3 -=")
         assertEquals("Nf3 e2-e4 O-O e8=Q 0-0", englishOnly("Nf3 e2-e4 O-O e8=Q 0-0"))
     }
 
@@ -94,23 +91,23 @@ class TypeMoveTest {
         composeRule.onNodeWithText("Close move field").performClick()
         composeRule.onNodeWithText("Close move field").assertDoesNotExist()
         composeRule.onNodeWithText("Type a move").assertExists()
-        composeRule.onNode(hasSetTextAction()).assertDoesNotExist()
+        composeRule.field().assertDoesNotExist()
     }
 
     @Test fun theKeyboardsActionKeyPlaysToo() {
         show()
         open()
-        field().performTextInput("e2e4")
-        field().performImeAction()
+        composeRule.field().performTextInput("e2e4")
+        composeRule.field().performImeAction()
         assertEquals(listOf("e2e4"), typed)
     }
 
     @Test fun theActionKeyWithNothingTypedPlaysNothing() {
         show()
         open()
-        field().performImeAction()
-        field().performTextInput("   ")
-        field().performImeAction()
+        composeRule.field().performImeAction()
+        composeRule.field().performTextInput("   ")
+        composeRule.field().performImeAction()
         assertEquals(emptyList<String>(), typed)
     }
 
@@ -125,7 +122,7 @@ class TypeMoveTest {
     fun canBeReachedAndUsedOnAPhoneOnItsSide() {
         show()
         composeRule.onNodeWithText("Type a move").performScrollTo().assertIsDisplayed().performClick()
-        field().performScrollTo().assertIsDisplayed().performTextInput("e2e4")
+        composeRule.field().performScrollTo().assertIsDisplayed().performTextInput("e2e4")
         composeRule.onNodeWithText("Play").performScrollTo().performClick()
         assertEquals(listOf("e2e4"), typed)
     }

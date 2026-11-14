@@ -152,6 +152,26 @@ class LandscapeLayoutTest {
     }
 
     /**
+     * The keyboard never changes which of those a screen has, so the move field stays put, keeping the keyboard up;
+     * under an open field it only turns the rows above and below the board into TYPING.
+     */
+    @Test fun theKeyboardOnlyLeavesTheBoardAloneWithAnOpenField() {
+        // A phone upright, 384 x 758dp: 383 left above a 375dp keyboard.
+        assertEquals(BoardLayout.TYPING, boardLayout(384.dp, 383.dp, keyboardHeight = 375.dp, fieldOpen = true))
+        assertEquals(BoardLayout.UPRIGHT, boardLayout(384.dp, 383.dp, keyboardHeight = 375.dp)) // the field shut, the keyboard going
+        assertEquals(BoardLayout.UPRIGHT, boardLayout(384.dp, 758.dp, fieldOpen = true)) // the field open, the keyboard down
+        // Foldables' inner screens, near-square with the keyboard down and far wider than tall above it.
+        for ((width, height) in listOf(829.dp to 666.dp, 841.dp to 617.dp)) {
+            assertEquals(BoardLayout.STACKED, boardLayout(width, height - 280.dp, keyboardHeight = 280.dp))
+            assertEquals(BoardLayout.TYPING, boardLayout(width, height - 280.dp, keyboardHeight = 280.dp, fieldOpen = true))
+        }
+        // Phones on their side keep their panels above a keyboard that leaves them a strip.
+        assertEquals(BoardLayout.BETWEEN_PANELS, boardLayout(800.dp, 160.dp, keyboardHeight = 200.dp, fieldOpen = true))
+        assertEquals(BoardLayout.BESIDE_PANEL, boardLayout(640.dp, 160.dp, keyboardHeight = 200.dp, fieldOpen = true))
+        assertEquals(BoardLayout.TYPING, boardLayout(800.dp, 820.dp, keyboardHeight = 400.dp, fieldOpen = true)) // a tablet upright
+    }
+
+    /**
      * Only a screen 1.3 times taller than wide, an upright phone, gives every board screen a full-width board
      * with its rows scrolling; elsewhere only Learn asks for that.
      */

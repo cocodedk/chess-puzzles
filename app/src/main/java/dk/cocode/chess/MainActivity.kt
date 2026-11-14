@@ -42,6 +42,11 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         val splash = installSplashScreen()
         super.onCreate(savedInstanceState)
+        // Content under the system bars, as Android 15 enforces at targetSdk 35, on every version: a window that
+        // fits them itself takes the keyboard's height before Compose sees it, and the board screens need to know
+        // the keyboard is up (see PuzzleScreen). The Scaffold keeps the content clear of the bars, and
+        // SyncWindowToTheme keeps their colors.
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         val app = application as ChessApp
         // The splash bridges the async first DataStore read, so the first drawn frame already
         // has the persisted theme — no wrong-theme flash on launch.

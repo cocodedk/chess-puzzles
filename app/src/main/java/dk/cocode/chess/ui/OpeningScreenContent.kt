@@ -30,7 +30,7 @@ fun OpeningScreenContent(
         onSquareTap = onSquareTap, onDragStart = onDragStart, onDragEnd = onDragEnd,
         tabs = tabs,
         header = { stacked -> OpeningHeader(state, opening, onBack, onMode, stacked) },
-        body = { stacked ->
+        body = { stacked, _ -> // no move field, so never typing
             if (state.mode == OpeningMode.LEARN) {
                 OpeningLearnPanel(state, opening, onLine, onStep, stacked)
             } else {
