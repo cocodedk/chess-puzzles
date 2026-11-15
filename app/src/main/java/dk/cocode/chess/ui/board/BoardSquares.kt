@@ -7,11 +7,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.platform.LocalViewConfiguration
+import androidx.compose.ui.platform.ViewConfiguration
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.onClick
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.LayoutDirection
 import dk.cocode.chess.core.model.Square
 import dk.cocode.chess.ui.rememberTexts
@@ -35,7 +38,11 @@ internal fun BoardSquares(state: BoardState, onSquareTap: (Square) -> Unit, modi
     val flipped = state.flipped
     val tappable = state.tappable
     val order = remember(flipped) { BoardGeometry.squaresInReadingOrder(flipped) }
-    CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
+    // A clickable item under 48dp is widened to 48dp for a screen reader's outline, so on a small board the
+    // outlines of neighbouring squares would overlap; with no minimum, an item is the square it names.
+    val config = LocalViewConfiguration.current
+    val exact = remember(config) { ExactBounds(config) }
+    CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr, LocalViewConfiguration provides exact) {
         Layout(
             content = {
                 order.forEach { square ->
@@ -61,4 +68,9 @@ internal fun BoardSquares(state: BoardState, onSquareTap: (Square) -> Unit, modi
             }
         }
     }
+}
+
+/** The platform's view configuration, but with no minimum touch target size. */
+private class ExactBounds(base: ViewConfiguration) : ViewConfiguration by base {
+    override val minimumTouchTargetSize = DpSize.Zero
 }
