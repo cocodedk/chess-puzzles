@@ -1,1 +1,1 @@
-Free offline chess puzzles. Works with TalkBack, large text and typed moves
+Lichess chess puzzles, offline, with TalkBack. No account, ads or tracking
