@@ -107,11 +107,12 @@ jobs:
           apksigner=$(ls "$ANDROID_HOME"/build-tools/*/apksigner 2>/dev/null | sort -V | tail -1)
           [ -n "$apksigner" ] || { echo "apksigner not found under ANDROID_HOME"; exit 1; }
           apk_certs=$("$apksigner" verify --print-certs ChessPuzzles.apk)
-          apk_sha=$(sed -n 's/^Signer #1 certificate SHA-256 digest: *//p' <<<"$apk_certs")
           # keytool prints upper-case hex with colons, apksigner lower-case without.
           aab_sha=$(tr -d ': ' <<<"$aab_sha" | tr 'A-F' 'a-f')
-          [ -n "$aab_sha" ] && [ "$aab_sha" = "$apk_sha" ] || {
-            echo "Bundle signer '$aab_sha' is not the APK's '$apk_sha'"; exit 1
+          # apksigner labels its signer lines differently from one build-tools version to the next
+          # (the first 0.5.25 run found no "Signer #1" line), so look for the digest itself.
+          [[ "$aab_sha" =~ ^[0-9a-f]{64}$ ]] && grep -qF "SHA-256 digest: $aab_sha" <<<"$apk_certs" || {
+            echo "Bundle signer '$aab_sha' is not among the APK's signers:"; echo "$apk_certs"; exit 1
           }
           cp "$src" ChessPuzzles.aab
 
