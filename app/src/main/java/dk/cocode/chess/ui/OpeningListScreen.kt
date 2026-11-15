@@ -50,7 +50,11 @@ fun OpeningListScreen(
     val grouped = remember(openings) { openings.groupBy { it.group } }
     val texts = rememberTexts()
     Scaffold(contentWindowInsets = WindowInsets.safeDrawing) { padding ->
-        Column(Modifier.padding(padding).fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+        // The same 8dp BoardScaffold leaves above the tabs on an upright phone, so the row does not jump between tabs.
+        Column(
+            Modifier.padding(padding).padding(top = 8.dp).fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
             tabs()
             LazyColumn(Modifier.weight(1f, fill = true)) {
                 grouped.forEach { (group, rows) ->
