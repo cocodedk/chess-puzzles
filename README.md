@@ -55,7 +55,8 @@ Made to work with weak sight, or none.
 - On an upright phone the board is as wide as the screen, and its letters and numbers stay readable.
 - Light or dark theme.
 
-There is no high-contrast board and no setting for larger pieces yet. Tell us what would help you:
+There is no high-contrast board yet. The pieces already fill their squares and the board fills the width of an upright
+phone, so to see them larger, use Android's magnification. Tell us what would help you:
 [github.com/cocodedk/chess-puzzles/issues](https://github.com/cocodedk/chess-puzzles/issues)
 
 ## Privacy
