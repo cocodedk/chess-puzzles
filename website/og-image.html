@@ -26,9 +26,10 @@
   h1 { font-size: 60px; line-height: 1.08; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 22px; }
   h1 .g { color: #f0b95c; }
   p.tag { font-size: 26px; color: #98a0ad; max-width: 26ch; margin-bottom: 32px; }
-  .chips { display: flex; gap: 12px; margin-bottom: 40px; }
+  .chips { display: flex; gap: 10px; margin-bottom: 40px; }
   .chip { font-size: 20px; font-weight: 600; color: #eceef2; background: #1d212c;
-    border: 1px solid #2a2f3c; border-radius: 999px; padding: 10px 20px; }
+    border: 1px solid #2a2f3c; border-radius: 999px; padding: 10px 16px; white-space: nowrap; }
+  .chip svg { width: 22px; height: 22px; vertical-align: -4px; margin-right: 8px; color: #f0b95c; }
   .by { font-size: 20px; color: #98a0ad; }
   .by b { color: #eceef2; font-weight: 700; }
   .right { width: 430px; height: 630px; display: flex; align-items: center; justify-content: center; position: relative; }
@@ -61,6 +62,7 @@
       <span class="chip">Real puzzles</span>
       <span class="chip">Streaks</span>
       <span class="chip">Offline</span>
+      <span class="chip"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10.75" fill="none" stroke="currentColor" stroke-width="1.5"/><path fill="currentColor" transform="matrix(.8 0 0 .8 2.4 2.4)" d="M20.5 6c-2.61.7-5.67 1-8.5 1s-5.89-.3-8.5-1L3 8c1.86.5 4 .83 6 1v13h2v-6h2v6h2V9c2-.17 4.14-.5 6-1l-.5-2zM12 6c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"/></svg>Works with TalkBack</span>
     </div>
     <p class="by">Built by <b>Babak Bandpey</b> · cocode.dk · linkedin.com/in/babakbandpey</p>
   </div>
