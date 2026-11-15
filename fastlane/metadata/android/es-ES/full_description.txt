@@ -1,5 +1,15 @@
 <p>Chess Puzzles es un entrenador de tácticas sin conexión, creado a partir de posiciones reales de la base de datos de puzles de Lichess. Encuentra la mejor jugada, sigue la línea táctica y mejora a tu propio ritmo.</p>
 
+<p><b>Accesibilidad.</b> Pensada para usarse con baja visión o sin visión.</p>
+
+<ul>
+<li>Funciona con TalkBack, el lector de pantalla de Android. Lee dónde está cada pieza, lee la casilla que tocas y dice cada jugada con palabras, como «caballo captura e5, jaque».</li>
+<li>Escribe una jugada como Nf3, o díctala con el dictado por voz del teclado, en lugar de buscar una casilla pequeña. (En la pestaña Puzles.)</li>
+<li>Los botones, los menús y los mensajes siguen el tamaño de letra que configures en tu teléfono.</li>
+<li>Con el teléfono en vertical, el tablero es tan ancho como la pantalla y sus letras y números siguen siendo legibles.</li>
+<li>Tema claro u oscuro.</li>
+</ul>
+
 <ul>
 <li><b>Objetivos claros.</b> Cada puzle te dice qué debes encontrar, por ejemplo, jaque mate en dos.</li>
 <li><b>Tres niveles de dificultad.</b> Elige puzles Fáciles, Medios o Difíciles.</li>

@@ -6,6 +6,8 @@
 An Android chess **puzzle** game — Kotlin + Jetpack Compose, built and run entirely from the command
 line (no Android Studio). Solve Lichess tactical puzzles with announced goals (e.g. "checkmate in 2"),
 difficulty bands (Easy/Medium/Hard), day/night themes, and saved progress on-device.
+It works with TalkBack, Android's screen reader, and on the Puzzles screen a move can be typed or dictated
+instead of tapped.
 
 ## Download
 
@@ -40,6 +42,21 @@ _From left to right: light mode, night mode, a solved puzzle, and opening practi
 - **Light and dark themes.** Matches your phone's setting, or switch to Light or Dark with the theme button.
 - **Tap or drag.** Move pieces by tapping their starting and destination squares, or by dragging them.
 - **Fully offline and free.** No account, no ads, no tracking. Apache-2.0.
+
+### <img src="website/accessibility.svg" alt="" width="24" height="24"> Accessibility
+
+Made to work with weak sight, or none.
+
+- Works with TalkBack, Android's screen reader. It reads where every piece stands, reads the square you touch,
+  and says each move in words, such as "knight takes e5, check".
+- Type a move such as Nf3, or say it with your keyboard's voice typing, instead of finding a small square.
+  (On the Puzzles screen.)
+- Buttons, menus and messages follow the text size you set on your phone.
+- On an upright phone the board is as wide as the screen, and its letters and numbers stay readable.
+- Light or dark theme.
+
+There is no high-contrast board and no setting for larger pieces yet. Tell us what would help you:
+[github.com/cocodedk/chess-puzzles/issues](https://github.com/cocodedk/chess-puzzles/issues)
 
 ## Privacy
 
