@@ -1,5 +1,15 @@
 <p>Chess Puzzles is an offline tactics trainer built from real positions in the Lichess puzzle database. Find the best move, follow the tactical line, and improve at your own pace.</p>
 
+<p><b>Accessibility.</b> Made to work with weak sight, or none.</p>
+
+<ul>
+<li>Works with TalkBack, Android's screen reader. It reads where every piece stands, reads the square you touch, and says each move in words, such as "knight takes e5, check".</li>
+<li>Type a move such as Nf3, or say it with your keyboard's voice typing, instead of finding a small square. (On the Puzzles screen.)</li>
+<li>Buttons, menus and messages follow the text size you set on your phone.</li>
+<li>On an upright phone the board is as wide as the screen, and its letters and numbers stay readable.</li>
+<li>Light or dark theme.</li>
+</ul>
+
 <ul>
 <li><b>Clear goals.</b> Each puzzle tells you what to find, such as checkmate in two.</li>
 <li><b>Three difficulty bands.</b> Choose Easy, Medium, or Hard puzzles.</li>

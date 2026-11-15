@@ -1,5 +1,15 @@
 <p>Chess Puzzles er en taktiktræner uden internet, bygget på rigtige stillinger fra opgavedatabasen hos Lichess. Find det bedste træk, følg den taktiske linje og bliv bedre i dit eget tempo.</p>
 
+<p><b>Tilgængelighed.</b> Lavet, så den kan bruges med nedsat syn eller helt uden syn.</p>
+
+<ul>
+<li>Virker med TalkBack, Androids skærmlæser. Den læser op, hvor hver brik står, læser det felt, du rører ved, og siger hvert træk med ord, for eksempel "springer slår e5, skak".</li>
+<li>Skriv et træk som Nf3, eller dikter det med tastaturets stemmeindtastning, i stedet for at finde et lille felt. (I fanen Opgaver.)</li>
+<li>Knapper, menuer og beskeder følger den tekststørrelse, du har valgt på din telefon.</li>
+<li>Når telefonen holdes lodret, er brættet lige så bredt som skærmen, og bogstaverne og tallene på det kan stadig læses.</li>
+<li>Lyst eller mørkt tema.</li>
+</ul>
+
 <ul>
 <li><b>Tydelige mål.</b> Hver opgave fortæller, hvad du skal finde, for eksempel mat i to træk.</li>
 <li><b>Tre sværhedsgrader.</b> Vælg Let, Middel eller Svær.</li>

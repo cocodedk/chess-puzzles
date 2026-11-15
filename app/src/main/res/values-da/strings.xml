@@ -151,6 +151,8 @@
     <string name="about_check_updates_note">Åbner appens side, hvor den nyeste version ligger. Appen søger aldrig selv efter opdateringer.</string>
     <string name="about_section_what">Hvad appen gør</string>
     <string name="about_what">Chess Puzzles hjælper dig med at øve skaktaktik. Hver opgave kommer fra Lichess-opgavedatabasen, fortæller dig, hvad du skal finde (for eksempel mat i 2 træk), og har en rating, der viser, hvor svær den er. Du kan også lære almindelige åbninger træk for træk og derefter spille dem fra hukommelsen. Alt er gemt på din telefon, så appen virker uden internet.</string>
+    <string name="about_section_accessibility">Tilgængelighed</string>
+    <string name="about_accessibility">Chess Puzzles virker med TalkBack, Androids skærmlæser: den læser op, hvor hver brik står, og siger hvert træk med ord. I fanen Opgaver kan du skrive et træk eller diktere det med tastaturets stemmeindtastning i stedet for at trykke på et felt. Knapper, menuer og beskeder følger den tekststørrelse, der er valgt på din telefon.</string>
     <string name="about_section_privacy">Privatliv</string>
     <string name="about_privacy_no_data">Chess Puzzles indsamler, sender og deler ingen personoplysninger.</string>
     <string name="about_privacy_no_permissions">Den beder dig aldrig om en tilladelse, og den kan ikke bruge internettet.</string>

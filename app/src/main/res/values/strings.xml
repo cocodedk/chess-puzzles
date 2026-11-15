@@ -180,6 +180,8 @@
     <string name="about_check_updates_note">Opens this app\'s page, where the newest version is published. The app never checks for updates itself.</string>
     <string name="about_section_what">What the app does</string>
     <string name="about_what">Chess Puzzles helps you practise chess tactics. Each puzzle comes from the Lichess puzzle database, tells you what to find (for example, checkmate in 2) and has a rating that shows how hard it is. You can also learn common openings move by move, then play them from memory. Everything is stored on your phone, so the app works without internet.</string>
+    <string name="about_section_accessibility">Accessibility</string>
+    <string name="about_accessibility">Chess Puzzles works with TalkBack, Android\'s screen reader: it reads where every piece stands and says each move in words. On the Puzzles screen you can type a move, or say it with your keyboard\'s voice typing, instead of tapping a square. Buttons, menus and messages follow the text size set on your phone.</string>
     <string name="about_section_privacy">Privacy</string>
     <string name="about_privacy_no_data">Chess Puzzles does not collect, send or share any personal data.</string>
     <string name="about_privacy_no_permissions">It never asks you for a permission, and it cannot use the internet.</string>
