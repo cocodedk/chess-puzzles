@@ -2,12 +2,8 @@ package dk.cocode.chess.ui
 
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.semantics.SemanticsActions
-import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.getUnclippedBoundsInRoot
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.onAllNodesWithContentDescription
-import androidx.compose.ui.test.onAllNodesWithText
-import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performSemanticsAction
@@ -16,15 +12,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.height
 import androidx.compose.ui.unit.width
 import dk.cocode.chess.assertBoardSpansTheScreen
-import dk.cocode.chess.assertWithinScreenWidth
+import dk.cocode.chess.assertOnScreen
+import dk.cocode.chess.board
+import dk.cocode.chess.bounds
 import dk.cocode.chess.scrollRange
 import dk.cocode.chess.textLayout
-import dk.cocode.chess.core.model.PieceColor
-import dk.cocode.chess.ui.board.BOARD_TEST_TAG
-import dk.cocode.chess.viewmodel.Feedback
-import dk.cocode.chess.viewmodel.Goal
-import dk.cocode.chess.viewmodel.Prompt
-import dk.cocode.chess.viewmodel.PuzzleUiState
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -44,31 +36,19 @@ class TypingLayoutTest {
     @get:Rule
     val composeRule = createAndroidComposeRule<ComponentActivity>()
 
-    private val state = PuzzleUiState(prompt = Prompt(PieceColor.WHITE, Goal.BEST_MOVE, 1), feedback = Feedback.WRONG)
-
-    private fun show() = composeRule.showTheOpenField({ state }, { PHONE_KEYBOARD })
-
-    private fun bounds(text: String) = composeRule.onNodeWithText(text, substring = true).getUnclippedBoundsInRoot()
-
-    private fun board() = composeRule.onNodeWithTag(BOARD_TEST_TAG).getUnclippedBoundsInRoot()
-
-    private fun assertOnScreen(name: String, rect: DpRect) {
-        val screen = composeRule.onRoot().getUnclippedBoundsInRoot()
-        assertTrue("$name at $rect on $screen", rect.top >= screen.top && rect.bottom <= screen.bottom)
-        composeRule.assertWithinScreenWidth(rect)
-    }
+    private fun show() = composeRule.showTheOpenField({ AFTER_A_WRONG_MOVE }, TestKeyboard(PHONE_KEYBOARD))
 
     private fun helpLayout() = composeRule.onNodeWithText("English letters", substring = true, useUnmergedTree = true).textLayout()
 
     /** The whole board, square, centred and unscrolled, above the field and Play. */
     private fun assertTheBoardAndTheFieldFit(): DpRect {
-        val board = board()
-        assertOnScreen("the board", board)
+        val board = composeRule.board()
+        composeRule.assertOnScreen("the board", board)
         assertEquals("square", board.width.value, board.height.value, 1f)
         val screen = composeRule.onRoot().getUnclippedBoundsInRoot()
         assertEquals("centred", (board.left - screen.left).value, (screen.right - board.right).value, 1f)
-        assertOnScreen("the field", composeRule.field().getUnclippedBoundsInRoot())
-        assertOnScreen("Play", bounds("Play"))
+        composeRule.assertOnScreen("the field", composeRule.field().getUnclippedBoundsInRoot())
+        composeRule.assertOnScreen("Play", composeRule.bounds("Play"))
         assertEquals("the overflow", 0f, composeRule.scrollRange().maxValue(), 0f)
         return board
     }
@@ -80,15 +60,10 @@ class TypingLayoutTest {
         // 383dp less the verdict line (24) and the 8dp above it, Close move field (48) and the field with its
         // three-line help (116).
         assertTrue("the board is ${board.width} wide", board.width >= 187.dp)
-        assertOnScreen("the verdict", bounds("Not the best move — try again"))
-        assertOnScreen("the field's help", bounds("English letters and numbers"))
-        assertOnScreen("Close move field", bounds("Close move field"))
-        // Everything else waits for the keyboard to go.
-        listOf("Hint", "Restart", "Openings", "Puzzle 0 of 0 · Rating 0", "Use light theme", "About", "Share position")
-            .forEach { composeRule.onAllNodesWithText(it).assertCountEquals(0) }
-        listOf("Previous puzzle", "Next puzzle", "Day streak", "Level, Easy", "Theme, All").forEach {
-            composeRule.onAllNodesWithContentDescription(it, useUnmergedTree = true).assertCountEquals(0)
-        }
+        composeRule.assertOnScreen("the verdict", composeRule.bounds("Not the best move — try again"))
+        composeRule.assertOnScreen("the field's help", composeRule.bounds("English letters and numbers", substring = true))
+        composeRule.assertOnScreen("Close move field", composeRule.bounds("Close move field"))
+        composeRule.assertOnlyTheFieldStays()
     }
 
     /** Close move field, the keyboard still on its way down: the screen it had before the field opened. */
@@ -116,11 +91,11 @@ class TypingLayoutTest {
     @Test @Config(fontScale = 2f)
     fun theLargestFontStillShowsTheWholeField() {
         show()
-        assertEquals("the board's size", 0f, board().width.value, 0f)
-        assertOnScreen("the field", composeRule.field().getUnclippedBoundsInRoot())
-        assertOnScreen("Play", bounds("Play"))
+        assertEquals("the board's size", 0f, composeRule.board().width.value, 0f)
+        composeRule.assertOnScreen("the field", composeRule.field().getUnclippedBoundsInRoot())
+        composeRule.assertOnScreen("Play", composeRule.bounds("Play"))
         assertFalse("the help is cut off", helpLayout().hasVisualOverflow)
-        val verdict = bounds("Not the best move — try again")
+        val verdict = composeRule.bounds("Not the best move — try again")
         val screen = composeRule.onRoot().getUnclippedBoundsInRoot()
         assertTrue("the verdict at $verdict on $screen", verdict.bottom > screen.top && verdict.top < screen.bottom)
     }

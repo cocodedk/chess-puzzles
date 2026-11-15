@@ -115,7 +115,7 @@ class LandscapeLayoutTest {
         assertEquals("above $above, below $below", above.value, below.value, 8f)
     }
 
-    @Test @Config(qualifiers = "w640dp-h360dp-land")
+    @Test @Config(qualifiers = SIXTEEN_NINE_ON_ITS_SIDE)
     fun aSixteenByNinePhoneKeepsTheBoardLeftOfOnePanel() {
         show()
         val screen = composeRule.onRoot().getUnclippedBoundsInRoot()
@@ -152,8 +152,9 @@ class LandscapeLayoutTest {
     }
 
     /**
-     * The keyboard never changes which of those a screen has, so the move field stays put, keeping the keyboard up;
-     * under an open field it only turns the rows above and below the board into TYPING.
+     * The keyboard never changes which of those families a screen has, so the move field stays put, keeping the keyboard
+     * up; under an open field it only turns the rows above and below the board into TYPING, and the panels beside it
+     * into their own typing layouts (see [TypingOnItsSideTest]).
      */
     @Test fun theKeyboardOnlyLeavesTheBoardAloneWithAnOpenField() {
         // A phone upright, 384 x 758dp: 383 left above a 375dp keyboard.
@@ -165,9 +166,15 @@ class LandscapeLayoutTest {
             assertEquals(BoardLayout.STACKED, boardLayout(width, height - 280.dp, keyboardHeight = 280.dp))
             assertEquals(BoardLayout.TYPING, boardLayout(width, height - 280.dp, keyboardHeight = 280.dp, fieldOpen = true))
         }
-        // Phones on their side keep their panels above a keyboard that leaves them a strip.
-        assertEquals(BoardLayout.BETWEEN_PANELS, boardLayout(800.dp, 160.dp, keyboardHeight = 200.dp, fieldOpen = true))
-        assertEquals(BoardLayout.BESIDE_PANEL, boardLayout(640.dp, 160.dp, keyboardHeight = 200.dp, fieldOpen = true))
+        // Phones on their side keep their panel family above a keyboard that leaves them a strip: an A52s, 853 x 336dp,
+        // and a 16:9 phone, 640 x 312dp, each with 150 left above its keyboard; and a tablet, 1000 x 600dp.
+        assertEquals(BoardLayout.BETWEEN_PANELS_TYPING, boardLayout(853.dp, 150.dp, keyboardHeight = 186.dp, fieldOpen = true))
+        assertEquals(BoardLayout.BETWEEN_PANELS, boardLayout(853.dp, 150.dp, keyboardHeight = 186.dp)) // the field shut
+        assertEquals(BoardLayout.BETWEEN_PANELS, boardLayout(853.dp, 336.dp, fieldOpen = true)) // the keyboard down
+        assertEquals(BoardLayout.BESIDE_PANEL_TYPING, boardLayout(640.dp, 150.dp, keyboardHeight = 162.dp, fieldOpen = true))
+        assertEquals(BoardLayout.BESIDE_PANEL, boardLayout(640.dp, 150.dp, keyboardHeight = 162.dp))
+        assertEquals(BoardLayout.BESIDE_PANEL, boardLayout(640.dp, 312.dp, fieldOpen = true))
+        assertEquals(BoardLayout.BETWEEN_PANELS_TYPING, boardLayout(1000.dp, 300.dp, keyboardHeight = 300.dp, fieldOpen = true))
         assertEquals(BoardLayout.TYPING, boardLayout(800.dp, 820.dp, keyboardHeight = 400.dp, fieldOpen = true)) // a tablet upright
     }
 
