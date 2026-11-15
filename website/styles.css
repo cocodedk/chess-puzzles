@@ -115,6 +115,20 @@ footer a { color: var(--text); }
   .grid { grid-template-columns: repeat(3, 1fr); }
 }
 
+/* Feature grid (#features only; the About page's link grid keeps the rules above). The 10 or 11
+   cards must never end on a lone card, which 2 columns do for 11 and 3 columns do for 10.
+   640-1023px: 2 columns, on a 6-track grid; an odd count ends on one row of three (the last
+   three cards span 2 tracks). From 1024px: 4 columns, so 10 end on a row of 2 and 11 on 3. */
+@media (min-width: 640px) and (max-width: 1023.98px) {
+  #features .grid { grid-template-columns: repeat(6, 1fr); }
+  #features .card { grid-column: span 3; }
+  #features .card:nth-last-child(3):nth-child(odd),
+  #features .card:nth-last-child(3):nth-child(odd) ~ .card { grid-column: span 2; }
+}
+@media (min-width: 1024px) {
+  #features .grid { grid-template-columns: repeat(4, 1fr); }
+}
+
 /* RTL / Persian */
 [dir="rtl"] body { font-family: "Vazirmatn", var(--font); }
 [dir="rtl"] .step { flex-direction: row; }
