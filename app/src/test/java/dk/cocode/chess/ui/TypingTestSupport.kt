@@ -42,6 +42,12 @@ internal val PHONE_KEYBOARD = 375.dp
 /** 384dp less the 48dp Robolectric keeps for system bars on a phone's side: a Galaxy A52s on its side, 853 x 336dp. */
 internal const val ON_ITS_SIDE = "w853dp-h384dp-land"
 
+/** 384dp less those 48dp: a Samsung on its side, 814 x 336dp, room for a panel either side of the board. */
+internal const val SAMSUNG_ON_ITS_SIDE = "w814dp-h384dp-land"
+
+/** 412dp less those 48dp: a larger phone on its side, 915 x 364dp. */
+internal const val LARGER_PHONE_ON_ITS_SIDE = "w915dp-h412dp-land"
+
 /** 198dp less those 48dp: the 853 x 150dp its keyboard leaves there. */
 internal const val KEYBOARD_UP_ON_ITS_SIDE = "w853dp-h198dp-land"
 

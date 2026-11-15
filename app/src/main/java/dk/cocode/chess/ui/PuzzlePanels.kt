@@ -63,8 +63,10 @@ internal fun PuzzlePrompt(state: PuzzleUiState) {
 }
 
 /**
- * The verdict on the last move and the Hint, Restart, Previous and Next buttons; [stacked] lines them up in a column.
- * Without [showButtons], while a move is typed, the verdict stands alone, the same live region either way.
+ * The verdict on the last move and the Hint, Restart, Previous and Next buttons, in one row; [stacked], in a panel
+ * of their own beside the board, two by two: Hint and Restart, then Previous and Next below them, as four in a column
+ * would push the move field below the fold. Without [showButtons], while a move is typed, the verdict stands alone,
+ * the same live region either way.
  */
 @Composable
 internal fun PuzzleControls(
@@ -85,27 +87,59 @@ internal fun PuzzleControls(
     // 8dp spacer, the feedback line above (its height kept when empty), this spacer and the button's touch padding.
     // PuzzlePortraitSizeTest holds it at 44dp or more.
     Spacer(Modifier.height(10.dp))
-    Lineup(stacked) { item ->
-        val inProgress = state.status == PuzzleStatus.IN_PROGRESS
-        OutlinedButton(onHint, item.then(CompactButton), enabled = inProgress, contentPadding = CompactPadding) {
-            Text(stringResource(R.string.puzzle_hint))
+    ButtonRows(
+        stacked,
+        upper = { item ->
+            val inProgress = state.status == PuzzleStatus.IN_PROGRESS
+            OutlinedButton(onHint, item.then(CompactButton), enabled = inProgress, contentPadding = CompactPadding) {
+                Text(stringResource(R.string.puzzle_hint))
+            }
+            OutlinedButton(onReset, item.then(CompactButton), contentPadding = CompactPadding) {
+                Text(stringResource(R.string.puzzle_reset))
+            }
+        },
+        lower = { item ->
+            // Arrows, not words, so four buttons still fit one row on a small phone at a large font.
+            val previous = stringResource(R.string.puzzle_previous)
+            val next = stringResource(R.string.puzzle_next)
+            OutlinedButton(
+                onPrevious,
+                item.then(CompactButton).semantics { contentDescription = previous },
+                contentPadding = CompactPadding,
+            ) { Text(directional("◀"), Modifier.clearAndSetSemantics {}) }
+            Button(
+                onNext,
+                item.then(CompactButton).semantics { contentDescription = next },
+                contentPadding = CompactPadding,
+            ) { Text(directional("▶"), Modifier.clearAndSetSemantics {}) }
+        },
+    )
+}
+
+/**
+ * [upper] and then [lower] in one row, or when [stacked] one row each, as wide as the wider of the two, so that
+ * the four buttons stand in equal cells; the 48dp touch targets already space the rows. Each is given the modifier
+ * its buttons wear.
+ */
+@Composable
+private fun ButtonRows(
+    stacked: Boolean,
+    upper: @Composable (item: Modifier) -> Unit,
+    lower: @Composable (item: Modifier) -> Unit,
+) {
+    if (stacked) {
+        Column(Modifier.width(IntrinsicSize.Max)) {
+            for (buttons in listOf(upper, lower)) {
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    buttons(Modifier.weight(1f))
+                }
+            }
         }
-        OutlinedButton(onReset, item.then(CompactButton), contentPadding = CompactPadding) {
-            Text(stringResource(R.string.puzzle_reset))
+    } else {
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+            upper(Modifier)
+            lower(Modifier)
         }
-        // Arrows, not words, so four buttons still fit one row on a small phone at a large font.
-        val previous = stringResource(R.string.puzzle_previous)
-        val next = stringResource(R.string.puzzle_next)
-        OutlinedButton(
-            onPrevious,
-            item.then(CompactButton).semantics { contentDescription = previous },
-            contentPadding = CompactPadding,
-        ) { Text(directional("◀"), Modifier.clearAndSetSemantics {}) }
-        Button(
-            onNext,
-            item.then(CompactButton).semantics { contentDescription = next },
-            contentPadding = CompactPadding,
-        ) { Text(directional("▶"), Modifier.clearAndSetSemantics {}) }
     }
 }
 
