@@ -1,0 +1,1 @@
+The app is now also in Persian. On an upright phone the board is as wide as the screen. While you type a move, the whole board stays visible above the keyboard, also with the phone held sideways, and a half-typed move survives turning the phone. TalkBack reads all the pieces on the board in one item.
