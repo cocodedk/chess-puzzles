@@ -77,6 +77,10 @@ source ~/.chess-env.sh                 # JAVA_HOME / ANDROID_HOME / PATH (see do
 bash scripts/emu.sh                      # boot a headless emulator, install, screenshot -> docs/screenshot.png
 ```
 
+## Releases
+
+Each release run also builds a signed Android App Bundle, `ChessPuzzles.aab`, which is the upload format Google Play asks for. It is not attached to the GitHub release, which holds only `ChessPuzzles.apk` because Obtainium and F-Droid read that file; download the bundle from the Artifacts list on the run's page under the repository's Actions tab, where it is kept for 90 days. It is signed with the same key as the APK, and the run stops before it makes a release if it is not.
+
 ## Modules
 
 - **`:core`** — pure Kotlin/JVM: chess rules (via [chesslib](https://github.com/bhlangonijr/chesslib)),
