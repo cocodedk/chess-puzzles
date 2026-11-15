@@ -11,14 +11,19 @@ updates:
         patterns: ["*"]
         update-types: ["minor", "patch"]
     ignore:
-      # AndroidX 2025+ requires compileSdk 36/37 and a newer AGP/Kotlin than this project
-      # pins (compileSdk 35, AGP 8.7.3, Kotlin 2.0.21) — those bumps fail the build (AAR
-      # metadata / lint). Hold the namespace at the compileSdk-35-compatible line; patches
-      # still flow. Remove these once compileSdk/AGP/Kotlin are upgraded together.
+      # The newest AndroidX lines need more than this project pins (compileSdk 36, AGP 8):
+      # core 1.19 and Compose UI 1.12 declare minCompileSdk 37 and AGP 9.1 in their AAR
+      # metadata, so those bumps fail the build. Hold the namespace's minor/major updates;
+      # patches still flow. Remove this once compileSdk 37 and AGP 9 land together.
       - dependency-name: "androidx.*"
         update-types: ["version-update:semver-minor", "version-update:semver-major"]
-      # Gradle 9 is outside AGP 8.7.3's supported range — hold the major until AGP is upgraded.
+      # AGP 8.9 is not tested with Gradle 9, and this build warns that AGP 8 uses Gradle features
+      # Gradle 9 drops. Hold the major until AGP 9.
       - dependency-name: "gradle-wrapper"
+        update-types: ["version-update:semver-major"]
+      # AGP 9 needs Gradle 9.6 and its built-in Kotlin, a move of its own (PR #99 failed on it).
+      # Minor and patch updates of AGP 8 still flow.
+      - dependency-name: "com.android.*"
         update-types: ["version-update:semver-major"]
 
   - package-ecosystem: "github-actions"
