@@ -12,7 +12,10 @@ import dk.cocode.chess.core.model.SubmitResult
 /** The hint's piece is selected, with its [targets], and the hint is highlighted. */
 internal fun PuzzleUiState.withHint(texts: Texts, hint: Hint, targets: Set<Square>): PuzzleUiState {
     val highlight = Highlight(hint.from, hint.to)
-    return copy(selected = hint.from, legalTargets = targets, hint = highlight, announcement = texts.hintSentence(this, highlight))
+    return copy(
+        selected = hint.from, legalTargets = targets, hint = highlight, feedback = feedback.afterAnEvent(),
+        announcement = texts.hintSentence(this, highlight),
+    )
 }
 
 /** A pawn reached the last rank with no piece named, so the screen asks which one. */

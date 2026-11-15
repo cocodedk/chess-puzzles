@@ -23,10 +23,16 @@ internal fun Texts.resetSentence(prompt: String) = string(R.string.sentence_rese
 internal fun Texts.solvedSentence(san: String) = string(R.string.sentence_solved, spokenMove(san))
 
 internal fun PuzzleUiState.withSelection(texts: Texts, square: Square, targets: Set<Square>) = copy(
-    selected = square, legalTargets = targets, hint = null,
+    selected = square, legalTargets = targets, hint = null, feedback = feedback.afterAnEvent(),
     announcement = texts.selectionSentence(this, square, targets),
 )
 
-/** Drops the selection, its targets and the hint, and says [said]. */
+/** Drops the selection, its targets, the hint and an outdated verdict on typed text, and says [said]. */
 internal fun PuzzleUiState.withoutSelection(said: String) =
-    copy(selected = null, legalTargets = emptySet(), hint = null, announcement = said)
+    copy(selected = null, legalTargets = emptySet(), hint = null, feedback = feedback.afterAnEvent(), announcement = said)
+
+/**
+ * Typed text that names no move leaves nothing on the board for its verdict to stand beside, so the next thing the
+ * player does, a hint or a tap, outdates it: the line must not say it to the eye while a screen reader says the event.
+ */
+internal fun Feedback.afterAnEvent() = if (this == Feedback.ILLEGAL) Feedback.NONE else this

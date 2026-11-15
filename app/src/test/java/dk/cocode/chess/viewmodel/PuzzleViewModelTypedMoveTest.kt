@@ -66,6 +66,28 @@ class PuzzleViewModelTypedMoveTest : EnglishTexts() {
         assertEquals("hello is not a legal move here.", viewModel.state.value.announcement)
     }
 
+    /** The verdict is on the typed text, not on a move: whatever the player does next, it is no longer the line's to say. */
+    @Test fun aHintOrATapAfterTextThatIsNoMoveLeavesNoVerdictOnTheLine() = runTest(dispatcher) {
+        val afterwards = listOf<(PuzzleViewModel) -> Unit>(
+            { it.onHint() },
+            { it.onSquareTapped(Square.of("b7")) }, // selects the queen
+            { it.onSquareTapped(Square.of("a1")) }, // selects nothing: no moves from there
+        )
+        afterwards.forEach { act ->
+            val viewModel = vm()
+            viewModel.onMoveTyped("e2e4")
+            act(viewModel)
+            assertEquals(Feedback.NONE, viewModel.state.value.feedback)
+        }
+    }
+
+    @Test fun aHintAfterAWrongMoveKeepsItsVerdict() = runTest(dispatcher) {
+        val viewModel = vm()
+        viewModel.onMoveTyped("Qb2")
+        viewModel.onHint()
+        assertEquals(Feedback.WRONG, viewModel.state.value.feedback)
+    }
+
     @Test fun aPromotionWithNoPieceAsksWhichAndOneWithAPieceJustPlays() = runTest(dispatcher) {
         val asked = vm(index = 2).also { advanceUntilIdle() }
         asked.onMoveTyped("e8")
