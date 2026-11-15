@@ -24,11 +24,11 @@ export PATH="$JAVA_HOME/bin:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME
 
 # SDK packages + licenses
 yes | sdkmanager --licenses
-sdkmanager "platform-tools" "emulator" "platforms;android-35" "build-tools;35.0.0" \
+sdkmanager "platform-tools" "emulator" "platforms;android-36" "build-tools;35.0.0" \
            "system-images;android-35;google_apis;x86_64"
 ```
 
-The Gradle wrapper (8.14.5) is committed, so no global Gradle is needed; `./gradlew` downloads the
+The Gradle wrapper (8.14.6) is committed, so no global Gradle is needed; `./gradlew` downloads the
 distribution on first run.
 
 ## 2. Build, test, coverage
@@ -54,5 +54,5 @@ adb -s emulator-5554 emu kill        # shut down when done
 
 ## 4. Versions
 
-JDK 17 · Gradle 8.14.5 · AGP 8.7.3 · Kotlin 2.4.20 · Compose BOM 2024.09.03 · compileSdk/targetSdk 35 ·
-minSdk 24 · chesslib 1.3.6 (JitPack) · Kover 0.9.9 · Robolectric 4.17.
+JDK 17 · Gradle 8.14.6 · AGP 8.9.3 · Kotlin 2.4.21 · Compose BOM 2024.09.03 · compileSdk/targetSdk 36 ·
+minSdk 24 · chesslib 1.3.6 (JitPack) · Kover 0.9.11 · Robolectric 4.17.
