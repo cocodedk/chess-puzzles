@@ -1,0 +1,96 @@
+# Builds a one-off APK that proves we hold the app's signing key, for Google's Android developer
+# verification. The APK is signed with the release key and carries the console snippet from the
+# ADI_SNIPPET secret in assets/adi-registration.properties. Download the artifact and upload it in
+# Play Console (Manage account -> Android developer verification). It is never published or released.
+name: Developer verification proof APK
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  proof:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: actions/setup-java@77dd5b2ce225ea11469928ac317850245a74ae78 # v6.2.0
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: gradle
+
+      - name: Require the four signing secrets and ADI_SNIPPET
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          ADI_SNIPPET: ${{ secrets.ADI_SNIPPET }}
+        run: |
+          missing=
+          for v in KEYSTORE_BASE64 KEYSTORE_PASSWORD KEY_ALIAS KEY_PASSWORD ADI_SNIPPET; do
+            [ -n "${!v}" ] || missing="$missing $v"
+          done
+          if [ -n "$missing" ]; then
+            echo "Missing secret(s):$missing — set the four signing secrets (see README → Releases) and ADI_SNIPPET (the snippet from Play Console)."; exit 1
+          fi
+
+      - name: Write the console snippet into the app's assets
+        env:
+          ADI_SNIPPET: ${{ secrets.ADI_SNIPPET }}
+        run: |
+          # The secret goes in through the environment and is written byte for byte; it is never printed.
+          mkdir -p app/src/main/assets
+          printf '%s' "$ADI_SNIPPET" > app/src/main/assets/adi-registration.properties
+
+      - name: Decode signing keystore
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+        run: echo "$KEYSTORE_BASE64" | base64 -d > release.keystore
+
+      - name: Build signed release APK
+        env:
+          KEYSTORE_PATH: release.keystore
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        # --no-build-cache: gradle.properties turns the build cache on, and setup-java's `cache: gradle`
+        # would save ~/.gradle/caches (build-cache-1 included) to the Actions cache. The merged assets
+        # hold the snippet, so keep them out of it.
+        run: ./gradlew :app:assembleRelease --no-daemon --no-build-cache
+
+      - name: Check the APK is signed with our key and carries the snippet
+        env:
+          ADI_SNIPPET: ${{ secrets.ADI_SNIPPET }}
+          # SHA-256 of the release signing certificate, the same one the published APK carries.
+          EXPECTED_DIGEST: d905d23c91db64e2507be7a3354ae0605d8f97525ce6b95fdb07109ce6c11967
+        run: |
+          if ls app/build/outputs/apk/release/*-unsigned.apk >/dev/null 2>&1; then
+            echo "Release APK came out unsigned — signing config did not apply"; exit 1
+          fi
+          src=$(find app/build/outputs/apk/release -name '*.apk' | head -1)
+          [ -n "$src" ] || { echo "No release APK produced"; exit 1; }
+          apksigner=$(ls "$ANDROID_HOME"/build-tools/*/apksigner 2>/dev/null | sort -V | tail -1)
+          [ -n "$apksigner" ] || { echo "apksigner not found under ANDROID_HOME"; exit 1; }
+          certs=$("$apksigner" verify --print-certs "$src")
+          # apksigner labels its signer lines differently from one build-tools version to the next,
+          # so look for the digest itself, not "Signer #1".
+          grep -qF "SHA-256 digest: $EXPECTED_DIGEST" <<<"$certs" || {
+            echo "The APK is not signed with the expected key ($EXPECTED_DIGEST). apksigner says:"; echo "$certs"; exit 1
+          }
+          # Compare the file inside the APK with the secret, without printing either.
+          printf '%s' "$ADI_SNIPPET" | cmp -s - <(unzip -p "$src" assets/adi-registration.properties) || {
+            echo "assets/adi-registration.properties in the APK is missing or differs from ADI_SNIPPET"; exit 1
+          }
+          cp "$src" adi-proof.apk
+
+      - name: Keep the proof APK for Play Console (a workflow artifact, never published)
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: adi-proof
+          path: adi-proof.apk
+          retention-days: 1
+          if-no-files-found: error
