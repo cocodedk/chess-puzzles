@@ -22,12 +22,12 @@ val hasSigning = ksFile != null && ksPassword != null && ksAlias != null && ksKe
 
 android {
     namespace = "dk.cocode.chess"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "dk.cocode.chess"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 36
         versionCode = appVersionCode
         versionName = appVersionName
     }
