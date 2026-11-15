@@ -1,5 +1,6 @@
 package dk.cocode.chess
 
+import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.click
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
@@ -7,6 +8,7 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeRight
 import dk.cocode.chess.ui.board.BOARD_TEST_TAG
@@ -40,6 +42,16 @@ class MainActivityTest {
         composeRule.onNodeWithText("Restart").performClick()
         composeRule.onNodeWithContentDescription("Next puzzle").performClick()
         composeRule.renderToBitmap()
+    }
+
+    /** The real screen reads the keyboard's height from the window: with none reported, an open move field hides nothing. */
+    @Test
+    fun anOpenMoveFieldHidesNothingWithoutAKeyboard() {
+        awaitText("Hint")
+        composeRule.onNodeWithText("Type a move").performSemanticsAction(SemanticsActions.OnClick)
+        awaitText("Close move field")
+        composeRule.onNodeWithText("Hint").assertExists()
+        composeRule.onNodeWithText("About").assertExists()
     }
 
     @Test

@@ -115,6 +115,8 @@
     <string name="sentence_typed_move_illegal">%1$s er ikke et lovligt træk her.</string>
     <string name="sentence_selected">%1$s %2$s er valgt. Træk: %3$s.</string>
     <string name="sentence_hint">Hint: %1$s %2$s til %3$s.</string>
+    <string name="sentence_piece_list_side">%1$s: %2$s</string>
+    <string name="sentence_piece_list_kind">%1$s %2$s.</string>
     <string name="sentence_wrong">Du spillede %1$s. Ikke det bedste træk, prøv igen.</string>
     <string name="sentence_correct">Rigtigt. Du spillede %1$s. %2$s spillede %3$s.</string>
     <string name="sentence_reset">Opgaven er startet forfra. %1$s.</string>
@@ -149,6 +151,8 @@
     <string name="about_check_updates_note">Åbner appens side, hvor den nyeste version ligger. Appen søger aldrig selv efter opdateringer.</string>
     <string name="about_section_what">Hvad appen gør</string>
     <string name="about_what">Chess Puzzles hjælper dig med at øve skaktaktik. Hver opgave kommer fra Lichess-opgavedatabasen, fortæller dig, hvad du skal finde (for eksempel mat i 2 træk), og har en rating, der viser, hvor svær den er. Du kan også lære almindelige åbninger træk for træk og derefter spille dem fra hukommelsen. Alt er gemt på din telefon, så appen virker uden internet.</string>
+    <string name="about_section_accessibility">Tilgængelighed</string>
+    <string name="about_accessibility">Chess Puzzles virker med TalkBack, Androids skærmlæser: den læser op, hvor hver brik står, og siger hvert træk med ord. I fanen Opgaver kan du skrive et træk eller diktere det med tastaturets stemmeindtastning i stedet for at trykke på et felt. Knapper, menuer og beskeder følger den tekststørrelse, der er valgt på din telefon.</string>
     <string name="about_section_privacy">Privatliv</string>
     <string name="about_privacy_no_data">Chess Puzzles indsamler, sender og deler ingen personoplysninger.</string>
     <string name="about_privacy_no_permissions">Den beder dig aldrig om en tilladelse, og den kan ikke bruge internettet.</string>
@@ -171,6 +175,8 @@
     <string name="piece_rook">Tårn</string>
     <string name="piece_bishop">Løber</string>
     <string name="piece_knight">Springer</string>
+    <string name="puzzle_level_button">Niveau: %1$s</string>
+    <string name="puzzle_level_button_description">Niveau, %1$s</string>
     <string name="puzzle_theme_button">Motiv: %1$s</string>
     <string name="puzzle_theme_button_description">Motiv, %1$s</string>
     <string name="puzzle_theme_all">Alle</string>

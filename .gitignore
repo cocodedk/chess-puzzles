@@ -20,3 +20,6 @@ local.properties
 *.keystore
 *.jks
 keystore.properties
+
+# Project notes live in the private vaults repo (see CLAUDE.md, rule 6); memory is a symlink
+memory

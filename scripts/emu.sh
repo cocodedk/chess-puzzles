@@ -15,7 +15,7 @@ PATH="$ANDROID_HOME/platform-tools:$ANDROID_HOME/emulator:$ANDROID_HOME/cmdline-
 AVD="${AVD:-chess}"
 IMG="${IMG:-system-images;android-35;google_apis;x86_64}"
 APK="$ROOT/app/build/outputs/apk/debug/app-debug.apk"
-PKG=dk.cocode.chess
+PKG=dk.cocode.chess.debug # the debug build's app id (applicationIdSuffix); its classes keep dk.cocode.chess
 SHOT="${1:-$ROOT/docs/screenshot.png}"
 SERIAL=emulator-5554
 
@@ -56,7 +56,7 @@ echo "[emu] booted; installing APK"
 
 adb -s "$SERIAL" uninstall "$PKG" >/dev/null 2>&1 || true # avoid debug-signature mismatch with an old install
 adb -s "$SERIAL" install -r "$APK"
-adb -s "$SERIAL" shell am start -n "${PKG}/.MainActivity"
+adb -s "$SERIAL" shell am start -n "$PKG/dk.cocode.chess.MainActivity"
 sleep 15 # let the cold-start splash dismiss and the first Compose frame render (software GPU)
 adb -s "$SERIAL" exec-out screencap -p > "$SHOT"
 echo "[emu] screenshot -> $SHOT ($(stat -c%s "$SHOT") bytes)"

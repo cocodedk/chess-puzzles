@@ -114,6 +114,8 @@
     <string name="sentence_typed_move_illegal">%1$s在这里不是合法走法。</string>
     <string name="sentence_selected">已选中%1$s%2$s。可走：%3$s。</string>
     <string name="sentence_hint">提示：%1$s%2$s走到%3$s。</string>
+    <string name="sentence_piece_list_side">%1$s：%2$s</string>
+    <string name="sentence_piece_list_kind">%1$s%2$s。</string>
     <string name="sentence_wrong">你走了%1$s。不是最佳走法，再试一次。</string>
     <string name="sentence_correct">正确。你走了%1$s。%2$s走了%3$s。</string>
     <string name="sentence_reset">谜题已重新开始。%1$s。</string>
@@ -147,6 +149,8 @@
     <string name="about_check_updates_note">打开本应用的页面，最新版本发布在那里。应用本身从不检查更新。</string>
     <string name="about_section_what">应用功能</string>
     <string name="about_what">Chess Puzzles 帮助你练习国际象棋战术。每道谜题都来自 Lichess 谜题数据库，会告诉你要找什么（例如 2 步将死），并附有显示难易程度的难度分。你还可以逐步学习常见开局，再凭记忆走出来。所有内容都保存在你的手机上，所以应用无需联网也能使用。</string>
+    <string name="about_section_accessibility">无障碍</string>
+    <string name="about_accessibility">Chess Puzzles 可以配合 TalkBack（Android 的屏幕阅读器）使用：它会读出每个棋子的位置，每一步棋也会用自然语言读出来。在“谜题”标签页中，你可以输入走法，或用键盘的语音输入念出走法，无需点按格子。按钮、菜单和提示信息会跟随手机上设置的字体大小。</string>
     <string name="about_section_privacy">隐私</string>
     <string name="about_privacy_no_data">Chess Puzzles 不会收集、发送或分享任何个人数据。</string>
     <string name="about_privacy_no_permissions">它从不向你申请任何权限，也无法使用互联网。</string>
@@ -169,6 +173,8 @@
     <string name="piece_rook">车</string>
     <string name="piece_bishop">象</string>
     <string name="piece_knight">马</string>
+    <string name="puzzle_level_button">难度：%1$s</string>
+    <string name="puzzle_level_button_description">难度，%1$s</string>
     <string name="puzzle_theme_button">战术：%1$s</string>
     <string name="puzzle_theme_button_description">战术，%1$s</string>
     <string name="puzzle_theme_all">全部</string>

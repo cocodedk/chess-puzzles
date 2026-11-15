@@ -30,7 +30,7 @@ fun OpeningScreenContent(
         onSquareTap = onSquareTap, onDragStart = onDragStart, onDragEnd = onDragEnd,
         tabs = tabs,
         header = { stacked -> OpeningHeader(state, opening, onBack, onMode, stacked) },
-        body = { stacked ->
+        body = { stacked, _ -> // no move field, so never typing
             if (state.mode == OpeningMode.LEARN) {
                 OpeningLearnPanel(state, opening, onLine, onStep, stacked)
             } else {
@@ -38,8 +38,8 @@ fun OpeningScreenContent(
             }
             PuzzleSettings(themeMode, onThemeToggle, onAbout)
         },
-        // Learn's many rows would squeeze the board on a phone; Practise's few fit, and fitting keeps its
-        // feedback and Again in view on a small screen.
+        // On a near-square screen Learn's many rows would squeeze the board, so it scrolls there as it does on
+        // a phone; Practise's few rows fit.
         scrollWhenStacked = state.mode == OpeningMode.LEARN,
     )
 }

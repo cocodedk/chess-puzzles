@@ -44,6 +44,10 @@ with its tests.
   are unreachable by any test); they are still exercised by the Robolectric render tests and the
   emulator screenshot.
 
+### 6. Notes stay out of this repo
+This repo is public. `memory/` is a symlink into the private `vaults` repo
+(`~/vaults/chess-puzzles/`). Never commit `memory/` or anything in it here.
+
 ## Per-change workflow
 write code + tests → `/loop /simplify` (to fixpoint) → `/loop /code-review --fix` (to fixpoint) →
 `./gradlew test koverVerify` green → commit → push (pre-push hook re-runs tests + coverage).

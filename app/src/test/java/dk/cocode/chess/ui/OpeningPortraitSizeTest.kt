@@ -10,13 +10,13 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.unit.dp
+import dk.cocode.chess.assertBoardSpansTheScreen
 import dk.cocode.chess.core.data.openings.Openings
 import dk.cocode.chess.core.engine.OpeningTree
 import dk.cocode.chess.ui.board.BOARD_TEST_TAG
 import dk.cocode.chess.ui.theme.ChessTheme
 import dk.cocode.chess.viewmodel.OpeningMode
 import dk.cocode.chess.viewmodel.OpeningUiState
-import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -25,24 +25,24 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
 /**
- * Learn on a phone held upright at a 1.3× font, like the owner's Galaxy A52s: the rows around the
- * board used to squeeze it to about two thirds of the width. It must span the screen, with the
+ * An opening on a phone held upright at a 1.3× font: the rows around the board used to squeeze it, Learn's
+ * to about two thirds of the width and Practise's to 321 of 412dp. It must span the screen in both, Learn's
  * ◀ ▶ buttons still in view without scrolling.
  */
 @RunWith(RobolectricTestRunner::class)
 @Config(qualifiers = "w412dp-h780dp", fontScale = 1.3f)
-class OpeningLearnSizeTest {
+class OpeningPortraitSizeTest {
     @get:Rule
     val composeRule = createAndroidComposeRule<ComponentActivity>()
 
-    @Test fun learnBoardSpansThePhoneWithItsStepButtonsInView() {
+    private fun show(mode: OpeningMode) {
         val italian = Openings.all.first { it.id == "italian" }
         val tree = OpeningTree(italian)
         composeRule.setContent {
             ChessTheme(darkTheme = false) {
                 OpeningScreenContent(
                     state = OpeningUiState(
-                        board = tree.start.toRows(), openingId = italian.id, mode = OpeningMode.LEARN,
+                        board = tree.start.toRows(), openingId = italian.id, mode = mode,
                         lineNames = tree.lineNames, line = 0, ply = 0, moveSan = tree.plies(0).map { it.san },
                     ),
                     opening = italian, onBack = {}, onMode = {}, onLine = {}, onStep = {},
@@ -51,11 +51,20 @@ class OpeningLearnSizeTest {
                 )
             }
         }
+    }
+
+    @Test fun learnBoardSpansThePhoneWithItsStepButtonsInView() {
+        show(OpeningMode.LEARN)
+        composeRule.assertBoardSpansTheScreen()
         val screen = composeRule.onRoot().getUnclippedBoundsInRoot()
         val board = composeRule.onNodeWithTag(BOARD_TEST_TAG).getUnclippedBoundsInRoot()
-        assertEquals(screen.right.value - screen.left.value, board.right.value - board.left.value, 1f)
         val next = composeRule.onNodeWithContentDescription("Next move").getUnclippedBoundsInRoot()
         assertTrue("Next move at ${next.top} under the board at ${board.bottom}", next.top >= board.bottom)
         assertTrue("Next move at ${next.bottom} of ${screen.bottom}", next.bottom <= screen.bottom)
+    }
+
+    @Test fun practiseBoardSpansThePhone() {
+        show(OpeningMode.PRACTISE)
+        composeRule.assertBoardSpansTheScreen()
     }
 }

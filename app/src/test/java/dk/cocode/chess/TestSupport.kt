@@ -67,6 +67,12 @@ fun near(a: Int, b: Int, tolerance: Int): Boolean =
 /** Robolectric screen large enough that the rows below the square board stay on-screen. */
 const val PHONE_QUALIFIERS = "w360dp-h800dp"
 
+/**
+ * The phone the fit tests model: a Galaxy A52s at its current display size, 384 x 758dp usable (Robolectric
+ * keeps 56dp of the 814 for the system bars), font 1.0.
+ */
+const val A52S_QUALIFIERS = "w384dp-h814dp"
+
 /** A fresh on-disk Preferences DataStore in the Robolectric app's cache dir. */
 fun newPreferencesStore(prefix: String): DataStore<Preferences> {
     val dir = RuntimeEnvironment.getApplication().cacheDir

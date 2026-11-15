@@ -55,9 +55,26 @@ class AboutScreenTest {
             .fetchSemanticsNodes()
             .map { node -> node.config.getOrNull(SemanticsProperties.Text)?.joinToString("") { it.text } }
         assertEquals(
-            listOf("Chess Puzzles", "What the app does", "Privacy", "Links", "Credits and licenses", "Made by Cocode"),
+            listOf(
+                "Chess Puzzles", "What the app does", "Accessibility", "Privacy", "Links", "Credits and licenses",
+                "Made by Cocode",
+            ),
             headings,
         )
+    }
+
+    @Test fun theAccessibilitySectionSaysWhatTheAppDoesForWeakSight() {
+        show()
+        composeRule.onNodeWithText(
+            "Chess Puzzles works with TalkBack, Android's screen reader: it reads where every piece stands and says " +
+                "each move in words. On the Puzzles screen you can type a move, or say it with your keyboard's voice " +
+                "typing, instead of tapping a square. Buttons, menus and messages follow the text size set on " +
+                "your phone.",
+        ).assertExists()
+        // The icon beside the title is decorative: a screen reader hears the title, not the icon as well. Its row has
+        // no semantics node of its own, and nothing on this page carries a description, so the whole page is checked.
+        val described = SemanticsMatcher.keyIsDefined(SemanticsProperties.ContentDescription)
+        composeRule.onAllNodes(described, useUnmergedTree = true).assertCountEquals(0)
     }
 
     @Test fun theSupportSlotShowsNothing() {

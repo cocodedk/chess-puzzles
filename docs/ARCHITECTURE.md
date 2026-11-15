@@ -49,11 +49,34 @@ Two Gradle modules so the chess/puzzle logic is pure-JVM and fully unit-testable
   `BoardCoordinates` (files and ranks written on the edge squares),
   `PieceArt` and `PieceDrawing` (vector Staunton pieces, ivory and ebony), `BoardDrawing` (pure
   `DrawScope` helpers), `ChessBoard` (`Canvas` + tap/drag gestures), `PromotionDialog`.
-- `ui/BoardScaffold` — the three-way board layout (`boardLayout`: a board between two panels, beside
-  one, or stacked in a column) shared by the puzzle and openings screens, so the `when` lives once.
+- `ui/BoardScaffold` — the board layout (`boardLayout`, a pure function in `BoardLayout.kt`: a board
+  between two panels, beside one, or between rows above and below it — on an upright phone as wide as
+  the screen with the rows scrolling,
+  on a near-square screen the largest square the rows leave room for, unless `scrollWhenStacked` asks for
+  the upright arrangement there too, as Learn does; and while a move is typed with the keyboard up, the
+  largest board that fits above the verdict and the move field alone, or, where panels stand beside the
+  board, the board as tall as the keyboard leaves beside one panel of the verdict and the field alone,
+  the field without its help line, which that strip has no room for)
+  shared by the puzzle and openings screens, so the `when` lives once. The keyboard never changes which
+  family a screen is in (panels beside the board, or rows above and below it), and a typing layout only
+  hides rows of its family, so the move field keeps its place in the composition and its focus. The
+  layout is decided as it is measured (`BoxWithBoardLayout`), from the height the screen's insets leave
+  and the keyboard's height, both read in that one pass: on a phone a new inset reaches the layout a
+  frame before anything is composed again, so padding read while composing (as a `Scaffold`'s is, which
+  is why the board screens sit on a `Surface` and pad themselves) would meet a newer keyboard height for
+  a frame and could flip the family.
   Takes a `tabs` slot (the `Puzzles | Openings` `ModeTabs` row, always first) plus `header`/`body`
-  slots, each told whether it must lay its own rows out as a stacked column.
-  `PuzzleScreen`/`PuzzleScreenContent` compose their existing panels through it unchanged.
+  slots, each told whether it must lay its own rows out as a stacked column, and `body` whether a move
+  is being typed.
+  `PuzzleScreen`/`PuzzleScreenContent` compose their panels through it, `PuzzleScreenContent` handing
+  down the screen's insets, the keyboard's and whether the move field is open (the insets are parameters,
+  the real ones by default, so tests can raise a keyboard in one step). `PuzzleScreenContent` also keeps
+  what is typed, its caret with it, and hands it to `TypeMove`, so the open field, its text and where the
+  next key goes survive a rotation though each layout composes the field at its own place. The window
+  draws edge to edge on every Android version (`MainActivity`): the system bars, the cutout and the
+  keyboard pad the board's layout as insets. The manifest keeps `windowSoftInputMode="adjustResize"`, so
+  the system makes room for the keyboard, which here reaches the layout as its inset, rather than panning
+  the whole window up to the focused field.
   `PuzzlePanels` also exposes its `Lineup` row/column helper and compact button style (`internal`) for
   the openings panels to reuse.
 - `ui/Opening*` — `OpeningScreen` routes list / one opening / About, mirroring `PuzzleScreen`;

@@ -46,7 +46,7 @@ internal fun Modifier.announces(announcement: String): Modifier = semantics {
     if (announcement.isNotEmpty()) contentDescription = announcement
 }
 
-/** The selected-state colors shared by every filter chip in the puzzle and openings screens. */
+/** The selected-state colors of the openings screens' filter chips, every one drawn by [ChipRow]. */
 @Composable
 internal fun selectedChipColors() = FilterChipDefaults.filterChipColors(
     selectedContainerColor = MaterialTheme.colorScheme.primary,
@@ -62,7 +62,10 @@ internal fun PuzzlePrompt(state: PuzzleUiState) {
     )
 }
 
-/** The verdict on the last move and the Hint, Restart, Previous and Next buttons; [stacked] lines them up in a column. */
+/**
+ * The verdict on the last move and the Hint, Restart, Previous and Next buttons; [stacked] lines them up in a column.
+ * Without [showButtons], while a move is typed, the verdict stands alone, the same live region either way.
+ */
 @Composable
 internal fun PuzzleControls(
     state: PuzzleUiState,
@@ -71,12 +74,17 @@ internal fun PuzzleControls(
     onPrevious: () -> Unit,
     onNext: () -> Unit,
     stacked: Boolean,
+    showButtons: Boolean = true,
 ) {
     Text(
         rememberTexts().feedbackMessage(state.feedback),
         modifier = TextInset.announces(state.announcement), textAlign = TextAlign.Center,
     )
-    Spacer(Modifier.height(12.dp))
+    if (!showButtons) return
+    // Hint's clearance under an upright board, so a tap meant for the bottom rank never lands on it: BoardScaffold's
+    // 8dp spacer, the feedback line above (its height kept when empty), this spacer and the button's touch padding.
+    // PuzzlePortraitSizeTest holds it at 44dp or more.
+    Spacer(Modifier.height(10.dp))
     Lineup(stacked) { item ->
         val inProgress = state.status == PuzzleStatus.IN_PROGRESS
         OutlinedButton(onHint, item.then(CompactButton), enabled = inProgress, contentPadding = CompactPadding) {
@@ -92,12 +100,12 @@ internal fun PuzzleControls(
             onPrevious,
             item.then(CompactButton).semantics { contentDescription = previous },
             contentPadding = CompactPadding,
-        ) { Text("◀", Modifier.clearAndSetSemantics {}) }
+        ) { Text(directional("◀"), Modifier.clearAndSetSemantics {}) }
         Button(
             onNext,
             item.then(CompactButton).semantics { contentDescription = next },
             contentPadding = CompactPadding,
-        ) { Text("▶", Modifier.clearAndSetSemantics {}) }
+        ) { Text(directional("▶"), Modifier.clearAndSetSemantics {}) }
     }
 }
 
@@ -121,9 +129,8 @@ internal fun Lineup(stacked: Boolean, content: @Composable (item: Modifier) -> U
 
 /**
  * One [Lineup] of [FilterChip]s, one per item in [items] — [selected] and [onSelect] key off the
- * item itself, [label] renders its text. Shared by the puzzle band chips and the openings' mode and
- * line chips, which otherwise repeated this exact chip wiring three times. A chip whose [spoken] is not
- * null is read as that, not as its label.
+ * item itself, [label] renders its text. Shared by the openings' mode and line chips, which otherwise
+ * repeated this exact chip wiring. A chip whose [spoken] is not null is read as that, not as its label.
  */
 @Composable
 internal fun <T> ChipRow(

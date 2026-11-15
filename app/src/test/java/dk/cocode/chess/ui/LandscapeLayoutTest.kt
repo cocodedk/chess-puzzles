@@ -109,13 +109,13 @@ class LandscapeLayoutTest {
     fun panelsAreCentredBesideATallBoard() {
         show()
         val screen = composeRule.onRoot().getUnclippedBoundsInRoot()
-        val above = bounds("Puzzle 0 of 0").top - screen.top
+        val above = bounds("Puzzle 0 of 0 · Rating 0").top - screen.top
         val below = screen.bottom - bounds("About").bottom
         assertTrue("above $above", above > 50.dp)
         assertEquals("above $above, below $below", above.value, below.value, 8f)
     }
 
-    @Test @Config(qualifiers = "w640dp-h360dp-land")
+    @Test @Config(qualifiers = SIXTEEN_NINE_ON_ITS_SIDE)
     fun aSixteenByNinePhoneKeepsTheBoardLeftOfOnePanel() {
         show()
         val screen = composeRule.onRoot().getUnclippedBoundsInRoot()
@@ -123,13 +123,69 @@ class LandscapeLayoutTest {
         assertEquals(0f, board.left.value, 0f)
         assertEquals(screen.height.value, board.height.value, 1f)
         assertTrue(bounds("Hint").left >= board.right)
-        assertTrue(bounds("Hint").top >= bounds("Medium").bottom) // one panel: the bands above the buttons
+        val level = composeRule.onNodeWithContentDescription("Level, Easy").getUnclippedBoundsInRoot()
+        assertTrue(bounds("Hint").top >= level.bottom) // one panel: the Level menu above the buttons
     }
+
+    /** The whole board in view, unscrolled, and square. */
+    private fun assertTheWholeBoardFits() {
+        show()
+        val screen = composeRule.onRoot().getUnclippedBoundsInRoot()
+        val board = composeRule.onNodeWithTag(BOARD_TEST_TAG).getUnclippedBoundsInRoot()
+        assertTrue("board to ${board.bottom} of ${screen.right} x ${screen.bottom}", board.bottom <= screen.bottom)
+        assertEquals(board.width.value, board.height.value, 1f)
+    }
+
+    /** A near-square screen, wider than tall but with no room beside the board. */
+    @Test @Config(qualifiers = "w700dp-h650dp")
+    fun aNearSquareScreenFitsTheWholeBoard() = assertTheWholeBoardFits()
+
+    /** A foldable's inner screen held upright, 673 x 785dp: taller than wide, but not by a phone's margin. */
+    @Test @Config(qualifiers = "w673dp-h849dp")
+    fun aFoldablesInnerScreenUprightFitsTheWholeBoard() = assertTheWholeBoardFits()
 
     @Test fun theBoardGoesWhereTheRoomBesideItAllows() {
         assertEquals(BoardLayout.BETWEEN_PANELS, boardLayout(800.dp, 360.dp)) // a phone on its side
         assertEquals(BoardLayout.BESIDE_PANEL, boardLayout(640.dp, 360.dp)) // a 16:9 phone on its side
-        assertEquals(BoardLayout.STACKED, boardLayout(360.dp, 800.dp)) // a phone upright
+        assertEquals(BoardLayout.UPRIGHT, boardLayout(360.dp, 800.dp)) // a phone upright
         assertEquals(BoardLayout.STACKED, boardLayout(700.dp, 650.dp)) // near-square: no room beside it
+    }
+
+    /**
+     * The keyboard never changes which of those families a screen has, so the move field stays put, keeping the keyboard
+     * up; under an open field it only turns the rows above and below the board into TYPING, and the panels beside it
+     * into their own typing layouts (see [TypingOnItsSideTest]).
+     */
+    @Test fun theKeyboardOnlyLeavesTheBoardAloneWithAnOpenField() {
+        // A phone upright, 384 x 758dp: 383 left above a 375dp keyboard.
+        assertEquals(BoardLayout.TYPING, boardLayout(384.dp, 383.dp, keyboardHeight = 375.dp, fieldOpen = true))
+        assertEquals(BoardLayout.UPRIGHT, boardLayout(384.dp, 383.dp, keyboardHeight = 375.dp)) // the field shut, the keyboard going
+        assertEquals(BoardLayout.UPRIGHT, boardLayout(384.dp, 758.dp, fieldOpen = true)) // the field open, the keyboard down
+        // Foldables' inner screens, near-square with the keyboard down and far wider than tall above it.
+        for ((width, height) in listOf(829.dp to 666.dp, 841.dp to 617.dp)) {
+            assertEquals(BoardLayout.STACKED, boardLayout(width, height - 280.dp, keyboardHeight = 280.dp))
+            assertEquals(BoardLayout.TYPING, boardLayout(width, height - 280.dp, keyboardHeight = 280.dp, fieldOpen = true))
+        }
+        // Phones on their side keep their panel family above a keyboard that leaves them a strip: an A52s, 853 x 336dp,
+        // and a 16:9 phone, 640 x 312dp, each with 150 left above its keyboard; and a tablet, 1000 x 600dp.
+        assertEquals(BoardLayout.BETWEEN_PANELS_TYPING, boardLayout(853.dp, 150.dp, keyboardHeight = 186.dp, fieldOpen = true))
+        assertEquals(BoardLayout.BETWEEN_PANELS, boardLayout(853.dp, 150.dp, keyboardHeight = 186.dp)) // the field shut
+        assertEquals(BoardLayout.BETWEEN_PANELS, boardLayout(853.dp, 336.dp, fieldOpen = true)) // the keyboard down
+        assertEquals(BoardLayout.BESIDE_PANEL_TYPING, boardLayout(640.dp, 150.dp, keyboardHeight = 162.dp, fieldOpen = true))
+        assertEquals(BoardLayout.BESIDE_PANEL, boardLayout(640.dp, 150.dp, keyboardHeight = 162.dp))
+        assertEquals(BoardLayout.BESIDE_PANEL, boardLayout(640.dp, 312.dp, fieldOpen = true))
+        assertEquals(BoardLayout.BETWEEN_PANELS_TYPING, boardLayout(1000.dp, 300.dp, keyboardHeight = 300.dp, fieldOpen = true))
+        assertEquals(BoardLayout.TYPING, boardLayout(800.dp, 820.dp, keyboardHeight = 400.dp, fieldOpen = true)) // a tablet upright
+    }
+
+    /**
+     * Only a screen 1.3 times taller than wide, an upright phone, gives every board screen a full-width board
+     * with its rows scrolling; elsewhere only Learn asks for that.
+     */
+    @Test fun theUprightLayoutIsOnlyForAnUprightPhone() {
+        assertEquals(BoardLayout.STACKED, boardLayout(1000.dp, 1299.dp))
+        assertEquals(BoardLayout.UPRIGHT, boardLayout(1000.dp, 1300.dp))
+        assertEquals(BoardLayout.UPRIGHT, boardLayout(360.dp, 584.dp)) // a small 16:9 phone, less its system bars
+        assertEquals(BoardLayout.STACKED, boardLayout(673.dp, 785.dp)) // a foldable's inner screen held upright
     }
 }

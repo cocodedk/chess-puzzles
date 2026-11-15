@@ -35,7 +35,7 @@ internal fun OpeningHeader(
     val back = stringResource(R.string.opening_back)
     Row(verticalAlignment = Alignment.CenterVertically) {
         IconButton(onClick = onBack, modifier = Modifier.semantics { contentDescription = back }) {
-            Text("←", Modifier.clearAndSetSemantics {}) // "Back", not "left arrow"
+            Text(directional("←"), Modifier.clearAndSetSemantics {}) // "Back", not "left arrow"
         }
         Text(opening.name, Modifier.semantics { heading() }, style = MaterialTheme.typography.titleLarge)
     }

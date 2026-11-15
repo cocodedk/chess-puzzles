@@ -116,6 +116,8 @@
     <string name="sentence_typed_move_illegal">%1$s no es una jugada legal aquí.</string>
     <string name="sentence_selected">Seleccionado: %1$s %2$s. Jugadas: %3$s.</string>
     <string name="sentence_hint">Pista: %1$s %2$s a %3$s.</string>
+    <string name="sentence_piece_list_side">Piezas %1$s: %2$s</string>
+    <string name="sentence_piece_list_kind">%1$s %2$s.</string>
     <string name="sentence_wrong">Jugaste %1$s. No es la mejor jugada, inténtalo de nuevo.</string>
     <string name="sentence_correct">Correcto. Jugaste %1$s. Respuesta de las %2$s: %3$s.</string>
     <string name="sentence_reset">Puzle reiniciado. %1$s.</string>
@@ -151,6 +153,8 @@
     <string name="about_check_updates_note">Abre la página de la app, donde se publica la versión más reciente. La app nunca busca actualizaciones por sí sola.</string>
     <string name="about_section_what">Qué hace la app</string>
     <string name="about_what">Chess Puzzles te ayuda a practicar tácticas de ajedrez. Cada puzle procede de la base de datos de puzles de Lichess, te dice qué debes encontrar (por ejemplo, jaque mate en 2) y tiene un rating que indica lo difícil que es. También puedes aprender las aperturas más habituales jugada a jugada y luego jugarlas de memoria. Todo se guarda en tu teléfono, así que la app funciona sin internet.</string>
+    <string name="about_section_accessibility">Accesibilidad</string>
+    <string name="about_accessibility">Chess Puzzles funciona con TalkBack, el lector de pantalla de Android: lee dónde está cada pieza y dice cada jugada con palabras. En la pestaña Puzles puedes escribir una jugada, o dictarla con el dictado por voz del teclado, en lugar de tocar una casilla. Los botones, los menús y los mensajes siguen el tamaño de letra configurado en tu teléfono.</string>
     <string name="about_section_privacy">Privacidad</string>
     <string name="about_privacy_no_data">Chess Puzzles no recoge, envía ni comparte ningún dato personal.</string>
     <string name="about_privacy_no_permissions">Nunca te pide ningún permiso y no puede usar internet.</string>
@@ -173,6 +177,8 @@
     <string name="piece_rook">Torre</string>
     <string name="piece_bishop">Alfil</string>
     <string name="piece_knight">Caballo</string>
+    <string name="puzzle_level_button">Nivel: %1$s</string>
+    <string name="puzzle_level_button_description">Nivel, %1$s</string>
     <string name="puzzle_theme_button">Motivo: %1$s</string>
     <string name="puzzle_theme_button_description">Motivo, %1$s</string>
     <string name="puzzle_theme_all">Todos</string>

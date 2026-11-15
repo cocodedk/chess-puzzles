@@ -268,7 +268,7 @@ the asset loader — to reach **literal 100%** coverage.
 Create AVD `chess` from the android-35 image; boot headless
 (`emulator -avd chess -no-window -no-audio -no-boot-anim -no-snapshot -gpu swiftshader_indirect`,
 auto-detect KVM → `-accel on` else `-no-accel`); `adb wait-for-device` + poll `sys.boot_completed`
-(300 s deadline); `adb install -r app-debug.apk`; `am start -n dk.cocode.chess/.MainActivity`;
+(300 s deadline); `adb install -r app-debug.apk`; `am start -n dk.cocode.chess.debug/dk.cocode.chess.MainActivity`;
 `adb exec-out screencap -p > screen.png`.
 **Check:** read `screen.png` to visually confirm a populated chessboard renders. Then `adb emu kill`.
 

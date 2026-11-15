@@ -7,6 +7,7 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
@@ -36,7 +38,8 @@ import dk.cocode.chess.R
 
 /**
  * The About screen, in the cocode-apps standard's order: name, version and the button to the latest version,
- * what the app does, privacy, links, credits and licenses, made by Cocode. Each title is a screen-reader heading.
+ * what the app does, accessibility, privacy, links, credits and licenses, made by Cocode. Each title is a
+ * screen-reader heading.
  */
 @Composable
 fun AboutScreen(onBack: () -> Unit) {
@@ -64,6 +67,7 @@ fun AboutScreen(onBack: () -> Unit) {
             )
             NameAndVersion(version, open)
             AboutText(R.string.about_section_what, R.string.about_what)
+            Accessibility()
             Privacy(open)
             Links(open)
             Credits()
@@ -82,6 +86,20 @@ private fun NameAndVersion(version: String, open: (AboutLink) -> Unit) {
         Text(stringResource(R.string.about_check_updates))
     }
     Note(R.string.about_check_updates_note)
+}
+
+/** What the app does for weak sight, or none. The icon beside its title is decorative: the title names it. */
+@Composable
+private fun Accessibility() {
+    Row(
+        modifier = Modifier.padding(top = 12.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Icon(painterResource(R.drawable.ic_accessibility), contentDescription = null)
+        Title(R.string.about_section_accessibility, top = 0)
+    }
+    Body(R.string.about_accessibility)
 }
 
 @Composable
