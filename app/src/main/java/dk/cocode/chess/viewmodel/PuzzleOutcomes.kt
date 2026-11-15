@@ -18,6 +18,10 @@ internal fun PuzzleUiState.withHint(texts: Texts, hint: Hint, targets: Set<Squar
     )
 }
 
+/** The puzzle stays under a new list, a theme chosen: it is an event, so a verdict on typed text that is no move is outdated. */
+internal fun PuzzleUiState.relisted(theme: PuzzleTheme?, position: Int, bandSize: Int) =
+    copy(theme = theme, position = position, bandSize = bandSize, feedback = feedback.afterAnEvent())
+
 /** A pawn reached the last rank with no piece named, so the screen asks which one. */
 internal fun PuzzleUiState.askingPromotion(from: Square, to: Square) =
     copy(pendingPromotion = PendingPromotion(from, to), selected = null, legalTargets = emptySet())

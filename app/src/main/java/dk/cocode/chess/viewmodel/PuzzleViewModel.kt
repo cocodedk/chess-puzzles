@@ -133,7 +133,7 @@ class PuzzleViewModel(
     /** The puzzle on screen stays; only its place in the list changes. */
     private fun relist() = band().let { list ->
         resumed = true
-        _state.update { it.copy(theme = theme, position = list.indexOf(index) + 1, bandSize = list.size).withShownAnnouncement() }
+        _state.update { it.relisted(theme, list.indexOf(index) + 1, list.size).withShownAnnouncement() }
     }
 
     private fun loadPuzzleAt(target: Int) {
