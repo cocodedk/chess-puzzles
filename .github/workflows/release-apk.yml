@@ -81,6 +81,47 @@ jobs:
           [ -n "$src" ] || { echo "No release APK produced"; exit 1; }
           cp "$src" ChessPuzzles.apk
 
+      - name: Build signed release bundle (AAB)
+        env:
+          KEYSTORE_PATH: release.keystore
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: ./gradlew :app:bundleRelease --no-daemon
+
+      - name: Stage the bundle once it proves to carry the APK's signature
+        run: |
+          # Google Play takes a bundle, not an APK. It is kept as a workflow artifact below, never
+          # as a release asset: the release holds ChessPuzzles.apk alone, which Obtainium and
+          # F-Droid read. Everything here fails before the release exists, so a bad bundle leaves
+          # no tag behind and the run can simply be repeated.
+          src=$(find app/build/outputs/bundle/release -name '*.aab' | head -1)
+          [ -n "$src" ] || { echo "No release bundle produced"; exit 1; }
+          # jarsigner and keytool both exit 0 for an unsigned bundle and only say so, so read
+          # what they print instead of trusting the exit code.
+          verdict=$(jarsigner -verify "$src" 2>&1) || { echo "$verdict"; exit 1; }
+          grep -q '^jar verified\.' <<<"$verdict" || { echo "$verdict"; echo "Release bundle is unsigned — signing config did not apply"; exit 1; }
+          cert=$(keytool -printcert -jarfile "$src")
+          aab_sha=$(sed -n '/SHA256:/{s/.*SHA256: *//p;q}' <<<"$cert")
+          # The APK carries v2/v3 signatures only (minSdk 24), which jarsigner cannot read.
+          apksigner=$(ls "$ANDROID_HOME"/build-tools/*/apksigner 2>/dev/null | sort -V | tail -1)
+          [ -n "$apksigner" ] || { echo "apksigner not found under ANDROID_HOME"; exit 1; }
+          apk_certs=$("$apksigner" verify --print-certs ChessPuzzles.apk)
+          apk_sha=$(sed -n 's/^Signer #1 certificate SHA-256 digest: *//p' <<<"$apk_certs")
+          # keytool prints upper-case hex with colons, apksigner lower-case without.
+          aab_sha=$(tr -d ': ' <<<"$aab_sha" | tr 'A-F' 'a-f')
+          [ -n "$aab_sha" ] && [ "$aab_sha" = "$apk_sha" ] || {
+            echo "Bundle signer '$aab_sha' is not the APK's '$apk_sha'"; exit 1
+          }
+          cp "$src" ChessPuzzles.aab
+
+      - name: Keep the signed bundle for Google Play (a workflow artifact, not a release asset)
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: ChessPuzzles-aab
+          path: ChessPuzzles.aab
+          if-no-files-found: error
+
       - name: Create GitHub Release (creates the tag at this commit)
         uses: softprops/action-gh-release@8a0cd651e5b2365bd640854a3fa5dfc70e4875f3 # v3.0.4
         with:
