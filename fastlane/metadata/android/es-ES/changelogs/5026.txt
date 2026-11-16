@@ -1,0 +1,1 @@
+TalkBack ahora lee las piezas blancas y las piezas negras como dos elementos separados antes de las casillas, así que puedes deslizar directamente a las negras. En persa, TalkBack ahora lee cada fila de casillas de la a a la h, ya no de la h a la a. Después de escribir algo que no es una jugada, «No es una jugada legal aquí» ya no se queda en la línea cuando eliges un motivo.

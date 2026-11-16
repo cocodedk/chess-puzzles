@@ -1,0 +1,1 @@
+TalkBack now reads White's pieces and Black's pieces as two separate items before the squares, so you can swipe straight to Black. In Persian, TalkBack now reads each row of squares from a to h, no longer from h to a. After text that is no move, "Not a legal move here" no longer stays on the line when you choose a puzzle theme.

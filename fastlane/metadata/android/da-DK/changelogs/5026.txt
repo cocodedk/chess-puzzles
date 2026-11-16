@@ -1,0 +1,1 @@
+TalkBack læser nu Hvids brikker og Sorts brikker som to særskilte punkter før felterne, så du kan stryge direkte til Sort. På persisk læser TalkBack nu hver række af felter fra a til h og ikke længere fra h til a. Har du skrevet noget, der ikke er et træk, bliver "Ikke et lovligt træk her" ikke længere stående, når du vælger et motiv.
