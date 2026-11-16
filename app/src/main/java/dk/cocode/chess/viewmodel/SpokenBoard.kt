@@ -18,12 +18,12 @@ private val PIECE_LIST_ORDER =
 private val FILE_BY_FILE = (0..7).flatMap { file -> (0..7).map { rank -> Square(file, rank) } }
 
 /**
- * Every piece on the board in one line, so a screen reader can read the whole position at once:
- * "White: King e1. Rook a1, h1. … Black: King e8. …". White then Black; within a side the kinds of
- * piece in [PIECE_LIST_ORDER], each with its squares in [FILE_BY_FILE] order. A kind (or side) with no
- * piece is left out.
+ * Every piece on the board, one string per side so a screen reader can read White and Black as two items:
+ * "White: King e1. Rook a1, h1. …", then "Black: King e8. …". White first; within a side the kinds of
+ * piece in [PIECE_LIST_ORDER], each with its squares in [FILE_BY_FILE] order. A kind with no piece is left
+ * out, and so is a side with none.
  */
-fun Texts.pieceList(state: BoardState): String {
+fun Texts.pieceLists(state: BoardState): List<String> {
     val squaresOf = FILE_BY_FILE.groupBy { state.codeAt(it) }
     return PieceColor.entries.mapNotNull { color ->
         val clauses = PIECE_LIST_ORDER.mapNotNull { type ->
@@ -36,7 +36,7 @@ fun Texts.pieceList(state: BoardState): String {
             }
         }
         if (clauses.isEmpty()) null else string(R.string.sentence_piece_list_side, side(color), clauses.joinToString(" "))
-    }.joinToString(" ")
+    }
 }
 
 /** The piece on the occupied [square] in words with no colour, e.g. "knight". */

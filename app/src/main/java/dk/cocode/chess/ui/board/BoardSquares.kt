@@ -6,7 +6,6 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.Layout
-import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.LocalViewConfiguration
 import androidx.compose.ui.platform.ViewConfiguration
 import androidx.compose.ui.platform.testTag
@@ -15,7 +14,6 @@ import androidx.compose.ui.semantics.onClick
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.DpSize
-import androidx.compose.ui.unit.LayoutDirection
 import dk.cocode.chess.core.model.Square
 import dk.cocode.chess.ui.rememberTexts
 import dk.cocode.chess.viewmodel.BoardState
@@ -29,8 +27,8 @@ const val BOARD_SQUARES_TAG = "chessBoardSquares"
  * take no touches; a double-tap runs [onSquareTap], as a finger tap on the square does — unless the
  * state is not [BoardState.tappable], when the items are read but offer no click.
  *
- * They are laid out left to right in every language. A screen reader orders them by layout direction,
- * so in a right-to-left language (Persian) it would otherwise read each rank from h to a.
+ * They sit in [ChessBoard]'s left-to-right traversal group, so a screen reader reads each row left
+ * to right in every language, Persian included.
  */
 @Composable
 internal fun BoardSquares(state: BoardState, onSquareTap: (Square) -> Unit, modifier: Modifier = Modifier) {
@@ -42,7 +40,7 @@ internal fun BoardSquares(state: BoardState, onSquareTap: (Square) -> Unit, modi
     // outlines of neighbouring squares would overlap; with no minimum, an item is the square it names.
     val config = LocalViewConfiguration.current
     val exact = remember(config) { ExactBounds(config) }
-    CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr, LocalViewConfiguration provides exact) {
+    CompositionLocalProvider(LocalViewConfiguration provides exact) {
         Layout(
             content = {
                 order.forEach { square ->

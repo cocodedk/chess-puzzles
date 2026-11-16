@@ -52,7 +52,8 @@ class PersianRtlTest {
         // The title line is heard puzzle first, then rating ("Puzzle 0 of 0, Rating 0"), as a reader reads right to left.
         composeRule.onNodeWithText("معمای ۰ از ۰ · ریتینگ ۰").assertContentDescriptionEquals("معمای ۰ از ۰, ریتینگ ۰")
         val squares = composeRule.onNodeWithTag(BOARD_SQUARES_TAG)
-        assertEquals(LayoutDirection.Ltr, squares.fetchSemanticsNode().layoutInfo.layoutDirection) // a screen reader sorts by this
+        // Inherited from the board's left-to-right group; the reading order itself is checked in PieceListOrderTest.
+        assertEquals(LayoutDirection.Ltr, squares.fetchSemanticsNode().layoutInfo.layoutDirection)
         val a1 = squares.onChildren()[56] // reading order: a8 … h8, then down to a1 … h1
         a1.assertContentDescriptionEquals("a1, خالی") // "empty"
         val board = composeRule.onNodeWithTag(BOARD_TEST_TAG).getUnclippedBoundsInRoot()

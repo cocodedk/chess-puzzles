@@ -86,15 +86,26 @@ class ScreenReaderTest {
         assertSquares(names, flipped = true)
     }
 
-    @Test fun theDrawingReadsEveryPieceInOneItemBeforeTheSquares() {
+    @Test fun eachSidesPiecesAreReadInTheirOwnItem() {
         val tapped = mutableListOf<Square>()
         show(PuzzleUiState(board = listOf("    K   ", "P       ", "        ", "        ", "        ", "        ", "        ", "    k   ")), tapped::add)
-        val drawing = composeRule.onNodeWithTag(BOARD_TEST_TAG)
-        drawing.assertContentDescriptionEquals("White: King e1. Pawn a2. Black: King e8.")
-        val a8 = composeRule.onNodeWithTag(BOARD_SQUARES_TAG).onChildren()[0].getUnclippedBoundsInRoot()
-        assertTrue("read first: it starts above the first square", drawing.getUnclippedBoundsInRoot().top < a8.top)
-        drawing.performSemanticsAction(SemanticsActions.OnClick) // a double-tap on the list taps no square
+        listOf("White: King e1. Pawn a2.", "Black: King e8.").forEach { list ->
+            // a double-tap on a list taps no square
+            composeRule.onNodeWithContentDescription(list).performSemanticsAction(SemanticsActions.OnClick)
+        }
         assertEquals(emptyList<Square>(), tapped)
+    }
+
+    @Test fun aSideWithoutPiecesHasNoItem() {
+        show(PuzzleUiState(board = listOf("    K   ") + List(7) { "        " }))
+        composeRule.onNodeWithContentDescription("White: King e1.").assertExists()
+        composeRule.onAllNodesWithContentDescription("Black:", substring = true).assertCountEquals(0)
+    }
+
+    @Test fun anEmptyBoardHasNoPieceListAtAll() {
+        show(PuzzleUiState())
+        composeRule.onAllNodesWithContentDescription("White:", substring = true).assertCountEquals(0)
+        composeRule.onAllNodesWithContentDescription("Black:", substring = true).assertCountEquals(0)
     }
 
     @Test fun accessibilityClickOnASquareTapsIt() {
