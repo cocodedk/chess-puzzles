@@ -1,0 +1,1 @@
+En prik foran hver opgaves titel viser, hvordan dit seneste forsøg gik: et grønt flueben, hvis du løste den, et rødt kryds, hvis den gik galt, og en tom ring, hvis du ikke har løst den endnu. TalkBack siger "løst" eller "forkert" ved titlen, og når en opgave vises. Når du vælger et motiv, åbner det nu den første opgave, du ikke har løst, også efter du har genstartet appen.

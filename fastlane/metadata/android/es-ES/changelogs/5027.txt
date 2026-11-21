@@ -1,0 +1,1 @@
+Un punto delante del título de cada puzle muestra cómo te fue el último intento: una marca verde si lo resolviste, una cruz roja si fallaste y un círculo vacío si aún no lo has resuelto. TalkBack dice «resuelto» o «fallado» con el título y al abrirse un puzle. Al elegir un motivo, ahora se abre el primer puzle que no has resuelto, también después de reiniciar la aplicación.
