@@ -74,7 +74,7 @@ class PuzzleViewModelTest : EnglishTexts() {
         assertEquals(PuzzleStatus.SOLVED, viewModel.state.value.status)
         assertEquals(Feedback.SOLVED, viewModel.state.value.feedback)
         advanceUntilIdle()
-        assertEquals(Progress(1, 1, 1, 0, 1, 100, 1), progress.current()) // solved without the hint
+        assertEquals(Progress(1, 1, 1, 0, 1, 100, 1), progress.counters()) // solved without the hint
         assertEquals(1, viewModel.state.value.solvedCount)
     }
 
@@ -86,7 +86,7 @@ class PuzzleViewModelTest : EnglishTexts() {
         viewModel.onReset()
         viewModel.onSquareTapped(sq("b7")); viewModel.onSquareTapped(sq("g7"))
         advanceUntilIdle()
-        assertEquals(Progress(1, 1, 1, 0, 1, 100, 1), progress.current()) // solved twice, counted once
+        assertEquals(Progress(1, 1, 1, 0, 1, 100, 1), progress.counters()) // solved twice, counted once
     }
 
     @Test fun wrongMoveLetsYouRetryWithoutBreakingTheStreak() = runTest(dispatcher) {
@@ -106,7 +106,7 @@ class PuzzleViewModelTest : EnglishTexts() {
         viewModel.onSquareTapped(sq("b7")); viewModel.onSquareTapped(sq("g7")) // retry succeeds
         assertEquals(PuzzleStatus.SOLVED, viewModel.state.value.status)
         advanceUntilIdle()
-        assertEquals(Progress(1, 6, 6, 0, 1, 100, 1), progress.current()) // the solve extends the run
+        assertEquals(Progress(1, 6, 6, 0, 1, 100, 1), progress.counters()) // the solve extends the run
     }
 
     @Test fun mateInTwoAutoPlaysReply() = runTest(dispatcher) {

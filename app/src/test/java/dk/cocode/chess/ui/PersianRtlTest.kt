@@ -50,7 +50,7 @@ class PersianRtlTest {
         val hint = composeRule.onNodeWithText("راهنمایی").fetchSemanticsNode() // the Hint button, in Persian
         assertEquals(LayoutDirection.Rtl, hint.layoutInfo.layoutDirection)
         // The title line is heard puzzle first, then rating ("Puzzle 0 of 0, Rating 0"), as a reader reads right to left.
-        composeRule.onNodeWithText("معمای ۰ از ۰ · ریتینگ ۰").assertContentDescriptionEquals("معمای ۰ از ۰, ریتینگ ۰")
+        composeRule.onNodeWithText("معمای ۰ از ۰ · ریتینگ ۰").assertContentDescriptionEquals("معمای ۰ از ۰, هنوز حل نشده, ریتینگ ۰")
         val squares = composeRule.onNodeWithTag(BOARD_SQUARES_TAG)
         // Inherited from the board's left-to-right group; the reading order itself is checked in PieceListOrderTest.
         assertEquals(LayoutDirection.Ltr, squares.fetchSemanticsNode().layoutInfo.layoutDirection)

@@ -31,6 +31,10 @@ internal fun PuzzleUiState.withSelection(texts: Texts, square: Square, targets: 
 internal fun PuzzleUiState.withoutSelection(said: String) =
     copy(selected = null, legalTargets = emptySet(), hint = null, feedback = feedback.afterAnEvent(), announcement = said)
 
+/** A tap on [square]: selects it with its legal [targets], or, when it has none, says so and clears the selection. */
+internal fun PuzzleUiState.selecting(texts: Texts, square: Square, targets: Set<Square>) =
+    if (targets.isEmpty()) withoutSelection(texts.noMovesSentence(square)) else withSelection(texts, square, targets)
+
 /**
  * Typed text that names no move leaves nothing on the board for its verdict to stand beside, so the next thing the
  * player does, a hint or a tap, outdates it: the line must not say it to the eye while a screen reader says the event.

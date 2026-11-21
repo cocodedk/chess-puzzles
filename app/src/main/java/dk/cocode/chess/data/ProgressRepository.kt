@@ -5,7 +5,8 @@ import kotlinx.coroutines.flow.Flow
 /**
  * Persisted player progress across sessions. [index] is the puzzle to resume at; [dayStreak] is
  * the run of consecutive local calendar days ([lastSolvedDay], epoch-based) with a solve;
- * [hintFreeCount] is the subset of [solvedCount] solved without the hint ever being shown.
+ * [hintFreeCount] is the subset of [solvedCount] solved without the hint ever being shown; [solvedIds] and
+ * [wrongIds] hold each played puzzle's latest result, by puzzle id (see [withResult]).
  */
 data class Progress(
     val solvedCount: Int = 0,
@@ -15,6 +16,8 @@ data class Progress(
     val dayStreak: Int = 0,
     val lastSolvedDay: Long = 0,
     val hintFreeCount: Int = 0,
+    val solvedIds: Set<String> = emptySet(),
+    val wrongIds: Set<String> = emptySet(),
 )
 
 /** Pure update for one solve on [epochDay]: counters, best, the daily run, and the [hintFree] tally. */
@@ -32,6 +35,11 @@ fun Progress.solvedOn(epochDay: Long, hintFree: Boolean): Progress {
     )
 }
 
+/** Pure update for puzzle [id]'s latest result: a solve, or a wrong move, replaces whichever came before. */
+fun Progress.withResult(id: String, solved: Boolean): Progress =
+    if (solved) copy(solvedIds = solvedIds + id, wrongIds = wrongIds - id)
+    else copy(solvedIds = solvedIds - id, wrongIds = wrongIds + id)
+
 /** The day streak to display on [today]: a run not extended today or yesterday has lapsed. */
 fun Progress.dayStreakAsOf(today: Long): Int = if (today - lastSolvedDay > 1) 0 else dayStreak
 
@@ -41,6 +49,9 @@ interface ProgressRepository {
 
     /** Atomically applies [solvedOn] for a solve on the local [epochDay]. */
     suspend fun recordSolved(epochDay: Long, hintFree: Boolean)
+
+    /** Atomically applies [withResult]: every solve and every wrong move, not once a day. */
+    suspend fun recordResult(id: String, solved: Boolean)
 
     /** Atomically resets the current streak to 0. */
     suspend fun recordFailed()

@@ -99,7 +99,7 @@ as its visible text. `<Side>` is `White` or `Black`: whoever made that move.
 
 | Event | Announcement |
 |---|---|
-| A puzzle is shown (first launch, Next, Previous, a band chip, and after the app is restored) | `Puzzle 4 of 812, rating 1520. Black played pawn e5. White to move — checkmate in 2.` (the title, the rating, the opponent's first move, then the prompt text as shown) |
+| A puzzle is shown (first launch, Next, Previous, a band chip, and after the app is restored) | `Puzzle 4 of 812, rating 1520. Black played pawn e5. White to move — checkmate in 2.` (the title, the rating, the puzzle's latest result when it has one — `…, rating 1520, solved.` or `got wrong`; not solved yet goes unsaid — the opponent's first move, then the prompt text as shown) |
 | A piece is selected by a tap or the start of a drag | `Knight g1 selected. Moves: f3, h3.` (piece name with a capital, no colour; the legal target squares in the order a1, b1 … h8) |
 | A tap selects nothing (an empty square, an opponent's piece, a piece with no moves) | `No moves from e5.` |
 | The selected square is tapped again | `Selection cleared.` |
@@ -118,7 +118,8 @@ a selection, whose sentence differs, so a repeated move is still heard.
 
 ## The rest of the Puzzles screen
 
-- "Puzzle 4 of 812" is a heading, so TalkBack's heading navigation reaches it.
+- "Puzzle 4 of 812" is a heading, so TalkBack's heading navigation reaches it. It says the result its dot shows,
+  `Puzzle 4 of 812, solved, Rating 1520`; the dot itself is silent.
 - Each of the five stats is one item that says its label and number: `Day streak, 4`, `Solved, 1441`,
   `Solved without a hint, 1101`, `Current streak, 53`, `Best streak, 120` (labels as in
   `strings.xml`).
@@ -141,7 +142,7 @@ Robolectric and JVM tests, added to the suite:
 5. Performing the accessibility click on the item `e2, white pawn` calls the tap handler with e2.
 6. View-model tests for every row of the announcement table, with the exact sentences.
 7. The verdict line has a polite live region and exposes the current announcement.
-8. The title node is a heading; each stat is one node with label and number; the Previous and Next
+8. The title node is a heading that says the result; each stat is one node with label and number; the Previous and Next
    buttons expose no ◀ or ▶ text.
 
 No existing test's assertion changes. A test may change how it finds a node (for example

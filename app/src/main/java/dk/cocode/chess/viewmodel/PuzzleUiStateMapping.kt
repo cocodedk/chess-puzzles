@@ -18,24 +18,37 @@ internal fun PuzzleSession.toUiState(base: Progress, today: Long, position: Int,
         position = position,
         bandSize = bandSize,
         prompt = prompt(),
-    ).withProgress(base, today)
+    ).withProgress(base, today, puzzle.id)
 }
 
-/** Copies the persisted counters into the rendered state; the daily run lapses if [today] is late. */
-internal fun PuzzleUiState.withProgress(base: Progress, today: Long): PuzzleUiState = copy(
+/** Copies the persisted counters and puzzle [id]'s mark into the rendered state; the daily run lapses if [today] is late. */
+internal fun PuzzleUiState.withProgress(base: Progress, today: Long, id: String): PuzzleUiState = copy(
     solvedCount = base.solvedCount,
     hintFreeCount = base.hintFreeCount,
     currentStreak = base.currentStreak,
     bestStreak = base.bestStreak,
     dayStreak = base.dayStreakAsOf(today),
+    mark = base.markOf(id),
 )
+
+/** Puzzle [id]'s latest result, as its dot shows it. */
+internal fun Progress.markOf(id: String): PuzzleMark = when (id) {
+    in solvedIds -> PuzzleMark.SOLVED
+    in wrongIds -> PuzzleMark.WRONG
+    else -> PuzzleMark.UNSOLVED
+}
 
 /** Who moves and the goal, the mate's count going down as the solution progresses. */
 internal fun PuzzleSession.prompt(): Prompt =
     Prompt(playerColor, goalOf(endsInMate, puzzle), state.totalPlayerMoves - state.playerMovesDone)
 
-/** What is said when a puzzle is shown: its place, rating, the opponent's first move, then the prompt. */
-internal fun Texts.shownSentence(session: PuzzleSession, position: Int, bandSize: Int): String = string(
-    R.string.sentence_puzzle_shown, position, bandSize, session.puzzle.rating,
-    side(session.playerColor.opposite()), spokenMove(session.setupSan), promptText(session.prompt()),
+/**
+ * What is said when a puzzle is shown: its place, rating and, when it has one, its latest result ([shown]), the
+ * opponent's first move, then the prompt. Not solved yet goes unsaid: it is what nearly every new puzzle would say.
+ * Both sentences get the same arguments; the one without a result simply ignores the last.
+ */
+internal fun Texts.shownSentence(session: PuzzleSession, shown: PuzzleUiState): String = string(
+    if (shown.mark == PuzzleMark.UNSOLVED) R.string.sentence_puzzle_shown else R.string.sentence_puzzle_shown_result,
+    shown.position, shown.bandSize, session.puzzle.rating,
+    side(session.playerColor.opposite()), spokenMove(session.setupSan), promptText(session.prompt()), string(shown.mark.word),
 )

@@ -34,6 +34,33 @@ class DataStoreProgressRepositoryTest {
     }
 
     @Test
+    fun eachPuzzleKeepsItsLatestResult() = runTest {
+        val repository = DataStoreProgressRepository(newPreferencesStore("results"))
+        repository.recordResult("a", solved = false)
+        repository.recordResult("b", solved = true)
+        repository.recordResult("a", solved = true) // solved after all
+        repository.recordResult("b", solved = false) // a later mistake
+        with(repository.progress.first()) {
+            assertEquals(setOf("a"), solvedIds)
+            assertEquals(setOf("b"), wrongIds)
+        }
+    }
+
+    @Test
+    fun resultsAndCountersSurviveEachOthersWrites() = runTest {
+        val repository = DataStoreProgressRepository(newPreferencesStore("mixed"))
+        repository.recordResult("a", solved = false)
+        repository.recordSolved(10, hintFree = true) // rewrites the counters, never the result sets
+        repository.setIndex(4)
+        repository.recordFailed()
+        repository.recordResult("b", solved = true)
+        assertEquals(
+            Progress(1, 0, 1, 4, 1, 10, 1, solvedIds = setOf("b"), wrongIds = setOf("a")),
+            repository.progress.first(),
+        )
+    }
+
+    @Test
     fun corruptStoreReadsAsDefaultsInsteadOfCrashing() = runTest {
         val repository = DataStoreProgressRepository(corruptPreferencesStore("progress"))
         assertEquals(Progress(), repository.progress.first())

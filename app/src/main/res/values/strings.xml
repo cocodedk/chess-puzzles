@@ -18,6 +18,10 @@
     <!-- The puzzle screen. -->
     <string name="puzzle_title">Puzzle %1$d of %2$d</string>
     <string name="puzzle_rating">Rating %1$d</string>
+    <!-- A puzzle's latest result: said in its title's heading; solved and got wrong also in the sentence heard when it is shown. -->
+    <string name="mark_unsolved">not solved yet</string>
+    <string name="mark_solved">solved</string>
+    <string name="mark_wrong">got wrong</string>
     <string name="puzzle_hint">Hint</string>
     <string name="puzzle_reset">Restart</string>
     <string name="puzzle_previous">Previous puzzle</string>
@@ -145,6 +149,7 @@
     <string name="sentence_reset">Puzzle restarted. %1$s.</string>
     <string name="sentence_solved">Solved. You played %1$s.</string>
     <string name="sentence_puzzle_shown">Puzzle %1$d of %2$d, rating %3$d. %4$s played %5$s. %6$s.</string>
+    <string name="sentence_puzzle_shown_result">Puzzle %1$d of %2$d, rating %3$d, %7$s. %4$s played %5$s. %6$s.</string>
 
     <!-- A puzzle theme is chosen: its name, then how many puzzles the difficulty band now has. -->
     <plurals name="sentence_theme_chosen">

@@ -18,6 +18,9 @@
     <!-- The puzzle screen. -->
     <string name="puzzle_title">معمای %1$d از %2$d</string>
     <string name="puzzle_rating">ریتینگ %1$d</string>
+    <string name="mark_unsolved">هنوز حل نشده</string>
+    <string name="mark_solved">حل شده</string>
+    <string name="mark_wrong">اشتباه</string>
     <string name="puzzle_hint">راهنمایی</string>
     <string name="puzzle_reset">شروع مجدد</string>
     <string name="puzzle_previous">معمای قبلی</string>
@@ -141,6 +144,7 @@
     <string name="sentence_reset">معما از اول شروع شد. %1$s.</string>
     <string name="sentence_solved">حل شد. حرکت شما: %1$s.</string>
     <string name="sentence_puzzle_shown">معمای %1$d از %2$d، ریتینگ %3$d. حرکت %4$s: %5$s. %6$s.</string>
+    <string name="sentence_puzzle_shown_result">معمای %1$d از %2$d، ریتینگ %3$d، %7$s. حرکت %4$s: %5$s. %6$s.</string>
 
     <!-- A puzzle theme is chosen: its name, then how many puzzles the difficulty band now has. -->
     <plurals name="sentence_theme_chosen">

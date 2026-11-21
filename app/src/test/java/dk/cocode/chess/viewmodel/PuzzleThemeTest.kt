@@ -36,7 +36,7 @@ class PuzzleThemeTest : EnglishTexts() {
     /** The rating, the place and the size of the list: what the screen's title and rating say. */
     private fun PuzzleViewModel.shown() = state.value.let { Triple(it.rating, it.position, it.bandSize) }
 
-    private fun PuzzleViewModel.tap(vararg squares: String) = squares.forEach { onSquareTapped(Square.of(it)) }
+    private fun PuzzleViewModel.tap(vararg squares: String) = squares.forEach { onSquareTapped(Square.of(it)) }.also { dispatcher.scheduler.advanceUntilIdle() }
 
     @Test fun onlyTheThemesEveryBandHasAreOfferedAndAllIsTheStart() = runTest(dispatcher) {
         val viewModel = vm()

@@ -38,7 +38,6 @@ class PuzzleViewModel(
     private var base = Progress()
     private val lists = PuzzleLists(puzzles.all())
     private var theme: PuzzleTheme? = null // session only: every start shows All
-    private val solved = mutableSetOf<Int>() // puzzles solved since the app started, where a theme starts you
 
     val availableDifficulties: List<Difficulty> = lists.difficulties
     val availableThemes: List<PuzzleTheme> = lists.themes
@@ -50,11 +49,11 @@ class PuzzleViewModel(
         viewModelScope.launch {
             progress.progress.collect { saved ->
                 base = saved
+                _state.update { it.withProgress(saved, today(), session.puzzle.id) } // first: the shown sentence says the mark
                 if (!resumed) {
                     resumed = true
                     if (saved.index in 1 until puzzles.count()) loadPuzzleAt(saved.index) else _state.update { it.withShownAnnouncement() }
                 }
-                _state.update { it.withProgress(saved, today()) }
             }
         }
     }
@@ -115,16 +114,17 @@ class PuzzleViewModel(
     /** Jump to the first puzzle of the chosen band (within the theme, the first unsolved), unless that band is already showing. */
     fun onDifficultySelected(difficulty: Difficulty) {
         if (difficulty == difficultyOf(session.puzzle.rating)) return
-        lists.start(difficulty, theme, solved)?.let { jumpTo(it) }
+        lists.start(difficulty, theme, base.solvedIds)?.let { jumpTo(it) }
     }
 
     /**
      * Show only the puzzles carrying [choice], or all of them for null. A theme starts at its first puzzle not
-     * solved yet; All stays on the puzzle on screen. Browsing a theme never writes the saved place (see [jumpTo]).
+     * saved as solved (one got wrong last time counts as not solved); All stays on the puzzle on screen.
+     * Browsing a theme never writes the saved place (see [jumpTo]).
      */
     fun onThemeSelected(choice: PuzzleTheme?) {
         if (choice == theme || (choice != null && choice !in availableThemes)) return
-        val target = if (choice == null) index else lists.start(difficultyOf(session.puzzle.rating), choice, solved) ?: return
+        val target = if (choice == null) index else lists.start(difficultyOf(session.puzzle.rating), choice, base.solvedIds) ?: return
         theme = choice
         if (target == index) relist() else jumpTo(target)
         _state.update { it.copy(announcement = "${texts.themeChosenSentence(choice, it.bandSize)} ${it.announcement}") }
@@ -143,7 +143,7 @@ class PuzzleViewModel(
         _state.value = render().withShownAnnouncement()
     }
 
-    private fun PuzzleUiState.withShownAnnouncement() = copy(announcement = texts.shownSentence(session, position, bandSize))
+    private fun PuzzleUiState.withShownAnnouncement() = copy(announcement = texts.shownSentence(session, this))
 
     /** The full render recipe — the single place the clock is sampled for display. */
     private fun render() =
@@ -160,13 +160,11 @@ class PuzzleViewModel(
         if (theme == null) viewModelScope.launch { progress.setIndex(index) } // a theme never moves the saved place
     }
 
-    private fun select(square: Square) {
-        val targets = session.legalDestinations(square).toSet()
-        if (targets.isEmpty()) clearSelection(texts.noMovesSentence(square))
-        else _state.update { it.withSelection(texts, square, targets) }
-    }
+    private fun select(square: Square) = _state.update { it.selecting(texts, square, session.legalDestinations(square).toSet()) }
 
-    private fun clearSelection(said: String = texts.selectionCleared()) = _state.update { it.withoutSelection(said) }
+    private fun clearSelection() = _state.update { it.withoutSelection(texts.selectionCleared()) }
+
+    private fun saveResult(solve: Boolean) = session.puzzle.id.let { id -> viewModelScope.launch { progress.recordResult(id, solve) } }
 
     private fun submit(from: Square, to: Square, promotion: PieceType?) {
         when (val result = session.submitMove(MoveIntent(from, to, promotion))) {
@@ -180,6 +178,7 @@ class PuzzleViewModel(
 
     private fun onWrong(san: String) {
         attempt.failed = true // mistakes alone never break the streak — see jumpTo
+        saveResult(solve = false) // the dot before the title turns red
         session.retry() // un-lock so the player can try again (the move was never applied)
         _state.update { it.afterWrong(texts, san, session.prompt()) }
     }
@@ -193,7 +192,7 @@ class PuzzleViewModel(
         attempt.failed = false // solved after all — the earlier mistakes are forgiven
         val day = today() // sampled at the solve, not when the write coroutine runs
         val hintFree = !attempt.hintUsed // read now: loading a puzzle swaps `attempt` before the write runs
-        solved += index
+        saveResult(solve = true) // every solve, unlike the once-a-day count below: the latest result wins
         if (accounting.countSolve(day, index)) viewModelScope.launch { progress.recordSolved(day, hintFree) }
         _state.update { it.afterSolved(texts, session, result) }
     }
