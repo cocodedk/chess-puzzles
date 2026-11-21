@@ -42,8 +42,13 @@ internal fun Progress.markOf(id: String): PuzzleMark = when (id) {
 internal fun PuzzleSession.prompt(): Prompt =
     Prompt(playerColor, goalOf(endsInMate, puzzle), state.totalPlayerMoves - state.playerMovesDone)
 
-/** What is said when a puzzle is shown: its place, rating and mark ([shown]), the opponent's first move, then the prompt. */
+/**
+ * What is said when a puzzle is shown: its place, rating and, when it has one, its latest result ([shown]), the
+ * opponent's first move, then the prompt. Not solved yet goes unsaid: it is what nearly every new puzzle would say.
+ * Both sentences get the same arguments; the one without a result simply ignores the last.
+ */
 internal fun Texts.shownSentence(session: PuzzleSession, shown: PuzzleUiState): String = string(
-    R.string.sentence_puzzle_shown, shown.position, shown.bandSize, session.puzzle.rating,
+    if (shown.mark == PuzzleMark.UNSOLVED) R.string.sentence_puzzle_shown else R.string.sentence_puzzle_shown_result,
+    shown.position, shown.bandSize, session.puzzle.rating,
     side(session.playerColor.opposite()), spokenMove(session.setupSan), promptText(session.prompt()), string(shown.mark.word),
 )

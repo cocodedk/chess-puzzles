@@ -143,7 +143,8 @@
     <string name="sentence_correct">درست است. حرکت شما: %1$s. حرکت %2$s: %3$s.</string>
     <string name="sentence_reset">معما از اول شروع شد. %1$s.</string>
     <string name="sentence_solved">حل شد. حرکت شما: %1$s.</string>
-    <string name="sentence_puzzle_shown">معمای %1$d از %2$d، ریتینگ %3$d، %7$s. حرکت %4$s: %5$s. %6$s.</string>
+    <string name="sentence_puzzle_shown">معمای %1$d از %2$d، ریتینگ %3$d. حرکت %4$s: %5$s. %6$s.</string>
+    <string name="sentence_puzzle_shown_result">معمای %1$d از %2$d، ریتینگ %3$d، %7$s. حرکت %4$s: %5$s. %6$s.</string>
 
     <!-- A puzzle theme is chosen: its name, then how many puzzles the difficulty band now has. -->
     <plurals name="sentence_theme_chosen">

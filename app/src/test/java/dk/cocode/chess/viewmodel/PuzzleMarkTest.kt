@@ -31,10 +31,17 @@ class PuzzleMarkTest : EnglishTexts() {
 
     private fun PuzzleViewModel.tap(vararg squares: String) = squares.forEach { onSquareTapped(Square.of(it)) }
 
-    @Test fun aPuzzleNeverPlayedIsNotSolvedYet() = runTest(dispatcher) {
+    @Test fun aPuzzleNeverPlayedIsNotSolvedYetAndItsShownSentenceSaysNoResult() = runTest(dispatcher) {
         val viewModel = vm(FakeProgressRepository())
         advanceUntilIdle()
         assertEquals(PuzzleMark.UNSOLVED, viewModel.state.value.mark)
+        assertEquals("Puzzle 1 of 3, rating 800.", viewModel.state.value.announcement.substringBefore(" Black"))
+    }
+
+    @Test fun aPuzzleGotWrongSaysSoWhenShown() = runTest(dispatcher) {
+        val viewModel = vm(FakeProgressRepository(Progress(wrongIds = setOf("M1"))))
+        advanceUntilIdle()
+        assertEquals("Puzzle 1 of 3, rating 800, got wrong.", viewModel.state.value.announcement.substringBefore(" Black"))
     }
 
     @Test fun theDotFollowsTheLatestResultEvenTwiceTheSameDay() = runTest(dispatcher) {

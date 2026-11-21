@@ -29,11 +29,11 @@ internal fun ResultDot(mark: PuzzleMark) {
     val dot = Modifier.size(with(LocalDensity.current) { MaterialTheme.typography.titleMedium.fontSize.toDp() })
     when (mark) {
         PuzzleMark.UNSOLVED -> Box(dot.border(2.dp, colors.outline, CircleShape))
-        PuzzleMark.SOLVED -> MarkedDot(dot, R.drawable.ic_stat_solved, colors.tertiary, colors.onTertiary)
-        PuzzleMark.WRONG -> MarkedDot(dot, R.drawable.ic_mark_wrong, colors.error, colors.onError)
+        PuzzleMark.SOLVED -> MarkedDot(R.drawable.ic_stat_solved, colors.tertiary, colors.onTertiary, dot)
+        PuzzleMark.WRONG -> MarkedDot(R.drawable.ic_mark_wrong, colors.error, colors.onError, dot)
     }
 }
 
 @Composable
-private fun MarkedDot(dot: Modifier, @DrawableRes icon: Int, fill: Color, ink: Color) =
-    Icon(painterResource(icon), null, dot.background(fill, CircleShape).padding(2.dp), ink)
+private fun MarkedDot(@DrawableRes icon: Int, fill: Color, ink: Color, modifier: Modifier = Modifier) =
+    Icon(painterResource(icon), null, modifier.background(fill, CircleShape).padding(2.dp), ink)

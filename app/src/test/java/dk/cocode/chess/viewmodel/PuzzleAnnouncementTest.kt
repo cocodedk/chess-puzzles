@@ -34,7 +34,7 @@ class PuzzleAnnouncementTest : EnglishTexts() {
 
     private fun PuzzleViewModel.tap(vararg squares: String) = squares.forEach { onSquareTapped(Square.of(it)) }
 
-    private val mateInOne = "Puzzle 1 of 3, rating 800, not solved yet. Black played king h8. White to move — checkmate in 1."
+    private val mateInOne = "Puzzle 1 of 3, rating 800. Black played king h8. White to move — checkmate in 1."
 
     @Test fun nothingIsSaidBeforeProgressIsRead() = runTest(dispatcher) {
         assertEquals("", vm().said())
@@ -49,19 +49,19 @@ class PuzzleAnnouncementTest : EnglishTexts() {
     @Test fun restoredPuzzleIsAnnounced() = runTest(dispatcher) {
         val viewModel = vm(Progress(index = 3)) // BK
         advanceUntilIdle()
-        assertEquals("Puzzle 3 of 3, rating 900, not solved yet. White played king h1. Black to move — checkmate in 1.", viewModel.said())
+        assertEquals("Puzzle 3 of 3, rating 900. White played king h1. Black to move — checkmate in 1.", viewModel.said())
     }
 
     @Test fun nextPreviousAndBandChipAnnounceThePuzzle() = runTest(dispatcher) {
         val viewModel = vm()
         advanceUntilIdle()
         viewModel.onNext()
-        assertEquals("Puzzle 2 of 3, rating 1000, not solved yet. Black played pawn a6. White to move — find the best move.", viewModel.said())
+        assertEquals("Puzzle 2 of 3, rating 1000. Black played pawn a6. White to move — find the best move.", viewModel.said())
         viewModel.onPrevious()
         assertEquals(mateInOne, viewModel.said())
         viewModel.onDifficultySelected(Difficulty.MEDIUM)
         assertEquals(
-            "Puzzle 1 of 1, rating 1500, not solved yet. Black played king d7. White to move — checkmate in 2.",
+            "Puzzle 1 of 1, rating 1500. Black played king d7. White to move — checkmate in 2.",
             viewModel.said(),
         )
     }

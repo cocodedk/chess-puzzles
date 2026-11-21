@@ -53,7 +53,7 @@ class PuzzleThemeTest : EnglishTexts() {
         assertEquals(PuzzleTheme.FORK, viewModel.state.value.theme)
         assertEquals(Triple(800, 1, 3), viewModel.shown()) // fork is 3 of the 4 easy puzzles
         assertEquals(
-            "Theme: Fork. 3 puzzles. Puzzle 1 of 3, rating 800, not solved yet. Black played king h8. White to move — checkmate in 1.",
+            "Theme: Fork. 3 puzzles. Puzzle 1 of 3, rating 800. Black played king h8. White to move — checkmate in 1.",
             viewModel.state.value.announcement,
         )
     }
@@ -66,14 +66,14 @@ class PuzzleThemeTest : EnglishTexts() {
         assertNull(viewModel.state.value.theme)
         assertEquals(Triple(800, 1, 4), viewModel.shown())
         assertEquals(
-            "Theme: All. 4 puzzles. Puzzle 1 of 4, rating 800, not solved yet. Black played king h8. White to move — checkmate in 1.",
+            "Theme: All. 4 puzzles. Puzzle 1 of 4, rating 800. Black played king h8. White to move — checkmate in 1.",
             viewModel.state.value.announcement,
         )
         viewModel.onDifficultySelected(Difficulty.HARD)
         viewModel.onThemeSelected(PuzzleTheme.FORK)
         assertEquals(Triple(2100, 1, 1), viewModel.shown())
         assertEquals(
-            "Theme: Fork. 1 puzzle. Puzzle 1 of 1, rating 2100, not solved yet. Black played king d7. White to move — checkmate in 2.",
+            "Theme: Fork. 1 puzzle. Puzzle 1 of 1, rating 2100. Black played king d7. White to move — checkmate in 2.",
             viewModel.state.value.announcement,
         )
     }

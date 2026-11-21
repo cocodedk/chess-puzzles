@@ -99,7 +99,7 @@ as its visible text. `<Side>` is `White` or `Black`: whoever made that move.
 
 | Event | Announcement |
 |---|---|
-| A puzzle is shown (first launch, Next, Previous, a band chip, and after the app is restored) | `Puzzle 4 of 812, rating 1520, not solved yet. Black played pawn e5. White to move — checkmate in 2.` (the title, the rating, the puzzle's latest result — `solved`, `got wrong` or `not solved yet`, as its dot shows — the opponent's first move, then the prompt text as shown) |
+| A puzzle is shown (first launch, Next, Previous, a band chip, and after the app is restored) | `Puzzle 4 of 812, rating 1520. Black played pawn e5. White to move — checkmate in 2.` (the title, the rating, the puzzle's latest result when it has one — `…, rating 1520, solved.` or `got wrong`; not solved yet goes unsaid — the opponent's first move, then the prompt text as shown) |
 | A piece is selected by a tap or the start of a drag | `Knight g1 selected. Moves: f3, h3.` (piece name with a capital, no colour; the legal target squares in the order a1, b1 … h8) |
 | A tap selects nothing (an empty square, an opponent's piece, a piece with no moves) | `No moves from e5.` |
 | The selected square is tapped again | `Selection cleared.` |
