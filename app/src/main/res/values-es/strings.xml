@@ -18,6 +18,9 @@
     <!-- The puzzle screen. -->
     <string name="puzzle_title">Puzle %1$d de %2$d</string>
     <string name="puzzle_rating">Rating %1$d</string>
+    <string name="mark_unsolved">aún sin resolver</string>
+    <string name="mark_solved">resuelto</string>
+    <string name="mark_wrong">fallado</string>
     <string name="puzzle_hint">Pista</string>
     <string name="puzzle_reset">Reiniciar</string>
     <string name="puzzle_previous">Puzle anterior</string>
@@ -122,7 +125,7 @@
     <string name="sentence_correct">Correcto. Jugaste %1$s. Respuesta de las %2$s: %3$s.</string>
     <string name="sentence_reset">Puzle reiniciado. %1$s.</string>
     <string name="sentence_solved">Resuelto. Jugaste %1$s.</string>
-    <string name="sentence_puzzle_shown">Puzle %1$d de %2$d, rating %3$d. Jugada de las %4$s: %5$s. %6$s.</string>
+    <string name="sentence_puzzle_shown">Puzle %1$d de %2$d, rating %3$d, %7$s. Jugada de las %4$s: %5$s. %6$s.</string>
 
     <!-- Sentences a screen reader says on the openings screens. -->
     <string name="sentence_start_position">Posición inicial.</string>

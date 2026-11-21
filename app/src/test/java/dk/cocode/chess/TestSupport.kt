@@ -18,6 +18,7 @@ import dk.cocode.chess.data.OpeningProgressRepository
 import dk.cocode.chess.data.Progress
 import dk.cocode.chess.data.ProgressRepository
 import dk.cocode.chess.data.solvedOn
+import dk.cocode.chess.data.withResult
 import dk.cocode.chess.viewmodel.ResourceTexts
 import dk.cocode.chess.viewmodel.Texts
 import kotlinx.coroutines.flow.Flow
@@ -95,8 +96,13 @@ class FakeProgressRepository(initial: Progress = Progress()) : ProgressRepositor
 
     fun current(): Progress = state.value
 
+    /** The counters alone, without each puzzle's latest result (that is PuzzleMarkTest's). */
+    fun counters(): Progress = state.value.copy(solvedIds = emptySet(), wrongIds = emptySet())
+
     override suspend fun recordSolved(epochDay: Long, hintFree: Boolean) =
         state.update { it.solvedOn(epochDay, hintFree) }
+
+    override suspend fun recordResult(id: String, solved: Boolean) = state.update { it.withResult(id, solved) }
 
     override suspend fun recordFailed() = state.update { it.copy(currentStreak = 0) }
 

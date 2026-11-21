@@ -6,7 +6,7 @@ import dk.cocode.chess.core.model.Puzzle
  * Which puzzles each difficulty band holds, and which of them carry each [PuzzleTheme]: lists of puzzle
  * indices (positions in [puzzles]), in bundle order. Built once; the theme filter never touches the puzzles.
  */
-internal class PuzzleLists(puzzles: List<Puzzle>) {
+internal class PuzzleLists(private val puzzles: List<Puzzle>) {
     private val bands: Map<Difficulty, List<Int>> = puzzles.indices.groupBy { difficultyOf(puzzles[it].rating) }
     private val themed: Map<Difficulty, Map<PuzzleTheme, List<Int>>> = bands.mapValues { (_, indices) ->
         PuzzleTheme.entries.associateWith { theme -> indices.filter { puzzles[it].hasTheme(theme.tag) } }
@@ -25,11 +25,11 @@ internal class PuzzleLists(puzzles: List<Puzzle>) {
         (if (theme == null) bands[band] else themed[band]?.get(theme)).orEmpty()
 
     /**
-     * Where a visit to [band] starts: its first puzzle; with a [theme], the first one not in [solved]
+     * Where a visit to [band] starts: its first puzzle; with a [theme], the first one whose id is not in [solvedIds]
      * (or the first, when all are). Null when the list is empty.
      */
-    fun start(band: Difficulty, theme: PuzzleTheme?, solved: Set<Int>): Int? {
+    fun start(band: Difficulty, theme: PuzzleTheme?, solvedIds: Set<String>): Int? {
         val list = of(band, theme)
-        return (if (theme == null) null else list.firstOrNull { it !in solved }) ?: list.firstOrNull()
+        return (if (theme == null) null else list.firstOrNull { puzzles[it].id !in solvedIds }) ?: list.firstOrNull()
     }
 }

@@ -2,7 +2,7 @@
 
 **App:** Chess Puzzles (`dk.cocode.chess`)
 **Developer:** CoCode.dk — Babak Bandpey
-**Last updated:** 7 October 2026
+**Last updated:** 21 November 2026
 
 > The canonical, always-current version of this policy (English and Persian) is published at
 > **https://chess.cocode.dk/privacy/**, and in Danish at **https://chess.cocode.dk/da/privacy/**
@@ -16,7 +16,7 @@ sign-up, and the app itself has no internet access.
 So you can pick up where you left off, the app saves a small amount of data on your device: the
 number of puzzles you have solved, how many of those you solved without a hint, your current and best
 streak of puzzles in a row, your day streak (how many days in a row you have solved a puzzle) and the
-date you last solved one, which puzzle you are on, how many times you have played each opening from
+date you last solved one, which puzzle you are on, whether your latest try at each puzzle you have played was solved or went wrong, how many times you have played each opening from
 memory without a mistake, and your theme choice (Match phone, Light or Dark). This is kept in a private
 data store on your own phone. The app never sends it to us or to any third party. Deleting the app or clearing its data removes
 the copy on your phone; a device backup (see below) may keep a separate copy.

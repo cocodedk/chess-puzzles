@@ -85,7 +85,7 @@ Two Gradle modules so the chess/puzzle logic is pure-JVM and fully unit-testable
   ECO/clean count, Learn|Practise chips) and either `OpeningLearnPanel` (idea, branch chips, ◀▶
   stepping, the numbered move list) or `OpeningPractisePanel` (the drill prompt, verdict, Again).
 - `data/` — `PuzzleAssetDataSource` (reads `assets/puzzles.csv`), `ProgressRepository` +
-  `DataStoreProgressRepository` (Preferences DataStore: solved count, hint-free solves, streaks),
+  `DataStoreProgressRepository` (Preferences DataStore: solved count, hint-free solves, streaks, and each played puzzle's latest result as two puzzle-id sets, shown as the dot before its title),
   `OpeningProgressRepository` + `DataStoreOpeningProgressRepository` (clean-run counts, one
   `opening_clean_<id>` key per opening, in the same DataStore).
 - `ChessApp` (composition root, lazy repos incl. `openingProgress`), `MainActivity` (`AppTab` in

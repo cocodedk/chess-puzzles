@@ -1,7 +1,9 @@
 package dk.cocode.chess.ui
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -12,6 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
@@ -22,6 +25,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.unit.dp
 import dk.cocode.chess.R
 import dk.cocode.chess.viewmodel.Difficulty
 import dk.cocode.chess.viewmodel.PuzzleTheme
@@ -30,7 +34,7 @@ import dk.cocode.chess.viewmodel.difficultyOf
 import dk.cocode.chess.viewmodel.themeName
 
 /**
- * The puzzle's number and rating on one line, the stats, then the Level menu and, when there are [themes]
+ * The puzzle's result dot, number and rating on one line, the stats, then the Level menu and, when there are [themes]
  * to pick, the Theme menu after it; [stacked] lines the two menus up in a column.
  */
 @Composable
@@ -44,18 +48,23 @@ internal fun PuzzleStats(
 ) {
     val title = stringResource(R.string.puzzle_title, state.position, state.bandSize)
     val rating = stringResource(R.string.puzzle_rating, state.rating)
-    // One line, wrapping as a whole: the title, then the rating smaller and fainter. Heard as one heading.
-    Text(
-        buildAnnotatedString {
-            append(title)
-            withStyle(
-                MaterialTheme.typography.bodyMedium.toSpanStyle().copy(color = MaterialTheme.colorScheme.onSurfaceVariant),
-            ) { append(" · $rating") }
-        },
-        TextInset.semantics { heading(); contentDescription = "$title, $rating" },
-        textAlign = TextAlign.Center,
-        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
-    )
+    val result = stringResource(state.mark.word)
+    // The silent dot, then one line wrapping as a whole: the title, then the rating smaller and fainter. Heard as one
+    // heading that says the result too.
+    Row(TextInset, Arrangement.spacedBy(8.dp), Alignment.CenterVertically) {
+        ResultDot(state.mark)
+        Text(
+            buildAnnotatedString {
+                append(title)
+                withStyle(
+                    MaterialTheme.typography.bodyMedium.toSpanStyle().copy(color = MaterialTheme.colorScheme.onSurfaceVariant),
+                ) { append(" · $rating") }
+            },
+            Modifier.weight(1f, fill = false).semantics { heading(); contentDescription = "$title, $result, $rating" },
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
+        )
+    }
     StatsRow(
         dayStreak = state.dayStreak, solved = state.solvedCount, hintFree = state.hintFreeCount,
         streak = state.currentStreak, best = state.bestStreak,

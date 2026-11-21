@@ -7,7 +7,7 @@ import androidx.compose.ui.graphics.Color
 /**
  * "Walnut Study" palette, derived from the walnut board. All on-X pairings are WCAG AA
  * (>= 5.85:1), script-verified. Day: warm cream, no pure white (glare). Night: dim wooden
- * chess-club browns, never pure black.
+ * chess-club browns, never pure black. Tertiary is the green of a solved puzzle's dot (error, its red).
  */
 internal val LightColors = lightColorScheme(
     primary = Color(0xFF7A4A21),
@@ -16,6 +16,8 @@ internal val LightColors = lightColorScheme(
     onPrimaryContainer = Color(0xFF3E2408),
     secondary = Color(0xFF6C5B3F),
     onSecondary = Color(0xFFFFF6EC),
+    tertiary = Color(0xFF33691E),
+    onTertiary = Color(0xFFFFF6EC),
     background = Color(0xFFFAF1E6),
     onBackground = Color(0xFF211A12),
     surface = Color(0xFFFAF1E6),
@@ -34,6 +36,8 @@ internal val DarkColors = darkColorScheme(
     onPrimaryContainer = Color(0xFFFFDCC0),
     secondary = Color(0xFFD4BD9B),
     onSecondary = Color(0xFF382C16),
+    tertiary = Color(0xFFA5D6A7),
+    onTertiary = Color(0xFF0F3313),
     background = Color(0xFF181310),
     onBackground = Color(0xFFEDE0D0),
     surface = Color(0xFF201914),

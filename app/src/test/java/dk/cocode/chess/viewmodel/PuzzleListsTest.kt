@@ -43,13 +43,13 @@ class PuzzleListsTest {
     }
 
     @Test fun aBandStartsAtItsFirstPuzzleWhatEverWasSolved() {
-        assertEquals(0, lists.start(Difficulty.EASY, null, setOf(0, 1)))
+        assertEquals(0, lists.start(Difficulty.EASY, null, setOf("e0", "e1")))
     }
 
     @Test fun aThemeStartsAtItsFirstPuzzleNotSolvedYetOrTheFirstWhenAllAre() {
         assertEquals(0, lists.start(Difficulty.EASY, PuzzleTheme.FORK, emptySet()))
-        assertEquals(1, lists.start(Difficulty.EASY, PuzzleTheme.FORK, setOf(0, 2)))
-        assertEquals(0, lists.start(Difficulty.EASY, PuzzleTheme.FORK, setOf(0, 1)))
+        assertEquals(1, lists.start(Difficulty.EASY, PuzzleTheme.FORK, setOf("e0", "e2")))
+        assertEquals(0, lists.start(Difficulty.EASY, PuzzleTheme.FORK, setOf("e0", "e1")))
         assertNull(lists.start(Difficulty.HARD, PuzzleTheme.PIN, emptySet()))
     }
 }

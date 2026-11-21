@@ -8,6 +8,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
+import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -25,10 +26,13 @@ private val INDEX = intPreferencesKey("index")
 private val DAY_STREAK = intPreferencesKey("dayStreak")
 private val LAST_SOLVED_DAY = longPreferencesKey("lastSolvedDay")
 private val HINT_FREE = intPreferencesKey("hintFree")
+private val SOLVED_IDS = stringSetPreferencesKey("solvedIds")
+private val WRONG_IDS = stringSetPreferencesKey("wrongIds")
 
 private fun Preferences.toProgress() = Progress(
     this[SOLVED] ?: 0, this[STREAK] ?: 0, this[BEST] ?: 0, this[INDEX] ?: 0,
     this[DAY_STREAK] ?: 0, this[LAST_SOLVED_DAY] ?: 0L, this[HINT_FREE] ?: 0,
+    this[SOLVED_IDS].orEmpty(), this[WRONG_IDS].orEmpty(),
 )
 
 private fun MutablePreferences.write(progress: Progress) {
@@ -54,6 +58,14 @@ class DataStoreProgressRepository(
 
     override suspend fun recordSolved(epochDay: Long, hintFree: Boolean) {
         dataStore.edit { prefs -> prefs.write(prefs.toProgress().solvedOn(epochDay, hintFree)) }
+    }
+
+    override suspend fun recordResult(id: String, solved: Boolean) {
+        dataStore.edit { prefs ->
+            val next = prefs.toProgress().withResult(id, solved) // only the two sets are written
+            prefs[SOLVED_IDS] = next.solvedIds
+            prefs[WRONG_IDS] = next.wrongIds
+        }
     }
 
     override suspend fun recordFailed() {

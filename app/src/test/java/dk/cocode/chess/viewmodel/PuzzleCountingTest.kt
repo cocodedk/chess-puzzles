@@ -44,7 +44,7 @@ class PuzzleCountingTest : EnglishTexts() {
         viewModel.onSquareTapped(Square.of("b2")); viewModel.onSquareTapped(Square.of("a2")) // fail BK again
         viewModel.onNext() // skipping it again today cannot break the streak twice
         advanceUntilIdle()
-        assertEquals(Progress(1, 1, 5, 0, 1, 100, 1), progress.current())
+        assertEquals(Progress(1, 1, 5, 0, 1, 100, 1), progress.counters())
     }
 
     @Test fun replayOfASolvedPuzzleCannotBreakTheStreak() = runTest(dispatcher) {
@@ -56,7 +56,7 @@ class PuzzleCountingTest : EnglishTexts() {
         viewModel.onNext() // even skipping the failed replay is free — it was already solved today
         viewModel.onNext() // and the pending fail flag must not leak onto the untouched next puzzle
         advanceUntilIdle()
-        assertEquals(Progress(1, 1, 1, 3, 1, 100, 1), progress.current())
+        assertEquals(Progress(1, 1, 1, 3, 1, 100, 1), progress.counters())
     }
 
     @Test fun aRevealedHintDisqualifiesTheSolveEvenAfterAReset() = runTest(dispatcher) {
@@ -66,7 +66,7 @@ class PuzzleCountingTest : EnglishTexts() {
         viewModel.onReset() // starting the puzzle over does not un-see it
         viewModel.onSquareTapped(Square.of("b7")); viewModel.onSquareTapped(Square.of("g7")) // solve M1
         advanceUntilIdle()
-        assertEquals(Progress(1, 1, 1, 0, 1, 100, 0), progress.current()) // counted, but not as hint-free
+        assertEquals(Progress(1, 1, 1, 0, 1, 100, 0), progress.counters()) // counted, but not as hint-free
     }
 
     @Test fun theNextPuzzleStartsHintFreeAgain() = runTest(dispatcher) {
@@ -77,7 +77,7 @@ class PuzzleCountingTest : EnglishTexts() {
         viewModel.onSquareTapped(Square.of("e7")); viewModel.onSquareTapped(Square.of("e8"))
         viewModel.onPromotionChosen(PieceType.QUEEN) // solve PR without a hint
         advanceUntilIdle()
-        assertEquals(Progress(1, 1, 1, 2, 1, 100, 1), progress.current())
+        assertEquals(Progress(1, 1, 1, 2, 1, 100, 1), progress.counters())
     }
 
     @Test fun dayStreakGrowsPerDayAndLapsesWhenDisplayedStale() = runTest(dispatcher) {
@@ -108,6 +108,6 @@ class PuzzleCountingTest : EnglishTexts() {
         viewModel.onReset()
         viewModel.onSquareTapped(Square.of("b7")); viewModel.onSquareTapped(Square.of("g7")) // replay M1
         advanceUntilIdle()
-        assertEquals(Progress(2, 2, 2, 0, 2, 101, 2), progress.current()) // the replay extends the day streak
+        assertEquals(Progress(2, 2, 2, 0, 2, 101, 2), progress.counters()) // the replay extends the day streak
     }
 }

@@ -38,7 +38,7 @@ _From left to right: light mode, night mode, a solved puzzle, and opening practi
   advantage". Find each move of the solution; the opponent replies automatically after each one.
 - **Three difficulty bands.** Easy, Medium or Hard, with hints when you want a nudge.
 - **Opening practice.** Twenty openings, learned move by move and then practised from memory.
-- **Saved progress.** Your solved count, puzzles solved without a hint, streaks and day streak are saved on your device.
+- **Saved progress.** Your solved count, puzzles solved without a hint, streaks and day streak are saved on your device, and a dot before each puzzle's title shows how your last try went: solved (a green tick), wrong (a red cross) or not solved yet (an empty ring).
 - **Light and dark themes.** Matches your phone's setting, or switch to Light or Dark with the theme button.
 - **Tap or drag.** Move pieces by tapping their starting and destination squares, or by dragging them.
 - **Fully offline and free.** No account, no ads, no tracking. Apache-2.0.

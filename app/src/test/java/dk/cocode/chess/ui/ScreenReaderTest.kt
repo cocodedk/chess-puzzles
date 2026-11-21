@@ -1,6 +1,9 @@
 package dk.cocode.chess.ui
 
 import androidx.activity.ComponentActivity
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.semantics.SemanticsProperties
@@ -26,6 +29,7 @@ import dk.cocode.chess.ui.board.BOARD_TEST_TAG
 import dk.cocode.chess.ui.board.BoardGeometry
 import dk.cocode.chess.ui.theme.ChessTheme
 import dk.cocode.chess.viewmodel.Feedback
+import dk.cocode.chess.viewmodel.PuzzleMark
 import dk.cocode.chess.viewmodel.PuzzleUiState
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -134,7 +138,22 @@ class ScreenReaderTest {
         show(PuzzleUiState(position = 4, bandSize = 812, rating = 1523))
         composeRule.onNodeWithText("Puzzle 4 of 812 · Rating 1523")
             .assert(SemanticsMatcher.keyIsDefined(SemanticsProperties.Heading))
-            .assertContentDescriptionEquals("Puzzle 4 of 812, Rating 1523")
+            .assertContentDescriptionEquals("Puzzle 4 of 812, not solved yet, Rating 1523")
+    }
+
+    /** The dot before the title is silent; the heading says the puzzle's latest result in words. */
+    @Test fun theHeadingSaysThePuzzlesLatestResult() {
+        var mark by mutableStateOf(PuzzleMark.UNSOLVED)
+        composeRule.setContent {
+            ChessTheme(darkTheme = true) {
+                PuzzleStats(PuzzleUiState(position = 4, bandSize = 812, rating = 1523, mark = mark), emptyList(), {}, emptyList(), {}, false)
+            }
+        }
+        mapOf(PuzzleMark.SOLVED to "solved", PuzzleMark.WRONG to "got wrong", PuzzleMark.UNSOLVED to "not solved yet").forEach {
+            mark = it.key
+            composeRule.onNodeWithText("Puzzle 4 of 812 · Rating 1523")
+                .assertContentDescriptionEquals("Puzzle 4 of 812, ${it.value}, Rating 1523")
+        }
     }
 
     @Test fun eachStatIsOneItemWithItsLabelAndNumber() {

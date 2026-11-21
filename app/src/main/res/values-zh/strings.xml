@@ -18,6 +18,9 @@
     <!-- The puzzle screen. -->
     <string name="puzzle_title">第%1$d个谜题，共%2$d个</string>
     <string name="puzzle_rating">难度分 %1$d</string>
+    <string name="mark_unsolved">尚未解决</string>
+    <string name="mark_solved">已解决</string>
+    <string name="mark_wrong">做错了</string>
     <string name="puzzle_hint">提示</string>
     <string name="puzzle_reset">重新开始</string>
     <string name="puzzle_previous">上一个谜题</string>
@@ -120,7 +123,7 @@
     <string name="sentence_correct">正确。你走了%1$s。%2$s走了%3$s。</string>
     <string name="sentence_reset">谜题已重新开始。%1$s。</string>
     <string name="sentence_solved">已解决。你走了%1$s。</string>
-    <string name="sentence_puzzle_shown">第%1$d个谜题，共%2$d个，难度分%3$d。%4$s走了%5$s。%6$s。</string>
+    <string name="sentence_puzzle_shown">第%1$d个谜题，共%2$d个，难度分%3$d，%7$s。%4$s走了%5$s。%6$s。</string>
 
     <!-- Sentences a screen reader says on the openings screens. -->
     <string name="sentence_start_position">起始局面。</string>

@@ -1,9 +1,16 @@
 package dk.cocode.chess.viewmodel
 
+import androidx.annotation.StringRes
+import dk.cocode.chess.R
 import dk.cocode.chess.core.model.PuzzleStatus
 import dk.cocode.chess.core.model.Square
 
 enum class Feedback { NONE, CORRECT, SOLVED, WRONG, ILLEGAL }
+
+/** A puzzle's latest result, shown as the dot before its title, and its [word] for the screen reader. */
+enum class PuzzleMark(@StringRes val word: Int) {
+    UNSOLVED(R.string.mark_unsolved), SOLVED(R.string.mark_solved), WRONG(R.string.mark_wrong),
+}
 
 /** A from -> to pair used for last-move and hint highlighting. */
 data class Highlight(val from: Square, val to: Square)
@@ -31,6 +38,7 @@ data class PuzzleUiState(
     val currentStreak: Int = 0,
     val bestStreak: Int = 0,
     val dayStreak: Int = 0,
+    val mark: PuzzleMark = PuzzleMark.UNSOLVED, // the latest result of the puzzle on screen
     /** What the puzzle asks of the player; null before the first puzzle is shown. */
     val prompt: Prompt? = null,
     /** What a screen reader says about the last event; empty until there is one. */

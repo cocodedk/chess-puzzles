@@ -18,6 +18,9 @@
     <!-- The puzzle screen. -->
     <string name="puzzle_title">Opgave %1$d af %2$d</string>
     <string name="puzzle_rating">Rating %1$d</string>
+    <string name="mark_unsolved">ikke løst endnu</string>
+    <string name="mark_solved">løst</string>
+    <string name="mark_wrong">forkert</string>
     <string name="puzzle_hint">Hint</string>
     <string name="puzzle_reset">Start forfra</string>
     <string name="puzzle_previous">Forrige opgave</string>
@@ -121,7 +124,7 @@
     <string name="sentence_correct">Rigtigt. Du spillede %1$s. %2$s spillede %3$s.</string>
     <string name="sentence_reset">Opgaven er startet forfra. %1$s.</string>
     <string name="sentence_solved">Løst. Du spillede %1$s.</string>
-    <string name="sentence_puzzle_shown">Opgave %1$d af %2$d, rating %3$d. %4$s spillede %5$s. %6$s.</string>
+    <string name="sentence_puzzle_shown">Opgave %1$d af %2$d, rating %3$d, %7$s. %4$s spillede %5$s. %6$s.</string>
 
     <!-- Sentences a screen reader says on the openings screens. -->
     <string name="sentence_start_position">Udgangsstilling.</string>
