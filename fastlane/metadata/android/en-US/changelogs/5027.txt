@@ -1,0 +1,1 @@
+A dot before each puzzle's title shows how your last try went: a green tick if you solved it, a red cross if you got it wrong, an empty ring if you have not solved it yet. TalkBack says "solved" or "got wrong" with the title and when a puzzle opens. Choosing a theme now opens its first puzzle you have not solved, also after you restart the app.
